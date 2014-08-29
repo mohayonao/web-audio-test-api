@@ -1,0 +1,24 @@
+{
+  "name": "web-audio-mock",
+  "version": "0.0.0",
+  "author": "Nao Yonamine <mohayonao@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mohayonao/web-audio-mock.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "main": "web-audio-mock",
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "gulp": "^3.8.7",
+    "gulp-istanbul": "^0.2.2",
+    "gulp-jshint": "^1.8.4",
+    "gulp-mocha": "^1.0.0",
+    "jshint-stylish": "^0.4.0",
+    "sinon": "^1.10.3",
+    "sinon-chai": "^2.5.0"
+  }
+}
