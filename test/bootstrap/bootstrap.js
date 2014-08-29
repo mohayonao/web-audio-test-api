@@ -6,5 +6,3 @@ global.expect = global.chai.expect;
 global.window = global;
 
 global.chai.use(require("sinon-chai"));
-
-require("../../");
