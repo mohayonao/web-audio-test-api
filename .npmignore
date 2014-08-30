@@ -1,0 +1,8 @@
+.git
+.DS_STORE
+.editorconfig
+.gitignore
+.jshintrc
+.travis.yml
+node_modules/
+coverage/

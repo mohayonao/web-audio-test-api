@@ -1,12 +1,18 @@
 {
   "name": "web-audio-mock",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "Web Audio API mock library",
   "author": "Nao Yonamine <mohayonao@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "http://github.com/mohayonao/web-audio-mock.git"
   },
+  "keywords": [
+    "web audio api",
+    "test",
+    "mock"
+  ],
   "scripts": {
     "test": "mocha"
   },
