@@ -17,8 +17,6 @@
     "gulp-istanbul": "^0.2.2",
     "gulp-jshint": "^1.8.4",
     "gulp-mocha": "^1.0.0",
-    "jshint-stylish": "^0.4.0",
-    "sinon": "^1.10.3",
-    "sinon-chai": "^2.5.0"
+    "jshint-stylish": "^0.4.0"
   }
 }
