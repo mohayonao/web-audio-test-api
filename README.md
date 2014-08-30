@@ -11,7 +11,7 @@
 
 ##### browser
 
-  - [web-audio-mock](http://mohayonao.github.io/web-audio-mock/web-audio-mock.js)
+  - [web-audio-mock.js](http://mohayonao.github.io/web-audio-mock/web-audio-mock.js)
 
 ```html
 <script src="/path/to/web-audio-mock.js"></script>
