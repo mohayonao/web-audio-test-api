@@ -61,6 +61,13 @@ describe("AudioContext", function() {
   });
 
   describe("#process()", function() {
+    it("should work", function(done) {
+      ctx.process(0.5);
+      ctx.process(0.5);
+      ctx.process(0.5, function() {
+        done();
+      });
+    });
   });
 
   describe("#createBuffer(numberOfChannels, length, sampleRate)", function() {

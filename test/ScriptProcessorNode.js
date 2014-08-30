@@ -57,6 +57,17 @@ describe("ScriptProcessorNode", function() {
     it("should be exist", function() {
       expect(node).to.have.property("onaudioprocess");
     });
+    it("should work", function(done) {
+      node.connect(ctx.destination);
+      node.onaudioprocess = function(e) {
+        expect(e).to.be.instanceOf(AudioProcessingEvent);
+        expect(e).to.have.property("playbackTime");
+        expect(e.inputBuffer).to.be.instanceOf(AudioBuffer);
+        expect(e.outputBuffer).to.be.instanceOf(AudioBuffer);
+        done();
+      };
+      ctx.process(0.005); // process 5msec
+    });
   });
 
 });
