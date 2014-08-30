@@ -77,6 +77,27 @@ describe("AudioContext", function() {
   });
 
   describe("#decodeAudioData", function() {
+    it("should work", function(done) {
+      ctx.decodeAudioData(new Uint8Array(128).buffer, function(buffer) {
+        expect(buffer).to.be.instanceOf(AudioBuffer);
+        done();
+      }, function() {
+        throw new Error("NOT REACHED");
+      });
+    });
+    it("should failed", function(done) {
+      ctx.DECODE_AUDIO_DATA_FAILED = true;
+      ctx.decodeAudioData(new Uint8Array(128).buffer, function() {
+        throw new Error("NOT REACHED");
+      }, function() {
+        done();
+      });
+    });
+    it("throw error", function() {
+      expect(function() {
+        ctx.decodeAudioData("INVALID");
+      }).to.throw(TypeError, "AudioContext#decodeAudioData: 'audioData' should be an ArrayBuffer");
+    });
   });
 
   describe("#createBufferSource()", function() {
