@@ -9,6 +9,14 @@
 
 ## Installing
 
+##### browser
+
+  - [web-audio-mock](http://mohayonao.github.io/web-audio-mock/web-audio-mock.js)
+
+```html
+<script src="/path/to/web-audio-mock.js"></script>
+```
+
 ##### node.js
 
 ```sh
@@ -20,7 +28,7 @@
 ##### Module Routing
 
 ```javascript
-require("./web-audio-mock");
+require("web-audio-mock");
 
 var ctx = new AudioContext();
 var osc = ctx.createOscillator();
@@ -40,7 +48,6 @@ ctx.toJSON();
     {
       "name": "GainNode",
       "gain": {
-        "name": "gain",
         "value": 1,
         "inputs": []
       },
@@ -49,12 +56,10 @@ ctx.toJSON();
           "name": "OscillatorNode",
           "type": "sawtooth",
           "frequency": {
-            "name": "frequency",
             "value": 220,
             "inputs": []
           },
           "detune": {
-            "name": "detune",
             "value": 0,
             "inputs": []
           },
