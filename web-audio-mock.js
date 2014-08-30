@@ -462,7 +462,6 @@
       return checkCircular(this, function(memo) {
         var json = {};
 
-        json.name = this.name;
         json.value = this.value;
 
         json.inputs = this._src.map(function(node) {

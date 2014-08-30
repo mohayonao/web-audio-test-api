@@ -24,7 +24,6 @@ describe("ModularRouting", function() {
           {
             "name": "GainNode",
             "gain": {
-              "name": "gain",
               "value": 1,
               "inputs": []
             },
@@ -33,12 +32,10 @@ describe("ModularRouting", function() {
                 "name": "OscillatorNode",
                 "type": "sine",
                 "frequency": {
-                  "name": "frequency",
                   "value": 440,
                   "inputs": []
                 },
                 "detune": {
-                  "name": "detune",
                   "value": 0,
                   "inputs": []
                 },
@@ -69,13 +66,11 @@ describe("ModularRouting", function() {
           {
             "name": "GainNode",
             "gain": {
-              "name": "gain",
               "value": 1,
               "inputs": [
                 {
                   "name": "AudioBufferSourceNode",
                   "playbackRate": {
-                    "name": "playbackRate",
                     "value": 1,
                     "inputs": []
                   },
@@ -91,12 +86,10 @@ describe("ModularRouting", function() {
                 "name": "OscillatorNode",
                 "type": "sine",
                 "frequency": {
-                  "name": "frequency",
                   "value": 440,
                   "inputs": []
                 },
                 "detune": {
-                  "name": "detune",
                   "value": 0,
                   "inputs": []
                 },
@@ -143,14 +136,12 @@ describe("ModularRouting", function() {
             "name": "OscillatorNode",
             "type": "sine",
             "frequency": {
-              "name": "frequency",
               "value": 440,
               "inputs": [
                 "<circular>"
               ]
             },
             "detune": {
-              "name": "detune",
               "value": 0,
               "inputs": []
             },
