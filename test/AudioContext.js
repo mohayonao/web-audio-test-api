@@ -61,12 +61,10 @@ describe("AudioContext", function() {
   });
 
   describe("#process()", function() {
-    it("should work", function(done) {
+    it("should work", function() {
       ctx.process(0.5);
       ctx.process(0.5);
-      ctx.process(0.5, function() {
-        done();
-      });
+      ctx.process(0.5);
     });
   });
 

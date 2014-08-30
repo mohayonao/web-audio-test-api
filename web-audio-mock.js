@@ -109,17 +109,13 @@
       this._tick = 0;
     }
 
-    AudioContext.prototype.process = function(duration, callback) {
-      var _this = this;
-      setTimeout(function() {
-        _this._counter -= duration;
-        while (_this._counter <= 0) {
-          _this.destination.process(++_this._tick);
-          _this._currentTime += CURRENT_TIME_INCR;
-          _this._counter += CURRENT_TIME_INCR;
-        }
-        callback && callback(); // jshint ignore: line
-      }, 0);
+    AudioContext.prototype.process = function(duration) {
+      this._counter -= duration;
+      while (this._counter <= 0) {
+        this.destination.process(++this._tick);
+        this._currentTime += CURRENT_TIME_INCR;
+        this._counter += CURRENT_TIME_INCR;
+      }
     };
 
     AudioContext.prototype.toJSON = function() {
@@ -255,34 +251,30 @@
     }
     extend(OfflineAudioContext, AudioContext);
 
-    OfflineAudioContext.prototype.process = function(duration, callback) {
-      var _this = this;
-      setTimeout(function() {
-        if (_this._processed < _this._length) {
-          _this._counter -= duration;
-          while (_this._counter <= 0) {
-            _this.destination.process(++_this._tick);
-            _this._currentTime += CURRENT_TIME_INCR;
-            _this._counter += CURRENT_TIME_INCR;
-            if (_this._rendering) {
-              _this._processed += BUFFER_SIZE;
-            }
-          }
-
-          if (_this._processed >= _this._length) {
-            /* istanbul ignore else */
-            if (_this.oncomplete) {
-              var e = new OfflineAudioCompletionEvent();
-
-              e.renderedBuffer = new AudioBuffer(_this._numberOfChannels, _this._length, _this.sampleRate);
-
-              _this.oncomplete(e);
-              _this._rendering = false;
-            }
+    OfflineAudioContext.prototype.process = function(duration) {
+      if (this._processed < this._length) {
+        this._counter -= duration;
+        while (this._counter <= 0) {
+          this.destination.process(++this._tick);
+          this._currentTime += CURRENT_TIME_INCR;
+          this._counter += CURRENT_TIME_INCR;
+          if (this._rendering) {
+            this._processed += BUFFER_SIZE;
           }
         }
-        callback && callback(); // jshint ignore: line
-      }, 0);
+
+        if (this._processed >= this._length) {
+          /* istanbul ignore else */
+          if (this.oncomplete) {
+            var e = new OfflineAudioCompletionEvent();
+
+            e.renderedBuffer = new AudioBuffer(this._numberOfChannels, this._length, this.sampleRate);
+
+            this.oncomplete(e);
+            this._rendering = false;
+          }
+        }
+      }
     };
 
     OfflineAudioContext.prototype.startRendering = function() {
