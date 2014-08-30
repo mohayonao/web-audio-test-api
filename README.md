@@ -7,7 +7,7 @@
 
 > Web Audio API mock library for node.js
 
-## Installing
+## Installation
 
 ##### browser
 
