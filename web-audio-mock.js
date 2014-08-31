@@ -147,16 +147,25 @@
       $read(this, "listener", new AudioListener(this));
 
       this._currentTime = 0;
-      this._counter = 0;
-      this._tick = 0;
+      this._targetTime  = 0;
+      this._remain = 0;
     }
 
     AudioContext.prototype.process = function(duration) {
-      this._counter -= duration;
-      while (this._counter <= 0) {
-        this.destination.process(++this._tick);
-        this._currentTime += CURRENT_TIME_INCR;
-        this._counter += CURRENT_TIME_INCR;
+      var dx;
+
+      this._targetTime += duration;
+
+      while (this._currentTime < this._targetTime) {
+        if (this._remain) {
+          dx = this._remain;
+          this._remain = 0;
+        } else {
+          dx = Math.min(CURRENT_TIME_INCR, this._targetTime - this._currentTime);
+          this._remain = CURRENT_TIME_INCR - dx;
+        }
+        this.destination.process(this._currentTime, this._currentTime + dx);
+        this._currentTime = this._currentTime + dx;
       }
     };
 
@@ -273,8 +282,8 @@
       $type(this, "oncomplete", "function", NOP);
 
       this._currentTime = 0;
-      this._counter = 0;
-      this._tick = 0;
+      this._targetTime  = 0;
+      this._remain = 0;
 
       this._numberOfChannels = numberOfChannels;
       this._length = length;
@@ -284,28 +293,34 @@
     extend(OfflineAudioContext, AudioContext);
 
     OfflineAudioContext.prototype.process = function(duration) {
-      if (this._processed < this._length) {
-        this._counter -= duration;
-        while (this._counter <= 0) {
-          this.destination.process(++this._tick);
-          this._currentTime += CURRENT_TIME_INCR;
-          this._counter += CURRENT_TIME_INCR;
-          if (this._rendering) {
-            this._processed += BUFFER_SIZE;
-          }
+      var dx;
+
+      if (!this._rendering || this._length <= this._processed) {
+        return;
+      }
+
+      this._targetTime += duration;
+
+      while (this._currentTime < this._targetTime) {
+        if (this._remain) {
+          dx = this._remain;
+          this._remain = 0;
+        } else {
+          dx = Math.min(CURRENT_TIME_INCR, this._targetTime - this._currentTime);
+          this._remain = CURRENT_TIME_INCR - dx;
         }
+        this.destination.process(this._currentTime, this._currentTime + dx);
+        this._currentTime = this._currentTime + dx;
+        this._processed += BUFFER_SIZE * (dx / CURRENT_TIME_INCR);
+      }
 
-        if (this._processed >= this._length) {
-          /* istanbul ignore else */
-          if (this.oncomplete) {
-            var e = new OfflineAudioCompletionEvent();
+      if (this._length <= this._processed) {
+        var e = new OfflineAudioCompletionEvent();
 
-            e.renderedBuffer = new AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);
+        e.renderedBuffer = new AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);
 
-            this.oncomplete(e);
-            this._rendering = false;
-          }
-        }
+        this.oncomplete(e);
+        this._rendering = false;
       }
     };
 
@@ -334,23 +349,23 @@
       $enum(this, "channelCountMode", [ "max", "clamped-max", "explicit" ], spec.channelCountMode);
       $enum(this, "channelInterpretation", [ "speakers", "discrete" ], spec.channelInterpretation);
 
-      this._tick = 0;
+      this._currentTime = -1;
       this._inputs  = [];
       this._outputs = [];
     }
 
-    AudioNode.prototype.process = function(tick) {
+    AudioNode.prototype.process = function(currentTime, nextCurrentTime) {
       /* istanbul ignore else */
-      if (tick !== this._tick) {
-        this._tick = tick;
+      if (currentTime !== this._currentTime) {
+        this._currentTime = currentTime;
 
         this._inputs.forEach(function(src) {
-          src.process(tick);
+          src.process(currentTime, nextCurrentTime);
         });
 
         Object.keys(this).forEach(function(key) {
           if (this[key] instanceof AudioParam) {
-            this[key].process(tick);
+            this[key].process(currentTime, nextCurrentTime);
           }
         }, this);
 
@@ -482,18 +497,92 @@
       $read(this, "maxValue", maxValue);
       $type(this, "value", "number", defaultValue);
 
-      this._tick = 0;
+      this._currentTime = -1;
       this._inputs = [];
+      this._events = [];
     }
 
-    AudioParam.prototype.process = function(tick) {
+    function linTo(v, v0, v1, t, t0, t1) {
+      var dt = (t - t0) / (t1 - t0);
+      return (1 - dt) * v0 + dt * v1;
+    }
+
+    function expTo(v, v0, v1, t, t0, t1) {
+      var dt = (t - t0) / (t1 - t0);
+      return 0 < v0 && 0 < v1 ? v0 * Math.pow(v1 / v0, dt) : /* istanbul ignore next */ v;
+    }
+
+    function setTarget(v, v0, v1, t, t0, t1, timeConstant) {
+      return v1 + (v0 - v1) * Math.exp((t0 - t) / timeConstant);
+    }
+
+    function setCurveValue(v, t, t0, t1, curve) {
+      var dt = (t - t0) / (t1 - t0);
+
+      if (dt <= 0) {
+        return defaults(curve[0], v);
+      }
+
+      if (1 <= dt) {
+        return defaults(curve[curve.length - 1], v);
+      }
+
+      var index = (curve.length - 1) * dt;
+      var delta = index - (index|0);
+      var v0 = defaults(curve[(index + 0)|0], v);
+      var v1 = defaults(curve[(index + 1)|0], v);
+
+      return (1 - delta) * v0 + delta * v1;
+    }
+
+    function calcValue(value, currentTime, events) {
+      while (events.length && events[0].time <= currentTime) {
+        var e0 = events[0];
+        var e1 = events[1] || { type: null, time: Infinity };
+
+        if (e1.type === "LinearRampToValue") {
+          value = linTo(value, e0.value, e1.value, currentTime, e0.time, e1.time);
+        } else if (e1.type === "ExponentialRampToValue") {
+          value = expTo(value, e0.value, e1.value, currentTime, e0.time, e1.time);
+        } else {
+          switch (e0.type) {
+          case "SetValue":
+          case "LinearRampToValue":
+          case "ExponentialRampToValue":
+            value = e0.value;
+            break;
+          case "SetTarget":
+            value = setTarget(value, e0.startValue, e0.value, currentTime, e0.time, Infinity, e0.timeConstant);
+            break;
+          case "SetValueCurve":
+            value = setCurveValue(value, currentTime, e0.time, e0.time + e0.duration, e0.curve);
+            break;
+          }
+        }
+
+        if (currentTime < e1.time) {
+          break;
+        }
+
+        events.shift();
+        if (events.length && events[0].type === "SetTarget") {
+          events[0].startValue = value;
+        }
+      }
+
+      return value;
+    }
+
+    AudioParam.prototype.process = function(currentTime, nextCurrentTime) {
       /* istanbul ignore else */
-      if (tick !== this._tick) {
-        this._tick = tick;
+      if (currentTime !== this._currentTime) {
+        this._currentTime = currentTime;
 
         this._inputs.forEach(function(src) {
-          src.process(tick);
+          src.process(currentTime, nextCurrentTime);
         });
+
+        this.value = calcValue(this.value, nextCurrentTime, this._events);
       }
     };
 
@@ -511,10 +600,37 @@
       }, memo || /* istanbul ignore next*/ []);
     };
 
+    function insertEvent(_this, event) {
+      var time = event.time;
+      var events = _this._events;
+      var replace = 0;
+      var i, imax = events.length;
+
+      for (i = 0; i < imax; ++i) {
+        if (events[i].time === time && events[i].type === event.type) {
+          replace = 1;
+          break;
+        }
+
+        if (events[i].time > time) {
+          break;
+        }
+      }
+
+      events.splice(i, replace, event);
+
+      _this.value = calcValue(_this.value, _this.context.currentTime, events);
+    }
+
     AudioParam.prototype.setValueAtTime = function(value, startTime) {
       checkArgs("AudioParam#setValueAtTime(value, startTime)", {
         value    : { type: "number", given: value     },
         startTime: { type: "number", given: startTime },
+      });
+      insertEvent(this, {
+        type : "SetValue",
+        value: value,
+        time : startTime,
       });
     };
 
@@ -523,12 +639,22 @@
         value  : { type: "number", given: value   },
         endTime: { type: "number", given: endTime },
       });
+      insertEvent(this, {
+        type : "LinearRampToValue",
+        value: value,
+        time : endTime,
+      });
     };
 
     AudioParam.prototype.exponentialRampToValueAtTime = function(value, endTime) {
       checkArgs("AudioParam#exponentialRampToValueAtTime(value, endTime)", {
         value  : { type: "number", given: value   },
         endTime: { type: "number", given: endTime },
+      });
+      insertEvent(this, {
+        type : "ExponentialRampToValue",
+        value: value,
+        time : endTime,
       });
     };
 
@@ -538,6 +664,13 @@
         startTime   : { type: "number", given: startTime    },
         timeConstant: { type: "number", given: timeConstant },
       });
+      insertEvent(this, {
+        type : "SetTarget",
+        startValue: this.value,
+        value: target,
+        time : startTime,
+        timeConstant: timeConstant
+      });
     };
 
     AudioParam.prototype.setValueCurveAtTime = function(values, startTime, duration) {
@@ -546,12 +679,25 @@
         startTime: { type: "number"      , given: startTime },
         duration : { type: "number"      , given: duration }
       });
+      insertEvent(this, {
+        type : "SetValueCurve",
+        time : startTime,
+        duration: duration,
+        curve: values
+      });
     };
 
     AudioParam.prototype.cancelScheduledValues = function(startTime) {
       checkArgs("AudioParam#cancelScheduledValues(startTime)", {
         startTime: { type: "number", given: startTime }
       });
+      var events = this._events;
+
+      for (var i = 0, imax = events.length; i < imax; ++i) {
+        if (events[i].time >= startTime) {
+          return events.splice(i);
+        }
+      }
     };
 
     return AudioParam;

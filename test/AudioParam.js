@@ -12,6 +12,7 @@ describe("AudioParam", function() {
     ctx = new AudioContext();
     osc = ctx.createOscillator();
     param = osc.frequency;
+    osc.connect(ctx.destination);
   });
 
   describe("#connect()", function() {
@@ -149,6 +150,205 @@ describe("AudioParam", function() {
       expect(function() {
         param.cancelScheduledValues("INVALID");
       }).to.throw(TypeError, "AudioParam#cancelScheduledValues(startTime)");
+    });
+  });
+
+  describe("#process()", function() {
+    it("SetValue", function() {
+      param.setValueAtTime(220, ctx.currentTime);
+      param.setValueAtTime(660, ctx.currentTime + 1.5);
+      param.setValueAtTime(440, ctx.currentTime + 1.0);
+      param.setValueAtTime(880, ctx.currentTime + 1.0);
+      param.setValueAtTime(660, ctx.currentTime + 0.5);
+
+      expect(param.value, "00:00.000").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.250").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.500").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.750").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.000").to.equal(880);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.250").to.equal(880);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.500").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.750").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:02.000").to.equal(660);
+    });
+    it("LinearRampToValue", function() {
+      param.setValueAtTime(220, ctx.currentTime);
+      param.setValueAtTime(660, ctx.currentTime + 0.5);
+      param.linearRampToValueAtTime(880, ctx.currentTime + 1.0);
+      param.linearRampToValueAtTime(660, ctx.currentTime + 1.5);
+
+      expect(param.value, "00:00.000").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.250").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.500").to.be.closeTo(660, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.750").to.be.closeTo(770, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.000").to.be.closeTo(880, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.250").to.be.closeTo(770, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.500").to.be.closeTo(660, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.750").to.be.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:02.000").to.be.equal(660);
+    });
+    it("ExponentialRampToValue", function() {
+      param.setValueAtTime(220, ctx.currentTime);
+      param.setValueAtTime(660, ctx.currentTime + 0.5);
+      param.exponentialRampToValueAtTime(880, ctx.currentTime + 1.0);
+      param.exponentialRampToValueAtTime(660, ctx.currentTime + 1.5);
+
+      expect(param.value, "00:00.000").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.250").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.500").to.be.closeTo(660, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.750").to.be.closeTo(762.102355330306, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.000").to.be.closeTo(880, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.250").to.be.closeTo(762.102355330306, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.500").to.be.closeTo(660, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.750").to.be.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:02.000").to.be.equal(660);
+    });
+    it("SetTarget", function() {
+      param.setValueAtTime(220, ctx.currentTime);
+      param.setValueAtTime(660, ctx.currentTime + 0.5);
+      param.setTargetAtTime(880, ctx.currentTime + 1.0, 2);
+      param.setTargetAtTime(660, ctx.currentTime + 1.5, 2);
+
+      expect(param.value, "00:00.000").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.250").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.500").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.750").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.000").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.250").to.be.closeTo(685.850681431389, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.500").to.be.closeTo(708.663827724291, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.750").to.be.closeTo(702.9456772345972, 1e-6);
+
+      ctx.process(0.25);
+      expect(param.value, "00:02.000").to.be.closeTo(697.8994271389297, 1e-6);
+    });
+    it("SetCurve", function() {
+      var curve = new Float32Array([ 220, 330, 440, 330 ]);
+
+      param.setValueAtTime(220, ctx.currentTime);
+      param.setValueAtTime(660, ctx.currentTime + 0.5);
+      param.setValueCurveAtTime(curve, ctx.currentTime + 1.0, 0.5);
+      param.setValueCurveAtTime(curve, ctx.currentTime + 1.5, 1.0);
+
+      expect(param.value, "00:00.000").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.250").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.500").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.750").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.000").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.250").to.equal(385);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.500").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.750").to.equal(302.5);
+
+      ctx.process(0.25);
+      expect(param.value, "00:02.000").to.equal(385);
+    });
+    it("cancel", function() {
+      param.setValueAtTime(220, ctx.currentTime);
+      param.setValueAtTime(660, ctx.currentTime + 0.5);
+      param.setValueAtTime(880, ctx.currentTime + 1.0);
+      param.setValueAtTime(440, ctx.currentTime + 1.5);
+      param.cancelScheduledValues(ctx.currentTime + 1.0);
+
+      expect(param.value, "00:00.000").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.250").to.equal(220);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.500").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:00.750").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.000").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.250").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.500").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:01.750").to.equal(660);
+
+      ctx.process(0.25);
+      expect(param.value, "00:02.000").to.equal(660);
     });
   });
 
