@@ -84,8 +84,6 @@ describe("AudioNode", function() {
         node.connect(ctx.destination, 0, 2);
       }).throw(Error, "AudioNode#connect(destination, output, input): input index (2) exceeds number of inputs (1)");
     });
-
-    it.skip("circular check", function() {});
   });
 
   describe("#disconnect(output)", function() {

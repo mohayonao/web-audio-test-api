@@ -402,7 +402,7 @@
         });
 
         return json;
-      }, memo || /* istanbul ignore next */ []);
+      }, defaults(memo, []));
     };
 
     AudioNode.prototype.connect = function(destination, output, input) {
@@ -433,8 +433,6 @@
           "AudioNode#connect(destination, output, input): input index (#{0}) exceeds number of inputs (#{1})", input, destination.numberOfInputs
         ));
       }
-
-      // TODO: circular check
 
       var index = this._outputs.indexOf(destination);
       /* istanbul ignore else */
@@ -597,7 +595,7 @@
         });
 
         return json;
-      }, memo || /* istanbul ignore next*/ []);
+      }, defaults(memo, []));
     };
 
     function insertEvent(_this, event) {
