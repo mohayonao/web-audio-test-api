@@ -93,4 +93,22 @@ describe("OscillatorNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "OscillatorNode",
+        type: "sine",
+        frequency: {
+          value: 440,
+          inputs: []
+        },
+        detune: {
+          value: 0,
+          inputs: []
+        },
+        inputs: []
+      });
+    });
+  });
+
 });

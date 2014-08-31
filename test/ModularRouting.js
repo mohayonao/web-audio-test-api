@@ -70,6 +70,7 @@ describe("ModularRouting", function() {
               "inputs": [
                 {
                   "name": "AudioBufferSourceNode",
+                  "buffer": null,
                   "playbackRate": {
                     "value": 1,
                     "inputs": []

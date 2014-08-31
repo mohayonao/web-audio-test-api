@@ -165,7 +165,7 @@
     };
 
     AudioContext.prototype.createBuffer = function(numberOfChannels, length, sampleRate) {
-      return new AudioBuffer(numberOfChannels, length, sampleRate);
+      return new AudioBuffer(this, numberOfChannels, length, sampleRate);
     };
 
     AudioContext.prototype.decodeAudioData = function(audioData, successCallback, errorCallback) {
@@ -179,7 +179,7 @@
         if (_this.DECODE_AUDIO_DATA_FAILED) {
           errorCallback();
         } else {
-          successCallback(_this.DECODE_AUDIO_DATA_RESULT || new AudioBuffer(2, 1024, SAMPLERATE));
+          successCallback(_this.DECODE_AUDIO_DATA_RESULT || new AudioBuffer(_this, 2, 1024, SAMPLERATE));
         }
       }, 0);
     };
@@ -300,7 +300,7 @@
           if (this.oncomplete) {
             var e = new OfflineAudioCompletionEvent();
 
-            e.renderedBuffer = new AudioBuffer(this._numberOfChannels, this._length, this.sampleRate);
+            e.renderedBuffer = new AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);
 
             this.oncomplete(e);
             this._rendering = false;
@@ -367,12 +367,20 @@
         json.name = id(this);
 
         this.jsonAttrs.forEach(function(key) {
-          if (this[key].toJSON) {
+          if (this[key] && this[key].toJSON) {
             json[key] = this[key].toJSON(memo);
           } else {
             json[key] = this[key];
           }
         }, this);
+
+        if (this.context.VERBOSE_JSON) {
+          json.numberOfInputs = this.numberOfInputs;
+          json.numberOfOutputs = this.numberOfOutputs;
+          json.channelCount = this.channelCount;
+          json.channelCountMode = this.channelCountMode;
+          json.channelInterpretation = this.channelInterpretation;
+        }
 
         json.inputs = this._inputs.map(function(node) {
           return node.toJSON(memo);
@@ -588,7 +596,8 @@
   })();
 
   global.AudioBuffer = (function() {
-    function AudioBuffer(numberOfChannels, length, sampleRate) {
+    function AudioBuffer(context, numberOfChannels, length, sampleRate) {
+      $read(this, "context", context);
       $read(this, "name", "AudioBuffer");
       $read(this, "sampleRate", sampleRate);
       $read(this, "length", length);
@@ -600,6 +609,30 @@
         this._data[i] = new Float32Array(length);
       }
     }
+
+    function f32ToArray(f32) {
+      var a = new Array(f32.length);
+      for (var i = 0, imax = a.length; i < imax; ++i) {
+        a[i] = f32[i];
+      }
+      return a;
+    }
+
+    AudioBuffer.prototype.toJSON = function() {
+      var json = {
+        name: this.name,
+        sampleRate: this.sampleRate,
+        length: this.length,
+        duration: this.duration,
+        numberOfChannels: this.numberOfChannels
+      };
+
+      if (this.context.VERBOSE_JSON) {
+        json.data = this._data.map(f32ToArray);
+      }
+
+      return json;
+    };
 
     AudioBuffer.prototype.getChannelData = function(channel) {
       if (0 <= channel && channel < this._data.length) {
@@ -618,7 +651,7 @@
       AudioNode.call(this, {
         context: context,
         name: "AudioBufferSourceNode",
-        jsonAttrs: [ "playbackRate", "loop", "loopStart", "loopEnd" ],
+        jsonAttrs: [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ],
         numberOfInputs  : 0,
         numberOfOutputs : 1,
         channelCount    : 2,
@@ -709,8 +742,8 @@
           var e = new AudioProcessingEvent();
 
           e.playbackTime = this.context.currentTime;
-          e.inputBuffer = new AudioBuffer(this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
-          e.outputBuffer = new AudioBuffer(this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
+          e.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
+          e.outputBuffer = new AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
 
           this.onaudioprocess(e);
         }
@@ -832,6 +865,7 @@
       $type(this, "buffer", AudioBuffer);
       $type(this, "normalize", "boolean", true);
     }
+    extend(ConvolverNode, AudioNode);
 
     return ConvolverNode;
   })();

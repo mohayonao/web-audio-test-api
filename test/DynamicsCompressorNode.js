@@ -96,4 +96,37 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "DynamicsCompressorNode",
+        threshold: {
+          value: -24,
+          inputs: []
+        },
+        knee: {
+          value: 30,
+          inputs: []
+        },
+        ratio: {
+          value: 12,
+          inputs: []
+        },
+        reduction: {
+          value: 0,
+          inputs: []
+        },
+        attack: {
+          value: 0.003,
+          inputs: []
+        },
+        release: {
+          value: 0.25,
+          inputs: []
+        },
+        inputs: []
+      });
+    });
+  });
+
 });

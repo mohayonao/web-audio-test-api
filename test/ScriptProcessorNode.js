@@ -69,4 +69,13 @@ describe("ScriptProcessorNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "ScriptProcessorNode",
+        inputs: []
+      });
+    });
+  });
+
 });

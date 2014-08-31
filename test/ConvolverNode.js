@@ -40,4 +40,14 @@ describe("ConvolverNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "ConvolverNode",
+        normalize: true,
+        inputs: []
+      });
+    });
+  });
+
 });

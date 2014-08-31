@@ -26,4 +26,17 @@ describe("DelayNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "DelayNode",
+        delayTime: {
+          value: 0,
+          inputs: []
+        },
+        inputs: []
+      });
+    });
+  });
+
 });

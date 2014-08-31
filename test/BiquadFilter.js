@@ -103,4 +103,30 @@ describe("BiquadFilterNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "BiquadFilterNode",
+        type: "lowpass",
+        frequency: {
+          value: 350,
+          inputs: []
+        },
+        detune: {
+          value: 0,
+          inputs: []
+        },
+        Q: {
+          value: 1,
+          inputs: []
+        },
+        gain: {
+          value: 0,
+          inputs: []
+        },
+        inputs: []
+      });
+    });
+  });
+
 });

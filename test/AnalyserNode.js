@@ -115,4 +115,17 @@ describe("AnalyserNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "AnalyserNode",
+        fftSize: 2048,
+        minDecibels: -100,
+        maxDecibels: 30,
+        smoothingTimeConstant: 0.8,
+        inputs: []
+      });
+    });
+  });
+
 });

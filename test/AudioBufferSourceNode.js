@@ -124,4 +124,21 @@ describe("AudioBufferSourceNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "AudioBufferSourceNode",
+        buffer: null,
+        playbackRate: {
+          value: 1,
+          inputs: []
+        },
+        loop: false,
+        loopStart: 0,
+        loopEnd: 0,
+        inputs: []
+      });
+    });
+  });
+
 });

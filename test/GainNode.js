@@ -26,4 +26,17 @@ describe("GainNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "GainNode",
+        gain: {
+          value: 1,
+          inputs: []
+        },
+        inputs: []
+      });
+    });
+  });
+
 });

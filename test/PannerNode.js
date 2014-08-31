@@ -187,4 +187,21 @@ describe("PannerNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "PannerNode",
+        panningModel: "HRTF",
+        distanceModel: "inverse",
+        refDistance: 1,
+        maxDistance: 10000,
+        rolloffFactor: 1,
+        coneInnerAngle: 360,
+        coneOuterAngle: 360,
+        coneOuterGain: 0,
+        inputs: []
+      });
+    });
+  });
+
 });

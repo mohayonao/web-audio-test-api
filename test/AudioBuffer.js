@@ -67,4 +67,34 @@ describe("AudioBuffer", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(buf.toJSON()).to.eql({
+        name: "AudioBuffer",
+        sampleRate: 44100,
+        length: 16,
+        duration: 0.00036281179138321996,
+        numberOfChannels: 1
+      });
+    });
+    it("return verbose json", function() {
+      ctx.VERBOSE_JSON = true;
+
+      buf.getChannelData(0).set(new Float32Array([
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+      ]));
+
+      expect(buf.toJSON()).to.eql({
+        name: "AudioBuffer",
+        sampleRate: 44100,
+        length: 16,
+        duration: 0.00036281179138321996,
+        numberOfChannels: 1,
+        data: [
+          [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ]
+        ]
+      });
+    });
+  });
+
 });

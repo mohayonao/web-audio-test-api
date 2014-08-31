@@ -106,4 +106,44 @@ describe("AudioNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(node.toJSON()).to.eql({
+        name: "OscillatorNode",
+        type: "sine",
+        frequency: {
+          value: 440,
+          inputs: []
+        },
+        detune: {
+          value: 0,
+          inputs: []
+        },
+        inputs: []
+      });
+    });
+    it("return verbose json", function() {
+      ctx.VERBOSE_JSON = true;
+
+      expect(node.toJSON()).to.eql({
+        name: "OscillatorNode",
+        type: "sine",
+        frequency: {
+          value: 440,
+          inputs: []
+        },
+        detune: {
+          value: 0,
+          inputs: []
+        },
+        numberOfInputs: 0,
+        numberOfOutputs: 1,
+        channelCount: 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers",
+        inputs: []
+      });
+    });
+  });
+
 });

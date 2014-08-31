@@ -210,4 +210,13 @@ describe("AudioContext", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("return json", function() {
+      expect(ctx.toJSON()).to.eql({
+        name: "AudioDestinationNode",
+        inputs: []
+      });
+    });
+  });
+
 });
