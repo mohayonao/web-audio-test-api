@@ -122,6 +122,35 @@ describe("ModularRouting", function() {
     });
   });
 
+  describe("osc#id -> dest", function() {
+    it("toJSON", function() {
+      var osc = ctx.createOscillator();
+
+      osc.$id = "id";
+
+      osc.connect(ctx.destination);
+
+      expect(ctx.toJSON()).to.eql({
+        "name": "AudioDestinationNode",
+        "inputs": [
+          {
+            "name": "OscillatorNode#id",
+            "type": "sine",
+            "frequency": {
+              "value": 440,
+              "inputs": []
+            },
+            "detune": {
+              "value": 0,
+              "inputs": []
+            },
+            "inputs": []
+          }
+        ]
+      });
+    });
+  });
+
   describe("has circular", function() {
     it("toJSON", function() {
       var osc = ctx.createOscillator();
@@ -138,7 +167,7 @@ describe("ModularRouting", function() {
             "frequency": {
               "value": 440,
               "inputs": [
-                "<circular>"
+                "<circular:OscillatorNode>"
               ]
             },
             "detune": {

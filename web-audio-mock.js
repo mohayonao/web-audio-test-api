@@ -61,9 +61,16 @@
     return value instanceof PeriodicWave;
   };
 
+  function id(obj) {
+    if (obj.hasOwnProperty("$id")) {
+      return obj.name + "#" + obj.$id;
+    }
+    return obj.name;
+  }
+
   function checkCircular(node, func, memo) {
     if (memo.indexOf(node) !== -1) {
-      return "<circular>";
+      return "<circular:" + id(node) + ">";
     }
     memo.push(node);
 
@@ -131,7 +138,7 @@
 
   global.AudioContext = (function() {
     function AudioContext() {
-      this.name = "AudioContext";
+      $read(this, "name", "AudioContext");
       $read(this, "destination", new AudioDestinationNode(this));
       $read(this, "sampleRate", SAMPLERATE);
       $read(this, "currentTime", function() {
@@ -256,7 +263,7 @@
         sampleRate      : { type: "number", given: sampleRate       },
       });
 
-      this.name = "OfflineAudioContext";
+      $read(this, "name", "OfflineAudioContext");
       $read(this, "destination", new AudioDestinationNode(this));
       $read(this, "sampleRate", sampleRate);
       $read(this, "currentTime", function() {
@@ -311,26 +318,25 @@
 
   global.OfflineAudioCompletionEvent = (function() {
     function OfflineAudioCompletionEvent() {
-      this.name = "OfflineAudioCompletionEvent";
+      $read(this, "name", "OfflineAudioCompletionEvent");
     }
     return OfflineAudioCompletionEvent;
   })();
 
   global.AudioNode = (function() {
-    function AudioNode(context, numberOfInputs, numberOfOutputs, channelCount, channelCountMode, channelInterpretation) {
-      this.name = "AudioNode";
-      $read(this, "context", context);
-      $read(this, "numberOfInputs", numberOfInputs);
-      $read(this, "numberOfOutputs", numberOfOutputs);
-
-      $type(this, "channelCount", "number", channelCount);
-      $enum(this, "channelCountMode", [ "max", "clamped-max", "explicit" ], channelCountMode);
-      $enum(this, "channelInterpretation", [ "speakers", "discrete" ], channelInterpretation);
+    function AudioNode(spec) {
+      $read(this, "context", spec.context);
+      $read(this, "name", spec.name);
+      $read(this, "jsonAttrs", spec.jsonAttrs);
+      $read(this, "numberOfInputs", spec.numberOfInputs);
+      $read(this, "numberOfOutputs", spec.numberOfOutputs);
+      $type(this, "channelCount", "number", spec.channelCount);
+      $enum(this, "channelCountMode", [ "max", "clamped-max", "explicit" ], spec.channelCountMode);
+      $enum(this, "channelInterpretation", [ "speakers", "discrete" ], spec.channelInterpretation);
 
       this._tick = 0;
-      this._src = [];
-      this._dst = [];
-      this.attr = [];
+      this._inputs  = [];
+      this._outputs = [];
     }
 
     AudioNode.prototype.process = function(tick) {
@@ -338,7 +344,7 @@
       if (tick !== this._tick) {
         this._tick = tick;
 
-        this._src.forEach(function(src) {
+        this._inputs.forEach(function(src) {
           src.process(tick);
         });
 
@@ -358,9 +364,9 @@
       return checkCircular(this, function(memo) {
         var json = {};
 
-        json.name = this.name;
+        json.name = id(this);
 
-        this.attr.forEach(function(key) {
+        this.jsonAttrs.forEach(function(key) {
           if (this[key].toJSON) {
             json[key] = this[key].toJSON(memo);
           } else {
@@ -368,7 +374,7 @@
           }
         }, this);
 
-        json.inputs = this._src.map(function(node) {
+        json.inputs = this._inputs.map(function(node) {
           return node.toJSON(memo);
         });
 
@@ -407,11 +413,11 @@
 
       // TODO: circular check
 
-      var index = this._dst.indexOf(destination);
+      var index = this._outputs.indexOf(destination);
       /* istanbul ignore else */
       if (index === -1) {
-        this._dst.push(destination);
-        destination._src.push(this);
+        this._outputs.push(destination);
+        destination._inputs.push(this);
       }
     };
 
@@ -428,11 +434,11 @@
         ));
       }
 
-      this._dst.splice(0).forEach(function(dst) {
-        var index = dst._src.indexOf(this);
+      this._outputs.splice(0).forEach(function(dst) {
+        var index = dst._inputs.indexOf(this);
         /* istanbul ignore else */
         if (index !== -1) {
-          dst._src.splice(index, 1);
+          dst._inputs.splice(index, 1);
         }
       }, this);
     };
@@ -442,9 +448,17 @@
 
   global.AudioDestinationNode = (function() {
     function AudioDestinationNode(context) {
-      AudioNode.call(this, context, 1, 0, 2, "explicit", "speakers");
-      this.name = "AudioDestinationNode";
-      this.maxChannelCount = 2;
+      AudioNode.call(this, {
+        context: context,
+        name: "AudioDestinationNode",
+        jsonAttrs: [],
+        numberOfInputs  : 1,
+        numberOfOutputs : 0,
+        channelCount    : 2,
+        channelCountMode: "explicit",
+        channelInterpretation: "speakers"
+      });
+      $read(this, "maxChannelCount", 2);
     }
     extend(AudioDestinationNode, AudioNode);
 
@@ -461,7 +475,7 @@
       $type(this, "value", "number", defaultValue);
 
       this._tick = 0;
-      this._src = [];
+      this._inputs = [];
     }
 
     AudioParam.prototype.process = function(tick) {
@@ -469,7 +483,7 @@
       if (tick !== this._tick) {
         this._tick = tick;
 
-        this._src.forEach(function(src) {
+        this._inputs.forEach(function(src) {
           src.process(tick);
         });
       }
@@ -481,7 +495,7 @@
 
         json.value = this.value;
 
-        json.inputs = this._src.map(function(node) {
+        json.inputs = this._inputs.map(function(node) {
           return node.toJSON(memo);
         });
 
@@ -537,9 +551,16 @@
 
   global.GainNode = (function() {
     function GainNode(context) {
-      AudioNode.call(this, context, 1, 1, 2, "max", "speakers");
-      this.name = "GainNode";
-      this.attr = [ "gain" ];
+      AudioNode.call(this, {
+        context: context,
+        name: "GainNode",
+        jsonAttrs: [ "gain"　],
+        numberOfInputs  : 1,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
+      });
       $read(this, "gain", new AudioParam(context, "gain", 1.0, 0.0, 1.0));
     }
     extend(GainNode, AudioNode);
@@ -549,9 +570,16 @@
 
   global.DelayNode = (function() {
     function DelayNode(context, maxDelayTime) {
-      AudioNode.call(this, context, 1, 1, 2, "max", "speakers");
-      this.name = "DelayNode";
-      this.attr = [ "delayTime" ];
+      AudioNode.call(this, {
+        context: context,
+        name: "DelayNode",
+        jsonAttrs: [ "delayTime"　],
+        numberOfInputs  : 1,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
+      });
       $read(this, "delayTime", new AudioParam(context, "delayTime", 0, 0, maxDelayTime));
     }
     extend(DelayNode, AudioNode);
@@ -561,7 +589,7 @@
 
   global.AudioBuffer = (function() {
     function AudioBuffer(numberOfChannels, length, sampleRate) {
-      this.name = "AudioBuffer";
+      $read(this, "name", "AudioBuffer");
       $read(this, "sampleRate", sampleRate);
       $read(this, "length", length);
       $read(this, "duration", length / sampleRate);
@@ -587,9 +615,16 @@
 
   global.AudioBufferSourceNode = (function() {
     function AudioBufferSourceNode(context) {
-      AudioNode.call(this, context, 0, 1, 2, "max", "speakers");
-      this.name = "AudioBufferSourceNode";
-      this.attr = [ "playbackRate", "loop", "loopStart", "loopEnd" ];
+      AudioNode.call(this, {
+        context: context,
+        name: "AudioBufferSourceNode",
+        jsonAttrs: [ "playbackRate", "loop", "loopStart", "loopEnd" ],
+        numberOfInputs  : 0,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
+      });
       $type(this, "buffer", AudioBuffer);
       $read(this, "playbackRate", new AudioParam(context, "playbackRate", 1, 0, 1024));
       $type(this, "loop", "boolean", false);
@@ -618,8 +653,16 @@
 
   global.MediaElementAudioSourceNode = (function() {
     function MediaElementAudioSourceNode(context) {
-      AudioNode.call(this, context, 0, 1, 2, "max", "speakers");
-      this.name = "MediaElementAudioSourceNode";
+      AudioNode.call(this, {
+        context: context,
+        name: "MediaElementAudioSourceNode",
+        jsonAttrs: [],
+        numberOfInputs  : 0,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
+      });
     }
     extend(MediaElementAudioSourceNode, AudioNode);
 
@@ -628,8 +671,6 @@
 
   global.ScriptProcessorNode = (function() {
     function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-      AudioNode.call(this, context, 1, 1, 1, "explicit", "speakers");
-      this.name = "ScriptProcessorNode";
       if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
         throw new TypeError(format(
           "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels): invalid bufferSize: #{0}", bufferSize
@@ -638,6 +679,16 @@
       checkArgs("ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)", {
         numberOfInputChannels : { type: "number", given: numberOfInputChannels  },
         numberOfOutputChannels: { type: "number", given: numberOfOutputChannels },
+      });
+      AudioNode.call(this, {
+        context: context,
+        name: "ScriptProcessorNode",
+        jsonAttrs: [],
+        numberOfInputs  : 1,
+        numberOfOutputs : 1,
+        channelCount    : numberOfInputChannels,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
       });
       $read(this, "numberOfInputChannels", numberOfInputChannels);
       $read(this, "numberOfOutputChannels", numberOfOutputChannels);
@@ -671,19 +722,26 @@
 
   global.AudioProcessingEvent = (function() {
     function AudioProcessingEvent() {
-      this.name = "AudioProcessingEvent";
+      $read(this, "name", "AudioProcessingEvent");
     }
     return AudioProcessingEvent;
   })();
 
   global.PannerNode = (function() {
     function PannerNode(context) {
-      AudioNode.call(this, context, 1, 1, 2, "clamped-max", "speakers");
-      this.name = "PannerNode";
-      this.attr = [
-        "panningModel", "distanceModel", "refDistance", "maxDistance",
-        "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
-      ];
+      AudioNode.call(this, {
+        context: context,
+        name: "PannerNode",
+        jsonAttrs: [
+          "panningModel", "distanceModel", "refDistance", "maxDistance",
+          "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
+        ],
+        numberOfInputs  : 1,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "clamped-max",
+        channelInterpretation: "speakers"
+      });
       $enum(this, "panningModel", [ "equalpower", "HRTF" ], "HRTF");
       $enum(this, "distanceModel", [ "linear", "inverse", "exponential" ], "inverse");
       $type(this, "refDistance", "number", 1);
@@ -724,7 +782,7 @@
 
   global.AudioListener = (function() {
     function AudioListener() {
-      this.name = "AudioListener";
+      $read(this, "name", "AudioListener");
       $type(this, "dopplerFactor", "number", 1);
       $type(this, "speedOfSound", "number", 343.3);
     }
@@ -761,9 +819,16 @@
 
   global.ConvolverNode = (function() {
     function ConvolverNode(context) {
-      AudioNode.call(this, context, 1, 1, 2, "clamped-max", "speakers");
-      this.name = "ConvolverNode";
-      this.attr = [ "normalize" ];
+      AudioNode.call(this, {
+        context: context,
+        name: "ConvolverNode",
+        jsonAttrs: [ "normalize" ],
+        numberOfInputs  : 1,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "clamped-max",
+        channelInterpretation: "speakers"
+      });
       $type(this, "buffer", AudioBuffer);
       $type(this, "normalize", "boolean", true);
     }
@@ -773,9 +838,16 @@
 
   global.AnalyserNode = (function() {
     function AnalyserNode(context) {
-      AudioNode.call(this, context, 1, 1, 1, "explicit", "speakers");
-      this.name = "AnalyserNode";
-      this.attr = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
+      AudioNode.call(this, {
+        context: context,
+        name: "AnalyserNode",
+        jsonAttrs: [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ],
+        numberOfInputs  : 1,
+        numberOfOutputs : 1,
+        channelCount    : 1,
+        channelCountMode: "explicit",
+        channelInterpretation: "speakers"
+      });
       $enum(this, "fftSize", [ 32, 64, 128, 256, 512, 1024, 2048 ], 2048);
       $read(this, "frequencyBinCount", function() {
         return this.fftSize >> 1;
@@ -809,8 +881,19 @@
 
   global.ChannelSplitterNode = (function() {
     function ChannelSplitterNode(context, numberOfOutputs) {
-      AudioNode.call(this, context, 1, numberOfOutputs, 2, "max", "speakers");
-      this.name = "ChannelSplitterNode";
+      checkArgs("ChannelSplitterNode(numberOfOutputs)", {
+        numberOfOutputs: { type: "number", given: numberOfOutputs }
+      });
+      AudioNode.call(this, {
+        context: context,
+        name: "ChannelSplitterNode",
+        jsonAttrs: [],
+        numberOfInputs  : 1,
+        numberOfOutputs : numberOfOutputs,
+        channelCount    : 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
+      });
     }
     extend(ChannelSplitterNode, AudioNode);
 
@@ -819,8 +902,19 @@
 
   global.ChannelMergerNode = (function() {
     function ChannelMergerNode(context, numberOfInputs) {
-      AudioNode.call(this, context, numberOfInputs, 1, 2, "max", "speakers");
-      this.name = "ChannelMergerNode";
+      checkArgs("ChannelMergerNode(numberOfInputs)", {
+        numberOfInputs: { type: "number", given: numberOfInputs }
+      });
+      AudioNode.call(this, {
+        context: context,
+        name: "ChannelMergerNode",
+        jsonAttrs: [],
+        numberOfInputs  : numberOfInputs,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
+      });
     }
     extend(ChannelMergerNode, AudioNode);
 
@@ -829,9 +923,16 @@
 
   global.DynamicsCompressorNode = (function() {
     function DynamicsCompressorNode(context) {
-      AudioNode.call(this, context, 1, 1, 2, "explicit", "speakers");
-      this.name = "DynamicsCompressorNode";
-      this.attr = [ "threshold", "knee", "ratio", "reduction", "attack", "release" ];
+      AudioNode.call(this, {
+        context: context,
+        name: "DynamicsCompressorNode",
+        jsonAttrs: [ "threshold", "knee", "ratio", "reduction", "attack", "release" ],
+        numberOfInputs  : 1,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "explicit",
+        channelInterpretation: "speakers"
+      });
       $read(this, "threshold", new AudioParam(context, "threshold", -24, -100, 0));
       $read(this, "knee", new AudioParam(context, "knee", 30, 0, 40));
       $read(this, "ratio", new AudioParam(context, "ratio", 12, 1, 20));
@@ -846,9 +947,16 @@
 
   global.BiquadFilterNode = (function() {
     function BiquadFilterNode(context) {
-      AudioNode.call(this, context, 1, 1, 2, "max", "speakers");
-      this.name = "BiquadFilterNode";
-      this.attr = [ "type", "frequency", "detune", "Q", "gain" ];
+      AudioNode.call(this, {
+        context: context,
+        name: "BiquadFilterNode",
+        jsonAttrs: [ "type", "frequency", "detune", "Q", "gain" ],
+        numberOfInputs  : 1,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
+      });
       $enum(this, "type", [
         "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"
       ], "lowpass");
@@ -872,9 +980,16 @@
 
   global.WaveShaperNode = (function() {
     function WaveShaperNode(context) {
-      AudioNode.call(this, context, 1, 1, 2, "max", "speakers");
-      this.name = "WaveShaperNode";
-      this.attr = [ "oversample" ];
+      AudioNode.call(this, {
+        context: context,
+        name: "WaveShaperNode",
+        jsonAttrs: [ "oversample" ],
+        numberOfInputs  : 1,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
+      });
       $type(this, "curve", Float32Array);
       $enum(this, "oversample", [ "none", "2x", "4x" ], "none");
     }
@@ -885,9 +1000,16 @@
 
   global.OscillatorNode = (function() {
     function OscillatorNode(context) {
-      AudioNode.call(this, context, 0, 1, 2, "max", "speakers");
-      this.name = "OscillatorNode";
-      this.attr = [ "type", "frequency", "detune" ];
+      AudioNode.call(this, {
+        context: context,
+        name: "OscillatorNode",
+        jsonAttrs:  [ "type", "frequency", "detune" ],
+        numberOfInputs  : 0,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
+      });
       $enum(this, "type", [ "sine", "square", "sawtooth", "triangle", "custom" ], "sine");
       $read(this, "frequency", new AudioParam(context, "frequency", 440, 0, 100000));
       $read(this, "detune", new AudioParam(context, "detune", 0, -4800, 4800));
@@ -918,15 +1040,23 @@
 
   global.PeriodicWave = (function() {
     function PeriodicWave() {
-      this.name = "PeriodicWave";
+      $read(this, "name", "PeriodicWave");
     }
     return PeriodicWave;
   })();
 
   global.MediaStreamAudioSourceNode = (function() {
     function　MediaStreamAudioSourceNode(context) {
-      AudioNode.call(this, context, 0, 1, 2, "max", "speakers");
-      this.name = "MediaStreamAudioSourceNode";
+      AudioNode.call(this, {
+        context: context,
+        name: "MediaStreamAudioSourceNode",
+        jsonAttrs:  [],
+        numberOfInputs  : 0,
+        numberOfOutputs : 1,
+        channelCount    : 2,
+        channelCountMode: "max",
+        channelInterpretation: "speakers"
+      });
     }
     extend(MediaStreamAudioSourceNode, AudioNode);
 
@@ -935,8 +1065,16 @@
 
   global.MediaStreamAudioDestinationNode = (function() {
     function MediaStreamAudioDestinationNode(context) {
-      AudioNode.call(this, context, 1, 0, 2, "explicit", "speakers");
-      this.name = "MediaStreamAudioDestinationNode";
+      AudioNode.call(this, {
+        context: context,
+        name: "MediaStreamAudioDestinationNode",
+        jsonAttrs:  [],
+        numberOfInputs  : 1,
+        numberOfOutputs : 0,
+        channelCount    : 2,
+        channelCountMode: "explicit",
+        channelInterpretation: "speakers"
+      });
     }
     extend(MediaStreamAudioDestinationNode, AudioNode);
 
