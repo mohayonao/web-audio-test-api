@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>web-audio-mock.js - online test suites</title>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/chai/1.9.1/chai.js"></script>
+  <script src="web-audio-mock.js"></script>
+  <script>
+    mocha.setup("bdd");
+    window.require = function() {};
+    window.onload = function() {
+      mocha.run();
+    };
+    window.expect = chai.expect;
+  </script>
+  <script src="./test/AnalyserNode.js"></script>
+  <script src="./test/AudioBuffer.js"></script>
+  <script src="./test/AudioBufferSourceNode.js"></script>
+  <script src="./test/AudioContext.js"></script>
+  <script src="./test/AudioListener.js"></script>
+  <script src="./test/AudioNode.js"></script>
+  <script src="./test/AudioParam.js"></script>
+  <script src="./test/BiquadFilter.js"></script>
+  <script src="./test/ConvolverNode.js"></script>
+  <script src="./test/DelayNode.js"></script>
+  <script src="./test/DynamicsCompressorNode.js"></script>
+  <script src="./test/GainNode.js"></script>
+  <script src="./test/ModularRouting.js"></script>
+  <script src="./test/OfflineAudioContext.js"></script>
+  <script src="./test/OscillatorNode.js"></script>
+  <script src="./test/PannerNode.js"></script>
+  <script src="./test/ScriptProcessorNode.js"></script>
+  <script src="./test/WaveShaperNode.js"></script>
+</head>
+<body>
+  <div id="mocha">
+    <h1>web-audio-mock.js - online test suites</h1>
+  </div>
+</body>
+</html>
