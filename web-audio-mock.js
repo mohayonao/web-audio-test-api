@@ -402,7 +402,7 @@
         });
 
         return json;
-      }, defaults(memo, []));
+      }, memo || /* istanbul ignore next */ []);
     };
 
     AudioNode.prototype.connect = function(destination, output, input) {
@@ -595,7 +595,7 @@
         });
 
         return json;
-      }, defaults(memo, []));
+      }, memo || /* istanbul ignore next */ []);
     };
 
     function insertEvent(_this, event) {
