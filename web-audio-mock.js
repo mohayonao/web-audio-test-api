@@ -179,7 +179,7 @@
         if (_this.DECODE_AUDIO_DATA_FAILED) {
           errorCallback();
         } else {
-          successCallback(new AudioBuffer(2, 1024, SAMPLERATE));
+          successCallback(_this.DECODE_AUDIO_DATA_RESULT || new AudioBuffer(2, 1024, SAMPLERATE));
         }
       }, 0);
     };

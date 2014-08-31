@@ -91,6 +91,16 @@ describe("AudioContext", function() {
         done();
       });
     });
+    it("return custom result", function(done) {
+      var result = ctx.createBuffer(2, 256, 44100);
+      ctx.DECODE_AUDIO_DATA_RESULT = result;
+      ctx.decodeAudioData(new Uint8Array(128).buffer, function(buffer) {
+        expect(buffer).to.equal(result);
+        done();
+      }, function() {
+        throw new Error("NOT REACHED");
+      });
+    });
     it("throw error", function() {
       expect(function() {
         ctx.decodeAudioData("INVALID");
