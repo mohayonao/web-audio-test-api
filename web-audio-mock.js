@@ -100,13 +100,15 @@
         return _value;
       },
       set: function(newValue) {
-        if (typeof type === "string" && typeof newValue !== type) {
+        if (typeof type === "string") {
+          if (typeof newValue !== type) {
+            throw new TypeError(format(
+              "#{0} should be a #{1}, but got #{2}", name, type, typeof newValue
+            ));
+          }
+        } else if (newValue !== null && !(newValue instanceof type)) {
           throw new TypeError(format(
-            "#{0} should be a #{1}, but got #{2}", name, type, typeof newValue
-          ));
-        } else if (typeof type === "function" && (newValue !== null && !(newValue instanceof type))) {
-          throw new TypeError(format(
-            "#{0} should be a #{1}, but got #{2}", name, type.constructor, String(newValue)
+            "#{0} should be a #{1}, but got #{2}", name, String(type), String(newValue)
           ));
         }
         _value = newValue;
