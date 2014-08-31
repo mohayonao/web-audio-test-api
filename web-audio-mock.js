@@ -351,9 +351,9 @@
       $enum(this, "channelCountMode", [ "max", "clamped-max", "explicit" ], spec.channelCountMode);
       $enum(this, "channelInterpretation", [ "speakers", "discrete" ], spec.channelInterpretation);
 
-      this._currentTime = -1;
-      this._inputs  = [];
+      this.$inputs  = [];
       this._outputs = [];
+      this._currentTime = -1;
     }
 
     AudioNode.prototype.process = function(currentTime, nextCurrentTime) {
@@ -361,7 +361,7 @@
       if (currentTime !== this._currentTime) {
         this._currentTime = currentTime;
 
-        this._inputs.forEach(function(src) {
+        this.$inputs.forEach(function(src) {
           src.process(currentTime, nextCurrentTime);
         });
 
@@ -399,7 +399,7 @@
           json.channelInterpretation = this.channelInterpretation;
         }
 
-        json.inputs = this._inputs.map(function(node) {
+        json.inputs = this.$inputs.map(function(node) {
           return node.toJSON(memo);
         });
 
@@ -440,7 +440,7 @@
       /* istanbul ignore else */
       if (index === -1) {
         this._outputs.push(destination);
-        destination._inputs.push(this);
+        destination.$inputs.push(this);
       }
     };
 
@@ -458,10 +458,10 @@
       }
 
       this._outputs.splice(0).forEach(function(dst) {
-        var index = dst._inputs.indexOf(this);
+        var index = dst.$inputs.indexOf(this);
         /* istanbul ignore else */
         if (index !== -1) {
-          dst._inputs.splice(index, 1);
+          dst.$inputs.splice(index, 1);
         }
       }, this);
     };
@@ -497,9 +497,9 @@
       $read(this, "maxValue", maxValue);
       $type(this, "value", "number", defaultValue);
 
-      this._currentTime = -1;
-      this._inputs = [];
+      this.$inputs = [];
       this._events = [];
+      this._currentTime = -1;
     }
 
     function linTo(v, v0, v1, t, t0, t1) {
@@ -578,7 +578,7 @@
       if (currentTime !== this._currentTime) {
         this._currentTime = currentTime;
 
-        this._inputs.forEach(function(src) {
+        this.$inputs.forEach(function(src) {
           src.process(currentTime, nextCurrentTime);
         });
 
@@ -592,7 +592,7 @@
 
         json.value = this.value;
 
-        json.inputs = this._inputs.map(function(node) {
+        json.inputs = this.$inputs.map(function(node) {
           return node.toJSON(memo);
         });
 
