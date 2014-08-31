@@ -97,17 +97,17 @@ describe("AudioBufferSourceNode", function() {
     it("throw error", function() {
       expect(function() {
         node.start("INVALID");
-      }).throw(Error, "AudioBufferSourceNode#start: 'when' should be a number");
+      }).throw(TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
     });
     it("throw error", function() {
       expect(function() {
         node.start(0, "INVALID");
-      }).throw(Error, "AudioBufferSourceNode#start: 'offset' should be a number");
+      }).throw(TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
     });
     it("throw error", function() {
       expect(function() {
         node.start(0, 0, "INVALID");
-      }).throw(Error, "AudioBufferSourceNode#start: 'duration' should be a number");
+      }).throw(TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
     });
   });
 
@@ -120,7 +120,7 @@ describe("AudioBufferSourceNode", function() {
     it("throw error", function() {
       expect(function() {
         node.stop("INVALID");
-      }).throw(Error, "AudioBufferSourceNode#stop: 'when' should be a number");
+      }).throw(TypeError, "AudioBufferSourceNode#stop(when)");
     });
   });
 

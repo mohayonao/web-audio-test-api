@@ -48,7 +48,7 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("#connect(destination)", function() {
+  describe("#connect(destination, output, input)", function() {
     it("should work", function() {
       expect(function() {
         node.connect(ctx.destination);
@@ -57,38 +57,38 @@ describe("AudioNode", function() {
     it("throw error", function() {
       expect(function() {
         node.connect("INVALID");
-      }).throw(Error, "AudioNode#connect: 'destination' should be an instance of AudioNode or AudioParam");
+      }).throw(TypeError, "AudioNode#connect(destination, output, input)");
     });
     it("throw error", function() {
       expect(function() {
         node.connect(ctx.destination, "INVALID");
-      }).throw(Error, "AudioNode#connect: 'output' should be a number");
+      }).throw(TypeError, "AudioNode#connect(destination, output, input)");
     });
     it("throw error", function() {
       expect(function() {
         node.connect(ctx.destination, 0, "INVALID");
-      }).throw(Error, "AudioNode#connect: 'input' should be a number");
+      }).throw(TypeError, "AudioNode#connect(destination, output, input)");
     });
     it("throw error", function() {
       expect(function() {
         node.connect(new AudioContext().destination);
-      }).throw(Error, "AudioNode#connect: cannot connect to a destination belonging to a different audio context");
+      }).throw(Error, "AudioNode#connect(destination, output, input): cannot connect to a destination belonging to a different audio context");
     });
     it("throw error", function() {
       expect(function() {
         node.connect(ctx.destination, 2);
-      }).throw(Error, "AudioNode#connect: output index (2) exceeds number of outputs (1)");
+      }).throw(Error, "AudioNode#connect(destination, output, input): output index (2) exceeds number of outputs (1)");
     });
     it("throw error", function() {
       expect(function() {
         node.connect(ctx.destination, 0, 2);
-      }).throw(Error, "AudioNode#connect: input index (2) exceeds number of inputs (1)");
+      }).throw(Error, "AudioNode#connect(destination, output, input): input index (2) exceeds number of inputs (1)");
     });
 
     it.skip("circular check", function() {});
   });
 
-  describe("#disconnect()", function() {
+  describe("#disconnect(output)", function() {
     it("should work", function() {
       expect(function() {
         node.disconnect();
@@ -97,7 +97,7 @@ describe("AudioNode", function() {
     it("throw error", function() {
       expect(function() {
         node.disconnect("INVALID");
-      }).throw(Error, "AudioNode#disconnect: should be a number");
+      }).throw(TypeError, "AudioNode#disconnect(output)");
     });
     it("throw error", function() {
       expect(function() {

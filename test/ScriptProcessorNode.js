@@ -16,17 +16,17 @@ describe("ScriptProcessorNode", function() {
     it("invalid buffer size", function() {
       expect(function() {
         ctx.createScriptProcessor(0, 0, 0);
-      }).to.throw(Error);
+      }).to.throw(TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
     });
     it("invalid numberOfInputChannels", function() {
       expect(function() {
         ctx.createScriptProcessor(256, "INVALID", 0);
-      }).to.throw(Error);
+      }).to.throw(TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
     });
     it("invalid numberOfOutputChannels", function() {
       expect(function() {
         ctx.createScriptProcessor(256, 0, "INVALID");
-      }).to.throw(Error);
+      }).to.throw(TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
     });
   });
 

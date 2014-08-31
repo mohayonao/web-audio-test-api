@@ -63,7 +63,7 @@ describe("OscillatorNode", function() {
     it("throw error", function() {
       expect(function() {
         node.start("INVALID");
-      }).throw(Error, "OscillatorNode#start: 'when' should be a number");
+      }).throw(TypeError, "OscillatorNode#start(when)");
     });
   });
 
@@ -76,7 +76,7 @@ describe("OscillatorNode", function() {
     it("throw error", function() {
       expect(function() {
         node.stop("INVALID");
-      }).throw(Error, "OscillatorNode#stop: 'when' should be a number");
+      }).throw(TypeError, "OscillatorNode#stop(when)");
     });
   });
 
@@ -89,7 +89,7 @@ describe("OscillatorNode", function() {
     it("throw error", function() {
       expect(function() {
         node.setPeriodicWave("INVALID");
-      }).throw(Error, "OscillatorNode#setPeriodicWave: 'periodicWave' should be a PeriodicWave");
+      }).throw(TypeError, "OscillatorNode#setPeriodicWave(periodicWave)");
     });
   });
 

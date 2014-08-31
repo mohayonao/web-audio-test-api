@@ -89,7 +89,7 @@ describe("AnalyserNode", function() {
     it("throw error", function() {
       expect(function() {
         node.getFloatFrequencyData("INVALID");
-      }).to.throw(Error, "AnalyserNode#getFloatFrequencyData: 'array' should be a Float32Array");
+      }).to.throw(TypeError, "AnalyserNode#getFloatFrequencyData(array)");
     });
   });
 
@@ -100,7 +100,7 @@ describe("AnalyserNode", function() {
     it("throw error", function() {
       expect(function() {
         node.getByteFrequencyData("INVALID");
-      }).to.throw(Error, "AnalyserNode#getByteFrequencyData: 'array' should be a Uint8Array");
+      }).to.throw(TypeError, "AnalyserNode#getByteFrequencyData(array)");
     });
   });
 
@@ -111,7 +111,7 @@ describe("AnalyserNode", function() {
     it("throw error", function() {
       expect(function() {
         node.getByteTimeDomainData("INVALID");
-      }).to.throw(Error, "AnalyserNode#getByteTimeDomainData: 'array' should be a Uint8Array");
+      }).to.throw(TypeError, "AnalyserNode#getByteTimeDomainData(array)");
     });
   });
 

@@ -26,6 +26,41 @@
     return typeof value !== "undefined" ? value : defaultValue;
   }
 
+  function article(str) {
+    return (/[aeiou]/i.test(str.charAt(0)) ? "an " : "a ") + str;
+  }
+
+  function checkArgs(caption, spec) {
+    Object.keys(spec).forEach(function(argName) {
+      var type = spec[argName].type;
+      var given = spec[argName].given;
+
+      if (!checkArgs[type](given)) {
+        throw new TypeError(format(
+          "#{0}: '#{1}' should be #{2}, but got #{3}", caption, argName, article(type), given
+        ));
+      }
+    });
+  }
+  checkArgs.number = function isNumber(value) {
+    return typeof value === "number" && !isNaN(value);
+  };
+  checkArgs.function = function isNumber(value) {
+    return typeof value === "function";
+  };
+  checkArgs.ArrayBuffer = function(value) {
+    return value instanceof ArrayBuffer;
+  };
+  checkArgs.Uint8Array = function isUint8Array(value) {
+    return value instanceof Uint8Array;
+  };
+  checkArgs.Float32Array = function isFloat32Array(value) {
+    return value instanceof Float32Array;
+  };
+  checkArgs.PeriodicWave = function(value) {
+    return value instanceof PeriodicWave;
+  };
+
   function checkCircular(node, func, memo) {
     if (memo.indexOf(node) !== -1) {
       return "<circular>";
@@ -127,17 +162,17 @@
     };
 
     AudioContext.prototype.decodeAudioData = function(audioData, successCallback, errorCallback) {
-      if (!(audioData instanceof ArrayBuffer)) {
-        throw new TypeError(format(
-          "AudioContext#decodeAudioData: 'audioData' should be an ArrayBuffer, but got #{0}", audioData
-        ));
-      }
+      checkArgs("AudioContext#decodeAudioData(audioData, successCallback, errorCallback)", {
+        audioData      : { type: "ArrayBuffer", given: audioData },
+        successCallback: { type: "function"   , given: defaults(successCallback, NOP) },
+        errorCallback  : { type: "function"   , given: defaults(errorCallback  , NOP) },
+      });
       var _this = this;
       setTimeout(function() {
         if (_this.DECODE_AUDIO_DATA_FAILED) {
-          errorCallback && errorCallback(); // jshint ignore:line
+          errorCallback();
         } else {
-          successCallback && successCallback(new AudioBuffer(2, 1024, SAMPLERATE)); // jshint ignore:line
+          successCallback(new AudioBuffer(2, 1024, SAMPLERATE));
         }
       }, 0);
     };
@@ -215,21 +250,11 @@
 
   global.OfflineAudioContext = (function() {
     function OfflineAudioContext(numberOfChannels, length, sampleRate) {
-      if (typeof numberOfChannels !== "number") {
-        throw new TypeError(format(
-          "OfflineAudioContext: 'numberOfChannels' should be a number, but got #{0}", numberOfChannels
-        ));
-      }
-      if (typeof length !== "number") {
-        throw new TypeError(format(
-          "OfflineAudioContext: 'length' should be a number, but got #{0}", length
-        ));
-      }
-      if (typeof sampleRate !== "number") {
-        throw new TypeError(format(
-          "OfflineAudioContext: 'sampleRate' should be a number, but got #{0}", sampleRate
-        ));
-      }
+      checkArgs("OfflineAudioContext(numberOfChannels, length, sampleRate)", {
+        numberOfChannels: { type: "number", given: numberOfChannels },
+        length          : { type: "number", given: length           },
+        sampleRate      : { type: "number", given: sampleRate       },
+      });
 
       this.name = "OfflineAudioContext";
       $read(this, "destination", new AudioDestinationNode(this));
@@ -356,28 +381,27 @@
       input  = defaults(input , 0);
 
       if (!(destination instanceof AudioNode || destination instanceof AudioParam)) {
-        throw new Error(format(
-          "AudioNode#connect: 'destination' should be an instance of AudioNode or AudioParam, but got #{0}", destination
+        throw new TypeError(format(
+          "AudioNode#connect(destination, output, input): 'destination' should be an instance of AudioNode or AudioParam, but got #{0}", destination
         ));
       }
-      if (typeof output !== "number") {
-        throw new Error(format("AudioNode#connect: 'output' should be a number, but got #{0}", output));
-      }
-      if (typeof input !== "number") {
-        throw new Error(format("AudioNode#connect: 'input' should be a number, but got #{0}", input));
-      }
+
+      checkArgs("AudioNode#connect(destination, output, input)", {
+        output: { type: "number", given: output },
+        input : { type: "number", given: input  },
+      });
 
       if (this.context !== destination.context) {
-        throw new Error("AudioNode#connect: cannot connect to a destination belonging to a different audio context");
+        throw new Error("AudioNode#connect(destination, output, input): cannot connect to a destination belonging to a different audio context");
       }
       if (output < 0 || this.numberOfOutputs <= output) {
         throw new Error(format(
-          "AudioNode#connect: output index (#{0}) exceeds number of outputs (#{1})", output, this.numberOfOutputs
+          "AudioNode#connect(destination, output, input): output index (#{0}) exceeds number of outputs (#{1})", output, this.numberOfOutputs
         ));
       }
       if (input < 0 || destination.numberOfInputs <= input) {
         throw new Error(format(
-          "AudioNode#connect: input index (#{0}) exceeds number of inputs (#{1})", input, destination.numberOfInputs
+          "AudioNode#connect(destination, output, input): input index (#{0}) exceeds number of inputs (#{1})", input, destination.numberOfInputs
         ));
       }
 
@@ -394,9 +418,10 @@
     AudioNode.prototype.disconnect = function(output) {
       output = defaults(output, 0);
 
-      if (typeof output !== "number") {
-        throw new Error(format("AudioNode#disconnect: should be a number, but got #{0}", output));
-      }
+      checkArgs("AudioNode#disconnect(output)", {
+        output: { type: "number", given: output }
+      });
+
       if (output < 0 || this.numberOfOutputs <= output) {
         throw new Error(format(
           "AudioNode#disconnect: output index (#{0}) exceeds number of outputs (#{1})", output, this.numberOfOutputs
@@ -465,86 +490,46 @@
     };
 
     AudioParam.prototype.setValueAtTime = function(value, startTime) {
-      if (typeof value !== "number") {
-        throw new Error(format(
-          "AudioParam#setValueAtTime: 'value' should be a number, but got #{0}", value
-        ));
-      }
-      if (typeof startTime !== "number") {
-        throw new Error(format(
-          "AudioParam#setValueAtTime: 'startTime' should be a number, but got #{0}", startTime
-        ));
-      }
+      checkArgs("AudioParam#setValueAtTime(value, startTime)", {
+        value    : { type: "number", given: value     },
+        startTime: { type: "number", given: startTime },
+      });
     };
 
     AudioParam.prototype.linearRampToValueAtTime = function(value, endTime) {
-      if (typeof value !== "number") {
-        throw new Error(format(
-          "AudioParam#linearRampToValueAtTime: 'value' should be a number, but got #{0}", value
-        ));
-      }
-      if (typeof endTime !== "number") {
-        throw new Error(format(
-          "AudioParam#linearRampToValueAtTime: 'endTime' should be a number, but got #{0}", endTime
-        ));
-      }
+      checkArgs("AudioParam#linearRampToValueAtTime(value, endTime)", {
+        value  : { type: "number", given: value   },
+        endTime: { type: "number", given: endTime },
+      });
     };
 
     AudioParam.prototype.exponentialRampToValueAtTime = function(value, endTime) {
-      if (typeof value !== "number") {
-        throw new Error(format(
-          "AudioParam#exponentialRampToValueAtTime: 'value' should be a number, but got #{0}", value
-        ));
-      }
-      if (typeof endTime !== "number") {
-        throw new Error(format(
-          "AudioParam#exponentialRampToValueAtTime: 'endTime' should be a number, but got #{0}", endTime
-        ));
-      }
+      checkArgs("AudioParam#exponentialRampToValueAtTime(value, endTime)", {
+        value  : { type: "number", given: value   },
+        endTime: { type: "number", given: endTime },
+      });
     };
 
     AudioParam.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
-      if (typeof target !== "number") {
-        throw new Error(format(
-          "AudioParam#setTargetAtTime: 'target' should be a number, but got #{0}", target
-        ));
-      }
-      if (typeof startTime !== "number") {
-        throw new Error(format(
-          "AudioParam#setTargetAtTime: 'startTime' should be a number, but got #{0}", startTime
-        ));
-      }
-      if (typeof timeConstant !== "number") {
-        throw new Error(format(
-          "AudioParam#setTargetAtTime: 'timeConstant' should be a number, but got #{0}", timeConstant
-        ));
-      }
+      checkArgs("AudioParam#setTargetAtTime(target, startTime, timeConstant)", {
+        target      : { type: "number", given: target       },
+        startTime   : { type: "number", given: startTime    },
+        timeConstant: { type: "number", given: timeConstant },
+      });
     };
 
     AudioParam.prototype.setValueCurveAtTime = function(values, startTime, duration) {
-      if (!(values instanceof Float32Array)) {
-        throw new Error(format(
-          "AudioParam#setValueCurveAtTime: 'values' should be a Float32Array, but got #{0}", values
-        ));
-      }
-      if (typeof startTime !== "number") {
-        throw new Error(format(
-          "AudioParam#setValueCurveAtTime: 'startTime' should be a number, but got #{0}", startTime
-        ));
-      }
-      if (typeof duration !== "number") {
-        throw new Error(format(
-          "AudioParam#setValueCurveAtTime: 'duration' should be a number, but got #{0}", duration
-        ));
-      }
+      checkArgs("AudioParam#setValueCurveAtTime(values, startTime, duration)", {
+        values   : { type: "Float32Array", given: values },
+        startTime: { type: "number"      , given: startTime },
+        duration : { type: "number"      , given: duration }
+      });
     };
 
     AudioParam.prototype.cancelScheduledValues = function(startTime) {
-      if (typeof startTime !== "number") {
-        throw new Error(format(
-          "AudioParam#cancelScheduledValues: 'startTime' should be a number, but got #{0}", startTime
-        ));
-      }
+      checkArgs("AudioParam#cancelScheduledValues(startTime)", {
+        startTime: { type: "number", given: startTime }
+      });
     };
 
     return AudioParam;
@@ -615,27 +600,17 @@
     extend(AudioBufferSourceNode, AudioNode);
 
     AudioBufferSourceNode.prototype.start = function(when, offset, duration) {
-      when = defaults(when, 0);
-      offset = defaults(offset, 0);
-      duration = defaults(duration, 0);
-
-      if (typeof when !== "number") {
-        throw new Error(format("AudioBufferSourceNode#start: 'when' should be a number, but got #{0}", when));
-      }
-      if (typeof offset !== "number") {
-        throw new Error(format("AudioBufferSourceNode#start: 'offset' should be a number, but got #{0}", offset));
-      }
-      if (typeof duration !== "number") {
-        throw new Error(format("AudioBufferSourceNode#start: 'duration' should be a number, but got #{0}", duration));
-      }
+      checkArgs("AudioBufferSourceNode#start(when, offset, duration)", {
+        when    : { type: "number", given: defaults(when    , 0) },
+        offset  : { type: "number", given: defaults(offset  , 0) },
+        duration: { type: "number", given: defaults(duration, 0) },
+      });
     };
 
     AudioBufferSourceNode.prototype.stop = function(when) {
-      when = defaults(when, 0);
-
-      if (typeof when !== "number") {
-        throw new Error(format("AudioBufferSourceNode#stop: 'when' should be a number, but got #{0}", when));
-      }
+      checkArgs("AudioBufferSourceNode#stop(when)", {
+        when: { type: "number", given: defaults(when, 0) }
+      });
     };
 
     return AudioBufferSourceNode;
@@ -656,20 +631,14 @@
       AudioNode.call(this, context, 1, 1, 1, "explicit", "speakers");
       this.name = "ScriptProcessorNode";
       if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
-        throw new Error(format(
-          "ScriptProcessorNode: invalid bufferSize: #{0}", bufferSize
+        throw new TypeError(format(
+          "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels): invalid bufferSize: #{0}", bufferSize
         ));
       }
-      if (typeof numberOfInputChannels !== "number") {
-        throw new Error(format(
-          "ScriptProcessorNode: 'numberOfInputChannels' should be a number, but got #{0}", numberOfInputChannels
-        ));
-      }
-      if (typeof numberOfOutputChannels !== "number") {
-        throw new Error(format(
-          "ScriptProcessorNode: 'numberOfOutputChannels' should be a number, but got #{0}", numberOfOutputChannels
-        ));
-      }
+      checkArgs("ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)", {
+        numberOfInputChannels : { type: "number", given: numberOfInputChannels  },
+        numberOfOutputChannels: { type: "number", given: numberOfOutputChannels },
+      });
       $read(this, "numberOfInputChannels", numberOfInputChannels);
       $read(this, "numberOfOutputChannels", numberOfOutputChannels);
       $read(this, "bufferSize", bufferSize);
@@ -727,57 +696,27 @@
     extend(PannerNode, AudioNode);
 
     PannerNode.prototype.setPosition = function(x, y, z) {
-      if (typeof x !== "number") {
-        throw new Error(format(
-          "PannerNode#setPosition: 'x' should be a number, but got #{0}", x
-        ));
-      }
-      if (typeof y !== "number") {
-        throw new Error(format(
-          "PannerNode#setPosition: 'y' should be a number, but got #{0}", y
-        ));
-      }
-      if (typeof z !== "number") {
-        throw new Error(format(
-          "PannerNode#setPosition: 'z' should be a number, but got #{0}", z
-        ));
-      }
+      checkArgs("PannerNode#setPosition(x, y, z)", {
+        x: { type: "number", given: x },
+        y: { type: "number", given: y },
+        z: { type: "number", given: z },
+      });
     };
 
     PannerNode.prototype.setOrientation = function(x, y, z) {
-      if (typeof x !== "number") {
-        throw new Error(format(
-          "PannerNode#setOrientation: 'x' should be a number, but got #{0}", x
-        ));
-      }
-      if (typeof y !== "number") {
-        throw new Error(format(
-          "PannerNode#setOrientation: 'y' should be a number, but got #{0}", y
-        ));
-      }
-      if (typeof z !== "number") {
-        throw new Error(format(
-          "PannerNode#setOrientation: 'z' should be a number, but got #{0}", z
-        ));
-      }
+      checkArgs("PannerNode#setOrientation(x, y, z)", {
+        x: { type: "number", given: x },
+        y: { type: "number", given: y },
+        z: { type: "number", given: z },
+      });
     };
 
     PannerNode.prototype.setVelocity = function(x, y, z) {
-      if (typeof x !== "number") {
-        throw new Error(format(
-          "PannerNode#setVelocity: 'x' should be a number, but got #{0}", x
-        ));
-      }
-      if (typeof y !== "number") {
-        throw new Error(format(
-          "PannerNode#setVelocity: 'y' should be a number, but got #{0}", y
-        ));
-      }
-      if (typeof z !== "number") {
-        throw new Error(format(
-          "PannerNode#setVelocity: 'z' should be a number, but got #{0}", z
-        ));
-      }
+      checkArgs("PannerNode#setVelocity(x, y, z)", {
+        x: { type: "number", given: x },
+        y: { type: "number", given: y },
+        z: { type: "number", given: z },
+      });
     };
 
     return PannerNode;
@@ -791,72 +730,30 @@
     }
 
     AudioListener.prototype.setPosition = function(x, y, z) {
-      if (typeof x !== "number") {
-        throw new Error(format(
-          "AudioListener#setPosition: 'x' should be a number, but got #{0}", x
-        ));
-      }
-      if (typeof y !== "number") {
-        throw new Error(format(
-          "AudioListener#setPosition: 'y' should be a number, but got #{0}", y
-        ));
-      }
-      if (typeof z !== "number") {
-        throw new Error(format(
-          "AudioListener#setPosition: 'z' should be a number, but got #{0}", z
-        ));
-      }
+      checkArgs("AudioListener#setPosition(x, y, z)", {
+        x: { type: "number", given: x },
+        y: { type: "number", given: y },
+        z: { type: "number", given: z },
+      });
     };
 
     AudioListener.prototype.setOrientation = function(x, y, z, xUp, yUp, zUp) {
-      if (typeof x !== "number") {
-        throw new Error(format(
-          "AudioListener#setOrientation: 'x' should be a number, but got #{0}", x
-        ));
-      }
-      if (typeof y !== "number") {
-        throw new Error(format(
-          "AudioListener#setOrientation: 'y' should be a number, but got #{0}", y
-        ));
-      }
-      if (typeof z !== "number") {
-        throw new Error(format(
-          "AudioListener#setOrientation: 'z' should be a number, but got #{0}", z
-        ));
-      }
-      if (typeof xUp !== "number") {
-        throw new Error(format(
-          "AudioListener#setOrientation: 'xUp' should be a number, but got #{0}", xUp
-        ));
-      }
-      if (typeof yUp !== "number") {
-        throw new Error(format(
-          "AudioListener#setOrientation: 'yUp' should be a number, but got #{0}", yUp
-        ));
-      }
-      if (typeof zUp !== "number") {
-        throw new Error(format(
-          "AudioListener#setOrientation: 'zUp' should be a number, but got #{0}", zUp
-        ));
-      }
+      checkArgs("AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)", {
+        x  : { type: "number", given: x   },
+        y  : { type: "number", given: y   },
+        z  : { type: "number", given: z   },
+        xUp: { type: "number", given: xUp },
+        yUp: { type: "number", given: yUp },
+        zUp: { type: "number", given: zUp },
+      });
     };
 
     AudioListener.prototype.setVelocity = function(x, y, z) {
-      if (typeof x !== "number") {
-        throw new Error(format(
-          "AudioListener#setVelocity: 'x' should be a number, but got #{0}", x
-        ));
-      }
-      if (typeof y !== "number") {
-        throw new Error(format(
-          "AudioListener#setVelocity: 'y' should be a number, but got #{0}", y
-        ));
-      }
-      if (typeof z !== "number") {
-        throw new Error(format(
-          "AudioListener#setVelocity: 'z' should be a number, but got #{0}", z
-        ));
-      }
+      checkArgs("AudioListener#setVelocity(x, y, z)", {
+        x: { type: "number", given: x },
+        y: { type: "number", given: y },
+        z: { type: "number", given: z },
+      });
     };
 
     return AudioListener;
@@ -890,27 +787,21 @@
     extend(AnalyserNode, AudioNode);
 
     AnalyserNode.prototype.getFloatFrequencyData = function(array) {
-      if (!(array instanceof Float32Array)) {
-        throw new Error(format(
-          "AnalyserNode#getFloatFrequencyData: 'array' should be a Float32Array, but got #{0}", array
-        ));
-      }
+      checkArgs("AnalyserNode#getFloatFrequencyData(array)", {
+        array: { type: "Float32Array", given: array }
+      });
     };
 
     AnalyserNode.prototype.getByteFrequencyData = function(array) {
-      if (!(array instanceof Uint8Array)) {
-        throw new Error(format(
-          "AnalyserNode#getByteFrequencyData: 'array' should be a Uint8Array, but got #{0}", array
-        ));
-      }
+      checkArgs("AnalyserNode#getByteFrequencyData(array)", {
+        array: { type: "Uint8Array", given: array }
+      });
     };
 
     AnalyserNode.prototype.getByteTimeDomainData = function(array) {
-      if (!(array instanceof Uint8Array)) {
-        throw new Error(format(
-          "AnalyserNode#getByteTimeDomainData: 'array' should be a Uint8Array, but got #{0}", array
-        ));
-      }
+      checkArgs("AnalyserNode#getByteTimeDomainData(array)", {
+        array: { type: "Uint8Array", given: array }
+      });
     };
 
     return AnalyserNode;
@@ -969,21 +860,11 @@
     extend(BiquadFilterNode, AudioNode);
 
     BiquadFilterNode.prototype.getFrequencyResponse = function(frequencyHz, magResponse, phaseResponse) {
-      if (!(frequencyHz instanceof Float32Array)) {
-        throw new Error(format(
-          "BiquadFilterNode#getFrequencyResponse: 'frequencyHz' should be a Float32Array, but got #{0}", frequencyHz
-        ));
-      }
-      if (!(magResponse instanceof Float32Array)) {
-        throw new Error(format(
-          "BiquadFilterNode#getFrequencyResponse: 'magResponse' should be a Float32Array, but got #{0}", magResponse
-        ));
-      }
-      if (!(phaseResponse instanceof Float32Array)) {
-        throw new Error(format(
-          "BiquadFilterNode#getFrequencyResponse: 'phaseResponse' should be a Float32Array, but got #{0}", phaseResponse
-        ));
-      }
+      checkArgs("BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)", {
+        frequencyHz  : { type: "Float32Array", given: frequencyHz },
+        magResponse  : { type: "Float32Array", given: magResponse },
+        phaseResponse: { type: "Float32Array", given: phaseResponse },
+      });
     };
 
     return BiquadFilterNode;
@@ -1015,25 +896,21 @@
     extend(OscillatorNode, AudioNode);
 
     OscillatorNode.prototype.start = function(when) {
-      when = defaults(when, 0);
-
-      if (typeof when !== "number") {
-        throw new Error(format("OscillatorNode#start: 'when' should be a number, but got #{0}", when));
-      }
+      checkArgs("OscillatorNode#start(when)", {
+        when: { type: "number", given: defaults(when, 0) }
+      });
     };
 
     OscillatorNode.prototype.stop = function(when) {
-      when = defaults(when, 0);
-
-      if (typeof when !== "number") {
-        throw new Error(format("OscillatorNode#stop: 'when' should be a number, but got #{0}", when));
-      }
+      checkArgs("OscillatorNode#stop(when)", {
+        when: { type: "number", given: defaults(when, 0) }
+      });
     };
 
     OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
-      if (!(periodicWave instanceof PeriodicWave)) {
-        throw new Error(format("OscillatorNode#setPeriodicWave: 'periodicWave' should be a PeriodicWave, but got #{0}", periodicWave));
-      }
+      checkArgs("OscillatorNode#setPeriodicWave(periodicWave)", {
+        periodicWave: { type: "PeriodicWave", given: periodicWave }
+      });
     };
 
     return OscillatorNode;

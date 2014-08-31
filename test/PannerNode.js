@@ -131,17 +131,17 @@ describe("PannerNode", function() {
     it("throw error", function() {
       expect(function() {
         node.setPosition("INVALID", 0, 0);
-      }).to.throw(Error, "PannerNode#setPosition: 'x' should be a number");
+      }).to.throw(TypeError, "PannerNode#setPosition(x, y, z)");
     });
     it("throw error", function() {
       expect(function() {
         node.setPosition(0, "INVALID", 0);
-      }).to.throw(Error, "PannerNode#setPosition: 'y' should be a number");
+      }).to.throw(TypeError, "PannerNode#setPosition(x, y, z)");
     });
     it("throw error", function() {
       expect(function() {
         node.setPosition(0, 0, "INVALID");
-      }).to.throw(Error, "PannerNode#setPosition: 'z' should be a number");
+      }).to.throw(TypeError, "PannerNode#setPosition(x, y, z)");
     });
   });
 
@@ -152,17 +152,17 @@ describe("PannerNode", function() {
     it("throw error", function() {
       expect(function() {
         node.setOrientation("INVALID", 0, 0);
-      }).to.throw(Error, "PannerNode#setOrientation: 'x' should be a number");
+      }).to.throw(TypeError, "PannerNode#setOrientation(x, y, z)");
     });
     it("throw error", function() {
       expect(function() {
         node.setOrientation(0, "INVALID", 0);
-      }).to.throw(Error, "PannerNode#setOrientation: 'y' should be a number");
+      }).to.throw(TypeError, "PannerNode#setOrientation(x, y, z)");
     });
     it("throw error", function() {
       expect(function() {
         node.setOrientation(0, 0, "INVALID");
-      }).to.throw(Error, "PannerNode#setOrientation: 'z' should be a number");
+      }).to.throw(TypeError, "PannerNode#setOrientation(x, y, z)");
     });
   });
 
@@ -173,17 +173,17 @@ describe("PannerNode", function() {
     it("throw error", function() {
       expect(function() {
         node.setVelocity("INVALID", 0, 0);
-      }).to.throw(Error, "PannerNode#setVelocity: 'x' should be a number");
+      }).to.throw(TypeError, "PannerNode#setVelocity(x, y, z)");
     });
     it("throw error", function() {
       expect(function() {
         node.setVelocity(0, "INVALID", 0);
-      }).to.throw(Error, "PannerNode#setVelocity: 'y' should be a number");
+      }).to.throw(TypeError, "PannerNode#setVelocity(x, y, z)");
     });
     it("throw error", function() {
       expect(function() {
         node.setVelocity(0, 0, "INVALID");
-      }).to.throw(Error, "PannerNode#setVelocity: 'z' should be a number");
+      }).to.throw(TypeError, "PannerNode#setVelocity(x, y, z)");
     });
   });
 

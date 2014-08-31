@@ -46,17 +46,17 @@ describe("AudioListener", function() {
     it("throw error", function() {
       expect(function() {
         listener.setPosition("INVALID", 0, 0);
-      }).to.throw(Error, "AudioListener#setPosition: 'x' should be a number");
+      }).to.throw(TypeError, "AudioListener#setPosition(x, y, z)");
     });
     it("throw error", function() {
       expect(function() {
         listener.setPosition(0, "INVALID", 0);
-      }).to.throw(Error, "AudioListener#setPosition: 'y' should be a number");
+      }).to.throw(TypeError, "AudioListener#setPosition(x, y, z)");
     });
     it("throw error", function() {
       expect(function() {
         listener.setPosition(0, 0, "INVALID");
-      }).to.throw(Error, "AudioListener#setPosition: 'z' should be a number");
+      }).to.throw(TypeError, "AudioListener#setPosition(x, y, z)");
     });
   });
 
@@ -67,32 +67,32 @@ describe("AudioListener", function() {
     it("throw error", function() {
       expect(function() {
         listener.setOrientation("INVALID", 0, 0, 0, 0, 0);
-      }).to.throw(Error, "AudioListener#setOrientation: 'x' should be a number");
+      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
     it("throw error", function() {
       expect(function() {
         listener.setOrientation(0, "INVALID", 0, 0, 0, 0);
-      }).to.throw(Error, "AudioListener#setOrientation: 'y' should be a number");
+      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
     it("throw error", function() {
       expect(function() {
         listener.setOrientation(0, 0, "INVALID", 0, 0, 0);
-      }).to.throw(Error, "AudioListener#setOrientation: 'z' should be a number");
+      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
     it("throw error", function() {
       expect(function() {
         listener.setOrientation(0, 0, 0, "INVALID", 0, 0);
-      }).to.throw(Error, "AudioListener#setOrientation: 'xUp' should be a number");
+      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
     it("throw error", function() {
       expect(function() {
         listener.setOrientation(0, 0, 0, 0, "INVALID", 0);
-      }).to.throw(Error, "AudioListener#setOrientation: 'yUp' should be a number");
+      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
     it("throw error", function() {
       expect(function() {
         listener.setOrientation(0, 0, 0, 0, 0, "INVALID");
-      }).to.throw(Error, "AudioListener#setOrientation: 'zUp' should be a number");
+      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
   });
 
@@ -103,17 +103,17 @@ describe("AudioListener", function() {
     it("throw error", function() {
       expect(function() {
         listener.setVelocity("INVALID", 0, 0);
-      }).to.throw(Error, "AudioListener#setVelocity: 'x' should be a number");
+      }).to.throw(TypeError, "AudioListener#setVelocity(x, y, z)");
     });
     it("throw error", function() {
       expect(function() {
         listener.setVelocity(0, "INVALID", 0);
-      }).to.throw(Error, "AudioListener#setVelocity: 'y' should be a number");
+      }).to.throw(TypeError, "AudioListener#setVelocity(x, y, z)");
     });
     it("throw error", function() {
       expect(function() {
         listener.setVelocity(0, 0, "INVALID");
-      }).to.throw(Error, "AudioListener#setVelocity: 'z' should be a number");
+      }).to.throw(TypeError, "AudioListener#setVelocity(x, y, z)");
     });
   });
 

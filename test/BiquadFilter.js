@@ -89,17 +89,17 @@ describe("BiquadFilterNode", function() {
     it("throw error", function() {
       expect(function() {
         node.getFrequencyResponse("INVALID", new Float32Array(128), new Float32Array(128));
-      }).to.throw(Error, "BiquadFilterNode#getFrequencyResponse: 'frequencyHz' should be a Float32Array");
+      }).to.throw(TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
     });
     it("throw error", function() {
       expect(function() {
         node.getFrequencyResponse(new Float32Array(128), "INVALID", new Float32Array(128));
-      }).to.throw(Error, "BiquadFilterNode#getFrequencyResponse: 'magResponse' should be a Float32Array");
+      }).to.throw(TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
     });
     it("throw error", function() {
       expect(function() {
         node.getFrequencyResponse(new Float32Array(128), new Float32Array(128), "INVALID");
-      }).to.throw(Error, "BiquadFilterNode#getFrequencyResponse: 'phaseResponse' should be a Float32Array");
+      }).to.throw(TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
     });
   });
 

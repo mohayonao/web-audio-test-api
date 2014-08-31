@@ -74,7 +74,7 @@ describe("AudioContext", function() {
     });
   });
 
-  describe("#decodeAudioData", function() {
+  describe("#decodeAudioData(audioData, successCallback, errorCallback)", function() {
     it("should work", function(done) {
       ctx.decodeAudioData(new Uint8Array(128).buffer, function(buffer) {
         expect(buffer).to.be.instanceOf(AudioBuffer);
@@ -94,7 +94,7 @@ describe("AudioContext", function() {
     it("throw error", function() {
       expect(function() {
         ctx.decodeAudioData("INVALID");
-      }).to.throw(TypeError, "AudioContext#decodeAudioData: 'audioData' should be an ArrayBuffer");
+      }).to.throw(TypeError, "AudioContext#decodeAudioData(audioData, successCallback, errorCallback)");
     });
   });
 

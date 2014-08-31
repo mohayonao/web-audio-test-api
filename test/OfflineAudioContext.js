@@ -20,17 +20,17 @@ describe("OfflineAudioContext", function() {
     it("throw error", function() {
       expect(function() {
         ctx = new OfflineAudioContext("INVALID", 44100, 44100);
-      }).to.throw(TypeError, "OfflineAudioContext: 'numberOfChannels' should be a number");
+      }).to.throw(TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
     });
     it("throw error", function() {
       expect(function() {
         ctx = new OfflineAudioContext(1, "INVALID", 44100);
-      }).to.throw(TypeError, "OfflineAudioContext: 'length' should be a number");
+      }).to.throw(TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
     });
     it("throw error", function() {
       expect(function() {
         ctx = new OfflineAudioContext(1, 44100, "INVALID");
-      }).to.throw(TypeError, "OfflineAudioContext: 'sampleRate' should be a number");
+      }).to.throw(TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
     });
   });
 

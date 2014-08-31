@@ -48,12 +48,12 @@ describe("AudioParam", function() {
     it("throw error", function() {
       expect(function() {
         param.setValueAtTime("INVALID", 0);
-      }).to.throw(Error, "AudioParam#setValueAtTime: 'value' should be a number");
+      }).to.throw(TypeError, "AudioParam#setValueAtTime(value, startTime)");
     });
     it("throw error", function() {
       expect(function() {
         param.setValueAtTime(0, "INVALID");
-      }).to.throw(Error, "AudioParam#setValueAtTime: 'startTime' should be a number");
+      }).to.throw(TypeError, "AudioParam#setValueAtTime(value, startTime)");
     });
   });
 
@@ -66,12 +66,12 @@ describe("AudioParam", function() {
     it("throw error", function() {
       expect(function() {
         param.linearRampToValueAtTime("INVALID", 0);
-      }).to.throw(Error, "AudioParam#linearRampToValueAtTime: 'value' should be a number");
+      }).to.throw(TypeError, "AudioParam#linearRampToValueAtTime(value, endTime)");
     });
     it("throw error", function() {
       expect(function() {
         param.linearRampToValueAtTime(0, "INVALID");
-      }).to.throw(Error, "AudioParam#linearRampToValueAtTime: 'endTime' should be a number");
+      }).to.throw(TypeError, "AudioParam#linearRampToValueAtTime(value, endTime)");
     });
   });
 
@@ -84,12 +84,12 @@ describe("AudioParam", function() {
     it("throw error", function() {
       expect(function() {
         param.exponentialRampToValueAtTime("INVALID", 0);
-      }).to.throw(Error, "AudioParam#exponentialRampToValueAtTime: 'value' should be a number");
+      }).to.throw(TypeError, "AudioParam#exponentialRampToValueAtTime(value, endTime)");
     });
     it("throw error", function() {
       expect(function() {
         param.exponentialRampToValueAtTime(0, "INVALID");
-      }).to.throw(Error, "AudioParam#exponentialRampToValueAtTime: 'endTime' should be a number");
+      }).to.throw(TypeError, "AudioParam#exponentialRampToValueAtTime(value, endTime)");
     });
   });
 
@@ -102,17 +102,17 @@ describe("AudioParam", function() {
     it("throw error", function() {
       expect(function() {
         param.setTargetAtTime("INVALID", 0, 0);
-      }).to.throw(Error, "AudioParam#setTargetAtTime: 'target' should be a number");
+      }).to.throw(TypeError, "AudioParam#setTargetAtTime(target, startTime, timeConstant)");
     });
     it("throw error", function() {
       expect(function() {
         param.setTargetAtTime(0, "INVALID", 0);
-      }).to.throw(Error, "AudioParam#setTargetAtTime: 'startTime' should be a number");
+      }).to.throw(TypeError, "AudioParam#setTargetAtTime(target, startTime, timeConstant)");
     });
     it("throw error", function() {
       expect(function() {
         param.setTargetAtTime(0, 0, "INVALID");
-      }).to.throw(Error, "AudioParam#setTargetAtTime: 'timeConstant' should be a number");
+      }).to.throw(TypeError, "AudioParam#setTargetAtTime(target, startTime, timeConstant)");
     });
   });
 
@@ -125,17 +125,17 @@ describe("AudioParam", function() {
     it("throw error", function() {
       expect(function() {
         param.setValueCurveAtTime("INVALID", 0, 0);
-      }).to.throw(Error, "AudioParam#setValueCurveAtTime: 'values' should be a Float32Array");
+      }).to.throw(TypeError, "AudioParam#setValueCurveAtTime(values, startTime, duration)");
     });
     it("throw error", function() {
       expect(function() {
         param.setValueCurveAtTime(new Float32Array(32), "INVALID", 0);
-      }).to.throw(Error, "AudioParam#setValueCurveAtTime: 'startTime' should be a number");
+      }).to.throw(TypeError, "AudioParam#setValueCurveAtTime(values, startTime, duration)");
     });
     it("throw error", function() {
       expect(function() {
         param.setValueCurveAtTime(new Float32Array(32), 0, "INVALID");
-      }).to.throw(Error, "AudioParam#setValueCurveAtTime: 'duration' should be a number");
+      }).to.throw(TypeError, "AudioParam#setValueCurveAtTime(values, startTime, duration)");
     });
   });
 
@@ -148,7 +148,7 @@ describe("AudioParam", function() {
     it("throw error", function() {
       expect(function() {
         param.cancelScheduledValues("INVALID");
-      }).to.throw(Error, "AudioParam#cancelScheduledValues: 'startTime' should be a number");
+      }).to.throw(TypeError, "AudioParam#cancelScheduledValues(startTime)");
     });
   });
 
