@@ -370,7 +370,7 @@
         }, this);
 
         if (this._process) {
-          this._process(BUFFER_SIZE);
+          this._process(currentTime, nextCurrentTime);
         }
       }
     };
@@ -878,21 +878,21 @@
     }
     extend(ScriptProcessorNode, AudioNode);
 
-    ScriptProcessorNode.prototype._process = function(numSamples) {
-      this._numSamples += numSamples;
-      if (this.bufferSize <= this._numSamples) {
-        this._numSamples = 0;
+    ScriptProcessorNode.prototype._process = function(currentTime, nextCurrentTime) {
+      var numSamples = ((nextCurrentTime - currentTime) / CURRENT_TIME_INCR) * BUFFER_SIZE;
 
-        /* istanbul ignore else */
-        if (this.onaudioprocess) {
-          var e = new AudioProcessingEvent();
+      this._numSamples -= numSamples;
 
-          e.playbackTime = this.context.currentTime;
-          e.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
-          e.outputBuffer = new AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
+      if (this._numSamples <= 0) {
+        this._numSamples += this.bufferSize;
 
-          this.onaudioprocess(e);
-        }
+        var e = new AudioProcessingEvent();
+
+        e.playbackTime = this.context.currentTime;
+        e.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
+        e.outputBuffer = new AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
+
+        this.onaudioprocess(e);
       }
     };
 
