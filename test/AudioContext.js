@@ -10,6 +10,15 @@ describe("AudioContext", function() {
     ctx = new AudioContext();
   });
 
+  describe("()", function() {
+    it("should return an instance of AudioContext", function() {
+      expect(ctx).to.be.instanceOf(AudioContext);
+    });
+    it("should have been inherited from EventTarget", function() {
+      expect(ctx).to.be.instanceOf(EventTarget);
+    });
+  });
+
   describe(".MOCK_VERSION", function() {
     it("check", function() {
       if (typeof MOCK_VERSION === "string") {

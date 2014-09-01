@@ -78,6 +78,7 @@ describe("ScriptProcessorNode", function() {
       node.connect(ctx.destination);
       node.onaudioprocess = function(e) {
         passed += 1;
+        expect(e).to.be.instanceOf(Event);
         expect(e).to.be.instanceOf(AudioProcessingEvent);
         expect(e).to.have.property("playbackTime");
         expect(e.inputBuffer).to.be.instanceOf(AudioBuffer);
@@ -115,4 +116,14 @@ describe("ScriptProcessorNode", function() {
     });
   });
 
+});
+
+describe("AudioProcessingEvent", function() {
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new AudioProcessingEvent();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+  });
 });

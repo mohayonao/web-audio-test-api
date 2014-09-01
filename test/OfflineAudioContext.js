@@ -10,11 +10,11 @@ describe("OfflineAudioContext", function() {
     ctx = new OfflineAudioContext(1, 44100, 44100);
   });
 
-  describe("new", function() {
-    it("should return OfflineAudioContext", function() {
+  describe("(numberOfChannels, length, sampleRate)", function() {
+    it("should return an instance of OfflineAudioContext", function() {
       expect(ctx).to.be.instanceOf(OfflineAudioContext);
     });
-    it("should be inherited from AudioContext", function() {
+    it("should have been inherited from AudioContext", function() {
       expect(ctx).to.be.instanceOf(AudioContext);
     });
     it("throw error", function() {
@@ -81,6 +81,7 @@ describe("OfflineAudioContext", function() {
   describe("#process", function() {
     it("should work", function(done) {
       ctx.oncomplete = function(e) {
+        expect(e).to.be.instanceOf(Event);
         expect(e).to.be.instanceOf(OfflineAudioCompletionEvent);
         expect(e.renderedBuffer).to.be.instanceOf(AudioBuffer);
         done();
@@ -100,4 +101,14 @@ describe("OfflineAudioContext", function() {
     });
   });
 
+});
+
+describe("OfflineAudioCompletionEvent", function() {
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new OfflineAudioCompletionEvent();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+  });
 });

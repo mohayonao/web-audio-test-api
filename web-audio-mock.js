@@ -185,6 +185,9 @@
     obj[name] = value;
   }
 
+  global.Event = ILLEGAL_CONSTRUCTOR();
+  global.EventTarget = ILLEGAL_CONSTRUCTOR();
+
   global.AudioContext = (function() {
     function AudioContext() {
       $read(this, "name", "AudioContext");
@@ -199,6 +202,8 @@
       this._targetTime  = 0;
       this._remain = 0;
     }
+    inherits(AudioContext, EventTarget);
+
     AudioContext.MOCK_VERSION = VERSION;
 
     AudioContext.prototype.process = function(duration) {
@@ -385,7 +390,7 @@
     return OfflineAudioContext;
   })();
 
-  global.OfflineAudioCompletionEvent = ILLEGAL_CONSTRUCTOR();
+  global.OfflineAudioCompletionEvent = ILLEGAL_CONSTRUCTOR(Event);
 
   impl.OfflineAudioCompletionEvent = (function() {
     function OfflineAudioCompletionEvent() {
@@ -998,7 +1003,7 @@
     return ScriptProcessorNode;
   })();
 
-  global.AudioProcessingEvent = ILLEGAL_CONSTRUCTOR();
+  global.AudioProcessingEvent = ILLEGAL_CONSTRUCTOR(Event);
 
   impl.AudioProcessingEvent = (function() {
     function AudioProcessingEvent() {
