@@ -12,6 +12,17 @@ describe("DynamicsCompressorNode", function() {
     node = ctx.createDynamicsCompressor();
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new DynamicsCompressorNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+    it("should have been inherited from AudioNode", function() {
+      expect(node).to.be.instanceOf(AudioNode);
+    });
+  });
+
   describe("#threshold", function() {
     it("should be exist", function() {
       expect(node).to.have.property("threshold");
@@ -96,7 +107,7 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "DynamicsCompressorNode",

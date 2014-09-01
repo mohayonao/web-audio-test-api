@@ -15,6 +15,17 @@ describe("ScriptProcessorNode", function() {
     node = ctx.createScriptProcessor(BUFFER_SIZE, 2, 1);
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new ScriptProcessorNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+    it("should have been inherited from AudioNode", function() {
+      expect(node).to.be.instanceOf(AudioNode);
+    });
+  });
+
   describe("invalid arguments", function() {
     it("invalid buffer size", function() {
       expect(function() {
@@ -95,7 +106,7 @@ describe("ScriptProcessorNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "ScriptProcessorNode",

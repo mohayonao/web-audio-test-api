@@ -12,6 +12,14 @@ describe("AudioBuffer", function() {
     buf = ctx.createBuffer(1, 16, 44100);
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new AudioBuffer();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+  });
+
   describe("#sampleRate", function() {
     it("should be exist", function() {
       expect(buf).to.have.property("sampleRate", 44100);
@@ -67,7 +75,7 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(buf.toJSON()).to.eql({
         name: "AudioBuffer",

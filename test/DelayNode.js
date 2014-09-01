@@ -12,6 +12,17 @@ describe("DelayNode", function() {
     node = ctx.createDelay();
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new DelayNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+    it("should have been inherited from AudioNode", function() {
+      expect(node).to.be.instanceOf(AudioNode);
+    });
+  });
+
   describe("#delayTime", function() {
     it("should be exist", function() {
       expect(node).to.have.property("delayTime");
@@ -26,7 +37,7 @@ describe("DelayNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "DelayNode",

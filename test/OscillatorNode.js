@@ -12,6 +12,17 @@ describe("OscillatorNode", function() {
     node = ctx.createOscillator();
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new OscillatorNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+    it("should have been inherited from AudioNode", function() {
+      expect(node).to.be.instanceOf(AudioNode);
+    });
+  });
+
   describe("#type", function() {
     it("should be exist", function() {
       expect(node).to.have.property("type");
@@ -93,7 +104,7 @@ describe("OscillatorNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "OscillatorNode",

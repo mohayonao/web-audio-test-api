@@ -12,6 +12,17 @@ describe("AudioBufferSourceNode", function() {
     node = ctx.createBufferSource();
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new AudioBufferSourceNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+    it("should have been inherited from AudioNode", function() {
+      expect(node).to.be.instanceOf(AudioNode);
+    });
+  });
+
   describe("#buffer", function() {
     it("should be exist", function() {
       expect(node).to.have.property("buffer");
@@ -124,7 +135,7 @@ describe("AudioBufferSourceNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "AudioBufferSourceNode",

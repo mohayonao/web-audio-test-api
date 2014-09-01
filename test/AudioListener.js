@@ -12,6 +12,14 @@ describe("AudioListener", function() {
     listener = ctx.listener;
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new AudioListener();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+  });
+
   describe("#dopplerFactor", function() {
     it("should be exist", function() {
       expect(listener).to.have.property("dopplerFactor");

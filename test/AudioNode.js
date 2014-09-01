@@ -12,6 +12,14 @@ describe("AudioNode", function() {
     node = ctx.createOscillator();
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new AudioNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+  });
+
   describe("#context", function() {
     it("should be exist", function() {
       expect(node).to.have.property("context", ctx);
@@ -104,7 +112,7 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "OscillatorNode",
