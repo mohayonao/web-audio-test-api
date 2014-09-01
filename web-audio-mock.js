@@ -7,7 +7,7 @@
   var CURRENT_TIME_INCR = BUFFER_SIZE / SAMPLERATE;
   var NOP = /* istanbul ignore next */ function() {};
 
-  function extend(ctor, superCtor) {
+  function inherits(ctor, superCtor) {
     ctor.prototype = Object.create(superCtor.prototype, {
       constructor: { value: ctor, enumerable: false, writable: true, configurable: true }
     });
@@ -328,7 +328,7 @@
       this._processed = 0;
       this._rendering = false;
     }
-    extend(OfflineAudioContext, AudioContext);
+    inherits(OfflineAudioContext, AudioContext);
 
     OfflineAudioContext.prototype.process = function(duration) {
       var dx;
@@ -526,7 +526,7 @@
       });
       $read(this, "maxChannelCount", 2);
     }
-    extend(AudioDestinationNode, AudioNode);
+    inherits(AudioDestinationNode, AudioNode);
 
     return AudioDestinationNode;
   })();
@@ -765,7 +765,7 @@
       });
       $read(this, "gain", new AudioParam(this, "gain", 1.0, 0.0, 1.0));
     }
-    extend(GainNode, AudioNode);
+    inherits(GainNode, AudioNode);
 
     return GainNode;
   })();
@@ -784,7 +784,7 @@
       });
       $read(this, "delayTime", new AudioParam(this, "delayTime", 0, 0, maxDelayTime));
     }
-    extend(DelayNode, AudioNode);
+    inherits(DelayNode, AudioNode);
 
     return DelayNode;
   })();
@@ -859,7 +859,7 @@
       $type(this, "loopEnd", "number", 0);
       $type(this, "onended", "function", NOP);
     }
-    extend(AudioBufferSourceNode, AudioNode);
+    inherits(AudioBufferSourceNode, AudioNode);
 
     AudioBufferSourceNode.prototype.start = function(when, offset, duration) {
       checkArgs("AudioBufferSourceNode#start(when, offset, duration)", {
@@ -891,7 +891,7 @@
         channelInterpretation: "speakers"
       });
     }
-    extend(MediaElementAudioSourceNode, AudioNode);
+    inherits(MediaElementAudioSourceNode, AudioNode);
 
     return MediaElementAudioSourceNode;
   })();
@@ -924,7 +924,7 @@
 
       this._numSamples = 0;
     }
-    extend(ScriptProcessorNode, AudioNode);
+    inherits(ScriptProcessorNode, AudioNode);
 
     ScriptProcessorNode.prototype._process = function(currentTime, nextCurrentTime) {
       var numSamples = ((nextCurrentTime - currentTime) / CURRENT_TIME_INCR) * BUFFER_SIZE;
@@ -978,7 +978,7 @@
       $type(this, "coneOuterAngle", "number", 360);
       $type(this, "coneOuterGain", "number", 0);
     }
-    extend(PannerNode, AudioNode);
+    inherits(PannerNode, AudioNode);
 
     PannerNode.prototype.setPosition = function(x, y, z) {
       checkArgs("PannerNode#setPosition(x, y, z)", {
@@ -1059,7 +1059,7 @@
       $type(this, "buffer", AudioBuffer);
       $type(this, "normalize", "boolean", true);
     }
-    extend(ConvolverNode, AudioNode);
+    inherits(ConvolverNode, AudioNode);
 
     return ConvolverNode;
   })();
@@ -1084,7 +1084,7 @@
       $type(this, "maxDecibels", "number", 30);
       $type(this, "smoothingTimeConstant", "number", 0.8);
     }
-    extend(AnalyserNode, AudioNode);
+    inherits(AnalyserNode, AudioNode);
 
     AnalyserNode.prototype.getFloatFrequencyData = function(array) {
       checkArgs("AnalyserNode#getFloatFrequencyData(array)", {
@@ -1123,7 +1123,7 @@
         channelInterpretation: "speakers"
       });
     }
-    extend(ChannelSplitterNode, AudioNode);
+    inherits(ChannelSplitterNode, AudioNode);
 
     return ChannelSplitterNode;
   })();
@@ -1144,7 +1144,7 @@
         channelInterpretation: "speakers"
       });
     }
-    extend(ChannelMergerNode, AudioNode);
+    inherits(ChannelMergerNode, AudioNode);
 
     return ChannelMergerNode;
   })();
@@ -1168,7 +1168,7 @@
       $read(this, "attack", new AudioParam(this, "attack", 0.003, 0, 1.0));
       $read(this, "release", new AudioParam(this, "release", 0.250, 0, 1.0));
     }
-    extend(DynamicsCompressorNode, AudioNode);
+    inherits(DynamicsCompressorNode, AudioNode);
 
     return DynamicsCompressorNode;
   })();
@@ -1193,7 +1193,7 @@
       $read(this, "Q", new AudioParam(this, "Q", 1, 0.0001, 1000));
       $read(this, "gain", new AudioParam(this, "gain", 0, -40, 40));
     }
-    extend(BiquadFilterNode, AudioNode);
+    inherits(BiquadFilterNode, AudioNode);
 
     BiquadFilterNode.prototype.getFrequencyResponse = function(frequencyHz, magResponse, phaseResponse) {
       checkArgs("BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)", {
@@ -1221,7 +1221,7 @@
       $type(this, "curve", Float32Array);
       $enum(this, "oversample", [ "none", "2x", "4x" ], "none");
     }
-    extend(WaveShaperNode, AudioNode);
+    inherits(WaveShaperNode, AudioNode);
 
     return WaveShaperNode;
   })();
@@ -1243,7 +1243,7 @@
       $read(this, "detune", new AudioParam(this, "detune", 0, -4800, 4800));
       $type(this, "onended", "function", NOP);
     }
-    extend(OscillatorNode, AudioNode);
+    inherits(OscillatorNode, AudioNode);
 
     OscillatorNode.prototype.start = function(when) {
       checkArgs("OscillatorNode#start(when)", {
@@ -1286,7 +1286,7 @@
         channelInterpretation: "speakers"
       });
     }
-    extend(MediaStreamAudioSourceNode, AudioNode);
+    inherits(MediaStreamAudioSourceNode, AudioNode);
 
     return MediaStreamAudioSourceNode;
   })();
@@ -1304,7 +1304,7 @@
         channelInterpretation: "speakers"
       });
     }
-    extend(MediaStreamAudioDestinationNode, AudioNode);
+    inherits(MediaStreamAudioDestinationNode, AudioNode);
 
     return MediaStreamAudioDestinationNode;
   })();
