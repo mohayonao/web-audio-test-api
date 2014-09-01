@@ -1421,7 +1421,11 @@
   );
 
   impl.PeriodicWave = (function() {
-    function PeriodicWave() {
+    function PeriodicWave(real, imag) {
+      _.checkArgs("PeriodicWave(real, imag)", {
+        real: { type: "Float32Array", given: real },
+        imag: { type: "Float32Array", given: imag },
+      });
       $read(this, "name", "PeriodicWave");
     }
     _.inherits(PeriodicWave, global.PeriodicWave);

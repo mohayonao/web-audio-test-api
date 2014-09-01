@@ -223,7 +223,9 @@ describe("AudioContext", function() {
 
   describe("#createPeriodicWave(real, imag)", function() {
     it("should return an instance of PeriodicWave", function() {
-      expect(ctx.createPeriodicWave()).to.be.instanceOf(PeriodicWave);
+      var real = new Float32Array(128);
+      var imag = new Float32Array(128);
+      expect(ctx.createPeriodicWave(real, imag)).to.be.instanceOf(PeriodicWave);
     });
   });
 
