@@ -10,6 +10,11 @@
   var _    = {};
   var impl = {};
 
+  /* istanbul ignore if */
+  if (global.WEB_AUDIO_MOCK_IGNORE) {
+    return;
+  }
+
   function ILLEGAL_CONSTRUCTOR(superCtor, shouldUse) {
     var err = "Illegal constructor";
     if (shouldUse) {
