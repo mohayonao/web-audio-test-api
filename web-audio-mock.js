@@ -489,8 +489,9 @@
   })();
 
   global.AudioParam = (function() {
-    function AudioParam(context, name, defaultValue, minValue, maxValue) {
-      $read(this, "context", context);
+    function AudioParam(node, name, defaultValue, minValue, maxValue) {
+      $read(this, "node", node);
+      $read(this, "context", node.context);
       $read(this, "name", name);
       $read(this, "defaultValue", defaultValue);
       $read(this, "minValue", minValue);
@@ -715,7 +716,7 @@
         channelCountMode: "max",
         channelInterpretation: "speakers"
       });
-      $read(this, "gain", new AudioParam(context, "gain", 1.0, 0.0, 1.0));
+      $read(this, "gain", new AudioParam(this, "gain", 1.0, 0.0, 1.0));
     }
     extend(GainNode, AudioNode);
 
@@ -734,7 +735,7 @@
         channelCountMode: "max",
         channelInterpretation: "speakers"
       });
-      $read(this, "delayTime", new AudioParam(context, "delayTime", 0, 0, maxDelayTime));
+      $read(this, "delayTime", new AudioParam(this, "delayTime", 0, 0, maxDelayTime));
     }
     extend(DelayNode, AudioNode);
 
@@ -805,7 +806,7 @@
         channelInterpretation: "speakers"
       });
       $type(this, "buffer", AudioBuffer);
-      $read(this, "playbackRate", new AudioParam(context, "playbackRate", 1, 0, 1024));
+      $read(this, "playbackRate", new AudioParam(this, "playbackRate", 1, 0, 1024));
       $type(this, "loop", "boolean", false);
       $type(this, "loopStart", "number", 0);
       $type(this, "loopEnd", "number", 0);
@@ -1113,12 +1114,12 @@
         channelCountMode: "explicit",
         channelInterpretation: "speakers"
       });
-      $read(this, "threshold", new AudioParam(context, "threshold", -24, -100, 0));
-      $read(this, "knee", new AudioParam(context, "knee", 30, 0, 40));
-      $read(this, "ratio", new AudioParam(context, "ratio", 12, 1, 20));
-      $read(this, "reduction", new AudioParam(context, "reduction", 0, -20, 0));
-      $read(this, "attack", new AudioParam(context, "attack", 0.003, 0, 1.0));
-      $read(this, "release", new AudioParam(context, "release", 0.250, 0, 1.0));
+      $read(this, "threshold", new AudioParam(this, "threshold", -24, -100, 0));
+      $read(this, "knee", new AudioParam(this, "knee", 30, 0, 40));
+      $read(this, "ratio", new AudioParam(this, "ratio", 12, 1, 20));
+      $read(this, "reduction", new AudioParam(this, "reduction", 0, -20, 0));
+      $read(this, "attack", new AudioParam(this, "attack", 0.003, 0, 1.0));
+      $read(this, "release", new AudioParam(this, "release", 0.250, 0, 1.0));
     }
     extend(DynamicsCompressorNode, AudioNode);
 
@@ -1140,10 +1141,10 @@
       $enum(this, "type", [
         "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"
       ], "lowpass");
-      $read(this, "frequency", new AudioParam(context, "frequency", 350, 10, SAMPLERATE / 2));
-      $read(this, "detune", new AudioParam(context, "detune", 0, -4800, 4800));
-      $read(this, "Q", new AudioParam(context, "Q", 1, 0.0001, 1000));
-      $read(this, "gain", new AudioParam(context, "gain", 0, -40, 40));
+      $read(this, "frequency", new AudioParam(this, "frequency", 350, 10, SAMPLERATE / 2));
+      $read(this, "detune", new AudioParam(this, "detune", 0, -4800, 4800));
+      $read(this, "Q", new AudioParam(this, "Q", 1, 0.0001, 1000));
+      $read(this, "gain", new AudioParam(this, "gain", 0, -40, 40));
     }
     extend(BiquadFilterNode, AudioNode);
 
@@ -1191,8 +1192,8 @@
         channelInterpretation: "speakers"
       });
       $enum(this, "type", [ "sine", "square", "sawtooth", "triangle", "custom" ], "sine");
-      $read(this, "frequency", new AudioParam(context, "frequency", 440, 0, 100000));
-      $read(this, "detune", new AudioParam(context, "detune", 0, -4800, 4800));
+      $read(this, "frequency", new AudioParam(this, "frequency", 440, 0, 100000));
+      $read(this, "detune", new AudioParam(this, "detune", 0, -4800, 4800));
       $type(this, "onended", "function", NOP);
     }
     extend(OscillatorNode, AudioNode);
