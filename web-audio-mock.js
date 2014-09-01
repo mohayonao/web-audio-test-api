@@ -171,6 +171,10 @@
       }
     };
 
+    AudioContext.prototype.toString = function() {
+      return this.name;
+    };
+
     AudioContext.prototype.toJSON = function() {
       return this.destination.toJSON([]);
     };
@@ -375,6 +379,13 @@
           this._process(currentTime, nextCurrentTime);
         }
       }
+    };
+
+    AudioNode.prototype.toString = function() {
+      if (typeof this.$id === "string") {
+        return format("#{0}(#{1})", this.name, this.$id);
+      }
+      return this.name;
     };
 
     AudioNode.prototype.toJSON = function(memo) {
@@ -585,6 +596,10 @@
 
         this.value = calcValue(this.value, nextCurrentTime, this._events);
       }
+    };
+
+    AudioParam.prototype.toString = function() {
+      return format("#{0}##{1}", this.node, this.name);
     };
 
     AudioParam.prototype.toJSON = function(memo) {
