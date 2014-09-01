@@ -37,7 +37,7 @@
 
       if (!checkArgs[type](given)) {
         throw new TypeError(format(
-          "#{0}: '#{1}' should be #{2}, but got #{3}", caption, argName, article(type), given
+          "#{0}: '#{1}' should be #{2}, but got #{3}", caption, argName, article(type), toS(given)
         ));
       }
     });
@@ -60,6 +60,27 @@
   checkArgs.PeriodicWave = function(value) {
     return value instanceof PeriodicWave;
   };
+
+  function toS(value) {
+    var type = typeof value;
+
+    if (type === "string") {
+      return format("'#{0}'", value);
+    }
+    if (type === "function") {
+      return "function";
+    }
+    if (Array.isArray(value)) {
+      return "array";
+    }
+    if (!value || type === "number" || type === "boolean") {
+      return String(value);
+    }
+    if (value.constructor && value.constructor.name) {
+      return value.constructor.name;
+    }
+    return Object.prototype.toString.call(value).slice(8, -1);
+  }
 
   function id(obj) {
     if (obj.hasOwnProperty("$id")) {
@@ -87,7 +108,7 @@
         return value;
       },
       set: function() {
-        throw new Error(name + " is readonly");
+        throw new Error(format("#{0}##{1} is readonly", obj, name));
       },
       enumerable: true
     });
@@ -100,17 +121,23 @@
         return _value;
       },
       set: function(newValue) {
+        var err = false;
+
         if (typeof type === "string") {
           if (typeof newValue !== type) {
-            throw new TypeError(format(
-              "#{0} should be a #{1}, but got #{2}", name, type, typeof newValue
-            ));
+            err = true;
           }
         } else if (newValue !== null && !(newValue instanceof type)) {
+          err = true;
+          type = type.constructor.name;
+        }
+
+        if (err) {
           throw new TypeError(format(
-            "#{0} should be a #{1}, but got #{2}", name, String(type), String(newValue)
+            "#{0}##{1} should be #{2}, but got #{3}", obj, name, article(type), toS(newValue)
           ));
         }
+
         _value = newValue;
       },
       enumerable: true
@@ -123,13 +150,16 @@
 
   function $enum(obj, name, list, value) {
     var _value;
+    var strList = "[ " + list.join(", ") + " ]";
     Object.defineProperty(obj, name, {
       get: function() {
         return _value;
       },
       set: function(newValue) {
         if (list.indexOf(newValue) === -1) {
-          throw new TypeError(format("#{0} cannot set #{1}", name , newValue));
+          throw new TypeError(format(
+            "#{0}##{1} should be any #{2}, but got #{3}", obj, name, strList, toS(newValue)
+          ));
         }
         _value = newValue;
       },
@@ -383,7 +413,7 @@
 
     AudioNode.prototype.toString = function() {
       if (typeof this.$id === "string") {
-        return format("#{0}(#{1})", this.name, this.$id);
+        return format("(#{0}##{1})", this.name, this.$id);
       }
       return this.name;
     };
@@ -424,7 +454,7 @@
 
       if (!(destination instanceof AudioNode || destination instanceof AudioParam)) {
         throw new TypeError(format(
-          "AudioNode#connect(destination, output, input): 'destination' should be an instance of AudioNode or AudioParam, but got #{0}", destination
+          "AudioNode#connect(destination, output, input): 'destination' should be an instance of AudioNode or AudioParam, but got #{0}", toS(destination)
         ));
       }
 
@@ -868,7 +898,7 @@
     function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
       if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
         throw new TypeError(format(
-          "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels): invalid bufferSize: #{0}", bufferSize
+          "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels): invalid bufferSize: #{0}", toS(bufferSize)
         ));
       }
       checkArgs("ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)", {
