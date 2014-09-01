@@ -10,6 +10,14 @@ describe("AudioContext", function() {
     ctx = new AudioContext();
   });
 
+  describe(".MOCK_VERSION", function() {
+    it("check", function() {
+      if (typeof MOCK_VERSION === "string") {
+        expect(AudioContext.MOCK_VERSION).to.equal(global.MOCK_VERSION);
+      }
+    });
+  });
+
   describe("new", function() {
     it("should return AudioContext", function() {
       expect(ctx).to.be.instanceOf(AudioContext);

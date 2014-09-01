@@ -1,6 +1,7 @@
 (function(global) {
   "use strict";
 
+  var VERSION = "0.1.6";
   var SAMPLERATE  = 44100;
   var BUFFER_SIZE = 128;
   var CURRENT_TIME_INCR = BUFFER_SIZE / SAMPLERATE;
@@ -182,6 +183,7 @@
       this._targetTime  = 0;
       this._remain = 0;
     }
+    AudioContext.MOCK_VERSION = VERSION;
 
     AudioContext.prototype.process = function(duration) {
       var dx;
