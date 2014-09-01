@@ -7,7 +7,7 @@
   var CURRENT_TIME_INCR = BUFFER_SIZE / SAMPLERATE;
   var NOP = /* istanbul ignore next */ function() {};
 
-  var _ = {};
+  var _    = {};
   var impl = {};
 
   function ILLEGAL_CONSTRUCTOR(superCtor, shouldUse) {
@@ -30,7 +30,12 @@
         return value;
       },
       set: function() {
-        throw new Error(_.format("#{0}##{1} is readonly", obj, name));
+        throw new Error(_.format(
+          "#{object}##{property} is readonly", {
+            object  : obj,
+            property: name
+          }
+        ));
       },
       enumerable: true
     });
@@ -56,7 +61,12 @@
 
         if (err) {
           throw new TypeError(_.format(
-            "#{0}##{1} should be #{2}, but got #{3}", obj, name, _.article(type), _.toS(newValue)
+            "#{object}##{property} should be #{type}, but got #{given}", {
+              object  : obj,
+              property: name,
+              type    : _.article(type),
+              given   : _.toS(newValue)
+            }
           ));
         }
 
@@ -80,7 +90,12 @@
       set: function(newValue) {
         if (list.indexOf(newValue) === -1) {
           throw new TypeError(_.format(
-            "#{0}##{1} should be any #{2}, but got #{3}", obj, name, strList, _.toS(newValue)
+            "#{object}##{property} should be any #{list}, but got #{given}", {
+              object  : obj,
+              property: name,
+              list    : strList,
+              given   : _.toS(newValue)
+            }
           ));
         }
         _value = newValue;
@@ -96,13 +111,13 @@
     });
   };
 
-  _.format = function(fmt) {
+  _.format = function(fmt, dict) {
     var msg = fmt;
-    Array.prototype.slice.call(arguments, 1).forEach(function(value, index) {
-      msg = msg.replace(
-        new RegExp("#\\{" + index + "\\}", "g"), String(value)
-      );
+
+    Object.keys(dict).forEach(function(key) {
+      msg = msg.replace(new RegExp("#\\{" + key + "\\}", "g"), dict[key]);
     });
+
     return msg;
   };
 
@@ -121,7 +136,12 @@
 
       if (!_.checkArgs[type](given)) {
         throw new TypeError(_.format(
-          "#{0}: '#{1}' should be #{2}, but got #{3}", caption, argName, _.article(type), _.toS(given)
+          "#{caption}: '#{name}' should be #{type}, but got #{given}", {
+            caption: caption,
+            name   : argName,
+            type   : _.article(type),
+            given  : _.toS(given)
+          }
         ));
       }
     });
@@ -149,7 +169,7 @@
     var type = typeof value;
 
     if (type === "string") {
-      return _.format("'#{0}'", value);
+      return "'" + value + "'";
     }
     if (type === "function") {
       return "function";
@@ -444,7 +464,7 @@
 
     AudioNode.prototype.toString = function() {
       if (typeof this.$id === "string") {
-        return _.format("(#{0}##{1})", this.name, this.$id);
+        return _.format("(#{name}##{id})", { name: this.name, id: this.$id });
       }
       return this.name;
     };
@@ -480,12 +500,19 @@
     };
 
     AudioNode.prototype.connect = function(destination, output, input) {
+      var caption = "AudioNode#connect(destination, output, input)";
+
       output = _.defaults(output, 0);
       input  = _.defaults(input , 0);
 
       if (!(destination instanceof AudioNode || destination instanceof AudioParam)) {
         throw new TypeError(_.format(
-          "AudioNode#connect(destination, output, input): 'destination' should be an instance of AudioNode or AudioParam, but got #{0}", _.toS(destination)
+          "#{caption}: '#{name}' should be #{type}, but got #{given}", {
+            caption: caption,
+            name   : "destination",
+            type   : "an instance of AudioNode or AudioParam",
+            given  : _.toS(destination)
+          }
         ));
       }
 
@@ -495,16 +522,28 @@
       });
 
       if (this.context !== destination.context) {
-        throw new Error("AudioNode#connect(destination, output, input): cannot connect to a destination belonging to a different audio context");
+        throw new Error(_.format(
+          "#{caption}: cannot connect to a destination belonging to a different audio context", {
+            caption: caption
+          }
+        ));
       }
       if (output < 0 || this.numberOfOutputs <= output) {
         throw new Error(_.format(
-          "AudioNode#connect(destination, output, input): output index (#{0}) exceeds number of outputs (#{1})", output, this.numberOfOutputs
+          "#{caption}: output index (#{index}) exceeds number of outputs (#{length})", {
+            caption: caption,
+            index  : output,
+            length : this.numberOfOutputs
+          }
         ));
       }
       if (input < 0 || destination.numberOfInputs <= input) {
         throw new Error(_.format(
-          "AudioNode#connect(destination, output, input): input index (#{0}) exceeds number of inputs (#{1})", input, destination.numberOfInputs
+          "#{caption}: input index (#{index}) exceeds number of inputs (#{length})", {
+            caption: caption,
+            index  : input,
+            length : destination.numberOfInputs
+          }
         ));
       }
 
@@ -525,7 +564,11 @@
 
       if (output < 0 || this.numberOfOutputs <= output) {
         throw new Error(_.format(
-          "AudioNode#disconnect: output index (#{0}) exceeds number of outputs (#{1})", output, this.numberOfOutputs
+          "#{caption}: output index (#{index}) exceeds number of outputs (#{length})", {
+            caption: "AudioNode#disconnect",
+            index  : output,
+            length : this.numberOfOutputs
+          }
         ));
       }
 
@@ -664,7 +707,7 @@
     };
 
     AudioParam.prototype.toString = function() {
-      return _.format("#{0}##{1}", this.node, this.name);
+      return _.format("#{object}##{property}", { object: this.node, property: this.name });
     };
 
     AudioParam.prototype.toJSON = function(memo) {
@@ -879,7 +922,11 @@
         return this._data[channel];
       }
       throw new Error(_.format(
-        "AudioBuffer#getChannelData: channel index (#{0}) exceeds number of channels (#{1})", channel, this._data.length
+        "#{caption}: channel index (#{index}) exceeds number of channels (#{length})", {
+          caption: "AudioBuffer#getChannelData(channel)",
+          index  : channel,
+          length : this._data.length
+        }
       ));
     };
 
@@ -958,7 +1005,10 @@
     function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
       if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
         throw new TypeError(_.format(
-          "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels): invalid bufferSize: #{0}", _.toS(bufferSize)
+          "#{caption}: invalid bufferSize: #{0}", {
+            caption   : "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)",
+            bufferSize: _.toS(bufferSize)
+          }
         ));
       }
       _.checkArgs("ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)", {
