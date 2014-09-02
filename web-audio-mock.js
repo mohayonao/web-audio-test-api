@@ -1,7 +1,7 @@
 (function(global) {
   "use strict";
 
-  var VERSION = "0.1.6";
+  var VERSION = "0.1.7";
   var SAMPLERATE  = 44100;
   var BUFFER_SIZE = 128;
   var CURRENT_TIME_INCR = BUFFER_SIZE / SAMPLERATE;
