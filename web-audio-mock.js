@@ -37,7 +37,7 @@
       set: function() {
         throw new Error(_.format(
           "#{object}##{property} is readonly", {
-            object  : obj,
+            object  : _.id(obj, true),
             property: name
           }
         ));
@@ -67,7 +67,7 @@
         if (err) {
           throw new TypeError(_.format(
             "#{object}##{property} should be #{type}, but got #{given}", {
-              object  : obj,
+              object  : _.id(obj, true),
               property: name,
               type    : _.article(type),
               given   : _.toS(newValue)
@@ -96,7 +96,7 @@
         if (list.indexOf(newValue) === -1) {
           throw new TypeError(_.format(
             "#{object}##{property} should be any #{list}, but got #{given}", {
-              object  : obj,
+              object  : _.id(obj, true),
               property: name,
               list    : strList,
               given   : _.toS(newValue)
@@ -134,12 +134,12 @@
     return (/[aeiou]/i.test(str.charAt(0)) ? "an " : "a ") + str;
   };
 
-  _.checkArgs = function(caption, spec) {
+  _.check = function(caption, spec) {
     Object.keys(spec).forEach(function(argName) {
       var type = spec[argName].type;
       var given = spec[argName].given;
 
-      if (!_.checkArgs[type](given)) {
+      if (!_.check[type](given)) {
         throw new TypeError(_.format(
           "#{caption}: '#{name}' should be #{type}, but got #{given}", {
             caption: caption,
@@ -151,22 +151,22 @@
       }
     });
   };
-  _.checkArgs.number = function isNumber(value) {
+  _.check.number = function isNumber(value) {
     return typeof value === "number" && !isNaN(value);
   };
-  _.checkArgs.function = function isNumber(value) {
+  _.check.function = function isNumber(value) {
     return typeof value === "function";
   };
-  _.checkArgs.ArrayBuffer = function(value) {
+  _.check.ArrayBuffer = function(value) {
     return value instanceof ArrayBuffer;
   };
-  _.checkArgs.Uint8Array = function isUint8Array(value) {
+  _.check.Uint8Array = function isUint8Array(value) {
     return value instanceof Uint8Array;
   };
-  _.checkArgs.Float32Array = function isFloat32Array(value) {
+  _.check.Float32Array = function isFloat32Array(value) {
     return value instanceof Float32Array;
   };
-  _.checkArgs.PeriodicWave = function(value) {
+  _.check.PeriodicWave = function(value) {
     return value instanceof PeriodicWave;
   };
 
@@ -192,14 +192,26 @@
     return Object.prototype.toString.call(value).slice(8, -1);
   };
 
-  _.id = function(obj) {
+  _.id = function(obj, wrapping) {
     if (obj.hasOwnProperty("$id")) {
+      if (wrapping) {
+        return "(" + obj.name + "#" + obj.$id + ")";
+      }
       return obj.name + "#" + obj.$id;
     }
     return obj.name;
   };
 
-  _.checkCircular = function(node, func, memo) {
+  _.caption = function(obj, method) {
+    return _.format(
+      "#{object}##{method}", {
+        object: _.id(obj, true),
+        method: method
+      }
+    );
+  };
+
+  _.jsonCircularCheck = function(node, func, memo) {
     if (memo.indexOf(node) !== -1) {
       return "<circular:" + _.id(node) + ">";
     }
@@ -251,10 +263,6 @@
       }
     };
 
-    AudioContext.prototype.toString = function() {
-      return this.name;
-    };
-
     AudioContext.prototype.toJSON = function() {
       return this.destination.toJSON([]);
     };
@@ -264,10 +272,12 @@
     };
 
     AudioContext.prototype.decodeAudioData = function(audioData, successCallback, errorCallback) {
-      _.checkArgs("AudioContext#decodeAudioData(audioData, successCallback, errorCallback)", {
-        audioData      : { type: "ArrayBuffer", given: audioData },
-        successCallback: { type: "function"   , given: _.defaults(successCallback, NOP) },
-        errorCallback  : { type: "function"   , given: _.defaults(errorCallback  , NOP) },
+      successCallback = _.defaults(successCallback, NOP);
+      errorCallback   = _.defaults(errorCallback  , NOP);
+      _.check("AudioContext#decodeAudioData(audioData, successCallback, errorCallback)", {
+        audioData      : { type: "ArrayBuffer", given: audioData       },
+        successCallback: { type: "function"   , given: successCallback },
+        errorCallback  : { type: "function"   , given: errorCallback   },
       });
       var _this = this;
       setTimeout(function() {
@@ -352,7 +362,7 @@
 
   global.OfflineAudioContext = (function() {
     function OfflineAudioContext(numberOfChannels, length, sampleRate) {
-      _.checkArgs("OfflineAudioContext(numberOfChannels, length, sampleRate)", {
+      _.check("OfflineAudioContext(numberOfChannels, length, sampleRate)", {
         numberOfChannels: { type: "number", given: numberOfChannels },
         length          : { type: "number", given: length           },
         sampleRate      : { type: "number", given: sampleRate       },
@@ -411,7 +421,11 @@
 
     OfflineAudioContext.prototype.startRendering = function() {
       if (this._rendering) {
-        throw new Error("OfflineAudioContext#startRendering() must only be called one time");
+        throw new Error(_.format(
+          "#{caption} must only be called one time", {
+            caption: _.caption(this, "startRendering()")
+          }
+        ));
       }
       this._rendering = true;
     };
@@ -469,15 +483,8 @@
       }
     };
 
-    AudioNode.prototype.toString = function() {
-      if (typeof this.$id === "string") {
-        return _.format("(#{name}##{id})", { name: this.name, id: this.$id });
-      }
-      return this.name;
-    };
-
     AudioNode.prototype.toJSON = function(memo) {
-      return _.checkCircular(this, function(memo) {
+      return _.jsonCircularCheck(this, function(memo) {
         var json = {};
 
         json.name = _.id(this);
@@ -507,7 +514,7 @@
     };
 
     AudioNode.prototype.connect = function(destination, output, input) {
-      var caption = "AudioNode#connect(destination, output, input)";
+      var caption = _.caption(this, "connect(destination, output, input)");
 
       output = _.defaults(output, 0);
       input  = _.defaults(input , 0);
@@ -523,7 +530,7 @@
         ));
       }
 
-      _.checkArgs("AudioNode#connect(destination, output, input)", {
+      _.check(caption, {
         output: { type: "number", given: output },
         input : { type: "number", given: input  },
       });
@@ -563,16 +570,18 @@
     };
 
     AudioNode.prototype.disconnect = function(output) {
+      var caption = _.caption(this, "disconnect(output)");
+
       output = _.defaults(output, 0);
 
-      _.checkArgs("AudioNode#disconnect(output)", {
+      _.check(caption, {
         output: { type: "number", given: output }
       });
 
       if (output < 0 || this.numberOfOutputs <= output) {
         throw new Error(_.format(
           "#{caption}: output index (#{index}) exceeds number of outputs (#{length})", {
-            caption: "AudioNode#disconnect",
+            caption: caption,
             index  : output,
             length : this.numberOfOutputs
           }
@@ -713,12 +722,8 @@
       }
     };
 
-    AudioParam.prototype.toString = function() {
-      return _.format("#{object}##{property}", { object: this.node, property: this.name });
-    };
-
     AudioParam.prototype.toJSON = function(memo) {
-      return _.checkCircular(this, function(memo) {
+      return _.jsonCircularCheck(this, function(memo) {
         var json = {};
 
         json.value = this.value;
@@ -754,7 +759,7 @@
     }
 
     AudioParam.prototype.setValueAtTime = function(value, startTime) {
-      _.checkArgs("AudioParam#setValueAtTime(value, startTime)", {
+      _.check("AudioParam#setValueAtTime(value, startTime)", {
         value    : { type: "number", given: value     },
         startTime: { type: "number", given: startTime },
       });
@@ -766,7 +771,7 @@
     };
 
     AudioParam.prototype.linearRampToValueAtTime = function(value, endTime) {
-      _.checkArgs("AudioParam#linearRampToValueAtTime(value, endTime)", {
+      _.check("AudioParam#linearRampToValueAtTime(value, endTime)", {
         value  : { type: "number", given: value   },
         endTime: { type: "number", given: endTime },
       });
@@ -778,7 +783,7 @@
     };
 
     AudioParam.prototype.exponentialRampToValueAtTime = function(value, endTime) {
-      _.checkArgs("AudioParam#exponentialRampToValueAtTime(value, endTime)", {
+      _.check("AudioParam#exponentialRampToValueAtTime(value, endTime)", {
         value  : { type: "number", given: value   },
         endTime: { type: "number", given: endTime },
       });
@@ -790,7 +795,7 @@
     };
 
     AudioParam.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
-      _.checkArgs("AudioParam#setTargetAtTime(target, startTime, timeConstant)", {
+      _.check("AudioParam#setTargetAtTime(target, startTime, timeConstant)", {
         target      : { type: "number", given: target       },
         startTime   : { type: "number", given: startTime    },
         timeConstant: { type: "number", given: timeConstant },
@@ -805,7 +810,7 @@
     };
 
     AudioParam.prototype.setValueCurveAtTime = function(values, startTime, duration) {
-      _.checkArgs("AudioParam#setValueCurveAtTime(values, startTime, duration)", {
+      _.check("AudioParam#setValueCurveAtTime(values, startTime, duration)", {
         values   : { type: "Float32Array", given: values },
         startTime: { type: "number"      , given: startTime },
         duration : { type: "number"      , given: duration }
@@ -819,7 +824,7 @@
     };
 
     AudioParam.prototype.cancelScheduledValues = function(startTime) {
-      _.checkArgs("AudioParam#cancelScheduledValues(startTime)", {
+      _.check("AudioParam#cancelScheduledValues(startTime)", {
         startTime: { type: "number", given: startTime }
       });
       var events = this._events;
@@ -886,6 +891,11 @@
 
   impl.AudioBuffer = (function() {
     function AudioBuffer(context, numberOfChannels, length, sampleRate) {
+      _.check("AudioBuffer(numerOfChannels, length, sampleRate)", {
+        numberOfChannels: { type: "number", given: numberOfChannels },
+        length          : { type: "number", given: length           },
+        sampleRate      : { type: "number", given: sampleRate       },
+      });
       $read(this, "context", context);
       $read(this, "name", "AudioBuffer");
       $read(this, "sampleRate", sampleRate);
@@ -930,7 +940,7 @@
       }
       throw new Error(_.format(
         "#{caption}: channel index (#{index}) exceeds number of channels (#{length})", {
-          caption: "AudioBuffer#getChannelData(channel)",
+          caption: _.caption(this, "getChannelData(channel)"),
           index  : channel,
           length : this._data.length
         }
@@ -968,15 +978,16 @@
     _.inherits(AudioBufferSourceNode, global.AudioBufferSourceNode);
 
     AudioBufferSourceNode.prototype.start = function(when, offset, duration) {
-      _.checkArgs("AudioBufferSourceNode#start(when, offset, duration)", {
+      var caption = _.caption(this, "start(when, offset, duration)");
+      _.check(caption, {
         when    : { type: "number", given: _.defaults(when    , 0) },
         offset  : { type: "number", given: _.defaults(offset  , 0) },
         duration: { type: "number", given: _.defaults(duration, 0) },
       });
       if (this._status !== "init") {
         throw new Error(_.format(
-          "#{name}#start(when) cannot start more than once", {
-            name: this
+          "#{caption} cannot start more than once", {
+            caption: caption
           }
         ));
       }
@@ -984,20 +995,21 @@
     };
 
     AudioBufferSourceNode.prototype.stop = function(when) {
-      _.checkArgs("AudioBufferSourceNode#stop(when)", {
+      var caption = _.caption(this, "stop(when)");
+      _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
       if (this._status === "init") {
         throw new Error(_.format(
-          "#{name}#stop(when) cannot call stop without calling start first", {
-            name: this
+          "#{caption} cannot call stop without calling start first", {
+          caption: caption
           }
         ));
       }
       if (this._status === "stop") {
         throw new Error(_.format(
-          "#{name}#stop(when) cannot stop more than once", {
-            name: this
+          "#{caption} cannot stop more than once", {
+            caption: caption
           }
         ));
       }
@@ -1043,7 +1055,7 @@
           }
         ));
       }
-      _.checkArgs("ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)", {
+      _.check("ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)", {
         numberOfInputChannels : { type: "number", given: numberOfInputChannels  },
         numberOfOutputChannels: { type: "number", given: numberOfOutputChannels },
       });
@@ -1128,7 +1140,7 @@
     _.inherits(PannerNode, global.PannerNode);
 
     PannerNode.prototype.setPosition = function(x, y, z) {
-      _.checkArgs("PannerNode#setPosition(x, y, z)", {
+      _.check(_.caption(this, "setPosition(x, y, z)"), {
         x: { type: "number", given: x },
         y: { type: "number", given: y },
         z: { type: "number", given: z },
@@ -1136,7 +1148,7 @@
     };
 
     PannerNode.prototype.setOrientation = function(x, y, z) {
-      _.checkArgs("PannerNode#setOrientation(x, y, z)", {
+      _.check(_.caption(this, "setOrientation(x, y, z)"), {
         x: { type: "number", given: x },
         y: { type: "number", given: y },
         z: { type: "number", given: z },
@@ -1144,7 +1156,7 @@
     };
 
     PannerNode.prototype.setVelocity = function(x, y, z) {
-      _.checkArgs("PannerNode#setVelocity(x, y, z)", {
+      _.check(_.caption(this, "setVelocity(x, y, z)"), {
         x: { type: "number", given: x },
         y: { type: "number", given: y },
         z: { type: "number", given: z },
@@ -1165,7 +1177,7 @@
     _.inherits(AudioListener, global.AudioListener);
 
     AudioListener.prototype.setPosition = function(x, y, z) {
-      _.checkArgs("AudioListener#setPosition(x, y, z)", {
+      _.check(_.caption(this, "setPosition(x, y, z)"), {
         x: { type: "number", given: x },
         y: { type: "number", given: y },
         z: { type: "number", given: z },
@@ -1173,7 +1185,7 @@
     };
 
     AudioListener.prototype.setOrientation = function(x, y, z, xUp, yUp, zUp) {
-      _.checkArgs("AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)", {
+      _.check(_.caption(this, "setOrientation(x, y, z, xUp, yUp, zUp)"), {
         x  : { type: "number", given: x   },
         y  : { type: "number", given: y   },
         z  : { type: "number", given: z   },
@@ -1184,7 +1196,7 @@
     };
 
     AudioListener.prototype.setVelocity = function(x, y, z) {
-      _.checkArgs("AudioListener#setVelocity(x, y, z)", {
+      _.check(_.caption(this, "setVelocity(x, y, z)"), {
         x: { type: "number", given: x },
         y: { type: "number", given: y },
         z: { type: "number", given: z },
@@ -1245,19 +1257,19 @@
     _.inherits(AnalyserNode, global.AnalyserNode);
 
     AnalyserNode.prototype.getFloatFrequencyData = function(array) {
-      _.checkArgs("AnalyserNode#getFloatFrequencyData(array)", {
+      _.check(_.caption(this, "getFloatFrequencyData(array)"), {
         array: { type: "Float32Array", given: array }
       });
     };
 
     AnalyserNode.prototype.getByteFrequencyData = function(array) {
-      _.checkArgs("AnalyserNode#getByteFrequencyData(array)", {
+      _.check(_.caption(this, "getByteFrequencyData(array)"), {
         array: { type: "Uint8Array", given: array }
       });
     };
 
     AnalyserNode.prototype.getByteTimeDomainData = function(array) {
-      _.checkArgs("AnalyserNode#getByteTimeDomainData(array)", {
+      _.check(_.caption(this, "getByteTimeDomainData(array)"), {
         array: { type: "Uint8Array", given: array }
       });
     };
@@ -1271,7 +1283,7 @@
 
   impl.ChannelSplitterNode = (function() {
     function ChannelSplitterNode(context, numberOfOutputs) {
-      _.checkArgs("ChannelSplitterNode(numberOfOutputs)", {
+      _.check("ChannelSplitterNode(numberOfOutputs)", {
         numberOfOutputs: { type: "number", given: numberOfOutputs }
       });
       impl.AudioNode.call(this, {
@@ -1296,7 +1308,7 @@
 
   impl.ChannelMergerNode = (function() {
     function ChannelMergerNode(context, numberOfInputs) {
-      _.checkArgs("ChannelMergerNode(numberOfInputs)", {
+      _.check("ChannelMergerNode(numberOfInputs)", {
         numberOfInputs: { type: "number", given: numberOfInputs }
       });
       impl.AudioNode.call(this, {
@@ -1370,7 +1382,7 @@
     _.inherits(BiquadFilterNode, global.BiquadFilterNode);
 
     BiquadFilterNode.prototype.getFrequencyResponse = function(frequencyHz, magResponse, phaseResponse) {
-      _.checkArgs("BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)", {
+      _.check(_.caption(this, "getFrequencyResponse(frequencyHz, magResponse, phaseResponse)"), {
         frequencyHz  : { type: "Float32Array", given: frequencyHz },
         magResponse  : { type: "Float32Array", given: magResponse },
         phaseResponse: { type: "Float32Array", given: phaseResponse },
@@ -1430,13 +1442,14 @@
     _.inherits(OscillatorNode, global.OscillatorNode);
 
     OscillatorNode.prototype.start = function(when) {
-      _.checkArgs("OscillatorNode#start(when)", {
+      var caption = _.caption(this, "start(when)");
+      _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
       if (this._status !== "init") {
         throw new Error(_.format(
-          "#{name}#start(when) cannot start more than once", {
-            name: this
+          "#{caption} cannot start more than once", {
+            caption: caption
           }
         ));
       }
@@ -1444,20 +1457,21 @@
     };
 
     OscillatorNode.prototype.stop = function(when) {
-      _.checkArgs("OscillatorNode#stop(when)", {
+      var caption = _.caption(this, "stop(when)");
+      _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
       if (this._status === "init") {
         throw new Error(_.format(
-          "#{name}#stop(when) cannot call stop without calling start first", {
-            name: this
+          "#{caption} cannot call stop without calling start first", {
+            caption: caption
           }
         ));
       }
       if (this._status === "stop") {
         throw new Error(_.format(
-          "#{name}#stop(when) cannot stop more than once", {
-            name: this
+          "#{caption} cannot stop more than once", {
+            caption: caption
           }
         ));
       }
@@ -1465,7 +1479,7 @@
     };
 
     OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
-      _.checkArgs("OscillatorNode#setPeriodicWave(periodicWave)", {
+      _.check(_.caption(this, "setPeriodicWave(periodicWave)"), {
         periodicWave: { type: "PeriodicWave", given: periodicWave }
       });
     };
@@ -1479,7 +1493,7 @@
 
   impl.PeriodicWave = (function() {
     function PeriodicWave(real, imag) {
-      _.checkArgs("PeriodicWave(real, imag)", {
+      _.check("PeriodicWave(real, imag)", {
         real: { type: "Float32Array", given: real },
         imag: { type: "Float32Array", given: imag },
       });
