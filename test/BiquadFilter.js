@@ -12,6 +12,17 @@ describe("BiquadFilterNode", function() {
     node = ctx.createBiquadFilter();
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new BiquadFilterNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+    it("should have been inherited from AudioNode", function() {
+      expect(node).to.be.instanceOf(AudioNode);
+    });
+  });
+
   describe("#type", function() {
     it("should be exist", function() {
       expect(node).to.have.property("type");
@@ -103,7 +114,7 @@ describe("BiquadFilterNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "BiquadFilterNode",

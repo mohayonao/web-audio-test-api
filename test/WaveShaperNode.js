@@ -12,6 +12,17 @@ describe("WaveShaperNode", function() {
     node = ctx.createWaveShaper();
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new WaveShaperNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+    it("should have been inherited from AudioNode", function() {
+      expect(node).to.be.instanceOf(AudioNode);
+    });
+  });
+
   describe("#curve", function() {
     it("should be exist", function() {
       expect(node).to.have.property("curve");
@@ -40,7 +51,7 @@ describe("WaveShaperNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "WaveShaperNode",

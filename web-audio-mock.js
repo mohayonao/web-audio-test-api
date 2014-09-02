@@ -1,106 +1,32 @@
 (function(global) {
   "use strict";
 
-  var VERSION = "0.1.6";
+  var VERSION = "0.1.7";
   var SAMPLERATE  = 44100;
   var BUFFER_SIZE = 128;
   var CURRENT_TIME_INCR = BUFFER_SIZE / SAMPLERATE;
   var NOP = /* istanbul ignore next */ function() {};
 
-  function extend(ctor, superCtor) {
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: { value: ctor, enumerable: false, writable: true, configurable: true }
-    });
+  var _    = {};
+  var impl = {};
+
+  /* istanbul ignore if */
+  if (global.WEB_AUDIO_MOCK_IGNORE) {
+    return;
   }
 
-  function format(fmt) {
-    var msg = fmt;
-    Array.prototype.slice.call(arguments, 1).forEach(function(value, index) {
-      msg = msg.replace(
-        new RegExp("#\\{" + index + "\\}", "g"), String(value)
-      );
-    });
-    return msg;
-  }
-
-  function defaults(value, defaultValue) {
-    return typeof value !== "undefined" ? value : defaultValue;
-  }
-
-  function article(str) {
-    return (/[aeiou]/i.test(str.charAt(0)) ? "an " : "a ") + str;
-  }
-
-  function checkArgs(caption, spec) {
-    Object.keys(spec).forEach(function(argName) {
-      var type = spec[argName].type;
-      var given = spec[argName].given;
-
-      if (!checkArgs[type](given)) {
-        throw new TypeError(format(
-          "#{0}: '#{1}' should be #{2}, but got #{3}", caption, argName, article(type), toS(given)
-        ));
-      }
-    });
-  }
-  checkArgs.number = function isNumber(value) {
-    return typeof value === "number" && !isNaN(value);
-  };
-  checkArgs.function = function isNumber(value) {
-    return typeof value === "function";
-  };
-  checkArgs.ArrayBuffer = function(value) {
-    return value instanceof ArrayBuffer;
-  };
-  checkArgs.Uint8Array = function isUint8Array(value) {
-    return value instanceof Uint8Array;
-  };
-  checkArgs.Float32Array = function isFloat32Array(value) {
-    return value instanceof Float32Array;
-  };
-  checkArgs.PeriodicWave = function(value) {
-    return value instanceof PeriodicWave;
-  };
-
-  function toS(value) {
-    var type = typeof value;
-
-    if (type === "string") {
-      return format("'#{0}'", value);
+  function ILLEGAL_CONSTRUCTOR(superCtor, shouldUse) {
+    var err = "Illegal constructor";
+    if (shouldUse) {
+      err += ": should use ctx." + shouldUse;
     }
-    if (type === "function") {
-      return "function";
+    function ctor() {
+      throw new TypeError(err);
     }
-    if (Array.isArray(value)) {
-      return "array";
+    if (superCtor) {
+      _.inherits(ctor, superCtor);
     }
-    if (!value || type === "number" || type === "boolean") {
-      return String(value);
-    }
-    if (value.constructor && value.constructor.name) {
-      return value.constructor.name;
-    }
-    return Object.prototype.toString.call(value).slice(8, -1);
-  }
-
-  function id(obj) {
-    if (obj.hasOwnProperty("$id")) {
-      return obj.name + "#" + obj.$id;
-    }
-    return obj.name;
-  }
-
-  function checkCircular(node, func, memo) {
-    if (memo.indexOf(node) !== -1) {
-      return "<circular:" + id(node) + ">";
-    }
-    memo.push(node);
-
-    var result = func.call(node, memo);
-
-    memo.pop();
-
-    return result;
+    return ctor;
   }
 
   function $read(obj, name, value) {
@@ -109,7 +35,12 @@
         return value;
       },
       set: function() {
-        throw new Error(format("#{0}##{1} is readonly", obj, name));
+        throw new Error(_.format(
+          "#{object}##{property} is readonly", {
+            object  : _.id(obj, true),
+            property: name
+          }
+        ));
       },
       enumerable: true
     });
@@ -134,8 +65,13 @@
         }
 
         if (err) {
-          throw new TypeError(format(
-            "#{0}##{1} should be #{2}, but got #{3}", obj, name, article(type), toS(newValue)
+          throw new TypeError(_.format(
+            "#{object}##{property} should be #{type}, but got #{given}", {
+              object  : _.id(obj, true),
+              property: name,
+              type    : _.article(type),
+              given   : _.toS(newValue)
+            }
           ));
         }
 
@@ -158,8 +94,13 @@
       },
       set: function(newValue) {
         if (list.indexOf(newValue) === -1) {
-          throw new TypeError(format(
-            "#{0}##{1} should be any #{2}, but got #{3}", obj, name, strList, toS(newValue)
+          throw new TypeError(_.format(
+            "#{object}##{property} should be any #{list}, but got #{given}", {
+              object  : _.id(obj, true),
+              property: name,
+              list    : strList,
+              given   : _.toS(newValue)
+            }
           ));
         }
         _value = newValue;
@@ -169,20 +110,139 @@
     obj[name] = value;
   }
 
+  _.inherits = function(ctor, superCtor) {
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: { value: ctor, enumerable: false, writable: true, configurable: true }
+    });
+  };
+
+  _.format = function(fmt, dict) {
+    var msg = fmt;
+
+    Object.keys(dict).forEach(function(key) {
+      msg = msg.replace(new RegExp("#\\{" + key + "\\}", "g"), dict[key]);
+    });
+
+    return msg;
+  };
+
+  _.defaults = function(value, defaultValue) {
+    return typeof value !== "undefined" ? value : defaultValue;
+  };
+
+  _.article = function(str) {
+    return (/[aeiou]/i.test(str.charAt(0)) ? "an " : "a ") + str;
+  };
+
+  _.check = function(caption, spec) {
+    Object.keys(spec).forEach(function(argName) {
+      var type = spec[argName].type;
+      var given = spec[argName].given;
+
+      if (!_.check[type](given)) {
+        throw new TypeError(_.format(
+          "#{caption}: '#{name}' should be #{type}, but got #{given}", {
+            caption: caption,
+            name   : argName,
+            type   : _.article(type),
+            given  : _.toS(given)
+          }
+        ));
+      }
+    });
+  };
+  _.check.number = function isNumber(value) {
+    return typeof value === "number" && !isNaN(value);
+  };
+  _.check.function = function isNumber(value) {
+    return typeof value === "function";
+  };
+  _.check.ArrayBuffer = function(value) {
+    return value instanceof ArrayBuffer;
+  };
+  _.check.Uint8Array = function isUint8Array(value) {
+    return value instanceof Uint8Array;
+  };
+  _.check.Float32Array = function isFloat32Array(value) {
+    return value instanceof Float32Array;
+  };
+  _.check.PeriodicWave = function(value) {
+    return value instanceof PeriodicWave;
+  };
+
+  _.toS = function(value) {
+    var type = typeof value;
+
+    if (type === "string") {
+      return "'" + value + "'";
+    }
+    if (type === "function") {
+      return "function";
+    }
+    if (Array.isArray(value)) {
+      return "array";
+    }
+    if (!value || type === "number" || type === "boolean") {
+      return String(value);
+    }
+    if (value.constructor && value.constructor.name) {
+      return value.constructor.name;
+    }
+
+    return Object.prototype.toString.call(value).slice(8, -1);
+  };
+
+  _.id = function(obj, wrapping) {
+    if (obj.hasOwnProperty("$id")) {
+      if (wrapping) {
+        return "(" + obj.name + "#" + obj.$id + ")";
+      }
+      return obj.name + "#" + obj.$id;
+    }
+    return obj.name;
+  };
+
+  _.caption = function(obj, method) {
+    return _.format(
+      "#{object}##{method}", {
+        object: _.id(obj, true),
+        method: method
+      }
+    );
+  };
+
+  _.jsonCircularCheck = function(node, func, memo) {
+    if (memo.indexOf(node) !== -1) {
+      return "<circular:" + _.id(node) + ">";
+    }
+    memo.push(node);
+
+    var result = func.call(node, memo);
+
+    memo.pop();
+
+    return result;
+  };
+
+  global.Event = ILLEGAL_CONSTRUCTOR();
+  global.EventTarget = ILLEGAL_CONSTRUCTOR();
+
   global.AudioContext = (function() {
     function AudioContext() {
       $read(this, "name", "AudioContext");
-      $read(this, "destination", new AudioDestinationNode(this));
+      $read(this, "destination", new impl.AudioDestinationNode(this));
       $read(this, "sampleRate", SAMPLERATE);
       $read(this, "currentTime", function() {
         return this._currentTime;
       }.bind(this));
-      $read(this, "listener", new AudioListener(this));
+      $read(this, "listener", new impl.AudioListener(this));
 
       this._currentTime = 0;
       this._targetTime  = 0;
       this._remain = 0;
     }
+    _.inherits(AudioContext, EventTarget);
+
     AudioContext.MOCK_VERSION = VERSION;
 
     AudioContext.prototype.process = function(duration) {
@@ -203,100 +263,98 @@
       }
     };
 
-    AudioContext.prototype.toString = function() {
-      return this.name;
-    };
-
     AudioContext.prototype.toJSON = function() {
       return this.destination.toJSON([]);
     };
 
     AudioContext.prototype.createBuffer = function(numberOfChannels, length, sampleRate) {
-      return new AudioBuffer(this, numberOfChannels, length, sampleRate);
+      return new impl.AudioBuffer(this, numberOfChannels, length, sampleRate);
     };
 
     AudioContext.prototype.decodeAudioData = function(audioData, successCallback, errorCallback) {
-      checkArgs("AudioContext#decodeAudioData(audioData, successCallback, errorCallback)", {
-        audioData      : { type: "ArrayBuffer", given: audioData },
-        successCallback: { type: "function"   , given: defaults(successCallback, NOP) },
-        errorCallback  : { type: "function"   , given: defaults(errorCallback  , NOP) },
+      successCallback = _.defaults(successCallback, NOP);
+      errorCallback   = _.defaults(errorCallback  , NOP);
+      _.check("AudioContext#decodeAudioData(audioData, successCallback, errorCallback)", {
+        audioData      : { type: "ArrayBuffer", given: audioData       },
+        successCallback: { type: "function"   , given: successCallback },
+        errorCallback  : { type: "function"   , given: errorCallback   },
       });
       var _this = this;
       setTimeout(function() {
         if (_this.DECODE_AUDIO_DATA_FAILED) {
           errorCallback();
         } else {
-          successCallback(_this.DECODE_AUDIO_DATA_RESULT || new AudioBuffer(_this, 2, 1024, SAMPLERATE));
+          successCallback(_this.DECODE_AUDIO_DATA_RESULT || new impl.AudioBuffer(_this, 2, 1024, SAMPLERATE));
         }
       }, 0);
     };
 
     AudioContext.prototype.createBufferSource = function() {
-      return new AudioBufferSourceNode(this);
+      return new impl.AudioBufferSourceNode(this);
     };
 
     AudioContext.prototype.createMediaElementSource = function() {
-      return new MediaElementAudioSourceNode(this);
+      return new impl.MediaElementAudioSourceNode(this);
     };
 
     AudioContext.prototype.createMediaStreamSource = function() {
-      return new MediaStreamAudioSourceNode(this);
+      return new impl.MediaStreamAudioSourceNode(this);
     };
 
     AudioContext.prototype.createMediaStreamDestination = function() {
-      return new MediaStreamAudioDestinationNode(this);
+      return new impl.MediaStreamAudioDestinationNode(this);
     };
 
     AudioContext.prototype.createScriptProcessor = function(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-      return new ScriptProcessorNode(this, defaults(bufferSize, 0), defaults(numberOfInputChannels, 2), defaults(numberOfOutputChannels, 2));
+      return new impl.ScriptProcessorNode(this, _.defaults(bufferSize, 0), _.defaults(numberOfInputChannels, 2), _.defaults(numberOfOutputChannels, 2));
     };
 
     AudioContext.prototype.createAnalyser = function() {
-      return new AnalyserNode(this);
+      return new impl.AnalyserNode(this);
     };
 
     AudioContext.prototype.createGain = function() {
-      return new GainNode(this);
+      return new impl.GainNode(this);
     };
 
     AudioContext.prototype.createDelay = function(maxDelayTime) {
-      return new DelayNode(this, defaults(maxDelayTime, 1.0));
+      return new impl.DelayNode(this, _.defaults(maxDelayTime, 1.0));
     };
 
     AudioContext.prototype.createBiquadFilter = function() {
-      return new BiquadFilterNode(this);
+      return new impl.BiquadFilterNode(this);
     };
 
     AudioContext.prototype.createWaveShaper = function() {
-      return new WaveShaperNode(this);
+      return new impl.WaveShaperNode(this);
     };
 
     AudioContext.prototype.createPanner = function() {
-      return new PannerNode(this);
+      return new impl.PannerNode(this);
     };
 
     AudioContext.prototype.createConvolver = function() {
-      return new ConvolverNode(this);
+      return new impl.ConvolverNode(this);
     };
 
     AudioContext.prototype.createChannelSplitter = function(numberOfOutputs) {
-      return new ChannelSplitterNode(this, defaults(numberOfOutputs, 6));
+      return new impl.ChannelSplitterNode(this, _.defaults(numberOfOutputs, 6));
     };
 
     AudioContext.prototype.createChannelMerger = function(numberOfInputs) {
-      return new ChannelMergerNode(this, defaults(numberOfInputs, 6));
+      return new impl.ChannelMergerNode(this, _.defaults(numberOfInputs, 6));
     };
 
     AudioContext.prototype.createDynamicsCompressor = function() {
-      return new DynamicsCompressorNode(this);
+      return new impl.DynamicsCompressorNode(this);
     };
 
     AudioContext.prototype.createOscillator = function() {
-      return new OscillatorNode(this);
+      return new impl.OscillatorNode(this);
     };
 
     AudioContext.prototype.createPeriodicWave = function(real, imag) {
-      return new PeriodicWave(real, imag);
+      return new impl.PeriodicWave(real, imag);
     };
 
     return AudioContext;
@@ -304,19 +362,19 @@
 
   global.OfflineAudioContext = (function() {
     function OfflineAudioContext(numberOfChannels, length, sampleRate) {
-      checkArgs("OfflineAudioContext(numberOfChannels, length, sampleRate)", {
+      _.check("OfflineAudioContext(numberOfChannels, length, sampleRate)", {
         numberOfChannels: { type: "number", given: numberOfChannels },
         length          : { type: "number", given: length           },
         sampleRate      : { type: "number", given: sampleRate       },
       });
 
       $read(this, "name", "OfflineAudioContext");
-      $read(this, "destination", new AudioDestinationNode(this));
+      $read(this, "destination", new impl.AudioDestinationNode(this));
       $read(this, "sampleRate", sampleRate);
       $read(this, "currentTime", function() {
         return this._currentTime;
       }.bind(this));
-      $read(this, "listener", new AudioListener(this));
+      $read(this, "listener", new impl.AudioListener(this));
       $type(this, "oncomplete", "function", NOP);
 
       this._currentTime = 0;
@@ -328,7 +386,7 @@
       this._processed = 0;
       this._rendering = false;
     }
-    extend(OfflineAudioContext, AudioContext);
+    _.inherits(OfflineAudioContext, AudioContext);
 
     OfflineAudioContext.prototype.process = function(duration) {
       var dx;
@@ -353,30 +411,41 @@
       }
 
       if (this._length <= this._processed) {
-        var e = new OfflineAudioCompletionEvent();
+        var e = new impl.OfflineAudioCompletionEvent();
 
-        e.renderedBuffer = new AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);
+        e.renderedBuffer = new impl.AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);
 
         this.oncomplete(e);
-        this._rendering = false;
       }
     };
 
     OfflineAudioContext.prototype.startRendering = function() {
+      if (this._rendering) {
+        throw new Error(_.format(
+          "#{caption} must only be called one time", {
+            caption: _.caption(this, "startRendering()")
+          }
+        ));
+      }
       this._rendering = true;
     };
 
     return OfflineAudioContext;
   })();
 
-  global.OfflineAudioCompletionEvent = (function() {
+  global.OfflineAudioCompletionEvent = ILLEGAL_CONSTRUCTOR(Event);
+
+  impl.OfflineAudioCompletionEvent = (function() {
     function OfflineAudioCompletionEvent() {
       $read(this, "name", "OfflineAudioCompletionEvent");
     }
+    _.inherits(OfflineAudioCompletionEvent, global.OfflineAudioCompletionEvent);
     return OfflineAudioCompletionEvent;
   })();
 
-  global.AudioNode = (function() {
+  global.AudioNode = ILLEGAL_CONSTRUCTOR();
+
+  impl.AudioNode = (function() {
     function AudioNode(spec) {
       $read(this, "context", spec.context);
       $read(this, "name", spec.name);
@@ -391,6 +460,7 @@
       this._outputs = [];
       this._currentTime = -1;
     }
+    _.inherits(AudioNode, global.AudioNode);
 
     AudioNode.prototype.process = function(currentTime, nextCurrentTime) {
       /* istanbul ignore else */
@@ -413,18 +483,11 @@
       }
     };
 
-    AudioNode.prototype.toString = function() {
-      if (typeof this.$id === "string") {
-        return format("(#{0}##{1})", this.name, this.$id);
-      }
-      return this.name;
-    };
-
     AudioNode.prototype.toJSON = function(memo) {
-      return checkCircular(this, function(memo) {
+      return _.jsonCircularCheck(this, function(memo) {
         var json = {};
 
-        json.name = id(this);
+        json.name = _.id(this);
 
         this.jsonAttrs.forEach(function(key) {
           if (this[key] && this[key].toJSON) {
@@ -451,31 +514,50 @@
     };
 
     AudioNode.prototype.connect = function(destination, output, input) {
-      output = defaults(output, 0);
-      input  = defaults(input , 0);
+      var caption = _.caption(this, "connect(destination, output, input)");
+
+      output = _.defaults(output, 0);
+      input  = _.defaults(input , 0);
 
       if (!(destination instanceof AudioNode || destination instanceof AudioParam)) {
-        throw new TypeError(format(
-          "AudioNode#connect(destination, output, input): 'destination' should be an instance of AudioNode or AudioParam, but got #{0}", toS(destination)
+        throw new TypeError(_.format(
+          "#{caption}: '#{name}' should be #{type}, but got #{given}", {
+            caption: caption,
+            name   : "destination",
+            type   : "an instance of AudioNode or AudioParam",
+            given  : _.toS(destination)
+          }
         ));
       }
 
-      checkArgs("AudioNode#connect(destination, output, input)", {
+      _.check(caption, {
         output: { type: "number", given: output },
         input : { type: "number", given: input  },
       });
 
       if (this.context !== destination.context) {
-        throw new Error("AudioNode#connect(destination, output, input): cannot connect to a destination belonging to a different audio context");
+        throw new Error(_.format(
+          "#{caption}: cannot connect to a destination belonging to a different audio context", {
+            caption: caption
+          }
+        ));
       }
       if (output < 0 || this.numberOfOutputs <= output) {
-        throw new Error(format(
-          "AudioNode#connect(destination, output, input): output index (#{0}) exceeds number of outputs (#{1})", output, this.numberOfOutputs
+        throw new Error(_.format(
+          "#{caption}: output index (#{index}) exceeds number of outputs (#{length})", {
+            caption: caption,
+            index  : output,
+            length : this.numberOfOutputs
+          }
         ));
       }
       if (input < 0 || destination.numberOfInputs <= input) {
-        throw new Error(format(
-          "AudioNode#connect(destination, output, input): input index (#{0}) exceeds number of inputs (#{1})", input, destination.numberOfInputs
+        throw new Error(_.format(
+          "#{caption}: input index (#{index}) exceeds number of inputs (#{length})", {
+            caption: caption,
+            index  : input,
+            length : destination.numberOfInputs
+          }
         ));
       }
 
@@ -488,15 +570,21 @@
     };
 
     AudioNode.prototype.disconnect = function(output) {
-      output = defaults(output, 0);
+      var caption = _.caption(this, "disconnect(output)");
 
-      checkArgs("AudioNode#disconnect(output)", {
+      output = _.defaults(output, 0);
+
+      _.check(caption, {
         output: { type: "number", given: output }
       });
 
       if (output < 0 || this.numberOfOutputs <= output) {
-        throw new Error(format(
-          "AudioNode#disconnect: output index (#{0}) exceeds number of outputs (#{1})", output, this.numberOfOutputs
+        throw new Error(_.format(
+          "#{caption}: output index (#{index}) exceeds number of outputs (#{length})", {
+            caption: caption,
+            index  : output,
+            length : this.numberOfOutputs
+          }
         ));
       }
 
@@ -512,9 +600,11 @@
     return AudioNode;
   })();
 
-  global.AudioDestinationNode = (function() {
+  global.AudioDestinationNode = ILLEGAL_CONSTRUCTOR(impl.AudioNode);
+
+  impl.AudioDestinationNode = (function() {
     function AudioDestinationNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "AudioDestinationNode",
         jsonAttrs: [],
@@ -526,12 +616,13 @@
       });
       $read(this, "maxChannelCount", 2);
     }
-    extend(AudioDestinationNode, AudioNode);
-
+    _.inherits(AudioDestinationNode, global.AudioDestinationNode);
     return AudioDestinationNode;
   })();
 
-  global.AudioParam = (function() {
+  global.AudioParam = ILLEGAL_CONSTRUCTOR();
+
+  impl.AudioParam = (function() {
     function AudioParam(node, name, defaultValue, minValue, maxValue) {
       $read(this, "node", node);
       $read(this, "context", node.context);
@@ -545,6 +636,7 @@
       this._events = [];
       this._currentTime = -1;
     }
+    _.inherits(AudioParam, global.AudioParam);
 
     function linTo(v, v0, v1, t, t0, t1) {
       var dt = (t - t0) / (t1 - t0);
@@ -564,17 +656,17 @@
       var dt = (t - t0) / (t1 - t0);
 
       if (dt <= 0) {
-        return defaults(curve[0], v);
+        return _.defaults(curve[0], v);
       }
 
       if (1 <= dt) {
-        return defaults(curve[curve.length - 1], v);
+        return _.defaults(curve[curve.length - 1], v);
       }
 
       var index = (curve.length - 1) * dt;
       var delta = index - (index|0);
-      var v0 = defaults(curve[(index + 0)|0], v);
-      var v1 = defaults(curve[(index + 1)|0], v);
+      var v0 = _.defaults(curve[(index + 0)|0], v);
+      var v1 = _.defaults(curve[(index + 1)|0], v);
 
       return (1 - delta) * v0 + delta * v1;
     }
@@ -630,12 +722,8 @@
       }
     };
 
-    AudioParam.prototype.toString = function() {
-      return format("#{0}##{1}", this.node, this.name);
-    };
-
     AudioParam.prototype.toJSON = function(memo) {
-      return checkCircular(this, function(memo) {
+      return _.jsonCircularCheck(this, function(memo) {
         var json = {};
 
         json.value = this.value;
@@ -671,7 +759,7 @@
     }
 
     AudioParam.prototype.setValueAtTime = function(value, startTime) {
-      checkArgs("AudioParam#setValueAtTime(value, startTime)", {
+      _.check("AudioParam#setValueAtTime(value, startTime)", {
         value    : { type: "number", given: value     },
         startTime: { type: "number", given: startTime },
       });
@@ -683,7 +771,7 @@
     };
 
     AudioParam.prototype.linearRampToValueAtTime = function(value, endTime) {
-      checkArgs("AudioParam#linearRampToValueAtTime(value, endTime)", {
+      _.check("AudioParam#linearRampToValueAtTime(value, endTime)", {
         value  : { type: "number", given: value   },
         endTime: { type: "number", given: endTime },
       });
@@ -695,7 +783,7 @@
     };
 
     AudioParam.prototype.exponentialRampToValueAtTime = function(value, endTime) {
-      checkArgs("AudioParam#exponentialRampToValueAtTime(value, endTime)", {
+      _.check("AudioParam#exponentialRampToValueAtTime(value, endTime)", {
         value  : { type: "number", given: value   },
         endTime: { type: "number", given: endTime },
       });
@@ -707,7 +795,7 @@
     };
 
     AudioParam.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
-      checkArgs("AudioParam#setTargetAtTime(target, startTime, timeConstant)", {
+      _.check("AudioParam#setTargetAtTime(target, startTime, timeConstant)", {
         target      : { type: "number", given: target       },
         startTime   : { type: "number", given: startTime    },
         timeConstant: { type: "number", given: timeConstant },
@@ -722,7 +810,7 @@
     };
 
     AudioParam.prototype.setValueCurveAtTime = function(values, startTime, duration) {
-      checkArgs("AudioParam#setValueCurveAtTime(values, startTime, duration)", {
+      _.check("AudioParam#setValueCurveAtTime(values, startTime, duration)", {
         values   : { type: "Float32Array", given: values },
         startTime: { type: "number"      , given: startTime },
         duration : { type: "number"      , given: duration }
@@ -736,7 +824,7 @@
     };
 
     AudioParam.prototype.cancelScheduledValues = function(startTime) {
-      checkArgs("AudioParam#cancelScheduledValues(startTime)", {
+      _.check("AudioParam#cancelScheduledValues(startTime)", {
         startTime: { type: "number", given: startTime }
       });
       var events = this._events;
@@ -751,9 +839,13 @@
     return AudioParam;
   })();
 
-  global.GainNode = (function() {
+  global.GainNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createGain()"
+  );
+
+  impl.GainNode = (function() {
     function GainNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "GainNode",
         jsonAttrs: [ "gain"　],
@@ -763,16 +855,20 @@
         channelCountMode: "max",
         channelInterpretation: "speakers"
       });
-      $read(this, "gain", new AudioParam(this, "gain", 1.0, 0.0, 1.0));
+      $read(this, "gain", new impl.AudioParam(this, "gain", 1.0, 0.0, 1.0));
     }
-    extend(GainNode, AudioNode);
+    _.inherits(GainNode, global.GainNode);
 
     return GainNode;
   })();
 
-  global.DelayNode = (function() {
+  global.DelayNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createDelay()"
+  );
+
+  impl.DelayNode = (function() {
     function DelayNode(context, maxDelayTime) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "DelayNode",
         jsonAttrs: [ "delayTime"　],
@@ -782,15 +878,24 @@
         channelCountMode: "max",
         channelInterpretation: "speakers"
       });
-      $read(this, "delayTime", new AudioParam(this, "delayTime", 0, 0, maxDelayTime));
+      $read(this, "delayTime", new impl.AudioParam(this, "delayTime", 0, 0, maxDelayTime));
     }
-    extend(DelayNode, AudioNode);
+    _.inherits(DelayNode, global.DelayNode);
 
     return DelayNode;
   })();
 
-  global.AudioBuffer = (function() {
+  global.AudioBuffer = ILLEGAL_CONSTRUCTOR(
+    null, "createBuffer(numberOfChannels, length, sampleRate)"
+  );
+
+  impl.AudioBuffer = (function() {
     function AudioBuffer(context, numberOfChannels, length, sampleRate) {
+      _.check("AudioBuffer(numerOfChannels, length, sampleRate)", {
+        numberOfChannels: { type: "number", given: numberOfChannels },
+        length          : { type: "number", given: length           },
+        sampleRate      : { type: "number", given: sampleRate       },
+      });
       $read(this, "context", context);
       $read(this, "name", "AudioBuffer");
       $read(this, "sampleRate", sampleRate);
@@ -803,6 +908,7 @@
         this._data[i] = new Float32Array(length);
       }
     }
+    _.inherits(AudioBuffer, global.AudioBuffer);
 
     function f32ToArray(f32) {
       var a = new Array(f32.length);
@@ -832,17 +938,25 @@
       if (0 <= channel && channel < this._data.length) {
         return this._data[channel];
       }
-      throw new Error(format(
-        "AudioBuffer#getChannelData: channel index (#{0}) exceeds number of channels (#{1})", channel, this._data.length
+      throw new Error(_.format(
+        "#{caption}: channel index (#{index}) exceeds number of channels (#{length})", {
+          caption: _.caption(this, "getChannelData(channel)"),
+          index  : channel,
+          length : this._data.length
+        }
       ));
     };
 
     return AudioBuffer;
   })();
 
-  global.AudioBufferSourceNode = (function() {
+  global.AudioBufferSourceNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createBufferSource()"
+  );
+
+  impl.AudioBufferSourceNode = (function() {
     function AudioBufferSourceNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "AudioBufferSourceNode",
         jsonAttrs: [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ],
@@ -853,34 +967,65 @@
         channelInterpretation: "speakers"
       });
       $type(this, "buffer", AudioBuffer);
-      $read(this, "playbackRate", new AudioParam(this, "playbackRate", 1, 0, 1024));
+      $read(this, "playbackRate", new impl.AudioParam(this, "playbackRate", 1, 0, 1024));
       $type(this, "loop", "boolean", false);
       $type(this, "loopStart", "number", 0);
       $type(this, "loopEnd", "number", 0);
       $type(this, "onended", "function", NOP);
+
+      this._status = "init";
     }
-    extend(AudioBufferSourceNode, AudioNode);
+    _.inherits(AudioBufferSourceNode, global.AudioBufferSourceNode);
 
     AudioBufferSourceNode.prototype.start = function(when, offset, duration) {
-      checkArgs("AudioBufferSourceNode#start(when, offset, duration)", {
-        when    : { type: "number", given: defaults(when    , 0) },
-        offset  : { type: "number", given: defaults(offset  , 0) },
-        duration: { type: "number", given: defaults(duration, 0) },
+      var caption = _.caption(this, "start(when, offset, duration)");
+      _.check(caption, {
+        when    : { type: "number", given: _.defaults(when    , 0) },
+        offset  : { type: "number", given: _.defaults(offset  , 0) },
+        duration: { type: "number", given: _.defaults(duration, 0) },
       });
+      if (this._status !== "init") {
+        throw new Error(_.format(
+          "#{caption} cannot start more than once", {
+            caption: caption
+          }
+        ));
+      }
+      this._status = "start";
     };
 
     AudioBufferSourceNode.prototype.stop = function(when) {
-      checkArgs("AudioBufferSourceNode#stop(when)", {
-        when: { type: "number", given: defaults(when, 0) }
+      var caption = _.caption(this, "stop(when)");
+      _.check(caption, {
+        when: { type: "number", given: _.defaults(when, 0) }
       });
+      if (this._status === "init") {
+        throw new Error(_.format(
+          "#{caption} cannot call stop without calling start first", {
+          caption: caption
+          }
+        ));
+      }
+      if (this._status === "stop") {
+        throw new Error(_.format(
+          "#{caption} cannot stop more than once", {
+            caption: caption
+          }
+        ));
+      }
+      this._status = "stop";
     };
 
     return AudioBufferSourceNode;
   })();
 
-  global.MediaElementAudioSourceNode = (function() {
+  global.MediaElementAudioSourceNode = ILLEGAL_CONSTRUCTOR(
+    AudioNode, "createMediaElementSource(mediaElement)"
+  );
+
+  impl.MediaElementAudioSourceNode = (function() {
     function MediaElementAudioSourceNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "MediaElementAudioSourceNode",
         jsonAttrs: [],
@@ -891,23 +1036,30 @@
         channelInterpretation: "speakers"
       });
     }
-    extend(MediaElementAudioSourceNode, AudioNode);
+    _.inherits(MediaElementAudioSourceNode, global.MediaElementAudioSourceNode);
 
     return MediaElementAudioSourceNode;
   })();
 
-  global.ScriptProcessorNode = (function() {
+  global.ScriptProcessorNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels)"
+  );
+
+  impl.ScriptProcessorNode = (function() {
     function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
       if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
-        throw new TypeError(format(
-          "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels): invalid bufferSize: #{0}", toS(bufferSize)
+        throw new TypeError(_.format(
+          "#{caption}: invalid bufferSize: #{0}", {
+            caption   : "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)",
+            bufferSize: _.toS(bufferSize)
+          }
         ));
       }
-      checkArgs("ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)", {
+      _.check("ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)", {
         numberOfInputChannels : { type: "number", given: numberOfInputChannels  },
         numberOfOutputChannels: { type: "number", given: numberOfOutputChannels },
       });
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "ScriptProcessorNode",
         jsonAttrs: [],
@@ -924,7 +1076,7 @@
 
       this._numSamples = 0;
     }
-    extend(ScriptProcessorNode, AudioNode);
+    _.inherits(ScriptProcessorNode, global.ScriptProcessorNode);
 
     ScriptProcessorNode.prototype._process = function(currentTime, nextCurrentTime) {
       var numSamples = ((nextCurrentTime - currentTime) / CURRENT_TIME_INCR) * BUFFER_SIZE;
@@ -934,11 +1086,11 @@
       if (this._numSamples <= 0) {
         this._numSamples += this.bufferSize;
 
-        var e = new AudioProcessingEvent();
+        var e = new impl.AudioProcessingEvent();
 
         e.playbackTime = this.context.currentTime;
-        e.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
-        e.outputBuffer = new AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
+        e.inputBuffer = new impl.AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
+        e.outputBuffer = new impl.AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
 
         this.onaudioprocess(e);
       }
@@ -947,16 +1099,23 @@
     return ScriptProcessorNode;
   })();
 
-  global.AudioProcessingEvent = (function() {
+  global.AudioProcessingEvent = ILLEGAL_CONSTRUCTOR(Event);
+
+  impl.AudioProcessingEvent = (function() {
     function AudioProcessingEvent() {
       $read(this, "name", "AudioProcessingEvent");
     }
+    _.inherits(AudioProcessingEvent, global.AudioProcessingEvent);
     return AudioProcessingEvent;
   })();
 
-  global.PannerNode = (function() {
+  global.PannerNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createPanner()"
+  );
+
+  impl.PannerNode = (function() {
     function PannerNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "PannerNode",
         jsonAttrs: [
@@ -978,10 +1137,10 @@
       $type(this, "coneOuterAngle", "number", 360);
       $type(this, "coneOuterGain", "number", 0);
     }
-    extend(PannerNode, AudioNode);
+    _.inherits(PannerNode, global.PannerNode);
 
     PannerNode.prototype.setPosition = function(x, y, z) {
-      checkArgs("PannerNode#setPosition(x, y, z)", {
+      _.check(_.caption(this, "setPosition(x, y, z)"), {
         x: { type: "number", given: x },
         y: { type: "number", given: y },
         z: { type: "number", given: z },
@@ -989,7 +1148,7 @@
     };
 
     PannerNode.prototype.setOrientation = function(x, y, z) {
-      checkArgs("PannerNode#setOrientation(x, y, z)", {
+      _.check(_.caption(this, "setOrientation(x, y, z)"), {
         x: { type: "number", given: x },
         y: { type: "number", given: y },
         z: { type: "number", given: z },
@@ -997,7 +1156,7 @@
     };
 
     PannerNode.prototype.setVelocity = function(x, y, z) {
-      checkArgs("PannerNode#setVelocity(x, y, z)", {
+      _.check(_.caption(this, "setVelocity(x, y, z)"), {
         x: { type: "number", given: x },
         y: { type: "number", given: y },
         z: { type: "number", given: z },
@@ -1007,15 +1166,18 @@
     return PannerNode;
   })();
 
-  global.AudioListener = (function() {
+  global.AudioListener = ILLEGAL_CONSTRUCTOR();
+
+  impl.AudioListener = (function() {
     function AudioListener() {
       $read(this, "name", "AudioListener");
       $type(this, "dopplerFactor", "number", 1);
       $type(this, "speedOfSound", "number", 343.3);
     }
+    _.inherits(AudioListener, global.AudioListener);
 
     AudioListener.prototype.setPosition = function(x, y, z) {
-      checkArgs("AudioListener#setPosition(x, y, z)", {
+      _.check(_.caption(this, "setPosition(x, y, z)"), {
         x: { type: "number", given: x },
         y: { type: "number", given: y },
         z: { type: "number", given: z },
@@ -1023,7 +1185,7 @@
     };
 
     AudioListener.prototype.setOrientation = function(x, y, z, xUp, yUp, zUp) {
-      checkArgs("AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)", {
+      _.check(_.caption(this, "setOrientation(x, y, z, xUp, yUp, zUp)"), {
         x  : { type: "number", given: x   },
         y  : { type: "number", given: y   },
         z  : { type: "number", given: z   },
@@ -1034,7 +1196,7 @@
     };
 
     AudioListener.prototype.setVelocity = function(x, y, z) {
-      checkArgs("AudioListener#setVelocity(x, y, z)", {
+      _.check(_.caption(this, "setVelocity(x, y, z)"), {
         x: { type: "number", given: x },
         y: { type: "number", given: y },
         z: { type: "number", given: z },
@@ -1044,9 +1206,13 @@
     return AudioListener;
   })();
 
-  global.ConvolverNode = (function() {
+  global.ConvolverNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createConvolver()"
+  );
+
+  impl.ConvolverNode = (function() {
     function ConvolverNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "ConvolverNode",
         jsonAttrs: [ "normalize" ],
@@ -1059,14 +1225,18 @@
       $type(this, "buffer", AudioBuffer);
       $type(this, "normalize", "boolean", true);
     }
-    extend(ConvolverNode, AudioNode);
+    _.inherits(ConvolverNode, global.ConvolverNode);
 
     return ConvolverNode;
   })();
 
-  global.AnalyserNode = (function() {
+  global.AnalyserNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createAnalyser()"
+  );
+
+  impl.AnalyserNode = (function() {
     function AnalyserNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "AnalyserNode",
         jsonAttrs: [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ],
@@ -1084,22 +1254,22 @@
       $type(this, "maxDecibels", "number", 30);
       $type(this, "smoothingTimeConstant", "number", 0.8);
     }
-    extend(AnalyserNode, AudioNode);
+    _.inherits(AnalyserNode, global.AnalyserNode);
 
     AnalyserNode.prototype.getFloatFrequencyData = function(array) {
-      checkArgs("AnalyserNode#getFloatFrequencyData(array)", {
+      _.check(_.caption(this, "getFloatFrequencyData(array)"), {
         array: { type: "Float32Array", given: array }
       });
     };
 
     AnalyserNode.prototype.getByteFrequencyData = function(array) {
-      checkArgs("AnalyserNode#getByteFrequencyData(array)", {
+      _.check(_.caption(this, "getByteFrequencyData(array)"), {
         array: { type: "Uint8Array", given: array }
       });
     };
 
     AnalyserNode.prototype.getByteTimeDomainData = function(array) {
-      checkArgs("AnalyserNode#getByteTimeDomainData(array)", {
+      _.check(_.caption(this, "getByteTimeDomainData(array)"), {
         array: { type: "Uint8Array", given: array }
       });
     };
@@ -1107,12 +1277,16 @@
     return AnalyserNode;
   })();
 
-  global.ChannelSplitterNode = (function() {
+  global.ChannelSplitterNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createChannelSplitter(numberOfOutputs)"
+  );
+
+  impl.ChannelSplitterNode = (function() {
     function ChannelSplitterNode(context, numberOfOutputs) {
-      checkArgs("ChannelSplitterNode(numberOfOutputs)", {
+      _.check("ChannelSplitterNode(numberOfOutputs)", {
         numberOfOutputs: { type: "number", given: numberOfOutputs }
       });
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "ChannelSplitterNode",
         jsonAttrs: [],
@@ -1123,17 +1297,21 @@
         channelInterpretation: "speakers"
       });
     }
-    extend(ChannelSplitterNode, AudioNode);
+    _.inherits(ChannelSplitterNode, global.ChannelSplitterNode);
 
     return ChannelSplitterNode;
   })();
 
-  global.ChannelMergerNode = (function() {
+  global.ChannelMergerNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createChannelMerger(numberOfInputs)"
+  );
+
+  impl.ChannelMergerNode = (function() {
     function ChannelMergerNode(context, numberOfInputs) {
-      checkArgs("ChannelMergerNode(numberOfInputs)", {
+      _.check("ChannelMergerNode(numberOfInputs)", {
         numberOfInputs: { type: "number", given: numberOfInputs }
       });
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "ChannelMergerNode",
         jsonAttrs: [],
@@ -1144,14 +1322,18 @@
         channelInterpretation: "speakers"
       });
     }
-    extend(ChannelMergerNode, AudioNode);
+    _.inherits(ChannelMergerNode, global.ChannelMergerNode);
 
     return ChannelMergerNode;
   })();
 
-  global.DynamicsCompressorNode = (function() {
+  global.DynamicsCompressorNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createDynamicsCompressor()"
+  );
+
+  impl.DynamicsCompressorNode = (function() {
     function DynamicsCompressorNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "DynamicsCompressorNode",
         jsonAttrs: [ "threshold", "knee", "ratio", "reduction", "attack", "release" ],
@@ -1161,21 +1343,25 @@
         channelCountMode: "explicit",
         channelInterpretation: "speakers"
       });
-      $read(this, "threshold", new AudioParam(this, "threshold", -24, -100, 0));
-      $read(this, "knee", new AudioParam(this, "knee", 30, 0, 40));
-      $read(this, "ratio", new AudioParam(this, "ratio", 12, 1, 20));
-      $read(this, "reduction", new AudioParam(this, "reduction", 0, -20, 0));
-      $read(this, "attack", new AudioParam(this, "attack", 0.003, 0, 1.0));
-      $read(this, "release", new AudioParam(this, "release", 0.250, 0, 1.0));
+      $read(this, "threshold", new impl.AudioParam(this, "threshold", -24, -100, 0));
+      $read(this, "knee", new impl.AudioParam(this, "knee", 30, 0, 40));
+      $read(this, "ratio", new impl.AudioParam(this, "ratio", 12, 1, 20));
+      $read(this, "reduction", new impl.AudioParam(this, "reduction", 0, -20, 0));
+      $read(this, "attack", new impl.AudioParam(this, "attack", 0.003, 0, 1.0));
+      $read(this, "release", new impl.AudioParam(this, "release", 0.250, 0, 1.0));
     }
-    extend(DynamicsCompressorNode, AudioNode);
+    _.inherits(DynamicsCompressorNode, global.DynamicsCompressorNode);
 
     return DynamicsCompressorNode;
   })();
 
-  global.BiquadFilterNode = (function() {
+  global.BiquadFilterNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createBiquadFilter()"
+  );
+
+  impl.BiquadFilterNode = (function() {
     function BiquadFilterNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "BiquadFilterNode",
         jsonAttrs: [ "type", "frequency", "detune", "Q", "gain" ],
@@ -1188,15 +1374,15 @@
       $enum(this, "type", [
         "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"
       ], "lowpass");
-      $read(this, "frequency", new AudioParam(this, "frequency", 350, 10, SAMPLERATE / 2));
-      $read(this, "detune", new AudioParam(this, "detune", 0, -4800, 4800));
-      $read(this, "Q", new AudioParam(this, "Q", 1, 0.0001, 1000));
-      $read(this, "gain", new AudioParam(this, "gain", 0, -40, 40));
+      $read(this, "frequency", new impl.AudioParam(this, "frequency", 350, 10, SAMPLERATE / 2));
+      $read(this, "detune", new impl.AudioParam(this, "detune", 0, -4800, 4800));
+      $read(this, "Q", new impl.AudioParam(this, "Q", 1, 0.0001, 1000));
+      $read(this, "gain", new impl.AudioParam(this, "gain", 0, -40, 40));
     }
-    extend(BiquadFilterNode, AudioNode);
+    _.inherits(BiquadFilterNode, global.BiquadFilterNode);
 
     BiquadFilterNode.prototype.getFrequencyResponse = function(frequencyHz, magResponse, phaseResponse) {
-      checkArgs("BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)", {
+      _.check(_.caption(this, "getFrequencyResponse(frequencyHz, magResponse, phaseResponse)"), {
         frequencyHz  : { type: "Float32Array", given: frequencyHz },
         magResponse  : { type: "Float32Array", given: magResponse },
         phaseResponse: { type: "Float32Array", given: phaseResponse },
@@ -1206,9 +1392,13 @@
     return BiquadFilterNode;
   })();
 
-  global.WaveShaperNode = (function() {
+  global.WaveShaperNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createWaveShaper()"
+  );
+
+  impl.WaveShaperNode = (function() {
     function WaveShaperNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "WaveShaperNode",
         jsonAttrs: [ "oversample" ],
@@ -1221,14 +1411,18 @@
       $type(this, "curve", Float32Array);
       $enum(this, "oversample", [ "none", "2x", "4x" ], "none");
     }
-    extend(WaveShaperNode, AudioNode);
+    _.inherits(WaveShaperNode, global.WaveShaperNode);
 
     return WaveShaperNode;
   })();
 
-  global.OscillatorNode = (function() {
+  global.OscillatorNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createOscillator()"
+  );
+
+  impl.OscillatorNode = (function() {
     function OscillatorNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "OscillatorNode",
         jsonAttrs:  [ "type", "frequency", "detune" ],
@@ -1239,26 +1433,53 @@
         channelInterpretation: "speakers"
       });
       $enum(this, "type", [ "sine", "square", "sawtooth", "triangle", "custom" ], "sine");
-      $read(this, "frequency", new AudioParam(this, "frequency", 440, 0, 100000));
-      $read(this, "detune", new AudioParam(this, "detune", 0, -4800, 4800));
+      $read(this, "frequency", new impl.AudioParam(this, "frequency", 440, 0, 100000));
+      $read(this, "detune", new impl.AudioParam(this, "detune", 0, -4800, 4800));
       $type(this, "onended", "function", NOP);
+
+      this._status = "init";
     }
-    extend(OscillatorNode, AudioNode);
+    _.inherits(OscillatorNode, global.OscillatorNode);
 
     OscillatorNode.prototype.start = function(when) {
-      checkArgs("OscillatorNode#start(when)", {
-        when: { type: "number", given: defaults(when, 0) }
+      var caption = _.caption(this, "start(when)");
+      _.check(caption, {
+        when: { type: "number", given: _.defaults(when, 0) }
       });
+      if (this._status !== "init") {
+        throw new Error(_.format(
+          "#{caption} cannot start more than once", {
+            caption: caption
+          }
+        ));
+      }
+      this._status = "start";
     };
 
     OscillatorNode.prototype.stop = function(when) {
-      checkArgs("OscillatorNode#stop(when)", {
-        when: { type: "number", given: defaults(when, 0) }
+      var caption = _.caption(this, "stop(when)");
+      _.check(caption, {
+        when: { type: "number", given: _.defaults(when, 0) }
       });
+      if (this._status === "init") {
+        throw new Error(_.format(
+          "#{caption} cannot call stop without calling start first", {
+            caption: caption
+          }
+        ));
+      }
+      if (this._status === "stop") {
+        throw new Error(_.format(
+          "#{caption} cannot stop more than once", {
+            caption: caption
+          }
+        ));
+      }
+      this._status = "stop";
     };
 
     OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
-      checkArgs("OscillatorNode#setPeriodicWave(periodicWave)", {
+      _.check(_.caption(this, "setPeriodicWave(periodicWave)"), {
         periodicWave: { type: "PeriodicWave", given: periodicWave }
       });
     };
@@ -1266,16 +1487,47 @@
     return OscillatorNode;
   })();
 
-  global.PeriodicWave = (function() {
-    function PeriodicWave() {
+  global.PeriodicWave = ILLEGAL_CONSTRUCTOR(
+    null, "createPeriodicWave(real, imag)"
+  );
+
+  impl.PeriodicWave = (function() {
+    function PeriodicWave(real, imag) {
+      var caption = "PeriodicWave(real, imag)";
+      _.check(caption, {
+        real: { type: "Float32Array", given: real },
+        imag: { type: "Float32Array", given: imag },
+      });
+      if (real.length !== imag.length) {
+        throw new Error(_.format(
+          "#{caption}: length of real array (#{real}) and length of imaginary array (#{imag}) must match", {
+            caption: caption,
+            real: real.length,
+            imag: imag.length
+          }
+        ));
+      }
+      if (4096 < real.length || 4096 < imag.length) {
+        throw new Error(_.format(
+          "#{caption}: length of array (#{length}) exceeds allow maximum of 4096", {
+            caption: caption,
+            length : Math.max(real.length, imag.length)
+          }
+        ));
+      }
       $read(this, "name", "PeriodicWave");
     }
+    _.inherits(PeriodicWave, global.PeriodicWave);
     return PeriodicWave;
   })();
 
-  global.MediaStreamAudioSourceNode = (function() {
+  global.MediaStreamAudioSourceNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createMediaStreamSource(mediaStream)"
+  );
+
+  impl.MediaStreamAudioSourceNode = (function() {
     function　MediaStreamAudioSourceNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "MediaStreamAudioSourceNode",
         jsonAttrs:  [],
@@ -1286,14 +1538,18 @@
         channelInterpretation: "speakers"
       });
     }
-    extend(MediaStreamAudioSourceNode, AudioNode);
+    _.inherits(MediaStreamAudioSourceNode, global.MediaStreamAudioSourceNode);
 
     return MediaStreamAudioSourceNode;
   })();
 
-  global.MediaStreamAudioDestinationNode = (function() {
+  global.MediaStreamAudioDestinationNode = ILLEGAL_CONSTRUCTOR(
+    impl.AudioNode, "createMediaStreamDestination()"
+  );
+
+  impl.MediaStreamAudioDestinationNode = (function() {
     function MediaStreamAudioDestinationNode(context) {
-      AudioNode.call(this, {
+      impl.AudioNode.call(this, {
         context: context,
         name: "MediaStreamAudioDestinationNode",
         jsonAttrs:  [],
@@ -1304,7 +1560,7 @@
         channelInterpretation: "speakers"
       });
     }
-    extend(MediaStreamAudioDestinationNode, AudioNode);
+    _.inherits(MediaStreamAudioDestinationNode, global.MediaStreamAudioDestinationNode);
 
     return MediaStreamAudioDestinationNode;
   })();

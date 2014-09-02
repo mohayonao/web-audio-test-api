@@ -15,6 +15,17 @@ describe("ScriptProcessorNode", function() {
     node = ctx.createScriptProcessor(BUFFER_SIZE, 2, 1);
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new ScriptProcessorNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+    it("should have been inherited from AudioNode", function() {
+      expect(node).to.be.instanceOf(AudioNode);
+    });
+  });
+
   describe("invalid arguments", function() {
     it("invalid buffer size", function() {
       expect(function() {
@@ -67,6 +78,7 @@ describe("ScriptProcessorNode", function() {
       node.connect(ctx.destination);
       node.onaudioprocess = function(e) {
         passed += 1;
+        expect(e).to.be.instanceOf(Event);
         expect(e).to.be.instanceOf(AudioProcessingEvent);
         expect(e).to.have.property("playbackTime");
         expect(e.inputBuffer).to.be.instanceOf(AudioBuffer);
@@ -95,7 +107,7 @@ describe("ScriptProcessorNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "ScriptProcessorNode",
@@ -104,4 +116,14 @@ describe("ScriptProcessorNode", function() {
     });
   });
 
+});
+
+describe("AudioProcessingEvent", function() {
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new AudioProcessingEvent();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+  });
 });

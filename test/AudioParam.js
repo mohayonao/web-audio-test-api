@@ -15,6 +15,14 @@ describe("AudioParam", function() {
     osc.connect(ctx.destination);
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new AudioParam();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+  });
+
   describe("#connect()", function() {
     it("should be connected", function() {
       var osc = ctx.createOscillator();

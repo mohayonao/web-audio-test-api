@@ -12,6 +12,14 @@ describe("AudioNode", function() {
     node = ctx.createOscillator();
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new AudioNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+  });
+
   describe("#context", function() {
     it("should be exist", function() {
       expect(node).to.have.property("context", ctx);
@@ -57,32 +65,32 @@ describe("AudioNode", function() {
     it("throw error", function() {
       expect(function() {
         node.connect("INVALID");
-      }).throw(TypeError, "AudioNode#connect(destination, output, input)");
+      }).throw(TypeError, "connect(destination, output, input)");
     });
     it("throw error", function() {
       expect(function() {
         node.connect(ctx.destination, "INVALID");
-      }).throw(TypeError, "AudioNode#connect(destination, output, input)");
+      }).throw(TypeError, "connect(destination, output, input)");
     });
     it("throw error", function() {
       expect(function() {
         node.connect(ctx.destination, 0, "INVALID");
-      }).throw(TypeError, "AudioNode#connect(destination, output, input)");
+      }).throw(TypeError, "connect(destination, output, input)");
     });
     it("throw error", function() {
       expect(function() {
         node.connect(new AudioContext().destination);
-      }).throw(Error, "AudioNode#connect(destination, output, input): cannot connect to a destination belonging to a different audio context");
+      }).throw(Error, "connect(destination, output, input): cannot connect to a destination belonging to a different audio context");
     });
     it("throw error", function() {
       expect(function() {
         node.connect(ctx.destination, 2);
-      }).throw(Error, "AudioNode#connect(destination, output, input): output index (2) exceeds number of outputs (1)");
+      }).throw(Error, "connect(destination, output, input): output index (2) exceeds number of outputs (1)");
     });
     it("throw error", function() {
       expect(function() {
         node.connect(ctx.destination, 0, 2);
-      }).throw(Error, "AudioNode#connect(destination, output, input): input index (2) exceeds number of inputs (1)");
+      }).throw(Error, "connect(destination, output, input): input index (2) exceeds number of inputs (1)");
     });
   });
 
@@ -95,16 +103,16 @@ describe("AudioNode", function() {
     it("throw error", function() {
       expect(function() {
         node.disconnect("INVALID");
-      }).throw(TypeError, "AudioNode#disconnect(output)");
+      }).throw(TypeError, "disconnect(output)");
     });
     it("throw error", function() {
       expect(function() {
         node.disconnect(2);
-      }).throw(Error, "AudioNode#disconnect: output index (2) exceeds number of outputs (1)");
+      }).throw(Error, "disconnect(output): output index (2) exceeds number of outputs (1)");
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "OscillatorNode",

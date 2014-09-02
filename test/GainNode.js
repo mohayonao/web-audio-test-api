@@ -12,6 +12,17 @@ describe("GainNode", function() {
     node = ctx.createGain();
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new GainNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+    it("should have been inherited from AudioNode", function() {
+      expect(node).to.be.instanceOf(AudioNode);
+    });
+  });
+
   describe("#gain", function() {
     it("should be exist", function() {
       expect(node).to.have.property("gain");
@@ -26,7 +37,7 @@ describe("GainNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "GainNode",

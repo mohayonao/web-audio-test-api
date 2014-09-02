@@ -43,6 +43,7 @@
     "OscillatorNode": true,
     "PeriodicWave": true,
     "MediaStreamAudioSourceNode": true,
-    "MediaStreamAudioDestinationNode": true
+    "MediaStreamAudioDestinationNode": true,
+    "EventTarget": true
   }
 }

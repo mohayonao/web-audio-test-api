@@ -12,6 +12,17 @@ describe("AudioBufferSourceNode", function() {
     node = ctx.createBufferSource();
   });
 
+  describe("()", function() {
+    it("throw illegal constructor", function() {
+      expect(function() {
+        return new AudioBufferSourceNode();
+      }).to.throw(TypeError, "Illegal constructor");
+    });
+    it("should have been inherited from AudioNode", function() {
+      expect(node).to.be.instanceOf(AudioNode);
+    });
+  });
+
   describe("#buffer", function() {
     it("should be exist", function() {
       expect(node).to.have.property("buffer");
@@ -109,22 +120,42 @@ describe("AudioBufferSourceNode", function() {
         node.start(0, 0, "INVALID");
       }).throw(TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
     });
+    it("throw error if called more than once", function() {
+      node.start(0);
+      expect(function() {
+        node.start(0);
+      }).to.throw(Error);
+    });
   });
 
   describe("#stop(when)", function() {
     it("should work", function() {
+      node.start();
       expect(function() {
         node.stop();
       }).to.not.throw();
     });
     it("throw error", function() {
+      node.start();
       expect(function() {
         node.stop("INVALID");
-      }).throw(TypeError, "AudioBufferSourceNode#stop(when)");
+      }).to.throw(TypeError, "AudioBufferSourceNode#stop(when)");
+    });
+    it("throw error if called without calling start first", function() {
+      expect(function() {
+        node.stop();
+      }).to.throw(Error);
+    });
+    it("throw error if called more than once", function() {
+      node.start();
+      node.stop();
+      expect(function() {
+        node.stop();
+      }).to.throw(Error);
     });
   });
 
-  describe("#toJSON", function() {
+  describe("#toJSON()", function() {
     it("return json", function() {
       expect(node.toJSON()).to.eql({
         name: "AudioBufferSourceNode",
