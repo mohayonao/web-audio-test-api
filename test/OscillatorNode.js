@@ -76,18 +76,38 @@ describe("OscillatorNode", function() {
         node.start("INVALID");
       }).throw(TypeError, "OscillatorNode#start(when)");
     });
+    it("throw error if called more than once", function() {
+      node.start(0);
+      expect(function() {
+        node.start(0);
+      }).to.throw(Error);
+    });
   });
 
   describe("#stop(when)", function() {
     it("should work", function() {
+      node.start();
       expect(function() {
         node.stop();
       }).to.not.throw();
     });
     it("throw error", function() {
+      node.start();
       expect(function() {
         node.stop("INVALID");
-      }).throw(TypeError, "OscillatorNode#stop(when)");
+      }).to.throw(TypeError, "OscillatorNode#stop(when)");
+    });
+    it("throw error if called without calling start first", function() {
+      expect(function() {
+        node.stop();
+      }).to.throw(Error);
+    });
+    it("throw error if called more than once", function() {
+      node.start();
+      node.stop();
+      expect(function() {
+        node.stop();
+      }).to.throw(Error);
     });
   });
 

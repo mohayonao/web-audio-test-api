@@ -406,11 +406,13 @@
         e.renderedBuffer = new impl.AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);
 
         this.oncomplete(e);
-        this._rendering = false;
       }
     };
 
     OfflineAudioContext.prototype.startRendering = function() {
+      if (this._rendering) {
+        throw new Error("OfflineAudioContext#startRendering() must only be called one time");
+      }
       this._rendering = true;
     };
 
@@ -960,6 +962,8 @@
       $type(this, "loopStart", "number", 0);
       $type(this, "loopEnd", "number", 0);
       $type(this, "onended", "function", NOP);
+
+      this._status = "init";
     }
     _.inherits(AudioBufferSourceNode, global.AudioBufferSourceNode);
 
@@ -969,12 +973,35 @@
         offset  : { type: "number", given: _.defaults(offset  , 0) },
         duration: { type: "number", given: _.defaults(duration, 0) },
       });
+      if (this._status !== "init") {
+        throw new Error(_.format(
+          "#{name}#start(when) cannot start more than once", {
+            name: this
+          }
+        ));
+      }
+      this._status = "start";
     };
 
     AudioBufferSourceNode.prototype.stop = function(when) {
       _.checkArgs("AudioBufferSourceNode#stop(when)", {
         when: { type: "number", given: _.defaults(when, 0) }
       });
+      if (this._status === "init") {
+        throw new Error(_.format(
+          "#{name}#stop(when) cannot call stop without calling start first", {
+            name: this
+          }
+        ));
+      }
+      if (this._status === "stop") {
+        throw new Error(_.format(
+          "#{name}#stop(when) cannot stop more than once", {
+            name: this
+          }
+        ));
+      }
+      this._status = "stop";
     };
 
     return AudioBufferSourceNode;
@@ -1397,6 +1424,8 @@
       $read(this, "frequency", new impl.AudioParam(this, "frequency", 440, 0, 100000));
       $read(this, "detune", new impl.AudioParam(this, "detune", 0, -4800, 4800));
       $type(this, "onended", "function", NOP);
+
+      this._status = "init";
     }
     _.inherits(OscillatorNode, global.OscillatorNode);
 
@@ -1404,12 +1433,35 @@
       _.checkArgs("OscillatorNode#start(when)", {
         when: { type: "number", given: _.defaults(when, 0) }
       });
+      if (this._status !== "init") {
+        throw new Error(_.format(
+          "#{name}#start(when) cannot start more than once", {
+            name: this
+          }
+        ));
+      }
+      this._status = "start";
     };
 
     OscillatorNode.prototype.stop = function(when) {
       _.checkArgs("OscillatorNode#stop(when)", {
         when: { type: "number", given: _.defaults(when, 0) }
       });
+      if (this._status === "init") {
+        throw new Error(_.format(
+          "#{name}#stop(when) cannot call stop without calling start first", {
+            name: this
+          }
+        ));
+      }
+      if (this._status === "stop") {
+        throw new Error(_.format(
+          "#{name}#stop(when) cannot stop more than once", {
+            name: this
+          }
+        ));
+      }
+      this._status = "stop";
     };
 
     OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {

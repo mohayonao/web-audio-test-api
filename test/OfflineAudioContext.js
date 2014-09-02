@@ -78,6 +78,15 @@ describe("OfflineAudioContext", function() {
     });
   });
 
+  describe("#startRendering()", function() {
+    it("throw error if called more than once", function() {
+      ctx.startRendering();
+      expect(function() {
+        ctx.startRendering();
+      }).to.throw(Error);
+    });
+  });
+
   describe("#process", function() {
     it("should work", function(done) {
       ctx.oncomplete = function(e) {
