@@ -245,7 +245,7 @@
 
     AudioContext.MOCK_VERSION = VERSION;
 
-    AudioContext.prototype.process = function(duration) {
+    AudioContext.prototype.$process = function(duration) {
       var dx;
 
       this._targetTime += duration;
@@ -258,7 +258,7 @@
           dx = Math.min(CURRENT_TIME_INCR, this._targetTime - this._currentTime);
           this._remain = CURRENT_TIME_INCR - dx;
         }
-        this.destination.process(this._currentTime, this._currentTime + dx);
+        this.destination.$process(this._currentTime, this._currentTime + dx);
         this._currentTime = this._currentTime + dx;
       }
     };
@@ -388,7 +388,7 @@
     }
     _.inherits(OfflineAudioContext, AudioContext);
 
-    OfflineAudioContext.prototype.process = function(duration) {
+    OfflineAudioContext.prototype.$process = function(duration) {
       var dx;
 
       if (!this._rendering || this._length <= this._processed) {
@@ -405,7 +405,7 @@
           dx = Math.min(CURRENT_TIME_INCR, this._targetTime - this._currentTime);
           this._remain = CURRENT_TIME_INCR - dx;
         }
-        this.destination.process(this._currentTime, this._currentTime + dx);
+        this.destination.$process(this._currentTime, this._currentTime + dx);
         this._currentTime = this._currentTime + dx;
         this._processed += BUFFER_SIZE * (dx / CURRENT_TIME_INCR);
       }
@@ -462,18 +462,18 @@
     }
     _.inherits(AudioNode, global.AudioNode);
 
-    AudioNode.prototype.process = function(currentTime, nextCurrentTime) {
+    AudioNode.prototype.$process = function(currentTime, nextCurrentTime) {
       /* istanbul ignore else */
       if (currentTime !== this._currentTime) {
         this._currentTime = currentTime;
 
         this.$inputs.forEach(function(src) {
-          src.process(currentTime, nextCurrentTime);
+          src.$process(currentTime, nextCurrentTime);
         });
 
         Object.keys(this).forEach(function(key) {
           if (this[key] instanceof AudioParam) {
-            this[key].process(currentTime, nextCurrentTime);
+            this[key].$process(currentTime, nextCurrentTime);
           }
         }, this);
 
@@ -709,13 +709,13 @@
       return value;
     }
 
-    AudioParam.prototype.process = function(currentTime, nextCurrentTime) {
+    AudioParam.prototype.$process = function(currentTime, nextCurrentTime) {
       /* istanbul ignore else */
       if (currentTime !== this._currentTime) {
         this._currentTime = currentTime;
 
         this.$inputs.forEach(function(src) {
-          src.process(currentTime, nextCurrentTime);
+          src.$process(currentTime, nextCurrentTime);
         });
 
         this.value = calcValue(this.value, nextCurrentTime, this._events);

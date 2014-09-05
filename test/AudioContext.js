@@ -77,11 +77,11 @@ describe("AudioContext", function() {
     });
   });
 
-  describe("#process()", function() {
+  describe("#$process()", function() {
     it("should work", function() {
-      ctx.process(0.5);
-      ctx.process(0.5);
-      ctx.process(0.5);
+      ctx.$process(0.5);
+      ctx.$process(0.5);
+      ctx.$process(0.5);
     });
   });
 

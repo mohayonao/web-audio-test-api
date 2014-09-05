@@ -161,7 +161,7 @@ describe("AudioParam", function() {
     });
   });
 
-  describe("#process()", function() {
+  describe("#$process()", function() {
     it("SetValue", function() {
       param.setValueAtTime(220, ctx.currentTime);
       param.setValueAtTime(660, ctx.currentTime + 1.5);
@@ -171,28 +171,28 @@ describe("AudioParam", function() {
 
       expect(param.value, "00:00.000").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.250").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.500").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.750").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.000").to.equal(880);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.250").to.equal(880);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.500").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.750").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:02.000").to.equal(660);
     });
     it("LinearRampToValue", function() {
@@ -203,28 +203,28 @@ describe("AudioParam", function() {
 
       expect(param.value, "00:00.000").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.250").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.500").to.be.closeTo(660, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.750").to.be.closeTo(770, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.000").to.be.closeTo(880, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.250").to.be.closeTo(770, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.500").to.be.closeTo(660, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.750").to.be.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:02.000").to.be.equal(660);
     });
     it("ExponentialRampToValue", function() {
@@ -235,28 +235,28 @@ describe("AudioParam", function() {
 
       expect(param.value, "00:00.000").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.250").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.500").to.be.closeTo(660, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.750").to.be.closeTo(762.102355330306, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.000").to.be.closeTo(880, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.250").to.be.closeTo(762.102355330306, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.500").to.be.closeTo(660, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.750").to.be.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:02.000").to.be.equal(660);
     });
     it("SetTarget", function() {
@@ -267,28 +267,28 @@ describe("AudioParam", function() {
 
       expect(param.value, "00:00.000").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.250").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.500").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.750").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.000").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.250").to.be.closeTo(685.850681431389, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.500").to.be.closeTo(708.663827724291, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.750").to.be.closeTo(702.9456772345972, 1e-6);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:02.000").to.be.closeTo(697.8994271389297, 1e-6);
     });
     it("SetCurve", function() {
@@ -301,28 +301,28 @@ describe("AudioParam", function() {
 
       expect(param.value, "00:00.000").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.250").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.500").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.750").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.000").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.250").to.equal(385);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.500").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.750").to.equal(302.5);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:02.000").to.equal(385);
     });
     it("cancel", function() {
@@ -334,28 +334,28 @@ describe("AudioParam", function() {
 
       expect(param.value, "00:00.000").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.250").to.equal(220);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.500").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:00.750").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.000").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.250").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.500").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:01.750").to.equal(660);
 
-      ctx.process(0.25);
+      ctx.$process(0.25);
       expect(param.value, "00:02.000").to.equal(660);
     });
   });
