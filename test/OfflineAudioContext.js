@@ -96,17 +96,17 @@ describe("OfflineAudioContext", function() {
         done();
       };
       ctx.startRendering();
-      ctx.process(0.5);
-      ctx.process(0.5);
-      ctx.process(0.5);
+      ctx.$process(0.5);
+      ctx.$process(0.5);
+      ctx.$process(0.5);
     });
     it("should not work", function() {
       ctx.oncomplete = function() {
         throw new Error("NOT REACHED");
       };
-      ctx.process(0.5);
-      ctx.process(0.5);
-      ctx.process(0.5);
+      ctx.$process(0.5);
+      ctx.$process(0.5);
+      ctx.$process(0.5);
     });
   });
 

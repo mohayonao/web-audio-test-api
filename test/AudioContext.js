@@ -77,11 +77,28 @@ describe("AudioContext", function() {
     });
   });
 
-  describe("#process()", function() {
+  describe("#$process()", function() {
     it("should work", function() {
-      ctx.process(0.5);
-      ctx.process(0.5);
-      ctx.process(0.5);
+      ctx.$process(0.5);
+      ctx.$process(0.5);
+      ctx.$process(0.5);
+    });
+  });
+
+  describe("#$reset()", function() {
+    it("should work", function() {
+      ctx.createGain().connect(ctx.destination);
+
+      ctx.$process(0.5);
+      ctx.$process(0.5);
+      ctx.$process(0.5);
+      ctx.$reset();
+
+      expect(ctx.currentTime).to.equal(0);
+      expect(ctx.toJSON()).to.eql({
+        name: "AudioDestinationNode",
+        inputs: []
+      });
     });
   });
 
