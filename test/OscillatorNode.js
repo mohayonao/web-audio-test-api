@@ -86,10 +86,13 @@ describe("OscillatorNode", function() {
 
   describe("#stop(when)", function() {
     it("should work", function() {
+      expect(node.$state).to.equal("init");
       node.start();
+      expect(node.$state).to.equal("start");
       expect(function() {
         node.stop();
       }).to.not.throw();
+      expect(node.$state).to.equal("stop");
     });
     it("throw error", function() {
       node.start();

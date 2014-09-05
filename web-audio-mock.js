@@ -981,8 +981,11 @@
       $type(this, "loopStart", "number", 0);
       $type(this, "loopEnd", "number", 0);
       $type(this, "onended", "function", NOP);
+      $read(this, "$state", function() {
+        return this._state;
+      });
 
-      this._status = "init";
+      this._state = "init";
     }
     _.inherits(AudioBufferSourceNode, global.AudioBufferSourceNode);
 
@@ -993,14 +996,14 @@
         offset  : { type: "number", given: _.defaults(offset  , 0) },
         duration: { type: "number", given: _.defaults(duration, 0) },
       });
-      if (this._status !== "init") {
+      if (this._state !== "init") {
         throw new Error(_.format(
           "#{caption} cannot start more than once", {
             caption: caption
           }
         ));
       }
-      this._status = "start";
+      this._state = "start";
     };
 
     AudioBufferSourceNode.prototype.stop = function(when) {
@@ -1008,21 +1011,21 @@
       _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
-      if (this._status === "init") {
+      if (this._state === "init") {
         throw new Error(_.format(
           "#{caption} cannot call stop without calling start first", {
           caption: caption
           }
         ));
       }
-      if (this._status === "stop") {
+      if (this._state === "stop") {
         throw new Error(_.format(
           "#{caption} cannot stop more than once", {
             caption: caption
           }
         ));
       }
-      this._status = "stop";
+      this._state = "stop";
     };
 
     return AudioBufferSourceNode;
@@ -1445,8 +1448,11 @@
       $read(this, "frequency", new impl.AudioParam(this, "frequency", 440, 0, 100000));
       $read(this, "detune", new impl.AudioParam(this, "detune", 0, -4800, 4800));
       $type(this, "onended", "function", NOP);
+      $read(this, "$state", function() {
+        return this._state;
+      });
 
-      this._status = "init";
+      this._state = "init";
     }
     _.inherits(OscillatorNode, global.OscillatorNode);
 
@@ -1455,14 +1461,14 @@
       _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
-      if (this._status !== "init") {
+      if (this._state !== "init") {
         throw new Error(_.format(
           "#{caption} cannot start more than once", {
             caption: caption
           }
         ));
       }
-      this._status = "start";
+      this._state = "start";
     };
 
     OscillatorNode.prototype.stop = function(when) {
@@ -1470,21 +1476,21 @@
       _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
-      if (this._status === "init") {
+      if (this._state === "init") {
         throw new Error(_.format(
           "#{caption} cannot call stop without calling start first", {
             caption: caption
           }
         ));
       }
-      if (this._status === "stop") {
+      if (this._state === "stop") {
         throw new Error(_.format(
           "#{caption} cannot stop more than once", {
             caption: caption
           }
         ));
       }
-      this._status = "stop";
+      this._state = "stop";
     };
 
     OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
