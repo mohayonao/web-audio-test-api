@@ -153,19 +153,19 @@ describe("AudioParam", function() {
 
   it("should have been scheduled the value change", function() {
     expect(osc.frequency.value, "00:00.000").to.equal(440);
-    ctx.process(0.25); // advance 0.25 sec
+    ctx.$process(0.25); // advance 0.25 sec
     expect(osc.frequency.value, "00:00.250").to.equal(440);
-    ctx.process(0.25);
+    ctx.$process(0.25);
     expect(osc.frequency.value, "00:00.500").to.equal(880); // <- setValueAtTime
-    ctx.process(0.25);                                      //  ^
+    ctx.$process(0.25);                                     //  ^
     expect(osc.frequency.value, "00:00.750").to.equal(770); //  |
-    ctx.process(0.25);                                      //  |
+    ctx.$process(0.25);                                     //  |
     expect(osc.frequency.value, "00:01.000").to.equal(660); //  | linearRampToValueAtTime
-    ctx.process(0.25);                                      //  |
+    ctx.$process(0.25);                                     //  |
     expect(osc.frequency.value, "00:01.250").to.equal(550); //  |
-    ctx.process(0.25);                                      //  v
+    ctx.$process(0.25);                                     //  v
     expect(osc.frequency.value, "00:01.500").to.equal(440); //
-    ctx.process(0.25);
+    ctx.$process(0.25);
     expect(osc.frequency.value, "00:01.750").to.equal(440);
   });
 
@@ -187,7 +187,7 @@ describe("ScriptProcessorNode#onaudioprocess(e)", function() {
       count += 1;
     };
 
-    ctx.process(0.5);           // advance 0.5 sec
+    ctx.$process(0.5);           // advance 0.5 sec
     expect(count).to.equal(22); // 22times call (0.5 / (1024 / 44100) = 21.5332)
   });
 
