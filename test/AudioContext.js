@@ -85,6 +85,23 @@ describe("AudioContext", function() {
     });
   });
 
+  describe("#$reset()", function() {
+    it("should work", function() {
+      ctx.createGain().connect(ctx.destination);
+
+      ctx.$process(0.5);
+      ctx.$process(0.5);
+      ctx.$process(0.5);
+      ctx.$reset();
+
+      expect(ctx.currentTime).to.equal(0);
+      expect(ctx.toJSON()).to.eql({
+        name: "AudioDestinationNode",
+        inputs: []
+      });
+    });
+  });
+
   describe("#createBuffer(numberOfChannels, length, sampleRate)", function() {
     it("should return an instance of AudioBuffer", function() {
       expect(ctx.createBuffer(2, 128, 44100)).to.be.instanceOf(AudioBuffer);

@@ -263,6 +263,15 @@
       }
     };
 
+    AudioContext.prototype.$reset = function() {
+      this._currentTime = 0;
+      this._targetTime  = 0;
+      this._remain = 0;
+      this.destination.$inputs.forEach(function(node) {
+        node.disconnect();
+      });
+    };
+
     AudioContext.prototype.toJSON = function() {
       return this.destination.toJSON([]);
     };
