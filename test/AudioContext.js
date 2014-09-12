@@ -1,7 +1,7 @@
 /* global describe, it, expect, beforeEach */
 "use strict";
 
-require("../web-audio-mock");
+require("../web-audio-test-api");
 
 describe("AudioContext", function() {
   var ctx = null;
@@ -19,10 +19,10 @@ describe("AudioContext", function() {
     });
   });
 
-  describe(".MOCK_VERSION", function() {
+  describe(".WEB_AUDIO_TEST_API_VERSION", function() {
     it("check", function() {
-      if (typeof MOCK_VERSION === "string") {
-        expect(AudioContext.MOCK_VERSION).to.equal(global.MOCK_VERSION);
+      if (typeof WEB_AUDIO_TEST_API_VERSION === "string") {
+        expect(AudioContext.WEB_AUDIO_TEST_API_VERSION).to.equal(global.WEB_AUDIO_TEST_API_VERSION);
       }
     });
   });

@@ -1,45 +1,45 @@
-# web-audio-mock.js
-[![NPM Version](http://img.shields.io/npm/v/web-audio-mock.svg?style=flat)](https://www.npmjs.org/package/web-audio-mock)
-[![Build Status](http://img.shields.io/travis/mohayonao/web-audio-mock.svg?style=flat)](https://travis-ci.org/mohayonao/web-audio-mock)
-[![Coverage Status](http://img.shields.io/coveralls/mohayonao/web-audio-mock.svg?style=flat)](https://coveralls.io/r/mohayonao/web-audio-mock?branch=master)
-[![Dependency Status](http://img.shields.io/david/mohayonao/web-audio-mock.svg?style=flat)](https://david-dm.org/mohayonao/web-audio-mock)
-[![devDependency Status](http://img.shields.io/david/dev/mohayonao/web-audio-mock.svg?style=flat)](https://david-dm.org/mohayonao/web-audio-mock)
+# web-audio-test-api.js
+[![NPM Version](http://img.shields.io/npm/v/web-audio-test-api.svg?style=flat)](https://www.npmjs.org/package/web-audio-test-api)
+[![Build Status](http://img.shields.io/travis/mohayonao/web-audio-test-api.svg?style=flat)](https://travis-ci.org/mohayonao/web-audio-test-api)
+[![Coverage Status](http://img.shields.io/coveralls/mohayonao/web-audio-test-api.svg?style=flat)](https://coveralls.io/r/mohayonao/web-audio-test-api?branch=master)
+[![Dependency Status](http://img.shields.io/david/mohayonao/web-audio-test-api.svg?style=flat)](https://david-dm.org/mohayonao/web-audio-test-api)
+[![devDependency Status](http://img.shields.io/david/dev/mohayonao/web-audio-test-api.svg?style=flat)](https://david-dm.org/mohayonao/web-audio-test-api)
 
-> Web Audio API mock object library for CI
+> Web Audio API test library for CI
 
 ## Installation
 
-  - [web-audio-mock.js](http://mohayonao.github.io/web-audio-mock/web-audio-mock.js)
+  - [web-audio-test-api.js](http://mohayonao.github.io/web-audio-test-api/web-audio-test-api.js)
 
 #### browser
 
-replace existing Web Audio API with web-audio-mock
+replace existing Web Audio API with web-audio-test-api
 
 ```html
-<script src="/path/to/web-audio-mock.js"></script>
+<script src="/path/to/web-audio-test-api.js"></script>
 ```
 
-set `WEB_AUDIO_MOCK_IGNORE` flag if you won't use web-audio-mock
+set `WEB_AUDIO_MOCK_IGNORE` flag if you won't use web-audio-test-api
 ```html
 WEB_AUDIO_MOCK_IGNORE = true;
-<script src="/path/to/web-audio-mock.js"></script>
+<script src="/path/to/web-audio-test-api.js"></script>
 ```
 
 #### node.js
 
 ```sh
-% npm install web-audio-mock
+% npm install web-audio-test-api
 ```
 
 install Web Audio API interfaces as global variables
 
 ```javascript
-require("web-audio-mock");
+require("web-audio-test-api");
 ```
 
 ## Online Test Suites
 
-  - [web-audio-mock.js - online test suites](http://mohayonao.github.io/web-audio-mock/)
+  - [web-audio-test-api.js - online test suites](http://mohayonao.github.io/web-audio-test-api/)
 
 ## Features
 
@@ -220,4 +220,4 @@ describe("AudioContext#decodeAudioData()", function() {
 
 ## License
 
-web-audio-mock.js is available under the The MIT License.
+web-audio-test-api.js is available under the The MIT License.

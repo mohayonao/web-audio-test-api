@@ -11,7 +11,7 @@
   var impl = {};
 
   /* istanbul ignore if */
-  if (global.WEB_AUDIO_MOCK_IGNORE) {
+  if (global.WEB_AUDIO_TEST_API_IGNORE) {
     return;
   }
 
@@ -243,7 +243,7 @@
     }
     _.inherits(AudioContext, EventTarget);
 
-    AudioContext.MOCK_VERSION = VERSION;
+    AudioContext.WEB_AUDIO_TEST_API_VERSION = VERSION;
 
     AudioContext.prototype.$process = function(duration) {
       var dx;
