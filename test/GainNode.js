@@ -1,7 +1,7 @@
 /* global describe, it, expect, beforeEach */
 "use strict";
 
-require("../web-audio-mock");
+require("../web-audio-test-api");
 
 describe("GainNode", function() {
   var ctx = null;

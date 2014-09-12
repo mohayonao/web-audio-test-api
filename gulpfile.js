@@ -6,7 +6,7 @@ var mocha    = require("gulp-mocha");
 var istanbul = require("gulp-istanbul");
 
 gulp.task("lint", function() {
-  return gulp.src([ "gulpfile.js", "web-audio-mock.js", "test/**/*.js" ])
+  return gulp.src([ "gulpfile.js", "web-audio-test-api.js", "test/**/*.js" ])
     .pipe(jshint(".jshintrc"))
     .pipe(jshint.reporter(require("jshint-stylish")))
     .pipe(jshint.reporter("fail"));
@@ -20,7 +20,7 @@ gulp.task("test", function() {
 
 gulp.task("cover", function(cb) {
   require("./test/bootstrap/bootstrap");
-  gulp.src("web-audio-mock.js")
+  gulp.src("web-audio-test-api.js")
     .pipe(istanbul())
     .on("finish", function() {
       return gulp.src("test/**/*.js")
