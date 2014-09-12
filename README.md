@@ -19,9 +19,9 @@ replace existing Web Audio API with web-audio-test-api
 <script src="/path/to/web-audio-test-api.js"></script>
 ```
 
-set `WEB_AUDIO_MOCK_IGNORE` flag if you won't use web-audio-test-api
+set `WEB_AUDIO_TEST_API_IGNORE` flag if you won't use web-audio-test-api
 ```html
-WEB_AUDIO_MOCK_IGNORE = true;
+WEB_AUDIO_TEST_API_IGNORE = true;
 <script src="/path/to/web-audio-test-api.js"></script>
 ```
 
