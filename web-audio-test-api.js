@@ -982,12 +982,24 @@
       $type(this, "loopEnd", "number", 0);
       $type(this, "onended", "function", NOP);
       $read(this, "$state", function() {
-        return this._state;
+        return this.$stateAtTime(this.context.currentTime);
       });
 
-      this._state = "init";
+      this._startTime = Infinity;
+      this._stopTime  = Infinity;
     }
     _.inherits(AudioBufferSourceNode, global.AudioBufferSourceNode);
+
+    AudioBufferSourceNode.prototype.$stateAtTime = function(t) {
+      if (this._startTime === Infinity) {
+        return "UNSCHEDULED";
+      } else if (t < this._startTime) {
+        return "SCHEDULED";
+      } else if (t < this._stopTime) {
+        return "PLAYING";
+      }
+      return "FINISHED";
+    };
 
     AudioBufferSourceNode.prototype.start = function(when, offset, duration) {
       var caption = _.caption(this, "start(when, offset, duration)");
@@ -996,14 +1008,14 @@
         offset  : { type: "number", given: _.defaults(offset  , 0) },
         duration: { type: "number", given: _.defaults(duration, 0) },
       });
-      if (this._state !== "init") {
+      if (this._startTime !== Infinity) {
         throw new Error(_.format(
           "#{caption} cannot start more than once", {
             caption: caption
           }
         ));
       }
-      this._state = "start";
+      this._startTime = when;
     };
 
     AudioBufferSourceNode.prototype.stop = function(when) {
@@ -1011,21 +1023,21 @@
       _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
-      if (this._state === "init") {
+      if (this._startTime === Infinity) {
         throw new Error(_.format(
           "#{caption} cannot call stop without calling start first", {
           caption: caption
           }
         ));
       }
-      if (this._state === "stop") {
+      if (this._stopTime !== Infinity) {
         throw new Error(_.format(
           "#{caption} cannot stop more than once", {
             caption: caption
           }
         ));
       }
-      this._state = "stop";
+      this._stopTime = when;
     };
 
     return AudioBufferSourceNode;
