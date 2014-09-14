@@ -65,6 +65,36 @@ describe("OscillatorNode", function() {
     });
   });
 
+  describe("#$state", function() {
+    it("return #$stateAtTime(currentTime)", function() {
+      expect(node.$state).to.equal("UNSCHEDULED");
+
+      node.start(0.1);
+      expect(node.$state).to.equal("SCHEDULED");
+
+      ctx.$process(0.1);
+      expect(node.$state).to.equal("PLAYING");
+
+      node.stop(0.2);
+      expect(node.$state).to.equal("PLAYING");
+
+      ctx.$process(0.1);
+      expect(node.$state).to.equal("FINISHED");
+    });
+  });
+
+  describe("#$stateAtTime(t)", function() {
+    it("return the state at the specified time", function() {
+
+      node.start(0.1);
+      node.stop(0.2);
+
+      expect(node.$stateAtTime(0.05)).to.equal("SCHEDULED");
+      expect(node.$stateAtTime(0.15)).to.equal("PLAYING");
+      expect(node.$stateAtTime(0.25)).to.equal("FINISHED");
+    });
+  });
+
   describe("#start(when)", function() {
     it("should work", function() {
       expect(function() {
@@ -86,13 +116,10 @@ describe("OscillatorNode", function() {
 
   describe("#stop(when)", function() {
     it("should work", function() {
-      expect(node.$state).to.equal("init");
       node.start();
-      expect(node.$state).to.equal("start");
       expect(function() {
         node.stop();
       }).to.not.throw();
-      expect(node.$state).to.equal("stop");
     });
     it("throw error", function() {
       node.start();

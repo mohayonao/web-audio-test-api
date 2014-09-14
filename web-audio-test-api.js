@@ -1449,26 +1449,38 @@
       $read(this, "detune", new impl.AudioParam(this, "detune", 0, -4800, 4800));
       $type(this, "onended", "function", NOP);
       $read(this, "$state", function() {
-        return this._state;
+        return this.$stateAtTime(this.context.currentTime);
       });
 
-      this._state = "init";
+      this._startTime = Infinity;
+      this._stopTime  = Infinity;
     }
     _.inherits(OscillatorNode, global.OscillatorNode);
+
+    OscillatorNode.prototype.$stateAtTime = function(t) {
+      if (this._startTime === Infinity) {
+        return "UNSCHEDULED";
+      } else if (t < this._startTime) {
+        return "SCHEDULED";
+      } else if (t < this._stopTime) {
+        return "PLAYING";
+      }
+      return "FINISHED";
+    };
 
     OscillatorNode.prototype.start = function(when) {
       var caption = _.caption(this, "start(when)");
       _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
-      if (this._state !== "init") {
+      if (this._startTime !== Infinity) {
         throw new Error(_.format(
           "#{caption} cannot start more than once", {
             caption: caption
           }
         ));
       }
-      this._state = "start";
+      this._startTime = when;
     };
 
     OscillatorNode.prototype.stop = function(when) {
@@ -1476,21 +1488,21 @@
       _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
-      if (this._state === "init") {
+      if (this._startTime === Infinity) {
         throw new Error(_.format(
           "#{caption} cannot call stop without calling start first", {
             caption: caption
           }
         ));
       }
-      if (this._state === "stop") {
+      if (this._stopTime !== Infinity) {
         throw new Error(_.format(
           "#{caption} cannot stop more than once", {
             caption: caption
           }
         ));
       }
-      this._state = "stop";
+      this._stopTime = when;
     };
 
     OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
