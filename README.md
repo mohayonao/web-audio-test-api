@@ -74,23 +74,22 @@ describe("Strict Type Check", function() {
 
 ```javascript
 describe("Modular Routine", function() {
-  var ctx = new AudioContext();
-  var osc = ctx.createOscillator();
-  var lfo = ctx.createOscillator();
-  var amp = ctx.createGain();
-
-  lfo.$id = "LFO"; // name for debugging
-
-  osc.type = "sawtooth";
-  osc.frequency.value = 880;
-
-  lfo.frequency.value = 2;
-
-  lfo.connect(amp.gain);
-  osc.connect(amp);
-  amp.connect(ctx.destination);
-
   it("should generate audio graph", function() {
+    var ctx = new AudioContext();
+    var osc = ctx.createOscillator();
+    var lfo = ctx.createOscillator();
+    var amp = ctx.createGain();
+
+    lfo.$id = "LFO"; // name for debugging
+
+    osc.type = "sawtooth";
+    osc.frequency.value = 880;
+
+    lfo.frequency.value = 2;
+
+    lfo.connect(amp.gain);
+    osc.connect(amp);
+    amp.connect(ctx.destination);
 
     // ctx.VERBOSE_JSON = true; // set this flag if you need more detailed data
 
@@ -136,51 +135,117 @@ describe("Modular Routine", function() {
       ]
     });
   });
+});
+```
 
+#### OscillatorNode/BufferSourceNode state
+
+```javascript
+describe("OscillatorNode#$stateAtTime(t)", function() {
+  it("works", function() {
+    var ctx = new AudioContext();
+    var osc = ctx.createOscillator();
+
+    expect(osc.$state).to.equal("UNSCHEDULED");
+
+    osc.start(1);
+    osc.stop(2);
+
+    expect(osc.$stateAtTime(0.5)).to.equal("SCHEDULED");
+    expect(osc.$stateAtTime(1.5)).to.equal("PLAYING");
+    expect(osc.$stateAtTime(2.5)).to.equal("FINISHED");
+  });
+  it("with audioContext.$process()", function() {
+    var ctx = new AudioContext();
+    var osc = ctx.createOscillator();
+
+    expect(osc.$state).to.equal("UNSCHEDULED");
+
+    osc.start(1);
+    osc.stop(2);
+
+    expect(osc.$state, "00:00.000").to.equal("SCHEDULED");
+
+    ctx.$process(0.500);
+    expect(osc.$state, "00:00.500").to.equal("SCHEDULED");
+
+    ctx.$process(0.500);
+    expect(osc.$state, "00:01.000").to.equal("PLAYING");
+
+    ctx.$process(0.500);
+    expect(osc.$state, "00:01.500").to.equal("PLAYING");
+
+    ctx.$process(0.500);
+    expect(osc.$state, "00:02.000").to.equal("FINISHED");
+
+    ctx.$process(0.500);
+    expect(osc.$state, "00:02.500").to.equal("FINISHED");
+  });
 });
 ```
 
 #### AudioParam simulation
 
 ```javascript
-var ctx = new AudioContext();
-
 describe("AudioParam", function() {
-  var osc = ctx.createOsillator();
+  it("works", function() {
+    var ctx = new AudioContext();
+    var osc = ctx.createOscillator();
 
-  osc.frequency.setValueAtTime(880, ctx.currentTime + 0.5);
-  osc.frequency.linearRampToValueAtTime(440, ctx.currentTime + 1);
+    osc.frequency.setValueAtTime(880, 0.5);
+    osc.frequency.linearRampToValueAtTime(440, 1.5);
 
-  it("should have been scheduled the value change", function() {
+    expect(osc.frequency.$valueAtTime(0.000), "00:00.000").to.equal(440);
+    expect(osc.frequency.$valueAtTime(0.250), "00:00.250").to.equal(440);
+    expect(osc.frequency.$valueAtTime(0.500), "00:00.500").to.equal(880); // <- setValueAtTime
+    expect(osc.frequency.$valueAtTime(0.750), "00:00.750").to.equal(770); //  ^
+    expect(osc.frequency.$valueAtTime(1.000), "00:01.000").to.equal(660); //  | linearRampToValueAtTime
+    expect(osc.frequency.$valueAtTime(1.250), "00:01.250").to.equal(550); //  v
+    expect(osc.frequency.$valueAtTime(1.500), "00:01.500").to.equal(440); //
+    expect(osc.frequency.$valueAtTime(1.750), "00:01.750").to.equal(440);
+  });
+  it("with audioContext$process()", function() {
+    var ctx = new AudioContext();
+    var osc = ctx.createOscillator();
+
+    osc.frequency.setValueAtTime(880, 0.5);
+    osc.frequency.linearRampToValueAtTime(440, 1.5);
+
     expect(osc.frequency.value, "00:00.000").to.equal(440);
-    ctx.$process(0.25); // advance 0.25 sec
+
+    ctx.$process(0.250);
     expect(osc.frequency.value, "00:00.250").to.equal(440);
-    ctx.$process(0.25);
+
+    ctx.$process(0.250);
     expect(osc.frequency.value, "00:00.500").to.equal(880); // <- setValueAtTime
-    ctx.$process(0.25);                                     //  ^
+                                                            //  ^
+    ctx.$process(0.250);                                    //  |
     expect(osc.frequency.value, "00:00.750").to.equal(770); //  |
-    ctx.$process(0.25);                                     //  |
+                                                            //  |
+    ctx.$process(0.250);                                    //  |
     expect(osc.frequency.value, "00:01.000").to.equal(660); //  | linearRampToValueAtTime
-    ctx.$process(0.25);                                     //  |
+                                                            //  |
+    ctx.$process(0.250);                                    //  |
     expect(osc.frequency.value, "00:01.250").to.equal(550); //  |
-    ctx.$process(0.25);                                     //  v
+                                                            //  |
+    ctx.$process(0.250);                                    //  v
     expect(osc.frequency.value, "00:01.500").to.equal(440); //
-    ctx.$process(0.25);
+
+    ctx.$process(0.250);
     expect(osc.frequency.value, "00:01.750").to.equal(440);
   });
-
 });
 ```
 
 #### ScriptProcessing simulation
 
 ```javascript
-var ctx = new AudioContext();
 
 describe("ScriptProcessorNode#onaudioprocess(e)", function() {
-  var scp = ctx.createScriptProcessor(1024, 2, 2);
+  it("works", function() {
+    var ctx = new AudioContext();
+    var scp = ctx.createScriptProcessor(1024, 2, 2);
 
-  it("should have been called", function() {
     var count = 0;
 
     scp.onaudioprocess = function(e) {
@@ -190,17 +255,15 @@ describe("ScriptProcessorNode#onaudioprocess(e)", function() {
     ctx.$process(0.5);           // advance 0.5 sec
     expect(count).to.equal(22); // 22times call (0.5 / (1024 / 44100) = 21.5332)
   });
-
 });
 ```
 
 #### DecodeAudioData simulation
 
 ```javascript
-var ctx = new AudioContext();
-
 describe("AudioContext#decodeAudioData()", function() {
   it("should return decoded buffer in async", function(done) {
+    var ctx = new AudioContext();
 
     // ctx.DECODE_AUDIO_DATA_RESULT = customResult;
     // ctx.DECODE_AUDIO_DATA_FAILED = true;
@@ -213,7 +276,6 @@ describe("AudioContext#decodeAudioData()", function() {
       // errorCallback
       throw new ERROR("NOT REACHED");
     });
-
   });
 });
 ```

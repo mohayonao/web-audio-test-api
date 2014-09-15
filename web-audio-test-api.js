@@ -1,7 +1,7 @@
 (function(global) {
   "use strict";
 
-  var VERSION = "0.1.9";
+  var VERSION = "0.1.10";
   var SAMPLERATE  = 44100;
   var BUFFER_SIZE = 128;
   var CURRENT_TIME_INCR = BUFFER_SIZE / SAMPLERATE;
@@ -633,16 +633,39 @@
 
   impl.AudioParam = (function() {
     function AudioParam(node, name, defaultValue, minValue, maxValue) {
+      var context = node.context;
+
       $read(this, "node", node);
       $read(this, "context", node.context);
       $read(this, "name", name);
       $read(this, "defaultValue", defaultValue);
       $read(this, "minValue", minValue);
       $read(this, "maxValue", maxValue);
-      $type(this, "value", "number", defaultValue);
+
+      Object.defineProperty(this, "value", {
+        get: function() {
+          this._value = this.$valueAtTime(context.currentTime);
+          return this._value;
+        },
+        set: function(value) {
+          if (_.check.number(value)) {
+            this._value = value;
+          } else {
+            throw new TypeError(_.format(
+              "#{object}##{property} should be #{type}, but got #{given}", {
+                object  : _.id(node, true),
+                property: name,
+                type    : "number",
+                given   : _.toS(value)
+              }
+            ));
+          }
+        }
+      });
 
       this.$inputs = [];
-      this._events = [];
+      this.$events = [];
+      this._value = defaultValue;
       this._currentTime = -1;
     }
     _.inherits(AudioParam, global.AudioParam);
@@ -680,43 +703,46 @@
       return (1 - delta) * v0 + delta * v1;
     }
 
-    function calcValue(value, currentTime, events) {
-      while (events.length && events[0].time <= currentTime) {
-        var e0 = events[0];
-        var e1 = events[1] || { type: null, time: Infinity };
+    AudioParam.prototype.$valueAtTime = function(t) {
+      var value  = this._value;
+      var events = this.$events;
 
-        if (e1.type === "LinearRampToValue") {
-          value = linTo(value, e0.value, e1.value, currentTime, e0.time, e1.time);
-        } else if (e1.type === "ExponentialRampToValue") {
-          value = expTo(value, e0.value, e1.value, currentTime, e0.time, e1.time);
-        } else {
-          switch (e0.type) {
-          case "SetValue":
-          case "LinearRampToValue":
-          case "ExponentialRampToValue":
-            value = e0.value;
-            break;
-          case "SetTarget":
-            value = setTarget(value, e0.startValue, e0.value, currentTime, e0.time, Infinity, e0.timeConstant);
-            break;
-          case "SetValueCurve":
-            value = setCurveValue(value, currentTime, e0.time, e0.time + e0.duration, e0.curve);
-            break;
-          }
-        }
+      for (var i = 0; i < events.length; i++) {
+        var e0 = events[i - 1] || { value: 0 };
+        var e1 = events[i];
+        var e2 = events[i + 1];
 
-        if (currentTime < e1.time) {
+        if (t < e1.time) {
           break;
         }
 
-        events.shift();
-        if (events.length && events[0].type === "SetTarget") {
-          events[0].startValue = value;
+        if (e2 && e2.time < t) {
+          continue;
+        }
+
+        if (e2 && e2.type === "LinearRampToValue") {
+          value = linTo(value, e1.value, e2.value, t, e1.time, e2.time);
+        } else if (e2 && e2.type === "ExponentialRampToValue") {
+          value = expTo(value, e1.value, e2.value, t, e1.time, e2.time);
+        } else {
+          switch (e1.type) {
+          case "SetValue":
+          case "LinearRampToValue":
+          case "ExponentialRampToValue":
+            value = e1.value;
+            break;
+          case "SetTarget":
+            value = setTarget(value, e0.value, e1.value, t, e1.time, Infinity, e1.timeConstant);
+            break;
+          case "SetValueCurve":
+            value = setCurveValue(e0.value, t, e1.time, e1.time + e1.duration, e1.curve);
+            break;
+          }
         }
       }
 
       return value;
-    }
+    };
 
     AudioParam.prototype.$process = function(currentTime, nextCurrentTime) {
       /* istanbul ignore else */
@@ -726,8 +752,6 @@
         this.$inputs.forEach(function(src) {
           src.$process(currentTime, nextCurrentTime);
         });
-
-        this.value = calcValue(this.value, nextCurrentTime, this._events);
       }
     };
 
@@ -747,7 +771,7 @@
 
     function insertEvent(_this, event) {
       var time = event.time;
-      var events = _this._events;
+      var events = _this.$events;
       var replace = 0;
       var i, imax = events.length;
 
@@ -763,8 +787,6 @@
       }
 
       events.splice(i, replace, event);
-
-      _this.value = calcValue(_this.value, _this.context.currentTime, events);
     }
 
     AudioParam.prototype.setValueAtTime = function(value, startTime) {
@@ -811,7 +833,6 @@
       });
       insertEvent(this, {
         type : "SetTarget",
-        startValue: this.value,
         value: target,
         time : startTime,
         timeConstant: timeConstant
@@ -826,6 +847,7 @@
       });
       insertEvent(this, {
         type : "SetValueCurve",
+        value: values[values.length - 1] || 0,
         time : startTime,
         duration: duration,
         curve: values
@@ -836,7 +858,7 @@
       _.check("AudioParam#cancelScheduledValues(startTime)", {
         startTime: { type: "number", given: startTime }
       });
-      var events = this._events;
+      var events = this.$events;
 
       for (var i = 0, imax = events.length; i < imax; ++i) {
         if (events[i].time >= startTime) {
@@ -982,12 +1004,24 @@
       $type(this, "loopEnd", "number", 0);
       $type(this, "onended", "function", NOP);
       $read(this, "$state", function() {
-        return this._state;
+        return this.$stateAtTime(this.context.currentTime);
       });
 
-      this._state = "init";
+      this._startTime = Infinity;
+      this._stopTime  = Infinity;
     }
     _.inherits(AudioBufferSourceNode, global.AudioBufferSourceNode);
+
+    AudioBufferSourceNode.prototype.$stateAtTime = function(t) {
+      if (this._startTime === Infinity) {
+        return "UNSCHEDULED";
+      } else if (t < this._startTime) {
+        return "SCHEDULED";
+      } else if (t < this._stopTime) {
+        return "PLAYING";
+      }
+      return "FINISHED";
+    };
 
     AudioBufferSourceNode.prototype.start = function(when, offset, duration) {
       var caption = _.caption(this, "start(when, offset, duration)");
@@ -996,14 +1030,14 @@
         offset  : { type: "number", given: _.defaults(offset  , 0) },
         duration: { type: "number", given: _.defaults(duration, 0) },
       });
-      if (this._state !== "init") {
+      if (this._startTime !== Infinity) {
         throw new Error(_.format(
           "#{caption} cannot start more than once", {
             caption: caption
           }
         ));
       }
-      this._state = "start";
+      this._startTime = when;
     };
 
     AudioBufferSourceNode.prototype.stop = function(when) {
@@ -1011,21 +1045,21 @@
       _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
-      if (this._state === "init") {
+      if (this._startTime === Infinity) {
         throw new Error(_.format(
           "#{caption} cannot call stop without calling start first", {
           caption: caption
           }
         ));
       }
-      if (this._state === "stop") {
+      if (this._stopTime !== Infinity) {
         throw new Error(_.format(
           "#{caption} cannot stop more than once", {
             caption: caption
           }
         ));
       }
-      this._state = "stop";
+      this._stopTime = when;
     };
 
     return AudioBufferSourceNode;
@@ -1449,26 +1483,38 @@
       $read(this, "detune", new impl.AudioParam(this, "detune", 0, -4800, 4800));
       $type(this, "onended", "function", NOP);
       $read(this, "$state", function() {
-        return this._state;
+        return this.$stateAtTime(this.context.currentTime);
       });
 
-      this._state = "init";
+      this._startTime = Infinity;
+      this._stopTime  = Infinity;
     }
     _.inherits(OscillatorNode, global.OscillatorNode);
+
+    OscillatorNode.prototype.$stateAtTime = function(t) {
+      if (this._startTime === Infinity) {
+        return "UNSCHEDULED";
+      } else if (t < this._startTime) {
+        return "SCHEDULED";
+      } else if (t < this._stopTime) {
+        return "PLAYING";
+      }
+      return "FINISHED";
+    };
 
     OscillatorNode.prototype.start = function(when) {
       var caption = _.caption(this, "start(when)");
       _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
-      if (this._state !== "init") {
+      if (this._startTime !== Infinity) {
         throw new Error(_.format(
           "#{caption} cannot start more than once", {
             caption: caption
           }
         ));
       }
-      this._state = "start";
+      this._startTime = when;
     };
 
     OscillatorNode.prototype.stop = function(when) {
@@ -1476,21 +1522,21 @@
       _.check(caption, {
         when: { type: "number", given: _.defaults(when, 0) }
       });
-      if (this._state === "init") {
+      if (this._startTime === Infinity) {
         throw new Error(_.format(
           "#{caption} cannot call stop without calling start first", {
             caption: caption
           }
         ));
       }
-      if (this._state === "stop") {
+      if (this._stopTime !== Infinity) {
         throw new Error(_.format(
           "#{caption} cannot stop more than once", {
             caption: caption
           }
         ));
       }
-      this._state = "stop";
+      this._stopTime = when;
     };
 
     OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
