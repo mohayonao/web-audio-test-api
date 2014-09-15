@@ -1,6 +1,6 @@
 {
   "name": "web-audio-test-api",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Web Audio API mock library",
   "author": "Nao Yonamine <mohayonao@gmail.com>",
   "license": "MIT",
