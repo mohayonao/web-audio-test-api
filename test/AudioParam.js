@@ -218,7 +218,7 @@ describe("AudioParam", function() {
     it("SetTarget", function() {
       param.setValueAtTime(0, 0.000);
       param.setTargetAtTime( 100, 1.000, 2);
-      param.setTargetAtTime(1000, 4.000, 0.5);
+      param.setTargetAtTime(1000, 3.500, 0.5);
 
       expect(param.$valueAtTime(0.000), "00:00.000").to.equal(0);
       expect(param.$valueAtTime(0.500), "00:00.500").to.equal(0);
@@ -228,9 +228,9 @@ describe("AudioParam", function() {
       expect(param.$valueAtTime(2.500), "00:02.500").to.be.closeTo(52.763344725898534, 1e-6);
       expect(param.$valueAtTime(3.000), "00:03.000").to.be.closeTo(63.212055882855765, 1e-6);
       expect(param.$valueAtTime(3.500), "00:03.500").to.be.closeTo(71.34952031398099, 1e-6);
-      expect(param.$valueAtTime(4.000), "00:04.000").to.equal(100);
-      expect(param.$valueAtTime(4.500), "00:04.500").to.be.closeTo(668.9085029457019, 1e-6);
-      expect(param.$valueAtTime(5.000), "00:05.000").to.be.closeTo(878.1982450870486, 1e-6);
+      expect(param.$valueAtTime(4.000), "00:04.000").to.be.closeTo(658.3685804895155, 1e-6);
+      expect(param.$valueAtTime(4.500), "00:04.500").to.be.closeTo(874.3208243038764, 1e-6);
+      expect(param.$valueAtTime(5.000), "00:05.000").to.be.closeTo(953.7652150780225, 1e-6);
     });
     it("SetCurve", function() {
       var curve = new Float32Array([ 220, 330, 440, 330, 220 ]);
