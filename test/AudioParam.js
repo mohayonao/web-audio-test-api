@@ -161,202 +161,113 @@ describe("AudioParam", function() {
     });
   });
 
-  describe("#$process()", function() {
+  describe("#$valueAtTime(t)", function() {
     it("SetValue", function() {
-      param.setValueAtTime(220, ctx.currentTime);
-      param.setValueAtTime(660, ctx.currentTime + 1.5);
-      param.setValueAtTime(440, ctx.currentTime + 1.0);
-      param.setValueAtTime(880, ctx.currentTime + 1.0);
-      param.setValueAtTime(660, ctx.currentTime + 0.5);
+      param.setValueAtTime(0, 0.000);
+      param.setValueAtTime(0, 4.000);
+      param.setValueAtTime(0, 1.000);
+      param.setValueAtTime(100, 1.000);
+      param.setValueAtTime(1000, 4.000);
 
-      expect(param.value, "00:00.000").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.250").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.500").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.750").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.000").to.equal(880);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.250").to.equal(880);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.500").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.750").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:02.000").to.equal(660);
+      expect(param.$valueAtTime(0.000), "00:00.000").to.equal(0);
+      expect(param.$valueAtTime(0.500), "00:00.500").to.equal(0);
+      expect(param.$valueAtTime(1.000), "00:01.000").to.equal(100);
+      expect(param.$valueAtTime(1.500), "00:01.500").to.equal(100);
+      expect(param.$valueAtTime(2.000), "00:02.000").to.equal(100);
+      expect(param.$valueAtTime(2.500), "00:02.500").to.equal(100);
+      expect(param.$valueAtTime(3.000), "00:02.000").to.equal(100);
+      expect(param.$valueAtTime(3.500), "00:02.500").to.equal(100);
+      expect(param.$valueAtTime(4.000), "00:02.000").to.equal(1000);
+      expect(param.$valueAtTime(4.500), "00:02.500").to.equal(1000);
+      expect(param.$valueAtTime(5.000), "00:02.000").to.equal(1000);
     });
     it("LinearRampToValue", function() {
-      param.setValueAtTime(220, ctx.currentTime);
-      param.setValueAtTime(660, ctx.currentTime + 0.5);
-      param.linearRampToValueAtTime(880, ctx.currentTime + 1.0);
-      param.linearRampToValueAtTime(660, ctx.currentTime + 1.5);
+      param.setValueAtTime(0, 0.000);
+      param.linearRampToValueAtTime(100, 1.000);
+      param.linearRampToValueAtTime(1000, 4.000);
 
-      expect(param.value, "00:00.000").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.250").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.500").to.be.closeTo(660, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.750").to.be.closeTo(770, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.000").to.be.closeTo(880, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.250").to.be.closeTo(770, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.500").to.be.closeTo(660, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.750").to.be.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:02.000").to.be.equal(660);
+      expect(param.$valueAtTime(0.000), "00:00.000").to.equal(0);
+      expect(param.$valueAtTime(0.500), "00:00.500").to.equal(50);
+      expect(param.$valueAtTime(1.000), "00:01.000").to.equal(100);
+      expect(param.$valueAtTime(1.500), "00:01.500").to.equal(250);
+      expect(param.$valueAtTime(2.000), "00:02.000").to.equal(400);
+      expect(param.$valueAtTime(2.500), "00:02.500").to.equal(550);
+      expect(param.$valueAtTime(3.000), "00:02.000").to.equal(700);
+      expect(param.$valueAtTime(3.500), "00:02.500").to.equal(850);
+      expect(param.$valueAtTime(4.000), "00:02.000").to.equal(1000);
+      expect(param.$valueAtTime(4.500), "00:02.500").to.equal(1000);
+      expect(param.$valueAtTime(5.000), "00:02.000").to.equal(1000);
     });
     it("ExponentialRampToValue", function() {
-      param.setValueAtTime(220, ctx.currentTime);
-      param.setValueAtTime(660, ctx.currentTime + 0.5);
-      param.exponentialRampToValueAtTime(880, ctx.currentTime + 1.0);
-      param.exponentialRampToValueAtTime(660, ctx.currentTime + 1.5);
+      param.setValueAtTime(0.0001, 0.000);
+      param.exponentialRampToValueAtTime(100, 1.000);
+      param.exponentialRampToValueAtTime(1000, 4.000);
 
-      expect(param.value, "00:00.000").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.250").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.500").to.be.closeTo(660, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.750").to.be.closeTo(762.102355330306, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.000").to.be.closeTo(880, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.250").to.be.closeTo(762.102355330306, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.500").to.be.closeTo(660, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.750").to.be.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:02.000").to.be.equal(660);
+      expect(param.$valueAtTime(0.000), "00:00.000").to.be.closeTo(0.0001, 1e-6);
+      expect(param.$valueAtTime(0.500), "00:00.500").to.be.closeTo(0.1, 1e-6);
+      expect(param.$valueAtTime(1.000), "00:01.000").to.be.closeTo(100, 1e-6);
+      expect(param.$valueAtTime(1.500), "00:01.500").to.be.closeTo(146.77992676220694, 1e-6);
+      expect(param.$valueAtTime(2.000), "00:02.000").to.be.closeTo(215.44346900318837, 1e-6);
+      expect(param.$valueAtTime(2.500), "00:02.500").to.be.closeTo(316.22776601683796, 1e-6);
+      expect(param.$valueAtTime(3.000), "00:02.000").to.be.closeTo(464.15888336127784, 1e-6);
+      expect(param.$valueAtTime(3.500), "00:02.500").to.be.closeTo(681.2920690579613, 1e-6);
+      expect(param.$valueAtTime(4.000), "00:02.000").to.equal(1000);
+      expect(param.$valueAtTime(4.500), "00:02.500").to.equal(1000);
+      expect(param.$valueAtTime(5.000), "00:02.000").to.equal(1000);
     });
     it("SetTarget", function() {
-      param.setValueAtTime(220, ctx.currentTime);
-      param.setValueAtTime(660, ctx.currentTime + 0.5);
-      param.setTargetAtTime(880, ctx.currentTime + 1.0, 2);
-      param.setTargetAtTime(660, ctx.currentTime + 1.5, 2);
+      param.setValueAtTime(0, 0.000);
+      param.setTargetAtTime( 100, 1.000, 2);
+      param.setTargetAtTime(1000, 4.000, 0.5);
 
-      expect(param.value, "00:00.000").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.250").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.500").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.750").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.000").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.250").to.be.closeTo(685.850681431389, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.500").to.be.closeTo(708.663827724291, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.750").to.be.closeTo(702.9456772345972, 1e-6);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:02.000").to.be.closeTo(697.8994271389297, 1e-6);
+      expect(param.$valueAtTime(0.000), "00:00.000").to.equal(0);
+      expect(param.$valueAtTime(0.500), "00:00.500").to.equal(0);
+      expect(param.$valueAtTime(1.000), "00:01.000").to.equal(0);
+      expect(param.$valueAtTime(1.500), "00:01.500").to.be.closeTo(22.119921692859506, 1e-6);
+      expect(param.$valueAtTime(2.000), "00:02.000").to.be.closeTo(39.346934028736655, 1e-6);
+      expect(param.$valueAtTime(2.500), "00:02.500").to.be.closeTo(52.763344725898534, 1e-6);
+      expect(param.$valueAtTime(3.000), "00:03.000").to.be.closeTo(63.212055882855765, 1e-6);
+      expect(param.$valueAtTime(3.500), "00:03.500").to.be.closeTo(71.34952031398099, 1e-6);
+      expect(param.$valueAtTime(4.000), "00:04.000").to.equal(100);
+      expect(param.$valueAtTime(4.500), "00:04.500").to.be.closeTo(668.9085029457019, 1e-6);
+      expect(param.$valueAtTime(5.000), "00:05.000").to.be.closeTo(878.1982450870486, 1e-6);
     });
     it("SetCurve", function() {
-      var curve = new Float32Array([ 220, 330, 440, 330 ]);
+      var curve = new Float32Array([ 220, 330, 440, 330, 220 ]);
 
-      param.setValueAtTime(220, ctx.currentTime);
-      param.setValueAtTime(660, ctx.currentTime + 0.5);
-      param.setValueCurveAtTime(curve, ctx.currentTime + 1.0, 0.5);
-      param.setValueCurveAtTime(curve, ctx.currentTime + 1.5, 1.0);
+      param.setValueAtTime(0, 0.000);
+      param.setValueCurveAtTime(curve, 1.000, 2);
+      param.setValueCurveAtTime(curve, 4.000, 4);
 
-      expect(param.value, "00:00.000").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.250").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.500").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.750").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.000").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.250").to.equal(385);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.500").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.750").to.equal(302.5);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:02.000").to.equal(385);
+      expect(param.$valueAtTime(0.000), "00:00.000").to.equal(0);
+      expect(param.$valueAtTime(0.500), "00:00.500").to.equal(0);
+      expect(param.$valueAtTime(1.000), "00:01.000").to.equal(220);
+      expect(param.$valueAtTime(1.500), "00:01.500").to.equal(330);
+      expect(param.$valueAtTime(2.000), "00:02.000").to.equal(440);
+      expect(param.$valueAtTime(2.500), "00:02.500").to.equal(330);
+      expect(param.$valueAtTime(3.000), "00:03.000").to.equal(220);
+      expect(param.$valueAtTime(3.500), "00:03.500").to.equal(220);
+      expect(param.$valueAtTime(4.000), "00:04.000").to.equal(220);
+      expect(param.$valueAtTime(4.500), "00:04.500").to.equal(275);
+      expect(param.$valueAtTime(5.000), "00:05.000").to.equal(330);
     });
-    it("cancel", function() {
-      param.setValueAtTime(220, ctx.currentTime);
-      param.setValueAtTime(660, ctx.currentTime + 0.5);
-      param.setValueAtTime(880, ctx.currentTime + 1.0);
-      param.setValueAtTime(440, ctx.currentTime + 1.5);
-      param.cancelScheduledValues(ctx.currentTime + 1.0);
+    it("Cancel", function() {
+      param.setValueAtTime(0, 0.000);
+      param.linearRampToValueAtTime( 100, 1.000);
+      param.linearRampToValueAtTime(1000, 4.000);
+      param.cancelScheduledValues(3.000);
 
-      expect(param.value, "00:00.000").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.250").to.equal(220);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.500").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:00.750").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.000").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.250").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.500").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:01.750").to.equal(660);
-
-      ctx.$process(0.25);
-      expect(param.value, "00:02.000").to.equal(660);
+      expect(param.$valueAtTime(0.000), "00:00.000").to.equal(0);
+      expect(param.$valueAtTime(0.500), "00:00.500").to.equal(50);
+      expect(param.$valueAtTime(1.000), "00:01.000").to.equal(100);
+      expect(param.$valueAtTime(1.500), "00:01.500").to.equal(100);
+      expect(param.$valueAtTime(2.000), "00:02.000").to.equal(100);
+      expect(param.$valueAtTime(2.500), "00:02.500").to.equal(100);
+      expect(param.$valueAtTime(3.000), "00:02.000").to.equal(100);
+      expect(param.$valueAtTime(3.500), "00:02.500").to.equal(100);
+      expect(param.$valueAtTime(4.000), "00:02.000").to.equal(100);
+      expect(param.$valueAtTime(4.500), "00:02.500").to.equal(100);
+      expect(param.$valueAtTime(5.000), "00:02.000").to.equal(100);
     });
   });
 
