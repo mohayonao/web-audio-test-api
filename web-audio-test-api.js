@@ -680,7 +680,7 @@
       return 0 < v0 && 0 < v1 ? v0 * Math.pow(v1 / v0, dt) : /* istanbul ignore next */ v;
     }
 
-    function setTarget(v, v0, v1, t, t0, t1, timeConstant) {
+    function setTarget(v0, v1, t, t0, timeConstant) {
       return v1 + (v0 - v1) * Math.exp((t0 - t) / timeConstant);
     }
 
@@ -706,36 +706,33 @@
     AudioParam.prototype.$valueAtTime = function(t) {
       var value  = this._value;
       var events = this.$events;
+      var t0;
 
       for (var i = 0; i < events.length; i++) {
-        var e0 = events[i - 1] || { value: 0 };
-        var e1 = events[i];
-        var e2 = events[i + 1];
+        var e0 = events[i];
+        var e1 = events[i + 1];
 
-        if (t < e1.time) {
+        if (t < e0.time) {
           break;
         }
+        t0 = Math.min(t, e1 ? e1.time : t);
 
-        if (e2 && e2.time < t) {
-          continue;
-        }
-
-        if (e2 && e2.type === "LinearRampToValue") {
-          value = linTo(value, e1.value, e2.value, t, e1.time, e2.time);
-        } else if (e2 && e2.type === "ExponentialRampToValue") {
-          value = expTo(value, e1.value, e2.value, t, e1.time, e2.time);
+        if (e1 && e1.type === "LinearRampToValue") {
+          value = linTo(value, e0.value, e1.value, t0, e0.time, e1.time);
+        } else if (e1 && e1.type === "ExponentialRampToValue") {
+          value = expTo(value, e0.value, e1.value, t0, e0.time, e1.time);
         } else {
-          switch (e1.type) {
+          switch (e0.type) {
           case "SetValue":
           case "LinearRampToValue":
           case "ExponentialRampToValue":
-            value = e1.value;
+            value = e0.value;
             break;
           case "SetTarget":
-            value = setTarget(value, e0.value, e1.value, t, e1.time, Infinity, e1.timeConstant);
+            value = setTarget(value, e0.value, t0, e0.time, e0.timeConstant);
             break;
           case "SetValueCurve":
-            value = setCurveValue(e0.value, t, e1.time, e1.time + e1.duration, e1.curve);
+            value = setCurveValue(value, t0, e0.time, e0.time + e0.duration, e0.curve);
             break;
           }
         }
@@ -847,7 +844,6 @@
       });
       insertEvent(this, {
         type : "SetValueCurve",
-        value: values[values.length - 1] || 0,
         time : startTime,
         duration: duration,
         curve: values
