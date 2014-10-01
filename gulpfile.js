@@ -7,7 +7,7 @@ var istanbul = require("gulp-istanbul");
 
 gulp.task("lint", function() {
   return gulp.src([ "gulpfile.js", "web-audio-test-api.js", "test/**/*.js" ])
-    .pipe(jshint(".jshintrc"))
+    .pipe(jshint())
     .pipe(jshint.reporter(require("jshint-stylish")))
     .pipe(jshint.reporter("fail"));
 });
