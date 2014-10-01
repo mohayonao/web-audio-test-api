@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 describe("PeriodicWave", function() {
   var ctx = null;
   var f128 = new Float32Array(128);

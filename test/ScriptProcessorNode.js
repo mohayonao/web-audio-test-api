@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 var BUFFER_SIZE = 256;
 var PROCESS_INTERVAL = BUFFER_SIZE / 44100;
 

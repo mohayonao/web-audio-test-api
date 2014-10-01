@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 describe("ModularRouting", function() {
   var ctx = null;
 

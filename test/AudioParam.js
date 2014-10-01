@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 describe("AudioParam", function() {
   var ctx = null;
   var param = null;

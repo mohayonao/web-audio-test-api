@@ -13,13 +13,11 @@ gulp.task("lint", function() {
 });
 
 gulp.task("test", function() {
-  require("./test/bootstrap/bootstrap");
   return gulp.src("test/**/*.js")
     .pipe(mocha());
 });
 
 gulp.task("cover", function(cb) {
-  require("./test/bootstrap/bootstrap");
   gulp.src("web-audio-test-api.js")
     .pipe(istanbul())
     .on("finish", function() {

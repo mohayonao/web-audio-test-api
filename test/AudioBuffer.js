@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 describe("AudioBuffer", function() {
   var ctx = null;
   var buf = null;

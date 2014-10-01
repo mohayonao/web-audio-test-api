@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 describe("DynamicsCompressorNode", function() {
   var ctx = null;
   var node = null;

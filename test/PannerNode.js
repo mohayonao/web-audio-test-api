@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 describe("PannerNode", function() {
   var ctx = null;
   var node = null;

@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 describe("ErrorMessage", function() {
   var ctx = null;
   var osc = null;

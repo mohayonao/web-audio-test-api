@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 describe("OfflineAudioContext", function() {
   var ctx = null;
 

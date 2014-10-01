@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 describe("AudioListener", function() {
   var ctx = null;
   var listener = null;

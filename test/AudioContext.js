@@ -1,7 +1,5 @@
 "use strict";
 
-require("../web-audio-test-api");
-
 describe("AudioContext", function() {
   var ctx = null;
 
