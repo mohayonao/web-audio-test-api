@@ -1,12 +1,14 @@
 "use strict";
 
 var gulp = require("gulp");
-var jshint   = require("gulp-jshint");
-var mocha    = require("gulp-mocha");
-var istanbul = require("gulp-istanbul");
+var jshint    = require("gulp-jshint");
+var mocha     = require("gulp-mocha");
+var istanbul  = require("gulp-istanbul");
+var browerify = require("gulp-browserify");
+var rename    = require("gulp-rename");
 
 gulp.task("lint", function() {
-  return gulp.src([ "gulpfile.js", "web-audio-test-api.js", "test/**/*.js" ])
+  return gulp.src([ "gulpfile.js", "src/**/*.js", "test/**/*.js" ])
     .pipe(jshint())
     .pipe(jshint.reporter(require("jshint-stylish")))
     .pipe(jshint.reporter("fail"));
@@ -18,7 +20,7 @@ gulp.task("test", function() {
 });
 
 gulp.task("cover", function(cb) {
-  gulp.src("web-audio-test-api.js")
+  gulp.src("src/**/*.js")
     .pipe(istanbul())
     .on("finish", function() {
       return gulp.src("test/**/*.js")
@@ -28,5 +30,12 @@ gulp.task("cover", function(cb) {
     });
 });
 
+gulp.task("build", function() {
+  return gulp.src("src")
+    .pipe(browerify())
+    .pipe(rename("web-audio-test-api.js"))
+    .pipe(gulp.dest("build"));
+});
+
 gulp.task("travis", [ "lint", "cover" ]);
-gulp.task("default", [ "lint", "cover" ]);
+gulp.task("default", [ "lint", "cover", "build" ]);
