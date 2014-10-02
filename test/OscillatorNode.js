@@ -87,16 +87,13 @@ describe("OscillatorNode", function() {
 
       expect(passed, "00:00.000").to.equal(0);
 
-      node.context.$process(0.1);
-
+      node.context.$processTo("00:00.100");
       expect(passed, "00:00.100").to.equal(0);
 
-      node.context.$process(0.1);
-
+      node.context.$processTo("00:00.200");
       expect(passed, "00:00.200").to.equal(1);
 
-      node.context.$process(0.1);
-
+      node.context.$processTo("00:00.300");
       expect(passed, "00:00.300").to.equal(1);
     });
   });
@@ -108,13 +105,13 @@ describe("OscillatorNode", function() {
       node.start(0.1);
       expect(node.$state).to.equal("SCHEDULED");
 
-      ctx.$process(0.1);
+      node.context.$processTo("00:00.100");
       expect(node.$state).to.equal("PLAYING");
 
       node.stop(0.2);
       expect(node.$state).to.equal("PLAYING");
 
-      ctx.$process(0.1);
+      node.context.$processTo("00:00.200");
       expect(node.$state).to.equal("FINISHED");
     });
   });

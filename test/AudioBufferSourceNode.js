@@ -107,16 +107,13 @@ describe("AudioBufferSourceNode", function() {
 
       expect(passed, "00:00.000").to.equal(0);
 
-      node.context.$process(0.1);
-
+      node.context.$processTo("00:00.100");
       expect(passed, "00:00.100").to.equal(0);
 
-      node.context.$process(0.1);
-
+      node.context.$processTo("00:00.200");
       expect(passed, "00:00.200").to.equal(1);
 
-      node.context.$process(0.1);
-
+      node.context.$processTo("00:00.300");
       expect(passed, "00:00.300").to.equal(1);
     });
     it("works auto stop", function() {
@@ -135,16 +132,13 @@ describe("AudioBufferSourceNode", function() {
 
       expect(passed, "00:00.000").to.equal(0);
 
-      node.context.$process(0.1);
-
+      node.context.$processTo("00:00.100");
       expect(passed, "00:00.100").to.equal(0);
 
-      node.context.$process(0.1);
-
+      node.context.$processTo("00:00.200");
       expect(passed, "00:00.200").to.equal(1);
 
-      node.context.$process(0.1);
-
+      node.context.$processTo("00:00.300");
       expect(passed, "00:00.300").to.equal(1);
     });
   });

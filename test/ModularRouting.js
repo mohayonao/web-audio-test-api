@@ -55,7 +55,7 @@ describe("ModularRouting", function() {
       bufSrc.connect(amp.gain);
       amp.connect(ctx.destination);
 
-      ctx.$process(5);
+      ctx.$processTo("00:00.100");
 
       expect(ctx.toJSON()).to.eql({
         "name": "AudioDestinationNode",
