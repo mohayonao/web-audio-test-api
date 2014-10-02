@@ -5,7 +5,6 @@ var _ = require("./utils");
 function AudioParam(node, name, defaultValue, minValue, maxValue) {
   var context = node.context;
 
-  _.$read(this, "node", node);
   _.$read(this, "name", name);
   _.$read(this, "defaultValue", defaultValue);
   _.$read(this, "minValue", minValue);
@@ -35,6 +34,7 @@ function AudioParam(node, name, defaultValue, minValue, maxValue) {
   Object.defineProperties(this, {
     $name   : { value: "AudioParam" },
     $context: { value: context },
+    $node   : { value: node },
     $inputs : { value: [] },
     $events : { value: [] },
   });

@@ -45,7 +45,7 @@ ScriptProcessorNode.prototype._process = function(currentTime, nextCurrentTime) 
   if (this._numSamples <= 0 && this.onaudioprocess) {
     this._numSamples += this.bufferSize;
 
-    var e = new AudioProcessingEvent();
+    var e = new AudioProcessingEvent(this);
 
     e.playbackTime = this.context.currentTime;
     e.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);

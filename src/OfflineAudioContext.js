@@ -58,7 +58,7 @@ OfflineAudioContext.prototype.$process = function(duration) {
   }
 
   if (this._length <= this._processed && this.oncomplete) {
-    var e = new OfflineAudioCompletionEvent();
+    var e = new OfflineAudioCompletionEvent(this);
 
     e.renderedBuffer = new AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);
 
