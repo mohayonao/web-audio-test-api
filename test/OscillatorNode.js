@@ -62,6 +62,45 @@ describe("OscillatorNode", function() {
     });
   });
 
+  describe("#onended", function() {
+    it("should be exist", function() {
+      expect(node).to.have.property("onended");
+    });
+    it("should be a function", function() {
+      expect(function() {
+        node.onended = function() {};
+      }).to.not.throw();
+      expect(function() {
+        node.onended = "INVALID";
+      }).to.throw(TypeError);
+    });
+    it("works", function() {
+      var passed = 0;
+
+      node.onended = function() {
+        passed += 1;
+      };
+
+      node.connect(node.context.destination);
+      node.start(0);
+      node.stop(0.15);
+
+      expect(passed, "00:00.000").to.equal(0);
+
+      node.context.$process(0.1);
+
+      expect(passed, "00:00.100").to.equal(0);
+
+      node.context.$process(0.1);
+
+      expect(passed, "00:00.200").to.equal(1);
+
+      node.context.$process(0.1);
+
+      expect(passed, "00:00.300").to.equal(1);
+    });
+  });
+
   describe("#$state", function() {
     it("return #$stateAtTime(currentTime)", function() {
       expect(node.$state).to.equal("UNSCHEDULED");

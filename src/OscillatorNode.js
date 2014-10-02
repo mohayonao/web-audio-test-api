@@ -30,6 +30,7 @@ function OscillatorNode(context) {
 
   this._startTime = Infinity;
   this._stopTime  = Infinity;
+  this._firedOnEnded = false;
 }
 _.inherits(OscillatorNode, global.OscillatorNode);
 
@@ -42,6 +43,13 @@ OscillatorNode.prototype.$stateAtTime = function(t) {
     return "PLAYING";
   }
   return "FINISHED";
+};
+
+OscillatorNode.prototype._process = function(currentTime) {
+  if (!this._firedOnEnded && this.$stateAtTime(currentTime) === "FINISHED" && this.onended) {
+    this.onended({});
+    this._firedOnEnded = true;
+  }
 };
 
 OscillatorNode.prototype.start = function(when) {
