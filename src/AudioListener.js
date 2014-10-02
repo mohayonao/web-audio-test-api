@@ -3,9 +3,9 @@
 var _ = require("./utils");
 
 function AudioListener() {
-  _.$read(this, "name", "AudioListener");
   _.$type(this, "dopplerFactor", "number", 1);
   _.$type(this, "speedOfSound", "number", 343.3);
+  this.$name = "AudioListener";
 }
 _.inherits(AudioListener, global.AudioListener);
 

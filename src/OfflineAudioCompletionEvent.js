@@ -3,7 +3,7 @@
 var _ = require("./utils");
 
 function OfflineAudioCompletionEvent() {
-  _.$read(this, "name", "OfflineAudioCompletionEvent");
+  this.$name = "OfflineAudioCompletionEvent";
 }
 _.inherits(OfflineAudioCompletionEvent, global.OfflineAudioCompletionEvent);
 

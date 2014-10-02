@@ -3,7 +3,7 @@
 var _ = require("./utils");
 
 function AudioProcessingEvent() {
-  _.$read(this, "name", "AudioProcessingEvent");
+  this.$name = "AudioProcessingEvent";
 }
 _.inherits(AudioProcessingEvent, global.AudioProcessingEvent);
 

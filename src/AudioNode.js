@@ -4,7 +4,6 @@ var _ = require("./utils");
 
 function AudioNode(spec) {
   _.$read(this, "context", spec.context);
-  _.$read(this, "name", spec.name);
   _.$read(this, "jsonAttrs", spec.jsonAttrs);
   _.$read(this, "numberOfInputs", spec.numberOfInputs);
   _.$read(this, "numberOfOutputs", spec.numberOfOutputs);
@@ -12,6 +11,7 @@ function AudioNode(spec) {
   _.$enum(this, "channelCountMode", [ "max", "clamped-max", "explicit" ], spec.channelCountMode);
   _.$enum(this, "channelInterpretation", [ "speakers", "discrete" ], spec.channelInterpretation);
 
+  this.$name = spec.name;
   this.$inputs  = [];
   this._outputs = [];
   this._currentTime = -1;

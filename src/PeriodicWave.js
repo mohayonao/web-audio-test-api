@@ -25,7 +25,7 @@ function PeriodicWave(real, imag) {
       }
     ));
   }
-  _.$read(this, "name", "PeriodicWave");
+  this.$name = "PeriodicWave";
 }
 _.inherits(PeriodicWave, global.PeriodicWave);
 

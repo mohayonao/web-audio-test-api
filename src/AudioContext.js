@@ -23,7 +23,6 @@ var OscillatorNode = require("./OscillatorNode");
 var PeriodicWave = require("./PeriodicWave");
 
 function AudioContext() {
-  _.$read(this, "name", "AudioContext");
   _.$read(this, "destination", new AudioDestinationNode(this));
   _.$read(this, "sampleRate", _.SAMPLERATE);
   _.$read(this, "currentTime", function() {
@@ -31,6 +30,7 @@ function AudioContext() {
   }.bind(this));
   _.$read(this, "listener", new AudioListener(this));
 
+  this.$name = "AudioContext";
   this._currentTime = 0;
   this._targetTime  = 0;
   this._remain = 0;

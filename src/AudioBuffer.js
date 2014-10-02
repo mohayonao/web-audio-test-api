@@ -9,11 +9,12 @@ function AudioBuffer(context, numberOfChannels, length, sampleRate) {
     sampleRate      : { type: "number", given: sampleRate       },
   });
   _.$read(this, "context", context);
-  _.$read(this, "name", "AudioBuffer");
   _.$read(this, "sampleRate", sampleRate);
   _.$read(this, "length", length);
   _.$read(this, "duration", length / sampleRate);
   _.$read(this, "numberOfChannels", numberOfChannels);
+
+  this.$name = "AudioBuffer";
 
   this._data = new Array(numberOfChannels);
   for (var i = 0; i < numberOfChannels; i++) {
@@ -32,7 +33,7 @@ function f32ToArray(f32) {
 
 AudioBuffer.prototype.toJSON = function() {
   var json = {
-    name: this.name,
+    name: this.$name,
     sampleRate: this.sampleRate,
     length: this.length,
     duration: this.duration,

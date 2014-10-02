@@ -33,6 +33,7 @@ function AudioParam(node, name, defaultValue, minValue, maxValue) {
     }
   });
 
+  this.$name = "AudioParam";
   this.$inputs = [];
   this.$events = [];
   this._value = defaultValue;
