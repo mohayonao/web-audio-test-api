@@ -82,6 +82,15 @@ describe("AudioContext", function() {
     });
   });
 
+  describe("#$processTo()", function() {
+    it("should work", function() {
+      ctx.$processTo(0.5);
+      ctx.$processTo("00:00.005");
+      ctx.$processTo("00:00.010");
+      ctx.$processTo("00:00.005");
+    });
+  });
+
   describe("#$reset()", function() {
     it("should work", function() {
       ctx.createGain().connect(ctx.destination);

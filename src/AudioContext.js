@@ -59,6 +59,16 @@ AudioContext.prototype.$process = function(duration) {
   }
 };
 
+AudioContext.prototype.$processTo = function(time) {
+  time = String(time).match(/^(\d\d):(\d\d)\.(\d\d\d)/);
+  if (time) {
+    time = +time[1] * 60 + +time[2] + +time[3] * 0.001;
+    if (this._currentTime < time) {
+      this.$process(time - this._currentTime);
+    }
+  }
+};
+
 AudioContext.prototype.$reset = function() {
   this._currentTime = 0;
   this._targetTime  = 0;
