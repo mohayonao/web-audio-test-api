@@ -3,7 +3,9 @@
 var _ = require("./utils");
 
 function OfflineAudioCompletionEvent() {
-  this.$name = "OfflineAudioCompletionEvent";
+  Object.defineProperties(this, {
+    $name: { value: "OfflineAudioCompletionEvent" }
+  });
 }
 _.inherits(OfflineAudioCompletionEvent, global.OfflineAudioCompletionEvent);
 

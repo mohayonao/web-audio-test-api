@@ -8,13 +8,15 @@ function AudioBuffer(context, numberOfChannels, length, sampleRate) {
     length          : { type: "number", given: length           },
     sampleRate      : { type: "number", given: sampleRate       },
   });
-  _.$read(this, "context", context);
   _.$read(this, "sampleRate", sampleRate);
   _.$read(this, "length", length);
   _.$read(this, "duration", length / sampleRate);
   _.$read(this, "numberOfChannels", numberOfChannels);
 
-  this.$name = "AudioBuffer";
+  Object.defineProperties(this, {
+    $name   : { value: "AudioBuffer" },
+    $context: { value: context }
+  });
 
   this._data = new Array(numberOfChannels);
   for (var i = 0; i < numberOfChannels; i++) {
@@ -40,7 +42,7 @@ AudioBuffer.prototype.toJSON = function() {
     numberOfChannels: this.numberOfChannels
   };
 
-  if (this.context.VERBOSE_JSON) {
+  if (this.$context.VERBOSE_JSON) {
     json.data = this._data.map(f32ToArray);
   }
 

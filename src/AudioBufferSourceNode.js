@@ -21,9 +21,14 @@ function AudioBufferSourceNode(context) {
   _.$type(this, "loop", "boolean", false);
   _.$type(this, "loopStart", "number", 0);
   _.$type(this, "loopEnd", "number", 0);
-  _.$type(this, "onended", "function", _.NOP);
-  _.$read(this, "$state", function() {
-    return this.$stateAtTime(this.context.currentTime);
+  _.$type(this, "onended", "function");
+
+  Object.defineProperties(this, {
+    $state: {
+      get: function() {
+        return this.$stateAtTime(this.context.currentTime);
+      }
+    }
   });
 
   this._startTime = Infinity;

@@ -31,7 +31,7 @@ function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberO
   _.$read(this, "numberOfInputChannels", numberOfInputChannels);
   _.$read(this, "numberOfOutputChannels", numberOfOutputChannels);
   _.$read(this, "bufferSize", bufferSize);
-  _.$type(this, "onaudioprocess", "function", _.NOP);
+  _.$type(this, "onaudioprocess", "function");
 
   this._numSamples = 0;
 }
@@ -42,7 +42,7 @@ ScriptProcessorNode.prototype._process = function(currentTime, nextCurrentTime) 
 
   this._numSamples -= numSamples;
 
-  if (this._numSamples <= 0) {
+  if (this._numSamples <= 0 && this.onaudioprocess) {
     this._numSamples += this.bufferSize;
 
     var e = new AudioProcessingEvent();

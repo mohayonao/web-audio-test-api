@@ -16,6 +16,10 @@ function DelayNode(context, maxDelayTime) {
     channelInterpretation: "speakers"
   });
   _.$read(this, "delayTime", new AudioParam(this, "delayTime", 0, 0, maxDelayTime));
+
+  Object.defineProperties(this, {
+    $maxDelayTime: { value: maxDelayTime }
+  });
 }
 _.inherits(DelayNode, global.DelayNode);
 

@@ -15,9 +15,7 @@ function AnalyserNode(context) {
     channelInterpretation: "speakers"
   });
   _.$enum(this, "fftSize", [ 32, 64, 128, 256, 512, 1024, 2048 ], 2048);
-  _.$read(this, "frequencyBinCount", function() {
-    return this.fftSize >> 1;
-  }.bind(this));
+  _.$read(this, "frequencyBinCount", function() { return this.fftSize >> 1; }.bind(this));
   _.$type(this, "minDecibels", "number", -100);
   _.$type(this, "maxDecibels", "number", 30);
   _.$type(this, "smoothingTimeConstant", "number", 0.8);

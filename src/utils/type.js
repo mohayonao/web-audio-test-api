@@ -39,7 +39,8 @@ module.exports = function(obj, name, type, value) {
     enumerable: true
   });
   if (typeof value === "undefined") {
-    value = null;
+    _value = null;
+  } else {
+    _value = value;
   }
-  obj[name] = value;
 };

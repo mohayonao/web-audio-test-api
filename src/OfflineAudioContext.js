@@ -15,13 +15,15 @@ function OfflineAudioContext(numberOfChannels, length, sampleRate) {
 
   _.$read(this, "destination", new AudioDestinationNode(this));
   _.$read(this, "sampleRate", sampleRate);
-  _.$read(this, "currentTime", function() {
-    return this._currentTime;
-  }.bind(this));
+  _.$read(this, "currentTime", function() { return this._currentTime; });
   _.$read(this, "listener", new AudioListener(this));
-  _.$type(this, "oncomplete", "function", _.NOP);
+  _.$type(this, "oncomplete", "function");
 
-  this.$name = "OfflineAudioContext";
+  Object.defineProperties(this, {
+    $name   : { value: "OfflineAudioContext" },
+    $context: { value: this }
+  });
+
   this._currentTime = 0;
   this._targetTime  = 0;
   this._remain = 0;
@@ -55,7 +57,7 @@ OfflineAudioContext.prototype.$process = function(duration) {
     this._processed += _.BUFFER_SIZE * (dx / _.CURRENT_TIME_INCR);
   }
 
-  if (this._length <= this._processed) {
+  if (this._length <= this._processed && this.oncomplete) {
     var e = new OfflineAudioCompletionEvent();
 
     e.renderedBuffer = new AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);

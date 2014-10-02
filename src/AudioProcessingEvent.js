@@ -3,7 +3,9 @@
 var _ = require("./utils");
 
 function AudioProcessingEvent() {
-  this.$name = "AudioProcessingEvent";
+  Object.defineProperties(this, {
+    $name: { value: "AudioProcessingEvent" }
+  });
 }
 _.inherits(AudioProcessingEvent, global.AudioProcessingEvent);
 

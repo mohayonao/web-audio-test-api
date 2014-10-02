@@ -6,7 +6,6 @@ function AudioParam(node, name, defaultValue, minValue, maxValue) {
   var context = node.context;
 
   _.$read(this, "node", node);
-  _.$read(this, "context", node.context);
   _.$read(this, "name", name);
   _.$read(this, "defaultValue", defaultValue);
   _.$read(this, "minValue", minValue);
@@ -33,9 +32,13 @@ function AudioParam(node, name, defaultValue, minValue, maxValue) {
     }
   });
 
-  this.$name = "AudioParam";
-  this.$inputs = [];
-  this.$events = [];
+  Object.defineProperties(this, {
+    $name   : { value: "AudioParam" },
+    $context: { value: context },
+    $inputs : { value: [] },
+    $events : { value: [] },
+  });
+
   this._value = defaultValue;
   this._currentTime = -1;
 }

@@ -25,7 +25,11 @@ function PeriodicWave(real, imag) {
       }
     ));
   }
-  this.$name = "PeriodicWave";
+  Object.defineProperties(this, {
+    $name: { value: "PeriodicWave" },
+    $real: { value: real },
+    $imag: { value: imag },
+  });
 }
 _.inherits(PeriodicWave, global.PeriodicWave);
 

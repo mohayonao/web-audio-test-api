@@ -4,15 +4,18 @@ var _ = require("./utils");
 
 function AudioNode(spec) {
   _.$read(this, "context", spec.context);
-  _.$read(this, "jsonAttrs", spec.jsonAttrs);
   _.$read(this, "numberOfInputs", spec.numberOfInputs);
   _.$read(this, "numberOfOutputs", spec.numberOfOutputs);
   _.$type(this, "channelCount", "number", spec.channelCount);
   _.$enum(this, "channelCountMode", [ "max", "clamped-max", "explicit" ], spec.channelCountMode);
   _.$enum(this, "channelInterpretation", [ "speakers", "discrete" ], spec.channelInterpretation);
 
-  this.$name = spec.name;
-  this.$inputs  = [];
+  Object.defineProperties(this, {
+    $name     : { value: spec.name },
+    $context  : { value: spec.context },
+    $inputs   : { value: [] },
+    $jsonAttrs: { value: spec.jsonAttrs },
+  });
   this._outputs = [];
   this._currentTime = -1;
 }
@@ -45,7 +48,7 @@ AudioNode.prototype.toJSON = function(memo) {
 
     json.name = _.id(this);
 
-    this.jsonAttrs.forEach(function(key) {
+    this.$jsonAttrs.forEach(function(key) {
       if (this[key] && this[key].toJSON) {
         json[key] = this[key].toJSON(memo);
       } else {
@@ -53,7 +56,7 @@ AudioNode.prototype.toJSON = function(memo) {
       }
     }, this);
 
-    if (this.context.VERBOSE_JSON) {
+    if (this.$context.VERBOSE_JSON) {
       json.numberOfInputs = this.numberOfInputs;
       json.numberOfOutputs = this.numberOfOutputs;
       json.channelCount = this.channelCount;
@@ -91,7 +94,7 @@ AudioNode.prototype.connect = function(destination, output, input) {
     input : { type: "number", given: input  },
   });
 
-  if (this.context !== destination.context) {
+  if (this.$context !== destination.$context) {
     throw new Error(_.format(
       "#{caption}: cannot connect to a destination belonging to a different audio context", {
         caption: caption

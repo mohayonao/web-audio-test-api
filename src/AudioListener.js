@@ -2,10 +2,14 @@
 
 var _ = require("./utils");
 
-function AudioListener() {
+function AudioListener(context) {
   _.$type(this, "dopplerFactor", "number", 1);
   _.$type(this, "speedOfSound", "number", 343.3);
-  this.$name = "AudioListener";
+
+  Object.defineProperties(this, {
+    $name   : { value: "AudioListener" },
+    $context: { value: context }
+  });
 }
 _.inherits(AudioListener, global.AudioListener);
 
