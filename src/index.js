@@ -1,117 +1,128 @@
-(function(global) {
-  "use strict";
+"use strict";
 
-  var _ = require("./utils");
+/* istanbul ignore if */
+if (global.WEB_AUDIO_TEST_API_IGNORE) {
+  return;
+}
 
-  /* istanbul ignore if */
-  if (global.WEB_AUDIO_TEST_API_IGNORE) {
-    return;
+var _ = require("./utils");
+
+function ILLEGAL_CONSTRUCTOR(superCtor, err) {
+  function ctor() {
+    throw err;
   }
-
-  function ILLEGAL_CONSTRUCTOR(superCtor, shouldUse) {
-    var err = "Illegal constructor";
-    if (shouldUse) {
-      err += ": should use ctx." + shouldUse;
-    }
-    function ctor() {
-      throw new TypeError(err);
-    }
-    if (superCtor) {
-      _.inherits(ctor, superCtor);
-    }
-    return ctor;
+  if (superCtor) {
+    _.inherits(ctor, superCtor);
   }
+  return ctor;
+}
 
-  global.Event = ILLEGAL_CONSTRUCTOR();
-  global.EventTarget = ILLEGAL_CONSTRUCTOR();
+global.Event = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor")
+);
 
-  global.OfflineAudioCompletionEvent = ILLEGAL_CONSTRUCTOR(Event);
+global.EventTarget = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor")
+);
 
-  global.AudioNode = ILLEGAL_CONSTRUCTOR();
+global.OfflineAudioCompletionEvent = ILLEGAL_CONSTRUCTOR(
+  Event, new TypeError("Illegal constructor")
+);
 
-  var AudioNode = require("./AudioNode");
+global.AudioProcessingEvent = ILLEGAL_CONSTRUCTOR(
+  Event, new TypeError("Illegal constructor")
+);
 
-  global.AudioDestinationNode = ILLEGAL_CONSTRUCTOR(AudioNode);
+global.AudioBuffer = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor: use audioContext.createBuffer(numberOfChannels, length, sampleRate)")
+);
 
-  global.AudioParam = ILLEGAL_CONSTRUCTOR();
+global.AudioListener = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor")
+);
 
-  global.GainNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createGain()"
-  );
+global.AudioParam = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor")
+);
 
-  global.DelayNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createDelay()"
-  );
+global.PeriodicWave = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor: use audioContext.createPeriodicWave(real, imag)")
+);
 
-  global.AudioBuffer = ILLEGAL_CONSTRUCTOR(
-    null, "createBuffer(numberOfChannels, length, sampleRate)"
-  );
+global.AudioNode = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor")
+);
 
-  global.AudioBufferSourceNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createBufferSource()"
-  );
+var AudioNode = require("./AudioNode");
 
-  global.MediaElementAudioSourceNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createMediaElementSource(mediaElement)"
-  );
+global.AudioDestinationNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor")
+);
 
-  global.AudioProcessingEvent = ILLEGAL_CONSTRUCTOR(Event);
+global.GainNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createGain()")
+);
 
-  global.ScriptProcessorNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels)"
-  );
+global.DelayNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createDelay()")
+);
 
-  global.PannerNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createPanner()"
-  );
+global.AudioBufferSourceNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createBufferSource()")
+);
 
-  global.AudioListener = ILLEGAL_CONSTRUCTOR();
+global.MediaElementAudioSourceNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createMediaElementSource(mediaElement)")
+);
 
-  global.ConvolverNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createConvolver()"
-  );
+global.ScriptProcessorNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels)")
+);
 
-  global.AnalyserNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createAnalyser()"
-  );
+global.PannerNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createPanner()")
+);
 
-  global.ChannelSplitterNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createChannelSplitter(numberOfOutputs)"
-  );
+global.ConvolverNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createConvolver()")
+);
 
-  global.ChannelMergerNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createChannelMerger(numberOfInputs)"
-  );
+global.AnalyserNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createAnalyser()")
+);
 
-  global.DynamicsCompressorNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createDynamicsCompressor()"
-  );
+global.ChannelSplitterNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createChannelSplitter(numberOfOutputs)")
+);
 
-  global.BiquadFilterNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createBiquadFilter()"
-  );
+global.ChannelMergerNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createChannelMerger(numberOfInputs)")
+);
 
-  global.WaveShaperNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createWaveShaper()"
-  );
+global.DynamicsCompressorNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createDynamicsCompressor()")
+);
 
-  global.OscillatorNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createOscillator()"
-  );
+global.BiquadFilterNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createBiquadFilter()")
+);
 
-  global.PeriodicWave = ILLEGAL_CONSTRUCTOR(
-    null, "createPeriodicWave(real, imag)"
-  );
+global.WaveShaperNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createWaveShaper()")
+);
 
-  global.MediaStreamAudioSourceNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createMediaStreamSource(mediaStream)"
-  );
+global.OscillatorNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createOscillator()")
+);
 
-  global.MediaStreamAudioDestinationNode = ILLEGAL_CONSTRUCTOR(
-    AudioNode, "createMediaStreamDestination()"
-  );
+global.MediaStreamAudioSourceNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createMediaStreamSource(mediaStream)")
+);
 
-  global.AudioContext = require("./AudioContext");
-  global.OfflineAudioContext = require("./OfflineAudioContext");
+global.MediaStreamAudioDestinationNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createMediaStreamDestination()")
+);
 
-})(this.self || global);
+global.AudioContext = require("./AudioContext");
+
+global.OfflineAudioContext = require("./OfflineAudioContext");
