@@ -94,6 +94,59 @@ describe("AudioBufferSourceNode", function() {
         node.onended = "INVALID";
       }).to.throw(TypeError);
     });
+    it("works", function() {
+      var passed = 0;
+
+      node.onended = function() {
+        passed += 1;
+      };
+
+      node.connect(node.context.destination);
+      node.start(0);
+      node.stop(0.15);
+
+      expect(passed, "00:00.000").to.equal(0);
+
+      node.context.$process(0.1);
+
+      expect(passed, "00:00.100").to.equal(0);
+
+      node.context.$process(0.1);
+
+      expect(passed, "00:00.200").to.equal(1);
+
+      node.context.$process(0.1);
+
+      expect(passed, "00:00.300").to.equal(1);
+    });
+    it("works auto stop", function() {
+      var passed = 0;
+
+      node.onended = function() {
+        passed += 1;
+      };
+
+      node.buffer = node.context.createBuffer(
+        1, node.context.sampleRate * 0.15, node.context.sampleRate
+      );
+
+      node.connect(node.context.destination);
+      node.start(0);
+
+      expect(passed, "00:00.000").to.equal(0);
+
+      node.context.$process(0.1);
+
+      expect(passed, "00:00.100").to.equal(0);
+
+      node.context.$process(0.1);
+
+      expect(passed, "00:00.200").to.equal(1);
+
+      node.context.$process(0.1);
+
+      expect(passed, "00:00.300").to.equal(1);
+    });
   });
 
   describe("#$state", function() {

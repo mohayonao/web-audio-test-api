@@ -33,6 +33,7 @@ function AudioBufferSourceNode(context) {
 
   this._startTime = Infinity;
   this._stopTime  = Infinity;
+  this._firedOnEnded = false;
 }
 _.inherits(AudioBufferSourceNode, global.AudioBufferSourceNode);
 
@@ -45,6 +46,19 @@ AudioBufferSourceNode.prototype.$stateAtTime = function(t) {
     return "PLAYING";
   }
   return "FINISHED";
+};
+
+AudioBufferSourceNode.prototype._process = function(currentTime, nextCurrentTime) {
+  if (!this._firedOnEnded) {
+    if (!this.loop && this.buffer && nextCurrentTime <= currentTime + this.buffer.duration) {
+      this._stopTime = Math.min(currentTime + this.buffer.duration, this._stopTime);
+    }
+
+    if (this.$stateAtTime(currentTime) === "FINISHED" && this.onended) {
+      this.onended({});
+      this._firedOnEnded = true;
+    }
+  }
 };
 
 AudioBufferSourceNode.prototype.start = function(when, offset, duration) {
