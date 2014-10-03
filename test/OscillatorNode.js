@@ -1,7 +1,4 @@
-/* global describe, it, expect, beforeEach */
 "use strict";
-
-require("../web-audio-test-api");
 
 describe("OscillatorNode", function() {
   var ctx = null;
@@ -65,6 +62,42 @@ describe("OscillatorNode", function() {
     });
   });
 
+  describe("#onended", function() {
+    it("should be exist", function() {
+      expect(node).to.have.property("onended");
+    });
+    it("should be a function", function() {
+      expect(function() {
+        node.onended = function() {};
+      }).to.not.throw();
+      expect(function() {
+        node.onended = "INVALID";
+      }).to.throw(TypeError);
+    });
+    it("works", function() {
+      var passed = 0;
+
+      node.onended = function() {
+        passed += 1;
+      };
+
+      node.connect(node.context.destination);
+      node.start(0);
+      node.stop(0.15);
+
+      expect(passed, "00:00.000").to.equal(0);
+
+      node.context.$processTo("00:00.100");
+      expect(passed, "00:00.100").to.equal(0);
+
+      node.context.$processTo("00:00.200");
+      expect(passed, "00:00.200").to.equal(1);
+
+      node.context.$processTo("00:00.300");
+      expect(passed, "00:00.300").to.equal(1);
+    });
+  });
+
   describe("#$state", function() {
     it("return #$stateAtTime(currentTime)", function() {
       expect(node.$state).to.equal("UNSCHEDULED");
@@ -72,13 +105,13 @@ describe("OscillatorNode", function() {
       node.start(0.1);
       expect(node.$state).to.equal("SCHEDULED");
 
-      ctx.$process(0.1);
+      node.context.$processTo("00:00.100");
       expect(node.$state).to.equal("PLAYING");
 
       node.stop(0.2);
       expect(node.$state).to.equal("PLAYING");
 
-      ctx.$process(0.1);
+      node.context.$processTo("00:00.200");
       expect(node.$state).to.equal("FINISHED");
     });
   });
@@ -143,9 +176,12 @@ describe("OscillatorNode", function() {
 
   describe("#setPeriodicWave(periodicWave)", function() {
     it("should work", function() {
+      var periodicWave = ctx.createPeriodicWave(new Float32Array(128), new Float32Array(128));
       expect(function() {
-        node.setPeriodicWave(ctx.createPeriodicWave(new Float32Array(128), new Float32Array(128)));
+        node.setPeriodicWave(periodicWave);
       }).to.not.throw();
+      expect(node.type).to.equal("custom");
+      expect(node.$custom).to.equal(periodicWave);
     });
     it("throw error", function() {
       expect(function() {

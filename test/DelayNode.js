@@ -1,7 +1,4 @@
-/* global describe, it, expect, beforeEach */
 "use strict";
-
-require("../web-audio-test-api");
 
 describe("DelayNode", function() {
   var ctx = null;

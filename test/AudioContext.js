@@ -1,7 +1,4 @@
-/* global describe, it, expect, beforeEach */
 "use strict";
-
-require("../web-audio-test-api");
 
 describe("AudioContext", function() {
   var ctx = null;
@@ -82,6 +79,15 @@ describe("AudioContext", function() {
       ctx.$process(0.5);
       ctx.$process(0.5);
       ctx.$process(0.5);
+    });
+  });
+
+  describe("#$processTo()", function() {
+    it("should work", function() {
+      ctx.$processTo(0.5);
+      ctx.$processTo("00:00.005");
+      ctx.$processTo("00:00.010");
+      ctx.$processTo("00:00.005");
     });
   });
 

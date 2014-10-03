@@ -1,7 +1,4 @@
-/* global describe, it, expect, beforeEach */
 "use strict";
-
-require("../web-audio-test-api");
 
 describe("OfflineAudioContext", function() {
   var ctx = null;
@@ -96,17 +93,17 @@ describe("OfflineAudioContext", function() {
         done();
       };
       ctx.startRendering();
-      ctx.$process(0.5);
-      ctx.$process(0.5);
-      ctx.$process(0.5);
+      ctx.$processTo("00:00.500");
+      ctx.$processTo("00:01.000");
+      ctx.$processTo("00:01.500");
     });
     it("should not work", function() {
       ctx.oncomplete = function() {
         throw new Error("NOT REACHED");
       };
-      ctx.$process(0.5);
-      ctx.$process(0.5);
-      ctx.$process(0.5);
+      ctx.$processTo("00:00.500");
+      ctx.$processTo("00:01.000");
+      ctx.$processTo("00:01.500");
     });
   });
 

@@ -6,10 +6,9 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/chai/1.9.1/chai.js"></script>
-  <script src="web-audio-test-api.js"></script>
+  <script src="build/web-audio-test-api.js"></script>
   <script>
     mocha.setup("bdd");
-    window.require = function() {};
     window.onload = function() {
       mocha.run();
     };

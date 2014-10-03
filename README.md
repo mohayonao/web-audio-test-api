@@ -9,7 +9,7 @@
 
 ## Installation
 
-  - [web-audio-test-api.js](http://mohayonao.github.io/web-audio-test-api/web-audio-test-api.js)
+  - [web-audio-test-api.js](http://mohayonao.github.io/web-audio-test-api/build/web-audio-test-api.js)
 
 #### browser
 
@@ -166,19 +166,19 @@ describe("OscillatorNode#$stateAtTime(t)", function() {
 
     expect(osc.$state, "00:00.000").to.equal("SCHEDULED");
 
-    ctx.$process(0.500);
+    ctx.$processTo("00:00.500");
     expect(osc.$state, "00:00.500").to.equal("SCHEDULED");
 
-    ctx.$process(0.500);
+    ctx.$processTo("00:01.000");
     expect(osc.$state, "00:01.000").to.equal("PLAYING");
 
-    ctx.$process(0.500);
+    ctx.$processTo("00:01.500");
     expect(osc.$state, "00:01.500").to.equal("PLAYING");
 
-    ctx.$process(0.500);
+    ctx.$processTo("00:02.000");
     expect(osc.$state, "00:02.000").to.equal("FINISHED");
 
-    ctx.$process(0.500);
+    ctx.$processTo("00:02.500");
     expect(osc.$state, "00:02.500").to.equal("FINISHED");
   });
 });
@@ -213,25 +213,25 @@ describe("AudioParam", function() {
 
     expect(osc.frequency.value, "00:00.000").to.equal(440);
 
-    ctx.$process(0.250);
+    ctx.$processTo("00:00.250");
     expect(osc.frequency.value, "00:00.250").to.equal(440);
 
-    ctx.$process(0.250);
+    ctx.$processTo("00:00.500");
     expect(osc.frequency.value, "00:00.500").to.equal(880); // <- setValueAtTime
                                                             //  ^
-    ctx.$process(0.250);                                    //  |
+    ctx.$processTo("00:00.750");                            //  |
     expect(osc.frequency.value, "00:00.750").to.equal(770); //  |
                                                             //  |
-    ctx.$process(0.250);                                    //  |
+    ctx.$processTo("00:01.000");                            //  |
     expect(osc.frequency.value, "00:01.000").to.equal(660); //  | linearRampToValueAtTime
                                                             //  |
-    ctx.$process(0.250);                                    //  |
+    ctx.$processTo("00:01.250");                            //  |
     expect(osc.frequency.value, "00:01.250").to.equal(550); //  |
                                                             //  |
-    ctx.$process(0.250);                                    //  v
+    ctx.$processTo("00:01.500");                            //  v
     expect(osc.frequency.value, "00:01.500").to.equal(440); //
 
-    ctx.$process(0.250);
+    ctx.$processTo("00:01.750");
     expect(osc.frequency.value, "00:01.750").to.equal(440);
   });
 });
