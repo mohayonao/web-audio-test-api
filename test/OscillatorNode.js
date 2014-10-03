@@ -176,10 +176,12 @@ describe("OscillatorNode", function() {
 
   describe("#setPeriodicWave(periodicWave)", function() {
     it("should work", function() {
+      var periodicWave = ctx.createPeriodicWave(new Float32Array(128), new Float32Array(128));
       expect(function() {
-        node.setPeriodicWave(ctx.createPeriodicWave(new Float32Array(128), new Float32Array(128)));
+        node.setPeriodicWave(periodicWave);
       }).to.not.throw();
       expect(node.type).to.equal("custom");
+      expect(node.$custom).to.equal(periodicWave);
     });
     it("throw error", function() {
       expect(function() {

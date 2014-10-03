@@ -26,10 +26,15 @@ function OscillatorNode(context) {
       get: function() {
         return this.$stateAtTime(this.context.currentTime);
       }
+    },
+    $custom: {
+      get: function() {
+        return this._custom;
+      }
     }
   });
 
-  this._type = "sine";
+  this._custom = null;
   this._startTime = Infinity;
   this._stopTime  = Infinity;
   this._firedOnEnded = false;
@@ -96,6 +101,7 @@ OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
     periodicWave: { type: "PeriodicWave", given: periodicWave }
   });
   this._type = "custom";
+  this._custom = periodicWave;
 };
 
 module.exports = OscillatorNode;
