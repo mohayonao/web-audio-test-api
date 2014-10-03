@@ -16,12 +16,12 @@ function AudioBufferSourceNode(context) {
     channelCountMode: "max",
     channelInterpretation: "speakers"
   });
-  _.$type(this, "buffer", AudioBuffer);
+  _.$type(this, "buffer", AudioBuffer, null);
   _.$read(this, "playbackRate", new AudioParam(this, "playbackRate", 1, 0, 1024));
   _.$type(this, "loop", "boolean", false);
   _.$type(this, "loopStart", "number", 0);
   _.$type(this, "loopEnd", "number", 0);
-  _.$type(this, "onended", "function");
+  _.$type(this, "onended", "function", null);
 
   Object.defineProperties(this, {
     $state: {

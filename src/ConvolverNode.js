@@ -14,7 +14,7 @@ function ConvolverNode(context) {
     channelCountMode: "clamped-max",
     channelInterpretation: "speakers"
   });
-  _.$type(this, "buffer", AudioBuffer);
+  _.$type(this, "buffer", AudioBuffer, null);
   _.$type(this, "normalize", "boolean", true);
 }
 _.inherits(ConvolverNode, global.ConvolverNode);

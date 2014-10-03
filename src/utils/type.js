@@ -6,41 +6,47 @@ var article = require("./article");
 var toS = require("./toS");
 
 module.exports = function(obj, name, type, value) {
-  var _value;
-  Object.defineProperty(obj, name, {
-    get: function() {
-      return _value;
-    },
-    set: function(newValue) {
-      var err = false;
+  var getter, setter;
 
-      if (typeof type === "string") {
-        if (typeof newValue !== type) {
-          err = true;
-        }
-      } else if (newValue !== null && !(newValue instanceof type)) {
+  getter = function() {
+    return obj["_" + name];
+  };
+  setter = function(newValue) {
+    var err = false;
+
+    if (typeof type === "string") {
+      if (typeof newValue !== type) {
         err = true;
-        type = type.constructor.name;
       }
+    } else if (!(newValue instanceof type)) {
+      err = true;
+      type = type.constructor.name;
+    }
 
-      if (err) {
-        throw new TypeError(format(
-          "#{object}##{property} should be #{type}, but got #{given}", {
-            object  : id(obj, true),
-            property: name,
-            type    : article(type),
-            given   : toS(newValue)
-          }
-        ));
-      }
+    if (err) {
+      throw new TypeError(format(
+        "#{object}##{property} should be #{type}, but got #{given}", {
+          object  : id(obj, true),
+          property: name,
+          type    : article(type) + " " + type,
+          given   : toS(newValue)
+        }
+      ));
+    }
 
-      _value = newValue;
-    },
+    obj["_" + name] = newValue;
+  };
+
+  if (typeof type === "object") {
+    getter = type.getter || /* istanbul ignore next */ getter;
+    setter = type.setter || /* istanbul ignore next */ setter;
+    type   = type.type;
+  }
+
+  Object.defineProperty(obj, name, {
+    get: getter,
+    set: setter,
     enumerable: true
   });
-  if (typeof value === "undefined") {
-    _value = null;
-  } else {
-    _value = value;
-  }
+  obj["_" + name] = value;
 };

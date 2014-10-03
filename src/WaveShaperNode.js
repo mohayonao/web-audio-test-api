@@ -14,7 +14,7 @@ function WaveShaperNode(context) {
     channelCountMode: "max",
     channelInterpretation: "speakers"
   });
-  _.$type(this, "curve", Float32Array);
+  _.$type(this, "curve", Float32Array, null);
   _.$enum(this, "oversample", [ "none", "2x", "4x" ], "none");
 }
 _.inherits(WaveShaperNode, global.WaveShaperNode);

@@ -14,7 +14,7 @@ var check = function(caption, spec) {
         "#{caption}: '#{name}' should be #{type}, but got #{given}", {
           caption: caption,
           name   : argName,
-          type   : article(type),
+          type   : article(type) + " " + type,
           given  : toS(given)
         }
       ));

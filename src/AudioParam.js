@@ -9,27 +9,13 @@ function AudioParam(node, name, defaultValue, minValue, maxValue) {
   _.$read(this, "defaultValue", defaultValue);
   _.$read(this, "minValue", minValue);
   _.$read(this, "maxValue", maxValue);
-
-  Object.defineProperty(this, "value", {
-    get: function() {
+  _.$type(this, "value", {
+    type: "number",
+    getter: function() {
       this._value = this.$valueAtTime(context.currentTime);
       return this._value;
-    },
-    set: function(value) {
-      if (_.check.number(value)) {
-        this._value = value;
-      } else {
-        throw new TypeError(_.format(
-          "#{object}##{property} should be #{type}, but got #{given}", {
-            object  : _.id(node, true),
-            property: name,
-            type    : "number",
-            given   : _.toS(value)
-          }
-        ));
-      }
     }
-  });
+  }, defaultValue);
 
   Object.defineProperties(this, {
     $name   : { value: "AudioParam" },
@@ -39,7 +25,6 @@ function AudioParam(node, name, defaultValue, minValue, maxValue) {
     $events : { value: [] },
   });
 
-  this._value = defaultValue;
   this._currentTime = -1;
 }
 _.inherits(AudioParam, global.AudioParam);

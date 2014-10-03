@@ -15,10 +15,11 @@ function OscillatorNode(context) {
     channelCountMode: "max",
     channelInterpretation: "speakers"
   });
-  _.$enum(this, "type", [ "sine", "square", "sawtooth", "triangle", "custom" ], "sine");
+
+  _.$enum(this, "type", [ "sine", "square", "sawtooth", "triangle" ], "sine");
   _.$read(this, "frequency", new AudioParam(this, "frequency", 440, 0, 100000));
   _.$read(this, "detune", new AudioParam(this, "detune", 0, -4800, 4800));
-  _.$type(this, "onended", "function");
+  _.$type(this, "onended", "function", null);
 
   Object.defineProperties(this, {
     $state: {
@@ -28,6 +29,7 @@ function OscillatorNode(context) {
     }
   });
 
+  this._type = "sine";
   this._startTime = Infinity;
   this._stopTime  = Infinity;
   this._firedOnEnded = false;
@@ -93,6 +95,7 @@ OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
   _.check(_.caption(this, "setPeriodicWave(periodicWave)"), {
     periodicWave: { type: "PeriodicWave", given: periodicWave }
   });
+  this._type = "custom";
 };
 
 module.exports = OscillatorNode;

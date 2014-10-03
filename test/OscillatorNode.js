@@ -179,6 +179,7 @@ describe("OscillatorNode", function() {
       expect(function() {
         node.setPeriodicWave(ctx.createPeriodicWave(new Float32Array(128), new Float32Array(128)));
       }).to.not.throw();
+      expect(node.type).to.equal("custom");
     });
     it("throw error", function() {
       expect(function() {

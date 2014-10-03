@@ -17,7 +17,7 @@ function OfflineAudioContext(numberOfChannels, length, sampleRate) {
   _.$read(this, "sampleRate", sampleRate);
   _.$read(this, "currentTime", function() { return this._currentTime; });
   _.$read(this, "listener", new AudioListener(this));
-  _.$type(this, "oncomplete", "function");
+  _.$type(this, "oncomplete", "function", null);
 
   Object.defineProperties(this, {
     $name   : { value: "OfflineAudioContext" },

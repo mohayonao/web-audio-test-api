@@ -4,9 +4,7 @@ var _ = require("./utils");
 
 function OfflineAudioCompletionEvent(node) {
   Object.defineProperties(this, {
-    $name: { value: "OfflineAudioCompletionEvent" }
-  });
-  Object.defineProperties(this, {
+    $name: { value: "OfflineAudioCompletionEvent" },
     $node: { value: node }
   });
 }
