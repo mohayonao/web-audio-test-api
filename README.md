@@ -41,6 +41,10 @@ require("web-audio-test-api");
 
   - [web-audio-test-api.js - online test suites](http://mohayonao.github.io/web-audio-test-api/)
 
+## Reference
+
+  - [API Reference](https://github.com/mohayonao/web-audio-test-api/wiki)
+
 ## Features
 
 #### Strict type check more than original Web Audio API
