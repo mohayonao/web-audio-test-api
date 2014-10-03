@@ -25,7 +25,7 @@ var PeriodicWave = require("./PeriodicWave");
 function AudioContext() {
   _.$read(this, "destination", new AudioDestinationNode(this));
   _.$read(this, "sampleRate", _.SAMPLERATE);
-  _.$read(this, "currentTime", function() { return this._currentTime; }.bind(this));
+  _.$read(this, "currentTime", function() { return this._currentTime; });
   _.$read(this, "listener", new AudioListener(this));
 
   Object.defineProperties(this, {
