@@ -1,4 +1,136 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (global){
+"use strict";
+
+/* istanbul ignore if */
+if (global.WEB_AUDIO_TEST_API_IGNORE) {
+  return;
+}
+
+var _ = require("./utils");
+
+function ILLEGAL_CONSTRUCTOR(superCtor, err) {
+  function ctor() {
+    throw err;
+  }
+  if (superCtor) {
+    _.inherits(ctor, superCtor);
+  }
+  return ctor;
+}
+
+global.Event = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor")
+);
+
+global.EventTarget = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor")
+);
+
+global.OfflineAudioCompletionEvent = ILLEGAL_CONSTRUCTOR(
+  Event, new TypeError("Illegal constructor")
+);
+
+global.AudioProcessingEvent = ILLEGAL_CONSTRUCTOR(
+  Event, new TypeError("Illegal constructor")
+);
+
+global.AudioBuffer = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor: use audioContext.createBuffer(numberOfChannels, length, sampleRate)")
+);
+
+global.AudioListener = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor")
+);
+
+global.AudioParam = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor")
+);
+
+global.PeriodicWave = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor: use audioContext.createPeriodicWave(real, imag)")
+);
+
+global.AudioNode = ILLEGAL_CONSTRUCTOR(
+  null, new TypeError("Illegal constructor")
+);
+
+var AudioNode = require("./AudioNode");
+
+global.AudioDestinationNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor")
+);
+
+global.GainNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createGain()")
+);
+
+global.DelayNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createDelay()")
+);
+
+global.AudioBufferSourceNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createBufferSource()")
+);
+
+global.MediaElementAudioSourceNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createMediaElementSource(mediaElement)")
+);
+
+global.ScriptProcessorNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels)")
+);
+
+global.PannerNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createPanner()")
+);
+
+global.ConvolverNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createConvolver()")
+);
+
+global.AnalyserNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createAnalyser()")
+);
+
+global.ChannelSplitterNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createChannelSplitter(numberOfOutputs)")
+);
+
+global.ChannelMergerNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createChannelMerger(numberOfInputs)")
+);
+
+global.DynamicsCompressorNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createDynamicsCompressor()")
+);
+
+global.BiquadFilterNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createBiquadFilter()")
+);
+
+global.WaveShaperNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createWaveShaper()")
+);
+
+global.OscillatorNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createOscillator()")
+);
+
+global.MediaStreamAudioSourceNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createMediaStreamSource(mediaStream)")
+);
+
+global.MediaStreamAudioDestinationNode = ILLEGAL_CONSTRUCTOR(
+  AudioNode, new TypeError("Illegal constructor: use audioContext.createMediaStreamDestination()")
+);
+
+global.AudioContext = require("./AudioContext");
+
+global.OfflineAudioContext = require("./OfflineAudioContext");
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioContext":5,"./AudioNode":8,"./OfflineAudioContext":22,"./utils":35}],2:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -44,8 +176,8 @@ AnalyserNode.prototype.getByteTimeDomainData = function(array) {
 
 module.exports = AnalyserNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":35}],2:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./utils":35}],3:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -113,8 +245,8 @@ AudioBuffer.prototype.getChannelData = function(channel) {
 
 module.exports = AudioBuffer;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils":35}],3:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./utils":35}],4:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -220,8 +352,8 @@ AudioBufferSourceNode.prototype.stop = function(when) {
 
 module.exports = AudioBufferSourceNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioBuffer":2,"./AudioNode":7,"./AudioParam":8,"./utils":35}],4:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioBuffer":3,"./AudioNode":8,"./AudioParam":9,"./utils":35}],5:[function(require,module,exports){
 "use strict";
 
 var _ = require("./utils");
@@ -398,7 +530,7 @@ AudioContext.prototype.createPeriodicWave = function(real, imag) {
 
 module.exports = AudioContext;
 
-},{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioBufferSourceNode":3,"./AudioDestinationNode":5,"./AudioListener":6,"./BiquadFilterNode":10,"./ChannelMergerNode":11,"./ChannelSplitterNode":12,"./ConvolverNode":13,"./DelayNode":14,"./DynamicsCompressorNode":15,"./GainNode":16,"./MediaElementAudioSourceNode":17,"./MediaStreamAudioDestinationNode":18,"./MediaStreamAudioSourceNode":19,"./OscillatorNode":22,"./PannerNode":23,"./PeriodicWave":24,"./ScriptProcessorNode":25,"./WaveShaperNode":26,"./utils":35}],5:[function(require,module,exports){
+},{"./AnalyserNode":2,"./AudioBuffer":3,"./AudioBufferSourceNode":4,"./AudioDestinationNode":6,"./AudioListener":7,"./BiquadFilterNode":11,"./ChannelMergerNode":12,"./ChannelSplitterNode":13,"./ConvolverNode":14,"./DelayNode":15,"./DynamicsCompressorNode":16,"./GainNode":17,"./MediaElementAudioSourceNode":18,"./MediaStreamAudioDestinationNode":19,"./MediaStreamAudioSourceNode":20,"./OscillatorNode":23,"./PannerNode":24,"./PeriodicWave":25,"./ScriptProcessorNode":26,"./WaveShaperNode":27,"./utils":35}],6:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -422,8 +554,8 @@ _.inherits(AudioDestinationNode, global.AudioDestinationNode);
 
 module.exports = AudioDestinationNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":35}],6:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./utils":35}],7:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -469,8 +601,8 @@ AudioListener.prototype.setVelocity = function(x, y, z) {
 
 module.exports = AudioListener;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils":35}],7:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./utils":35}],8:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -632,8 +764,8 @@ AudioNode.prototype.disconnect = function(output) {
 
 module.exports = AudioNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils":35}],8:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./utils":35}],9:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -861,8 +993,8 @@ AudioParam.prototype.cancelScheduledValues = function(startTime) {
 
 module.exports = AudioParam;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils":35}],9:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./utils":35}],10:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -880,8 +1012,8 @@ _.inherits(AudioProcessingEvent, global.AudioProcessingEvent);
 
 module.exports = AudioProcessingEvent;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils":35}],10:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./utils":35}],11:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -920,8 +1052,8 @@ BiquadFilterNode.prototype.getFrequencyResponse = function(frequencyHz, magRespo
 
 module.exports = BiquadFilterNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./AudioParam":8,"./utils":35}],11:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./AudioParam":9,"./utils":35}],12:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -947,8 +1079,8 @@ _.inherits(ChannelMergerNode, global.ChannelMergerNode);
 
 module.exports = ChannelMergerNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":35}],12:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./utils":35}],13:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -974,8 +1106,8 @@ _.inherits(ChannelSplitterNode, global.ChannelSplitterNode);
 
 module.exports = ChannelSplitterNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":35}],13:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./utils":35}],14:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1000,8 +1132,8 @@ _.inherits(ConvolverNode, global.ConvolverNode);
 
 module.exports = ConvolverNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":35}],14:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./utils":35}],15:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1030,8 +1162,8 @@ _.inherits(DelayNode, global.DelayNode);
 
 module.exports = DelayNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./AudioParam":8,"./utils":35}],15:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./AudioParam":9,"./utils":35}],16:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1061,8 +1193,8 @@ _.inherits(DynamicsCompressorNode, global.DynamicsCompressorNode);
 
 module.exports = DynamicsCompressorNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./AudioParam":8,"./utils":35}],16:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./AudioParam":9,"./utils":35}],17:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1087,8 +1219,8 @@ _.inherits(GainNode, global.GainNode);
 
 module.exports = GainNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./AudioParam":8,"./utils":35}],17:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./AudioParam":9,"./utils":35}],18:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1111,8 +1243,8 @@ _.inherits(MediaElementAudioSourceNode, global.MediaElementAudioSourceNode);
 
 module.exports = MediaElementAudioSourceNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":35}],18:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./utils":35}],19:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1135,8 +1267,8 @@ _.inherits(MediaStreamAudioDestinationNode, global.MediaStreamAudioDestinationNo
 
 module.exports = MediaStreamAudioDestinationNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":35}],19:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./utils":35}],20:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1159,8 +1291,8 @@ _.inherits(MediaStreamAudioSourceNode, global.MediaStreamAudioSourceNode);
 
 module.exports = MediaStreamAudioSourceNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":35}],20:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./utils":35}],21:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1176,8 +1308,8 @@ _.inherits(OfflineAudioCompletionEvent, global.OfflineAudioCompletionEvent);
 
 module.exports = OfflineAudioCompletionEvent;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils":35}],21:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./utils":35}],22:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1260,8 +1392,8 @@ OfflineAudioContext.prototype.startRendering = function() {
 
 module.exports = OfflineAudioContext;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioBuffer":2,"./AudioDestinationNode":5,"./AudioListener":6,"./OfflineAudioCompletionEvent":20,"./utils":35}],22:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioBuffer":3,"./AudioDestinationNode":6,"./AudioListener":7,"./OfflineAudioCompletionEvent":21,"./utils":35}],23:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1371,8 +1503,8 @@ OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
 
 module.exports = OscillatorNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./AudioParam":8,"./utils":35}],23:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./AudioParam":9,"./utils":35}],24:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1430,8 +1562,8 @@ PannerNode.prototype.setVelocity = function(x, y, z) {
 
 module.exports = PannerNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":35}],24:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./utils":35}],25:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1470,8 +1602,8 @@ _.inherits(PeriodicWave, global.PeriodicWave);
 
 module.exports = PeriodicWave;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils":35}],25:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./utils":35}],26:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1532,8 +1664,8 @@ ScriptProcessorNode.prototype._process = function(currentTime, nextCurrentTime) 
 
 module.exports = ScriptProcessorNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioBuffer":2,"./AudioNode":7,"./AudioProcessingEvent":9,"./utils":35}],26:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioBuffer":3,"./AudioNode":8,"./AudioProcessingEvent":10,"./utils":35}],27:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1558,140 +1690,8 @@ _.inherits(WaveShaperNode, global.WaveShaperNode);
 
 module.exports = WaveShaperNode;
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":35}],27:[function(require,module,exports){
-(function (global){
-"use strict";
-
-/* istanbul ignore if */
-if (global.WEB_AUDIO_TEST_API_IGNORE) {
-  return;
-}
-
-var _ = require("./utils");
-
-function ILLEGAL_CONSTRUCTOR(superCtor, err) {
-  function ctor() {
-    throw err;
-  }
-  if (superCtor) {
-    _.inherits(ctor, superCtor);
-  }
-  return ctor;
-}
-
-global.Event = ILLEGAL_CONSTRUCTOR(
-  null, new TypeError("Illegal constructor")
-);
-
-global.EventTarget = ILLEGAL_CONSTRUCTOR(
-  null, new TypeError("Illegal constructor")
-);
-
-global.OfflineAudioCompletionEvent = ILLEGAL_CONSTRUCTOR(
-  Event, new TypeError("Illegal constructor")
-);
-
-global.AudioProcessingEvent = ILLEGAL_CONSTRUCTOR(
-  Event, new TypeError("Illegal constructor")
-);
-
-global.AudioBuffer = ILLEGAL_CONSTRUCTOR(
-  null, new TypeError("Illegal constructor: use audioContext.createBuffer(numberOfChannels, length, sampleRate)")
-);
-
-global.AudioListener = ILLEGAL_CONSTRUCTOR(
-  null, new TypeError("Illegal constructor")
-);
-
-global.AudioParam = ILLEGAL_CONSTRUCTOR(
-  null, new TypeError("Illegal constructor")
-);
-
-global.PeriodicWave = ILLEGAL_CONSTRUCTOR(
-  null, new TypeError("Illegal constructor: use audioContext.createPeriodicWave(real, imag)")
-);
-
-global.AudioNode = ILLEGAL_CONSTRUCTOR(
-  null, new TypeError("Illegal constructor")
-);
-
-var AudioNode = require("./AudioNode");
-
-global.AudioDestinationNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor")
-);
-
-global.GainNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createGain()")
-);
-
-global.DelayNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createDelay()")
-);
-
-global.AudioBufferSourceNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createBufferSource()")
-);
-
-global.MediaElementAudioSourceNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createMediaElementSource(mediaElement)")
-);
-
-global.ScriptProcessorNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels)")
-);
-
-global.PannerNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createPanner()")
-);
-
-global.ConvolverNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createConvolver()")
-);
-
-global.AnalyserNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createAnalyser()")
-);
-
-global.ChannelSplitterNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createChannelSplitter(numberOfOutputs)")
-);
-
-global.ChannelMergerNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createChannelMerger(numberOfInputs)")
-);
-
-global.DynamicsCompressorNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createDynamicsCompressor()")
-);
-
-global.BiquadFilterNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createBiquadFilter()")
-);
-
-global.WaveShaperNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createWaveShaper()")
-);
-
-global.OscillatorNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createOscillator()")
-);
-
-global.MediaStreamAudioSourceNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createMediaStreamSource(mediaStream)")
-);
-
-global.MediaStreamAudioDestinationNode = ILLEGAL_CONSTRUCTOR(
-  AudioNode, new TypeError("Illegal constructor: use audioContext.createMediaStreamDestination()")
-);
-
-global.AudioContext = require("./AudioContext");
-
-global.OfflineAudioContext = require("./OfflineAudioContext");
-
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioContext":4,"./AudioNode":7,"./OfflineAudioContext":21,"./utils":35}],28:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./AudioNode":8,"./utils":35}],28:[function(require,module,exports){
 "use strict";
 
 module.exports = function(str) {
@@ -1822,7 +1822,7 @@ module.exports = function(obj, wrapping) {
 
 var _ = {};
 
-_.VERSION = "0.1.12";
+_.VERSION = "0.1.13";
 _.SAMPLERATE  = 44100;
 _.BUFFER_SIZE = 128;
 _.CURRENT_TIME_INCR = _.BUFFER_SIZE / _.SAMPLERATE;
@@ -1983,4 +1983,4 @@ module.exports = function(obj, name, type, value) {
   obj["_" + name] = value;
 };
 
-},{"./article":28,"./format":33,"./id":34,"./toS":39}]},{},[27])
+},{"./article":28,"./format":33,"./id":34,"./toS":39}]},{},[1]);
