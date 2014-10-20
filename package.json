@@ -18,13 +18,13 @@
   },
   "main": "src/",
   "devDependencies": {
+    "browserify": "^6.1.0",
     "chai": "^1.9.2",
     "gulp": "^3.8.8",
-    "gulp-browserify": "^0.5.0",
     "gulp-istanbul": "^0.3.1",
     "gulp-jshint": "^1.8.5",
     "gulp-mocha": "^1.1.1",
-    "gulp-rename": "^1.2.0",
-    "jshint-stylish": "^1.0.0"
+    "jshint-stylish": "^1.0.0",
+    "vinyl-source-stream": "^1.0.0"
   }
 }
