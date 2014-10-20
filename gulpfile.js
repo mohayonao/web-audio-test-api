@@ -1,11 +1,11 @@
 "use strict";
 
 var gulp = require("gulp");
-var jshint    = require("gulp-jshint");
-var mocha     = require("gulp-mocha");
-var istanbul  = require("gulp-istanbul");
-var browerify = require("gulp-browserify");
-var rename    = require("gulp-rename");
+var browserify = require("browserify");
+var source = require("vinyl-source-stream");
+var jshint = require("gulp-jshint");
+var mocha = require("gulp-mocha");
+var istanbul = require("gulp-istanbul");
 
 gulp.task("lint", function() {
   return gulp.src([ "gulpfile.js", "src/**/*.js", "test/**/*.js" ])
@@ -31,9 +31,9 @@ gulp.task("cover", function(cb) {
 });
 
 gulp.task("build", function() {
-  return gulp.src("src")
-    .pipe(browerify())
-    .pipe(rename("web-audio-test-api.js"))
+  return browserify("./src")
+    .bundle()
+    .pipe(source("web-audio-test-api.js"))
     .pipe(gulp.dest("build"));
 });
 
