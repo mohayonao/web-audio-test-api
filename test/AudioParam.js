@@ -230,11 +230,12 @@ describe("AudioParam", function() {
       expect(param.$valueAtTime(5.000), "00:05.000").to.be.closeTo(953.7652150780225, 1e-6);
     });
     it("SetCurve", function() {
-      var curve = new Float32Array([ 220, 330, 440, 330, 220 ]);
+      var curve1 = new Float32Array([ 220, 330, 440, 330, 220 ]);
+      var curve2 = new Float32Array([ 1, 2, 3, 4 ]);
 
       param.setValueAtTime(0, 0.000);
-      param.setValueCurveAtTime(curve, 1.000, 2);
-      param.setValueCurveAtTime(curve, 4.000, 4);
+      param.setValueCurveAtTime(curve1, 1.000, 2);
+      param.setValueCurveAtTime(curve2, 4.000, 4);
 
       expect(param.$valueAtTime(0.000), "00:00.000").to.equal(0);
       expect(param.$valueAtTime(0.500), "00:00.500").to.equal(0);
@@ -244,9 +245,16 @@ describe("AudioParam", function() {
       expect(param.$valueAtTime(2.500), "00:02.500").to.equal(330);
       expect(param.$valueAtTime(3.000), "00:03.000").to.equal(220);
       expect(param.$valueAtTime(3.500), "00:03.500").to.equal(220);
-      expect(param.$valueAtTime(4.000), "00:04.000").to.equal(220);
-      expect(param.$valueAtTime(4.500), "00:04.500").to.equal(275);
-      expect(param.$valueAtTime(5.000), "00:05.000").to.equal(330);
+
+      expect(param.$valueAtTime(4.000), "00:04.000").to.equal(1);
+      expect(param.$valueAtTime(4.500), "00:04.500").to.equal(1);
+      expect(param.$valueAtTime(5.000), "00:05.000").to.equal(2);
+      expect(param.$valueAtTime(5.500), "00:05.500").to.equal(2);
+      expect(param.$valueAtTime(6.000), "00:06.000").to.equal(3);
+      expect(param.$valueAtTime(6.500), "00:06.500").to.equal(3);
+      expect(param.$valueAtTime(7.000), "00:07.000").to.equal(4);
+      expect(param.$valueAtTime(7.500), "00:07.500").to.equal(4);
+      expect(param.$valueAtTime(8.000), "00:08.000").to.equal(4);
     });
     it("Cancel", function() {
       param.setValueAtTime(0, 0.000);
