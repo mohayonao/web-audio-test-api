@@ -54,12 +54,7 @@ function setCurveValue(v, t, t0, t1, curve) {
     return _.defaults(curve[curve.length - 1], v);
   }
 
-  var index = (curve.length - 1) * dt;
-  var delta = index - (index|0);
-  var v0 = _.defaults(curve[(index + 0)|0], v);
-  var v1 = _.defaults(curve[(index + 1)|0], v);
-
-  return (1 - delta) * v0 + delta * v1;
+  return _.defaults(curve[(curve.length * dt)|0], v);
 }
 
 AudioParam.prototype.$valueAtTime = function(t) {
