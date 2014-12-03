@@ -1,0 +1,26 @@
+{
+  "name": "web-audio-test-api",
+  "version": "0.1.14",
+  "homepage": "https://github.com/mohayonao/web-audio-test-api",
+  "authors": [
+    "mohayonao <mohayonao@gmail.com>"
+  ],
+  "description": "Web Audio API test library for CI",
+  "main": "build/web-audio-test-api.js",
+  "keywords": [
+    "test",
+    "web audio api",
+    "mock"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src",
+    "test",
+    "coverage",
+    "gulpfile.js",
+    "index.html"
+  ]
+}
