@@ -1,5 +1,6 @@
 # web-audio-test-api.js
 [![NPM Version](http://img.shields.io/npm/v/web-audio-test-api.svg?style=flat)](https://www.npmjs.org/package/web-audio-test-api)
+[![Bower](https://img.shields.io/bower/v/web-audio-test-api.svg?style=flat)](https://github.com/mohayonao/web-audio-test-api)
 [![Build Status](http://img.shields.io/travis/mohayonao/web-audio-test-api.svg?style=flat)](https://travis-ci.org/mohayonao/web-audio-test-api)
 [![Coverage Status](http://img.shields.io/coveralls/mohayonao/web-audio-test-api.svg?style=flat)](https://coveralls.io/r/mohayonao/web-audio-test-api?branch=master)
 [![Dependency Status](http://img.shields.io/david/mohayonao/web-audio-test-api.svg?style=flat)](https://david-dm.org/mohayonao/web-audio-test-api)
