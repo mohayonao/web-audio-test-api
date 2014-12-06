@@ -22,7 +22,7 @@
   },
   "main": "src/",
   "devDependencies": {
-    "browserify": "^6.3.3",
+    "browserify": "^7.0.0",
     "chai": "^1.10.0",
     "coveralls": "^2.11.2",
     "gulp": "^3.8.10",
