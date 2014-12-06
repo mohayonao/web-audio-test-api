@@ -22,6 +22,7 @@ gulp.task("test", function() {
 gulp.task("cover", function(cb) {
   gulp.src("src/**/*.js")
     .pipe(istanbul())
+    .pipe(istanbul.hookRequire())
     .on("finish", function() {
       return gulp.src("test/**/*.js")
         .pipe(mocha())
