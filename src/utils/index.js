@@ -2,7 +2,7 @@
 
 var _ = {};
 
-_.VERSION = "0.1.14";
+_.VERSION = "0.1.15";
 _.SAMPLERATE  = 44100;
 _.BUFFER_SIZE = 128;
 _.CURRENT_TIME_INCR = _.BUFFER_SIZE / _.SAMPLERATE;
