@@ -300,8 +300,8 @@ AudioBufferSourceNode.prototype.$stateAtTime = function(t) {
 
 AudioBufferSourceNode.prototype._process = function(currentTime, nextCurrentTime) {
   if (!this._firedOnEnded) {
-    if (!this.loop && this.buffer && nextCurrentTime <= currentTime + this.buffer.duration) {
-      this._stopTime = Math.min(currentTime + this.buffer.duration, this._stopTime);
+    if (!this.loop && this.buffer && this._startTime + this.buffer.duration <= nextCurrentTime) {
+      this._stopTime = Math.min(this._startTime + this.buffer.duration, this._stopTime);
     }
 
     if (this.$stateAtTime(currentTime) === "FINISHED" && this.onended) {
@@ -1817,7 +1817,7 @@ module.exports = function(obj, wrapping) {
 
 var _ = {};
 
-_.VERSION = "0.1.14";
+_.VERSION = "0.1.15";
 _.SAMPLERATE  = 44100;
 _.BUFFER_SIZE = 128;
 _.CURRENT_TIME_INCR = _.BUFFER_SIZE / _.SAMPLERATE;
