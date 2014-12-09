@@ -1,28 +1,10 @@
 {
   "name": "web-audio-test-api",
+  "description": "Web Audio API test library for CI",
   "version": "0.1.14",
-  "description": "Web Audio API mock library",
   "author": "Nao Yonamine <mohayonao@gmail.com>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/mohayonao/web-audio-test-api.git"
-  },
-  "keywords": [
-    "web audio api",
-    "test",
-    "mock"
-  ],
-  "scripts": {
-    "lint": "gulp lint",
-    "test": "gulp test",
-    "cover": "gulp cover",
-    "build": "gulp build",
-    "travis": "gulp travis"
-  },
-  "main": "src/",
   "devDependencies": {
-    "browserify": "^6.3.3",
+    "browserify": "^7.0.0",
     "chai": "^1.10.0",
     "coveralls": "^2.11.2",
     "gulp": "^3.8.10",
@@ -31,5 +13,23 @@
     "gulp-mocha": "^2.0.0",
     "jshint-stylish": "^1.0.0",
     "vinyl-source-stream": "^1.0.0"
+  },
+  "keywords": [
+    "web audio api",
+    "test",
+    "mock"
+  ],
+  "license": "MIT",
+  "main": "src/",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mohayonao/web-audio-test-api.git"
+  },
+  "scripts": {
+    "build": "gulp build",
+    "cover": "gulp cover",
+    "lint": "gulp lint",
+    "test": "gulp test",
+    "travis": "gulp travis"
   }
 }
