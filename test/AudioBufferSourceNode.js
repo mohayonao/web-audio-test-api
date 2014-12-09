@@ -98,48 +98,70 @@ describe("AudioBufferSourceNode", function() {
       var passed = 0;
 
       node.onended = function() {
-        passed += 1;
+        passed = node.context.currentTime;
       };
 
+      node.buffer = node.context.createBuffer(
+        1, node.context.sampleRate * 0.25, node.context.sampleRate
+      );
+
       node.connect(node.context.destination);
-      node.start(0);
+      node.start(0.1);
       node.stop(0.15);
 
       expect(passed, "00:00.000").to.equal(0);
+
+      node.context.$processTo("00:00.050");
+      expect(passed, "00:00.050").to.equal(0);
 
       node.context.$processTo("00:00.100");
       expect(passed, "00:00.100").to.equal(0);
 
       node.context.$processTo("00:00.200");
-      expect(passed, "00:00.200").to.equal(1);
+      expect(passed, "00:00.200").to.closeTo(0.15, 1e-2);
 
       node.context.$processTo("00:00.300");
-      expect(passed, "00:00.300").to.equal(1);
+      expect(passed, "00:00.300").to.closeTo(0.15, 1e-2);
+
+      node.context.$processTo("00:00.400");
+      expect(passed, "00:00.400").to.closeTo(0.15, 1e-2);
+
+      node.context.$processTo("00:00.500");
+      expect(passed, "00:00.500").to.closeTo(0.15, 1e-2);
     });
     it("works auto stop", function() {
       var passed = 0;
 
       node.onended = function() {
-        passed += 1;
+        passed = node.context.currentTime;
       };
 
       node.buffer = node.context.createBuffer(
-        1, node.context.sampleRate * 0.15, node.context.sampleRate
+        1, node.context.sampleRate * 0.25, node.context.sampleRate
       );
 
       node.connect(node.context.destination);
-      node.start(0);
+      node.start(0.1);
 
       expect(passed, "00:00.000").to.equal(0);
+
+      node.context.$processTo("00:00.050");
+      expect(passed, "00:00.050").to.equal(0);
 
       node.context.$processTo("00:00.100");
       expect(passed, "00:00.100").to.equal(0);
 
       node.context.$processTo("00:00.200");
-      expect(passed, "00:00.200").to.equal(1);
+      expect(passed, "00:00.200").to.equal(0);
 
       node.context.$processTo("00:00.300");
-      expect(passed, "00:00.300").to.equal(1);
+      expect(passed, "00:00.300").to.equal(0);
+
+      node.context.$processTo("00:00.400");
+      expect(passed, "00:00.400").to.closeTo(0.35, 1e-2);
+
+      node.context.$processTo("00:00.500");
+      expect(passed, "00:00.500").to.closeTo(0.35, 1e-2);
     });
   });
 
