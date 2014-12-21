@@ -1817,7 +1817,7 @@ module.exports = function(obj, wrapping) {
 
 var _ = {};
 
-_.VERSION = "0.1.14";
+_.VERSION = "0.1.15";
 _.SAMPLERATE  = 44100;
 _.BUFFER_SIZE = 128;
 _.CURRENT_TIME_INCR = _.BUFFER_SIZE / _.SAMPLERATE;
@@ -1941,7 +1941,11 @@ module.exports = function(obj, name, type, value) {
   setter = function(newValue) {
     var err = false;
 
-    if (typeof type === "string") {
+    if (type === "function") {
+      if (newValue !== null && typeof newValue !== "function") {
+        err = true;
+      }
+    } else if (typeof type === "string") {
       if (typeof newValue !== type) {
         err = true;
       }
