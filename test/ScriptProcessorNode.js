@@ -102,6 +102,13 @@ describe("ScriptProcessorNode", function() {
       ctx.$process(interval);
       expect(passed, "9/4").to.equal(3);
     });
+    it("nullable", function() {
+      expect(function() {
+        node.onaudioprocess = it;
+        node.onaudioprocess = null;
+        expect(node.onaudioprocess).to.equal(null);
+      }).to.not.throw();
+    });
   });
 
   describe("#toJSON()", function() {

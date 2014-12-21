@@ -88,8 +88,14 @@ describe("AudioBufferSourceNode", function() {
     });
     it("should be a function", function() {
       expect(function() {
-        node.onended = function() {};
+        node.onended = it;
+        expect(node.onended).to.equal(it);
       }).to.not.throw();
+      expect(function() {
+        node.onended = it;
+        node.onended = null;
+        expect(node.onended).to.equal(null);
+      }, "nullable").to.not.throw();
       expect(function() {
         node.onended = "INVALID";
       }).to.throw(TypeError);
