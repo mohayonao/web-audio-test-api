@@ -14,7 +14,11 @@ module.exports = function(obj, name, type, value) {
   setter = function(newValue) {
     var err = false;
 
-    if (typeof type === "string") {
+    if (type === "function") {
+      if (newValue !== null && typeof newValue !== "function") {
+        err = true;
+      }
+    } else if (typeof type === "string") {
       if (typeof newValue !== type) {
         err = true;
       }
