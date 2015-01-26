@@ -31,7 +31,7 @@ AudioNode.prototype.$process = function(currentTime, nextCurrentTime) {
     });
 
     Object.keys(this).forEach(function(key) {
-      if (this[key] instanceof AudioParam) {
+      if (this[key] instanceof global.AudioParam) {
         this[key].$process(currentTime, nextCurrentTime);
       }
     }, this);
@@ -78,7 +78,7 @@ AudioNode.prototype.connect = function(destination, output, input) {
   output = _.defaults(output, 0);
   input  = _.defaults(input , 0);
 
-  if (!(destination instanceof AudioNode || destination instanceof AudioParam)) {
+  if (!(destination instanceof global.AudioNode || destination instanceof global.AudioParam)) {
     throw new TypeError(_.format(
       "#{caption}: '#{name}' should be #{type}, but got #{given}", {
         caption: caption,

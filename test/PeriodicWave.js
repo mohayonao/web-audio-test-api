@@ -7,13 +7,13 @@ describe("PeriodicWave", function() {
   var f8192 = new Float32Array(8192);
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
   });
 
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new PeriodicWave();
+        return new global.PeriodicWave();
       }).to.throw(TypeError, "Illegal constructor");
     });
     it("throw error if length is not match", function() {

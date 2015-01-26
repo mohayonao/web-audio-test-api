@@ -4,36 +4,36 @@ describe("OfflineAudioContext", function() {
   var ctx = null;
 
   beforeEach(function() {
-    ctx = new OfflineAudioContext(1, 44100, 44100);
+    ctx = new global.OfflineAudioContext(1, 44100, 44100);
   });
 
   describe("(numberOfChannels, length, sampleRate)", function() {
     it("should return an instance of OfflineAudioContext", function() {
-      expect(ctx).to.be.instanceOf(OfflineAudioContext);
+      expect(ctx).to.be.instanceOf(global.OfflineAudioContext);
     });
     it("should have been inherited from AudioContext", function() {
-      expect(ctx).to.be.instanceOf(AudioContext);
+      expect(ctx).to.be.instanceOf(global.AudioContext);
     });
     it("throw error", function() {
       expect(function() {
-        ctx = new OfflineAudioContext("INVALID", 44100, 44100);
+        ctx = new global.OfflineAudioContext("INVALID", 44100, 44100);
       }).to.throw(TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
     });
     it("throw error", function() {
       expect(function() {
-        ctx = new OfflineAudioContext(1, "INVALID", 44100);
+        ctx = new global.OfflineAudioContext(1, "INVALID", 44100);
       }).to.throw(TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
     });
     it("throw error", function() {
       expect(function() {
-        ctx = new OfflineAudioContext(1, 44100, "INVALID");
+        ctx = new global.OfflineAudioContext(1, 44100, "INVALID");
       }).to.throw(TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
     });
   });
 
   describe("#destination", function() {
     it("should be an instance of AudioDestinationNode", function() {
-      expect(ctx.destination).to.be.instanceOf(AudioDestinationNode);
+      expect(ctx.destination).to.be.instanceOf(global.AudioDestinationNode);
     });
     it("should be readonly", function() {
       expect(function() {
@@ -66,7 +66,7 @@ describe("OfflineAudioContext", function() {
 
   describe("#listener", function() {
     it("should be an instance of AudioListener", function() {
-      expect(ctx.listener).to.be.instanceOf(AudioListener);
+      expect(ctx.listener).to.be.instanceOf(global.AudioListener);
     });
     it("should be readonly", function() {
       expect(function() {
@@ -87,9 +87,9 @@ describe("OfflineAudioContext", function() {
   describe("#process", function() {
     it("should work", function(done) {
       ctx.oncomplete = function(e) {
-        expect(e).to.be.instanceOf(Event);
-        expect(e).to.be.instanceOf(OfflineAudioCompletionEvent);
-        expect(e.renderedBuffer).to.be.instanceOf(AudioBuffer);
+        expect(e).to.be.instanceOf(global.Event);
+        expect(e).to.be.instanceOf(global.OfflineAudioCompletionEvent);
+        expect(e.renderedBuffer).to.be.instanceOf(global.AudioBuffer);
         done();
       };
       ctx.startRendering();
@@ -113,7 +113,7 @@ describe("OfflineAudioCompletionEvent", function() {
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new OfflineAudioCompletionEvent();
+        return new global.OfflineAudioCompletionEvent();
       }).to.throw(TypeError, "Illegal constructor");
     });
   });

@@ -37,7 +37,7 @@ function AudioContext() {
   this._targetTime  = 0;
   this._remain = 0;
 }
-_.inherits(AudioContext, EventTarget);
+_.inherits(AudioContext, global.EventTarget);
 
 AudioContext.WEB_AUDIO_TEST_API_VERSION = _.VERSION;
 

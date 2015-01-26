@@ -26,11 +26,11 @@ global.EventTarget = ILLEGAL_CONSTRUCTOR(
 );
 
 global.OfflineAudioCompletionEvent = ILLEGAL_CONSTRUCTOR(
-  Event, new TypeError("Illegal constructor")
+  global.Event, new TypeError("Illegal constructor")
 );
 
 global.AudioProcessingEvent = ILLEGAL_CONSTRUCTOR(
-  Event, new TypeError("Illegal constructor")
+  global.Event, new TypeError("Illegal constructor")
 );
 
 global.AudioBuffer = ILLEGAL_CONSTRUCTOR(

@@ -5,18 +5,18 @@ describe("BiquadFilterNode", function() {
   var node = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     node = ctx.createBiquadFilter();
   });
 
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new BiquadFilterNode();
+        return new global.BiquadFilterNode();
       }).to.throw(TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+      expect(node).to.be.instanceOf(global.AudioNode);
     });
   });
 
@@ -44,7 +44,7 @@ describe("BiquadFilterNode", function() {
       }).to.throw(Error, "readonly");
     });
     it("should be an instance of AudioParam", function() {
-      expect(node.frequency).to.be.instanceOf(AudioParam);
+      expect(node.frequency).to.be.instanceOf(global.AudioParam);
     });
   });
 
@@ -58,7 +58,7 @@ describe("BiquadFilterNode", function() {
       }).to.throw(Error, "readonly");
     });
     it("should be an instance of AudioParam", function() {
-      expect(node.detune).to.be.instanceOf(AudioParam);
+      expect(node.detune).to.be.instanceOf(global.AudioParam);
     });
   });
 
@@ -72,7 +72,7 @@ describe("BiquadFilterNode", function() {
       }).to.throw(Error, "readonly");
     });
     it("should be an instance of AudioParam", function() {
-      expect(node.Q).to.be.instanceOf(AudioParam);
+      expect(node.Q).to.be.instanceOf(global.AudioParam);
     });
   });
 
@@ -86,7 +86,7 @@ describe("BiquadFilterNode", function() {
       }).to.throw(Error, "readonly");
     });
     it("should be an instance of AudioParam", function() {
-      expect(node.gain).to.be.instanceOf(AudioParam);
+      expect(node.gain).to.be.instanceOf(global.AudioParam);
     });
   });
 

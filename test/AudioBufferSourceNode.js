@@ -5,18 +5,18 @@ describe("AudioBufferSourceNode", function() {
   var node = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     node = ctx.createBufferSource();
   });
 
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new AudioBufferSourceNode();
+        return new global.AudioBufferSourceNode();
       }).to.throw(TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+      expect(node).to.be.instanceOf(global.AudioNode);
     });
   });
 
@@ -36,7 +36,7 @@ describe("AudioBufferSourceNode", function() {
       }).to.throw(Error, "readonly");
     });
     it("should be an instance of AudioParam", function() {
-      expect(node.playbackRate).to.be.instanceOf(AudioParam);
+      expect(node.playbackRate).to.be.instanceOf(global.AudioParam);
     });
   });
 

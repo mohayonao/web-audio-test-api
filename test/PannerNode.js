@@ -5,18 +5,18 @@ describe("PannerNode", function() {
   var node = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     node = ctx.createPanner();
   });
 
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new PannerNode();
+        return new global.PannerNode();
       }).to.throw(TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+      expect(node).to.be.instanceOf(global.AudioNode);
     });
   });
 

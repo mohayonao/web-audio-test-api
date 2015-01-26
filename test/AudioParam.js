@@ -6,7 +6,7 @@ describe("AudioParam", function() {
 
   beforeEach(function() {
     var osc;
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     osc = ctx.createOscillator();
     param = osc.frequency;
     osc.connect(ctx.destination);
@@ -15,7 +15,7 @@ describe("AudioParam", function() {
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new AudioParam();
+        return new global.AudioParam();
       }).to.throw(TypeError, "Illegal constructor");
     });
   });

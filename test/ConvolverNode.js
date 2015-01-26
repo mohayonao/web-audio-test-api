@@ -5,18 +5,18 @@ describe("ConvolverNode", function() {
   var node = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     node = ctx.createConvolver();
   });
 
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new ConvolverNode();
+        return new global.ConvolverNode();
       }).to.throw(TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+      expect(node).to.be.instanceOf(global.AudioNode);
     });
   });
 

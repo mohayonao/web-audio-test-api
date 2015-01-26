@@ -5,14 +5,14 @@ describe("AudioNode", function() {
   var node = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     node = ctx.createOscillator();
   });
 
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new AudioNode();
+        return new global.AudioNode();
       }).to.throw(TypeError, "Illegal constructor");
     });
   });
@@ -76,7 +76,7 @@ describe("AudioNode", function() {
     });
     it("throw error", function() {
       expect(function() {
-        node.connect(new AudioContext().destination);
+        node.connect(new global.AudioContext().destination);
       }).throw(Error, "connect(destination, output, input): cannot connect to a destination belonging to a different audio context");
     });
     it("throw error", function() {

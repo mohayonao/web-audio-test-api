@@ -5,14 +5,14 @@ describe("AudioListener", function() {
   var listener = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     listener = ctx.listener;
   });
 
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new AudioListener();
+        return new global.AudioListener();
       }).to.throw(TypeError, "Illegal constructor");
     });
   });

@@ -5,7 +5,7 @@ describe("ErrorMessage", function() {
   var osc = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     osc = ctx.createOscillator();
   });
 

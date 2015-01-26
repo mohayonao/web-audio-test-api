@@ -5,14 +5,14 @@ describe("AudioBuffer", function() {
   var buf = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     buf = ctx.createBuffer(1, 16, 44100);
   });
 
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new AudioBuffer();
+        return new global.AudioBuffer();
       }).to.throw(TypeError, "Illegal constructor");
     });
   });

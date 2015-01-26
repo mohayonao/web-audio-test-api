@@ -4,7 +4,7 @@ describe("ModularRouting", function() {
   var ctx = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
   });
 
   describe("osc -> gain -> dest", function() {

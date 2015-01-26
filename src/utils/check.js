@@ -38,7 +38,7 @@ check.Float32Array = function isFloat32Array(value) {
   return value instanceof Float32Array;
 };
 check.PeriodicWave = function(value) {
-  return value instanceof PeriodicWave;
+  return value instanceof global.PeriodicWave;
 };
 
 module.exports = check;

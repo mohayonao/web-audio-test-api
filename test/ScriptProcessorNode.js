@@ -8,18 +8,18 @@ describe("ScriptProcessorNode", function() {
   var node = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     node = ctx.createScriptProcessor(BUFFER_SIZE, 2, 1);
   });
 
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new ScriptProcessorNode();
+        return new global.ScriptProcessorNode();
       }).to.throw(TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+      expect(node).to.be.instanceOf(global.AudioNode);
     });
   });
 
@@ -75,11 +75,11 @@ describe("ScriptProcessorNode", function() {
       node.connect(ctx.destination);
       node.onaudioprocess = function(e) {
         passed += 1;
-        expect(e).to.be.instanceOf(Event);
-        expect(e).to.be.instanceOf(AudioProcessingEvent);
+        expect(e).to.be.instanceOf(global.Event);
+        expect(e).to.be.instanceOf(global.AudioProcessingEvent);
         expect(e).to.have.property("playbackTime");
-        expect(e.inputBuffer).to.be.instanceOf(AudioBuffer);
-        expect(e.outputBuffer).to.be.instanceOf(AudioBuffer);
+        expect(e.inputBuffer).to.be.instanceOf(global.AudioBuffer);
+        expect(e.outputBuffer).to.be.instanceOf(global.AudioBuffer);
       };
       ctx.$process(0);
       expect(passed, "0/4").to.equal(0);
@@ -119,7 +119,7 @@ describe("AudioProcessingEvent", function() {
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new AudioProcessingEvent();
+        return new global.AudioProcessingEvent();
       }).to.throw(TypeError, "Illegal constructor");
     });
   });

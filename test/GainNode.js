@@ -5,18 +5,18 @@ describe("GainNode", function() {
   var node = null;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    ctx = new global.AudioContext();
     node = ctx.createGain();
   });
 
   describe("()", function() {
     it("throw illegal constructor", function() {
       expect(function() {
-        return new GainNode();
+        return new global.GainNode();
       }).to.throw(TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+      expect(node).to.be.instanceOf(global.AudioNode);
     });
   });
 
@@ -30,7 +30,7 @@ describe("GainNode", function() {
       }).to.throw(Error, "readonly");
     });
     it("should be an instance of AudioParam", function() {
-      expect(node.gain).to.be.instanceOf(AudioParam);
+      expect(node.gain).to.be.instanceOf(global.AudioParam);
     });
   });
 
