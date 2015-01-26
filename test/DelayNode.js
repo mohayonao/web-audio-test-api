@@ -11,32 +11,29 @@ describe("DelayNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.DelayNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(global.AudioNode);
+      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#delayTime", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("delayTime");
+      assert(node.delayTime instanceof global.AudioParam);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.delayTime = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.delayTime).to.be.instanceOf(global.AudioParam);
+      }, Error, "readonly");
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "DelayNode",
         delayTime: {
           value: 0,

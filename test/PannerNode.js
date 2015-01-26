@@ -11,124 +11,124 @@ describe("PannerNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.PannerNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(global.AudioNode);
+      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#panningModel", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("panningModel");
+      assert(typeof node.panningModel === "string");
     });
     it("should be an enum", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.panningModel = "equalpower";
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.panningModel = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#distanceModel", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("distanceModel");
+      assert(typeof node.distanceModel === "string");
     });
     it("should be an enum", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.distanceModel = "linear";
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.distanceModel = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#refDistance", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("refDistance");
+      assert(typeof node.refDistance === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.refDistance = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.refDistance = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#maxDistance", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("maxDistance");
+      assert(typeof node.maxDistance === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.maxDistance = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.maxDistance = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#rolloffFactor", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("rolloffFactor");
+      assert(typeof node.rolloffFactor === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.rolloffFactor = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.rolloffFactor = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#coneInnerAngle", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("coneInnerAngle");
+      assert(typeof node.coneInnerAngle === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.coneInnerAngle = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.coneInnerAngle = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#coneOuterAngle", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("coneOuterAngle");
+      assert(typeof node.coneOuterAngle === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.coneOuterAngle = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.coneOuterAngle = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#coneOuterGain", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("coneOuterGain");
+      assert(typeof node.coneOuterGain === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.coneOuterGain = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.coneOuterGain = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
@@ -137,19 +137,19 @@ describe("PannerNode", function() {
       node.setPosition(0, 0, 0);
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.setPosition("INVALID", 0, 0);
-      }).to.throw(TypeError, "PannerNode#setPosition(x, y, z)");
+      }, TypeError, "PannerNode#setPosition(x, y, z)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.setPosition(0, "INVALID", 0);
-      }).to.throw(TypeError, "PannerNode#setPosition(x, y, z)");
+      }, TypeError, "PannerNode#setPosition(x, y, z)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.setPosition(0, 0, "INVALID");
-      }).to.throw(TypeError, "PannerNode#setPosition(x, y, z)");
+      }, TypeError, "PannerNode#setPosition(x, y, z)");
     });
   });
 
@@ -158,19 +158,19 @@ describe("PannerNode", function() {
       node.setOrientation(0, 0, 0);
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.setOrientation("INVALID", 0, 0);
-      }).to.throw(TypeError, "PannerNode#setOrientation(x, y, z)");
+      }, TypeError, "PannerNode#setOrientation(x, y, z)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.setOrientation(0, "INVALID", 0);
-      }).to.throw(TypeError, "PannerNode#setOrientation(x, y, z)");
+      }, TypeError, "PannerNode#setOrientation(x, y, z)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.setOrientation(0, 0, "INVALID");
-      }).to.throw(TypeError, "PannerNode#setOrientation(x, y, z)");
+      }, TypeError, "PannerNode#setOrientation(x, y, z)");
     });
   });
 
@@ -179,25 +179,25 @@ describe("PannerNode", function() {
       node.setVelocity(0, 0, 0);
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.setVelocity("INVALID", 0, 0);
-      }).to.throw(TypeError, "PannerNode#setVelocity(x, y, z)");
+      }, TypeError, "PannerNode#setVelocity(x, y, z)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.setVelocity(0, "INVALID", 0);
-      }).to.throw(TypeError, "PannerNode#setVelocity(x, y, z)");
+      }, TypeError, "PannerNode#setVelocity(x, y, z)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.setVelocity(0, 0, "INVALID");
-      }).to.throw(TypeError, "PannerNode#setVelocity(x, y, z)");
+      }, TypeError, "PannerNode#setVelocity(x, y, z)");
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "PannerNode",
         panningModel: "HRTF",
         distanceModel: "inverse",

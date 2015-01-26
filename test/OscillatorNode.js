@@ -11,74 +11,68 @@ describe("OscillatorNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.OscillatorNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(global.AudioNode);
+      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#type", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("type");
+      assert(typeof node.type === "string");
     });
     it("should be an enum", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.type = "sawtooth";
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.type = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#frequency", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("frequency");
+      assert(node.frequency instanceof global.AudioParam);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.frequency = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.frequency).to.be.instanceOf(global.AudioParam);
+      }, Error, "readonly");
     });
   });
 
   describe("#detune", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("detune");
+      assert(node.detune instanceof global.AudioParam);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.detune = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.detune).to.be.instanceOf(global.AudioParam);
+      }, Error, "readonly");
     });
   });
 
   describe("#onended", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("onended");
+      assert(node.onended === null);
     });
     it("should be a function", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.onended = it;
-        expect(node.onended).to.equal(it);
-      }).to.not.throw();
-      expect(function() {
+        assert(node.onended === it);
+      });
+      assert.doesNotThrow(function() {
         node.onended = it;
         node.onended = null;
-        expect(node.onended).to.equal(null);
-      }, "nullable").to.not.throw();
-      expect(function() {
+        assert(node.onended === null);
+      }, "nullable");
+      assert.throws(function() {
         node.onended = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
     it("works", function() {
       var passed = 0;
@@ -91,34 +85,34 @@ describe("OscillatorNode", function() {
       node.start(0);
       node.stop(0.15);
 
-      expect(passed, "00:00.000").to.equal(0);
+      assert(passed === 0, "00:00.000");
 
       node.context.$processTo("00:00.100");
-      expect(passed, "00:00.100").to.equal(0);
+      assert(passed === 0, "00:00.100");
 
       node.context.$processTo("00:00.200");
-      expect(passed, "00:00.200").to.equal(1);
+      assert(passed === 1, "00:00.200");
 
       node.context.$processTo("00:00.300");
-      expect(passed, "00:00.300").to.equal(1);
+      assert(passed === 1, "00:00.300");
     });
   });
 
   describe("#$state", function() {
     it("return #$stateAtTime(currentTime)", function() {
-      expect(node.$state).to.equal("UNSCHEDULED");
+      assert(node.$state === "UNSCHEDULED");
 
       node.start(0.1);
-      expect(node.$state).to.equal("SCHEDULED");
+      assert(node.$state === "SCHEDULED");
 
       node.context.$processTo("00:00.100");
-      expect(node.$state).to.equal("PLAYING");
+      assert(node.$state === "PLAYING");
 
       node.stop(0.2);
-      expect(node.$state).to.equal("PLAYING");
+      assert(node.$state === "PLAYING");
 
       node.context.$processTo("00:00.200");
-      expect(node.$state).to.equal("FINISHED");
+      assert(node.$state === "FINISHED");
     });
   });
 
@@ -128,77 +122,77 @@ describe("OscillatorNode", function() {
       node.start(0.1);
       node.stop(0.2);
 
-      expect(node.$stateAtTime(0.05)).to.equal("SCHEDULED");
-      expect(node.$stateAtTime(0.15)).to.equal("PLAYING");
-      expect(node.$stateAtTime(0.25)).to.equal("FINISHED");
+      assert(node.$stateAtTime(0.05) === "SCHEDULED");
+      assert(node.$stateAtTime(0.15) === "PLAYING");
+      assert(node.$stateAtTime(0.25) === "FINISHED");
     });
   });
 
   describe("#start(when)", function() {
     it("should work", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.start();
-      }).to.not.throw();
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.start("INVALID");
-      }).throw(TypeError, "OscillatorNode#start(when)");
+      }, TypeError, "OscillatorNode#start(when)");
     });
     it("throw error if called more than once", function() {
       node.start(0);
-      expect(function() {
+      assert.throws(function() {
         node.start(0);
-      }).to.throw(Error);
+      }, Error);
     });
   });
 
   describe("#stop(when)", function() {
     it("should work", function() {
       node.start();
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.stop();
-      }).to.not.throw();
+      });
     });
     it("throw error", function() {
       node.start();
-      expect(function() {
+      assert.throws(function() {
         node.stop("INVALID");
-      }).to.throw(TypeError, "OscillatorNode#stop(when)");
+      }, TypeError, "OscillatorNode#stop(when)");
     });
     it("throw error if called without calling start first", function() {
-      expect(function() {
+      assert.throws(function() {
         node.stop();
-      }).to.throw(Error);
+      }, Error);
     });
     it("throw error if called more than once", function() {
       node.start();
       node.stop();
-      expect(function() {
+      assert.throws(function() {
         node.stop();
-      }).to.throw(Error);
+      }, Error);
     });
   });
 
   describe("#setPeriodicWave(periodicWave)", function() {
     it("should work", function() {
       var periodicWave = ctx.createPeriodicWave(new Float32Array(128), new Float32Array(128));
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.setPeriodicWave(periodicWave);
-      }).to.not.throw();
-      expect(node.type).to.equal("custom");
-      expect(node.$custom).to.equal(periodicWave);
+      });
+      assert(node.type === "custom");
+      assert(node.$custom === periodicWave);
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.setPeriodicWave("INVALID");
-      }).throw(TypeError, "OscillatorNode#setPeriodicWave(periodicWave)");
+      }, TypeError, "OscillatorNode#setPeriodicWave(periodicWave)");
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "OscillatorNode",
         type: "sine",
         frequency: {

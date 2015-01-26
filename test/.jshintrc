@@ -18,10 +18,11 @@
   "globals": {
     "describe": true,
     "it": true,
-    "expect": true,
+    "assert": true,
     "before": true,
     "beforeEach": true,
     "afterEach": true,
-    "after": true
+    "after": true,
+    "closeTo": true
   }
 }

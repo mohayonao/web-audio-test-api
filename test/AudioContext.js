@@ -9,85 +9,89 @@ describe("AudioContext", function() {
 
   describe("()", function() {
     it("should return an instance of AudioContext", function() {
-      expect(ctx).to.be.instanceOf(global.AudioContext);
+      assert(ctx instanceof global.AudioContext);
     });
     it("should have been inherited from EventTarget", function() {
-      expect(ctx).to.be.instanceOf(global.EventTarget);
+      assert(ctx instanceof global.EventTarget);
     });
   });
 
   describe(".WEB_AUDIO_TEST_API_VERSION", function() {
     it("check", function() {
       if (typeof WEB_AUDIO_TEST_API_VERSION === "string") {
-        expect(global.AudioContext.WEB_AUDIO_TEST_API_VERSION).to.equal(global.WEB_AUDIO_TEST_API_VERSION);
+        assert(global.AudioContext.WEB_AUDIO_TEST_API_VERSION === global.WEB_AUDIO_TEST_API_VERSION);
       }
     });
   });
 
   describe("new", function() {
     it("should return AudioContext", function() {
-      expect(ctx).to.be.instanceOf(global.AudioContext);
+      assert(ctx instanceof global.AudioContext);
     });
   });
 
   describe("#destination", function() {
     it("should be an instance of AudioDestinationNode", function() {
-      expect(ctx.destination).to.be.instanceOf(global.AudioDestinationNode);
+      assert(ctx.destination instanceof global.AudioDestinationNode);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         ctx.destination = null;
-      }).throw(Error, "readonly");
+      }, Error, "readonly");
     });
   });
 
   describe("#sampleRate", function() {
     it("should be a number", function() {
-      expect(ctx.sampleRate).to.be.a("number");
+      assert(typeof ctx.sampleRate === "number");
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         ctx.sampleRate = 0;
-      }).throw(Error, "readonly");
+      }, Error, "readonly");
     });
   });
 
   describe("#currentTime", function() {
     it("should be a number", function() {
-      expect(ctx.currentTime).to.be.a("number");
+      assert(typeof ctx.currentTime === "number");
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         ctx.currentTime = 0;
-      }).throw(Error, "readonly");
+      }, Error, "readonly");
     });
   });
 
   describe("#listener", function() {
     it("should be an instance of AudioListener", function() {
-      expect(ctx.listener).to.be.instanceOf(global.AudioListener);
+      assert(ctx.listener instanceof global.AudioListener);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         ctx.listener = null;
-      }).throw(Error, "readonly");
+      }, Error, "readonly");
     });
   });
 
   describe("#$process()", function() {
     it("should work", function() {
-      ctx.$process(0.5);
-      ctx.$process(0.5);
-      ctx.$process(0.5);
+      assert.doesNotThrow(function() {
+        ctx.$process(0.5);
+        ctx.$process(0.5);
+        ctx.$process(0.5);
+      });
     });
   });
 
   describe("#$processTo()", function() {
     it("should work", function() {
-      ctx.$processTo(0.5);
-      ctx.$processTo("00:00.005");
-      ctx.$processTo("00:00.010");
-      ctx.$processTo("00:00.005");
+      assert.doesNotThrow(function() {
+        ctx.$processTo(0.5);
+        ctx.$processTo("00:00.005");
+        ctx.$processTo("00:00.010");
+        ctx.$processTo("00:00.005");
+      });
     });
   });
 
@@ -100,8 +104,8 @@ describe("AudioContext", function() {
       ctx.$process(0.5);
       ctx.$reset();
 
-      expect(ctx.currentTime).to.equal(0);
-      expect(ctx.toJSON()).to.eql({
+      assert(ctx.currentTime === 0);
+      assert.deepEqual(ctx.toJSON(), {
         name: "AudioDestinationNode",
         inputs: []
       });
@@ -110,14 +114,14 @@ describe("AudioContext", function() {
 
   describe("#createBuffer(numberOfChannels, length, sampleRate)", function() {
     it("should return an instance of AudioBuffer", function() {
-      expect(ctx.createBuffer(2, 128, 44100)).to.be.instanceOf(global.AudioBuffer);
+      assert(ctx.createBuffer(2, 128, 44100) instanceof global.AudioBuffer);
     });
   });
 
   describe("#decodeAudioData(audioData, successCallback, errorCallback)", function() {
     it("should work", function(done) {
       ctx.decodeAudioData(new Uint8Array(128).buffer, function(buffer) {
-        expect(buffer).to.be.instanceOf(global.AudioBuffer);
+        assert(buffer instanceof global.AudioBuffer);
         done();
       }, function() {
         throw new Error("NOT REACHED");
@@ -135,112 +139,112 @@ describe("AudioContext", function() {
       var result = ctx.createBuffer(2, 256, 44100);
       ctx.DECODE_AUDIO_DATA_RESULT = result;
       ctx.decodeAudioData(new Uint8Array(128).buffer, function(buffer) {
-        expect(buffer).to.equal(result);
+        assert(buffer === result);
         done();
       }, function() {
         throw new Error("NOT REACHED");
       });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         ctx.decodeAudioData("INVALID");
-      }).to.throw(TypeError, "AudioContext#decodeAudioData(audioData, successCallback, errorCallback)");
+      }, TypeError, "AudioContext#decodeAudioData(audioData, successCallback, errorCallback)");
     });
   });
 
   describe("#createBufferSource()", function() {
     it("should return an instance of AudioBufferSourceNode", function() {
-      expect(ctx.createBufferSource()).to.be.instanceOf(global.AudioBufferSourceNode);
+      assert(ctx.createBufferSource() instanceof global.AudioBufferSourceNode);
     });
   });
 
   describe("#createMediaElementSource()", function() {
     it("should return an instance of MediaElementAudioSourceNode", function() {
-      expect(ctx.createMediaElementSource()).to.be.instanceOf(global.MediaElementAudioSourceNode);
+      assert(ctx.createMediaElementSource() instanceof global.MediaElementAudioSourceNode);
     });
   });
 
   describe("#createMediaStreamSource()", function() {
     it("should return an instance of MediaStreamAudioSourceNode", function() {
-      expect(ctx.createMediaStreamSource()).to.be.instanceOf(global.MediaStreamAudioSourceNode);
+      assert(ctx.createMediaStreamSource() instanceof global.MediaStreamAudioSourceNode);
     });
   });
 
   describe("#createMediaStreamDestination()", function() {
     it("should return an instance of MediaStreamAudioDestinationNode", function() {
-      expect(ctx.createMediaStreamDestination()).to.be.instanceOf(global.MediaStreamAudioDestinationNode);
+      assert(ctx.createMediaStreamDestination() instanceof global.MediaStreamAudioDestinationNode);
     });
   });
 
   describe("#createScriptProcessor()", function() {
     it("should return an instance of ScriptProcessorNode", function() {
-      expect(ctx.createScriptProcessor(1024, 1, 1)).to.be.instanceOf(global.ScriptProcessorNode);
+      assert(ctx.createScriptProcessor(1024, 1, 1) instanceof global.ScriptProcessorNode);
     });
   });
 
   describe("#createAnalyser()", function() {
     it("should return an instance of AnalyserNode", function() {
-      expect(ctx.createAnalyser()).to.be.instanceOf(global.AnalyserNode);
+      assert(ctx.createAnalyser() instanceof global.AnalyserNode);
     });
   });
 
   describe("#createGain()", function() {
     it("should return an instance of GainNode", function() {
-      expect(ctx.createGain()).to.be.instanceOf(global.GainNode);
+      assert(ctx.createGain() instanceof global.GainNode);
     });
   });
 
   describe("#createDelay()", function() {
     it("should return an instance of DelayNode", function() {
-      expect(ctx.createDelay()).to.be.instanceOf(global.DelayNode);
+      assert(ctx.createDelay() instanceof global.DelayNode);
     });
   });
 
   describe("#createBiquadFilter()", function() {
     it("should return an instance of BiquadFilterNode", function() {
-      expect(ctx.createBiquadFilter()).to.be.instanceOf(global.BiquadFilterNode);
+      assert(ctx.createBiquadFilter() instanceof global.BiquadFilterNode);
     });
   });
 
   describe("#createWaveShaper()", function() {
     it("should return an instance of WaveShaperNode", function() {
-      expect(ctx.createWaveShaper()).to.be.instanceOf(global.WaveShaperNode);
+      assert(ctx.createWaveShaper() instanceof global.WaveShaperNode);
     });
   });
 
   describe("#createPanner()", function() {
     it("should return an instance of PannerNode", function() {
-      expect(ctx.createPanner()).to.be.instanceOf(global.PannerNode);
+      assert(ctx.createPanner() instanceof global.PannerNode);
     });
   });
 
   describe("#createConvolver()", function() {
     it("should return an instance of ConvolverNode", function() {
-      expect(ctx.createConvolver()).to.be.instanceOf(global.ConvolverNode);
+      assert(ctx.createConvolver() instanceof global.ConvolverNode);
     });
   });
 
   describe("#createChannelSplitter()", function() {
     it("should return an instance of ChannelSplitterNode", function() {
-      expect(ctx.createChannelSplitter()).to.be.instanceOf(global.ChannelSplitterNode);
+      assert(ctx.createChannelSplitter() instanceof global.ChannelSplitterNode);
     });
   });
 
   describe("#createChannelMerger()", function() {
     it("should return an instance of ChannelMergerNode", function() {
-      expect(ctx.createChannelMerger()).to.be.instanceOf(global.ChannelMergerNode);
+      assert(ctx.createChannelMerger() instanceof global.ChannelMergerNode);
     });
   });
 
   describe("#createDynamicsCompressor()", function() {
     it("should return an instance of DynamicsCompressorNode", function() {
-      expect(ctx.createDynamicsCompressor()).to.be.instanceOf(global.DynamicsCompressorNode);
+      assert(ctx.createDynamicsCompressor() instanceof global.DynamicsCompressorNode);
     });
   });
 
   describe("#createOscillator()", function() {
     it("should return an instance of OscillatorNode", function() {
-      expect(ctx.createOscillator()).to.be.instanceOf(global.OscillatorNode);
+      assert(ctx.createOscillator() instanceof global.OscillatorNode);
     });
   });
 
@@ -248,13 +252,13 @@ describe("AudioContext", function() {
     it("should return an instance of PeriodicWave", function() {
       var real = new Float32Array(128);
       var imag = new Float32Array(128);
-      expect(ctx.createPeriodicWave(real, imag)).to.be.instanceOf(global.PeriodicWave);
+      assert(ctx.createPeriodicWave(real, imag) instanceof global.PeriodicWave);
     });
   });
 
   describe("#toJSON", function() {
     it("return json", function() {
-      expect(ctx.toJSON()).to.eql({
+      assert.deepEqual(ctx.toJSON(), {
         name: "AudioDestinationNode",
         inputs: []
       });

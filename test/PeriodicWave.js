@@ -12,19 +12,19 @@ describe("PeriodicWave", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.PeriodicWave();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("throw error if length is not match", function() {
-      expect(function() {
+      assert.throws(function() {
         ctx.createPeriodicWave(f128, f256);
-      }).to.throw(Error, "must match");
+      }, Error, "must match");
     });
     it("throw error if length > 4096", function() {
-      expect(function() {
+      assert.throws(function() {
         ctx.createPeriodicWave(f8192, f8192);
-      }).to.throw(Error, "maximum of 4096");
+      }, Error, "maximum of 4096");
     });
   });
 

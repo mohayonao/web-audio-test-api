@@ -14,59 +14,59 @@ describe("ScriptProcessorNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.ScriptProcessorNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(global.AudioNode);
+      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("invalid arguments", function() {
     it("invalid buffer size", function() {
-      expect(function() {
+      assert.throws(function() {
         ctx.createScriptProcessor(0, 0, 0);
-      }).to.throw(TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
+      }, TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
     });
     it("invalid numberOfInputChannels", function() {
-      expect(function() {
+      assert.throws(function() {
         ctx.createScriptProcessor(BUFFER_SIZE, "INVALID", 0);
-      }).to.throw(TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
+      }, TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
     });
     it("invalid numberOfOutputChannels", function() {
-      expect(function() {
+      assert.throws(function() {
         ctx.createScriptProcessor(BUFFER_SIZE, 0, "INVALID");
-      }).to.throw(TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
+      }, TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
     });
   });
 
   describe("#numberOfInputChannels", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("numberOfInputChannels", 2);
+      assert(node.numberOfInputChannels === 2);
     });
   });
 
   describe("#numberOfOutputChannels", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("numberOfOutputChannels", 1);
+      assert(node.numberOfOutputChannels === 1);
     });
   });
 
   describe("#bufferSize", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("bufferSize", BUFFER_SIZE);
+      assert(node.bufferSize === BUFFER_SIZE);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.bufferSize = 0;
-      }).to.throw(Error, "readonly");
+      }, Error, "readonly");
     });
   });
 
   describe("#onaudioprocess", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("onaudioprocess");
+      assert(node.onaudioprocess === null);
     });
     it("should work", function() {
       var passed = 0;
@@ -75,38 +75,38 @@ describe("ScriptProcessorNode", function() {
       node.connect(ctx.destination);
       node.onaudioprocess = function(e) {
         passed += 1;
-        expect(e).to.be.instanceOf(global.Event);
-        expect(e).to.be.instanceOf(global.AudioProcessingEvent);
-        expect(e).to.have.property("playbackTime");
-        expect(e.inputBuffer).to.be.instanceOf(global.AudioBuffer);
-        expect(e.outputBuffer).to.be.instanceOf(global.AudioBuffer);
+        assert(e instanceof global.Event);
+        assert(e instanceof global.AudioProcessingEvent);
+        assert(typeof e.playbackTime === "number");
+        assert(e.inputBuffer instanceof global.AudioBuffer);
+        assert(e.outputBuffer instanceof global.AudioBuffer);
       };
       ctx.$process(0);
-      expect(passed, "0/4").to.equal(0);
+      assert(passed === 0, "0/4");
       ctx.$process(interval);
-      expect(passed, "1/4").to.equal(1);
+      assert(passed === 1, "1/4");
       ctx.$process(interval);
-      expect(passed, "2/4").to.equal(1);
+      assert(passed === 1, "2/4");
       ctx.$process(interval);
-      expect(passed, "3/4").to.equal(1);
+      assert(passed === 1, "3/4");
       ctx.$process(interval);
-      expect(passed, "4/4").to.equal(2);
+      assert(passed === 2, "4/4");
       ctx.$process(interval);
-      expect(passed, "5/4").to.equal(2);
+      assert(passed === 2, "5/4");
       ctx.$process(interval);
-      expect(passed, "6/4").to.equal(2);
+      assert(passed === 2, "6/4");
       ctx.$process(interval);
-      expect(passed, "7/4").to.equal(2);
+      assert(passed === 2, "7/4");
       ctx.$process(interval);
-      expect(passed, "8/4").to.equal(3);
+      assert(passed === 3, "8/4");
       ctx.$process(interval);
-      expect(passed, "9/4").to.equal(3);
+      assert(passed === 3, "9/4");
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "ScriptProcessorNode",
         inputs: []
       });
@@ -118,9 +118,9 @@ describe("ScriptProcessorNode", function() {
 describe("AudioProcessingEvent", function() {
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.AudioProcessingEvent();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
   });
 });

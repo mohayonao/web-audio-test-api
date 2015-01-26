@@ -11,114 +11,120 @@ describe("AudioListener", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.AudioListener();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
   });
 
   describe("#dopplerFactor", function() {
     it("should be exist", function() {
-      expect(listener).to.have.property("dopplerFactor");
+      assert(typeof listener.dopplerFactor === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
          listener.dopplerFactor = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         listener.dopplerFactor = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#speedOfSound", function() {
     it("should be exist", function() {
-      expect(listener).to.have.property("speedOfSound");
+      assert(typeof listener.speedOfSound === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
          listener.speedOfSound = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         listener.speedOfSound = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
   describe("#setPosition(x, y, z)", function() {
     it("should work", function() {
-      listener.setPosition(0, 0, 0);
+      assert.doesNotThrow(function() {
+        listener.setPosition(0, 0, 0);
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setPosition("INVALID", 0, 0);
-      }).to.throw(TypeError, "AudioListener#setPosition(x, y, z)");
+      }, TypeError, "AudioListener#setPosition(x, y, z)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setPosition(0, "INVALID", 0);
-      }).to.throw(TypeError, "AudioListener#setPosition(x, y, z)");
+      }, TypeError, "AudioListener#setPosition(x, y, z)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setPosition(0, 0, "INVALID");
-      }).to.throw(TypeError, "AudioListener#setPosition(x, y, z)");
+      }, TypeError, "AudioListener#setPosition(x, y, z)");
     });
   });
 
   describe("#setOrientation(x, y, z, xUp, yUp, zUp)", function() {
     it("should work", function() {
-      listener.setOrientation(0, 0, 0, 0, 0, 0);
+      assert.doesNotThrow(function() {
+        listener.setOrientation(0, 0, 0, 0, 0, 0);
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setOrientation("INVALID", 0, 0, 0, 0, 0);
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
+      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setOrientation(0, "INVALID", 0, 0, 0, 0);
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
+      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setOrientation(0, 0, "INVALID", 0, 0, 0);
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
+      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setOrientation(0, 0, 0, "INVALID", 0, 0);
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
+      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, "INVALID", 0);
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
+      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, 0, "INVALID");
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
+      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
     });
   });
 
   describe("#setVelocity(x, y, z)", function() {
     it("should work", function() {
-      listener.setVelocity(0, 0, 0);
+      assert.doesNotThrow(function() {
+        listener.setVelocity(0, 0, 0);
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setVelocity("INVALID", 0, 0);
-      }).to.throw(TypeError, "AudioListener#setVelocity(x, y, z)");
+      }, TypeError, "AudioListener#setVelocity(x, y, z)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setVelocity(0, "INVALID", 0);
-      }).to.throw(TypeError, "AudioListener#setVelocity(x, y, z)");
+      }, TypeError, "AudioListener#setVelocity(x, y, z)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         listener.setVelocity(0, 0, "INVALID");
-      }).to.throw(TypeError, "AudioListener#setVelocity(x, y, z)");
+      }, TypeError, "AudioListener#setVelocity(x, y, z)");
     });
   });
 

@@ -11,46 +11,46 @@ describe("WaveShaperNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.WaveShaperNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(global.AudioNode);
+      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#curve", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("curve");
+      assert(node.curve === null);
     });
     it("should be a Float32Array", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.curve = new Float32Array(64);
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.curve = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#oversample", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("oversample");
+      assert(typeof node.oversample === "string");
     });
     it("should be an enum", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.oversample = "2x";
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.oversample = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "WaveShaperNode",
         oversample: "none",
         inputs: []

@@ -11,94 +11,90 @@ describe("AudioBufferSourceNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.AudioBufferSourceNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(global.AudioNode);
+      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#buffer", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("buffer");
+      assert(node.buffer === null);
     });
   });
 
   describe("#playbackRate", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("playbackRate");
+      assert(node.playbackRate instanceof global.AudioParam);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.playbackRate = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.playbackRate).to.be.instanceOf(global.AudioParam);
+      }, Error, "readonly");
     });
   });
 
   describe("#loop", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("loop");
+      assert(typeof node.loop === "boolean");
     });
     it("should be a boolean", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.loop = true;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.loop = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#loopStart", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("loopStart");
+      assert(typeof node.loopStart === "number");
     });
     it("should be a number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.loopStart = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.loopStart = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#loopEnd", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("loopEnd");
+      assert(typeof node.loopEnd === "number");
     });
     it("should be a number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.loopEnd = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.loopEnd = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#onended", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("onended");
+      assert(node.onended === null);
     });
     it("should be a function", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.onended = it;
-        expect(node.onended).to.equal(it);
-      }).to.not.throw();
-      expect(function() {
-        node.onended = it;
+      });
+      assert(node.onended === it);
+      assert.doesNotThrow(function() {
         node.onended = null;
-        expect(node.onended).to.equal(null);
-      }, "nullable").to.not.throw();
-      expect(function() {
+      });
+      assert(node.onended === null);
+      assert.throws(function() {
         node.onended = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
     it("works", function() {
       var passed = 0;
@@ -115,25 +111,25 @@ describe("AudioBufferSourceNode", function() {
       node.start(0.1);
       node.stop(0.15);
 
-      expect(passed, "00:00.000").to.equal(0);
+      assert(passed === 0, "00:00.000");
 
       node.context.$processTo("00:00.050");
-      expect(passed, "00:00.050").to.equal(0);
+      assert(passed === 0, "00:00.050");
 
       node.context.$processTo("00:00.100");
-      expect(passed, "00:00.100").to.equal(0);
+      assert(passed === 0, "00:00.100");
 
       node.context.$processTo("00:00.200");
-      expect(passed, "00:00.200").to.closeTo(0.15, 1e-2);
+      assert(closeTo(passed, 0.15, 1e-2), "00:00.200");
 
       node.context.$processTo("00:00.300");
-      expect(passed, "00:00.300").to.closeTo(0.15, 1e-2);
+      assert(closeTo(passed, 0.15, 1e-2), "00:00.300");
 
       node.context.$processTo("00:00.400");
-      expect(passed, "00:00.400").to.closeTo(0.15, 1e-2);
+      assert(closeTo(passed, 0.15, 1e-2), "00:00.400");
 
       node.context.$processTo("00:00.500");
-      expect(passed, "00:00.500").to.closeTo(0.15, 1e-2);
+      assert(closeTo(passed, 0.15, 1e-2), "00:00.500");
     });
     it("works auto stop", function() {
       var passed = 0;
@@ -149,43 +145,43 @@ describe("AudioBufferSourceNode", function() {
       node.connect(node.context.destination);
       node.start(0.1);
 
-      expect(passed, "00:00.000").to.equal(0);
+      assert(passed === 0, "00:00.000");
 
       node.context.$processTo("00:00.050");
-      expect(passed, "00:00.050").to.equal(0);
+      assert(passed === 0, "00:00.050");
 
       node.context.$processTo("00:00.100");
-      expect(passed, "00:00.100").to.equal(0);
+      assert(passed === 0, "00:00.100");
 
       node.context.$processTo("00:00.200");
-      expect(passed, "00:00.200").to.equal(0);
+      assert(passed === 0, "00:00.200");
 
       node.context.$processTo("00:00.300");
-      expect(passed, "00:00.300").to.equal(0);
+      assert(passed === 0, "00:00.300");
 
       node.context.$processTo("00:00.400");
-      expect(passed, "00:00.400").to.closeTo(0.35, 1e-2);
+      assert(closeTo(passed, 0.35, 1e-2), "00:00.400");
 
       node.context.$processTo("00:00.500");
-      expect(passed, "00:00.500").to.closeTo(0.35, 1e-2);
+      assert(closeTo(passed, 0.35, 1e-2), "00:00.500");
     });
   });
 
   describe("#$state", function() {
     it("return #$stateAtTime(currentTime)", function() {
-      expect(node.$state).to.equal("UNSCHEDULED");
+      assert(node.$state === "UNSCHEDULED");
 
       node.start(0.1);
-      expect(node.$state).to.equal("SCHEDULED");
+      assert(node.$state === "SCHEDULED");
 
       ctx.$process(0.1);
-      expect(node.$state).to.equal("PLAYING");
+      assert(node.$state === "PLAYING");
 
       node.stop(0.2);
-      expect(node.$state).to.equal("PLAYING");
+      assert(node.$state === "PLAYING");
 
       ctx.$process(0.1);
-      expect(node.$state).to.equal("FINISHED");
+      assert(node.$state === "FINISHED");
     });
   });
 
@@ -195,71 +191,71 @@ describe("AudioBufferSourceNode", function() {
       node.start(0.1);
       node.stop(0.2);
 
-      expect(node.$stateAtTime(0.05)).to.equal("SCHEDULED");
-      expect(node.$stateAtTime(0.15)).to.equal("PLAYING");
-      expect(node.$stateAtTime(0.25)).to.equal("FINISHED");
+      assert(node.$stateAtTime(0.05) === "SCHEDULED");
+      assert(node.$stateAtTime(0.15) === "PLAYING");
+      assert(node.$stateAtTime(0.25) === "FINISHED");
     });
   });
 
   describe("#start(when, offset, duration)", function() {
     it("should work", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.start();
-      }).to.not.throw();
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.start("INVALID");
-      }).throw(TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
+      }, TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.start(0, "INVALID");
-      }).throw(TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
+      }, TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.start(0, 0, "INVALID");
-      }).throw(TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
+      }, TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
     });
     it("throw error if called more than once", function() {
       node.start(0);
-      expect(function() {
+      assert.throws(function() {
         node.start(0);
-      }).to.throw(Error);
+      }, Error);
     });
   });
 
   describe("#stop(when)", function() {
     it("should work", function() {
       node.start();
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.stop();
-      }).to.not.throw();
+      });
     });
     it("throw error", function() {
       node.start();
-      expect(function() {
+      assert.throws(function() {
         node.stop("INVALID");
-      }).to.throw(TypeError, "AudioBufferSourceNode#stop(when)");
+      }, TypeError, "AudioBufferSourceNode#stop(when)");
     });
     it("throw error if called without calling start first", function() {
-      expect(function() {
+      assert.throws(function() {
         node.stop();
-      }).to.throw(Error);
+      }, Error);
     });
     it("throw error if called more than once", function() {
       node.start();
       node.stop();
-      expect(function() {
+      assert.throws(function() {
         node.stop();
-      }).to.throw(Error);
+      }, Error);
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "AudioBufferSourceNode",
         buffer: null,
         playbackRate: {

@@ -11,107 +11,107 @@ describe("AudioNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.AudioNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
   });
 
   describe("#context", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("context", ctx);
+      assert(node.context === ctx);
     });
   });
 
   describe("#numberOfInputs", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("numberOfInputs");
+      assert(typeof node.numberOfInputs === "number");
     });
   });
 
   describe("#numberOfOutputs", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("numberOfOutputs");
+      assert(typeof node.numberOfOutputs === "number");
     });
   });
 
   describe("#channelCount", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("channelCount");
+      assert(typeof node.channelCount === "number");
     });
   });
 
   describe("#channelCountMode", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("channelCountMode");
+      assert(typeof node.channelCountMode === "string");
     });
   });
 
   describe("#channelInterpretation", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("channelInterpretation");
+      assert(typeof node.channelInterpretation === "string");
     });
   });
 
   describe("#connect(destination, output, input)", function() {
     it("should work", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.connect(ctx.destination);
-      }).not.throw();
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.connect("INVALID");
-      }).throw(TypeError, "connect(destination, output, input)");
+      }, TypeError, "connect(destination, output, input)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.connect(ctx.destination, "INVALID");
-      }).throw(TypeError, "connect(destination, output, input)");
+      }, TypeError, "connect(destination, output, input)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.connect(ctx.destination, 0, "INVALID");
-      }).throw(TypeError, "connect(destination, output, input)");
+      }, TypeError, "connect(destination, output, input)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.connect(new global.AudioContext().destination);
-      }).throw(Error, "connect(destination, output, input): cannot connect to a destination belonging to a different audio context");
+      }, Error, "connect(destination, output, input): cannot connect to a destination belonging to a different audio context");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.connect(ctx.destination, 2);
-      }).throw(Error, "connect(destination, output, input): output index (2) exceeds number of outputs (1)");
+      }, Error, "connect(destination, output, input): output index (2) exceeds number of outputs (1)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.connect(ctx.destination, 0, 2);
-      }).throw(Error, "connect(destination, output, input): input index (2) exceeds number of inputs (1)");
+      }, Error, "connect(destination, output, input): input index (2) exceeds number of inputs (1)");
     });
   });
 
   describe("#disconnect(output)", function() {
     it("should work", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.disconnect();
-      }).not.throw();
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.disconnect("INVALID");
-      }).throw(TypeError, "disconnect(output)");
+      }, TypeError, "disconnect(output)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.disconnect(2);
-      }).throw(Error, "disconnect(output): output index (2) exceeds number of outputs (1)");
+      }, Error, "disconnect(output): output index (2) exceeds number of outputs (1)");
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "OscillatorNode",
         type: "sine",
         frequency: {
@@ -128,7 +128,7 @@ describe("AudioNode", function() {
     it("return verbose json", function() {
       ctx.VERBOSE_JSON = true;
 
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "OscillatorNode",
         type: "sine",
         frequency: {

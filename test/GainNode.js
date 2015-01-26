@@ -11,32 +11,29 @@ describe("GainNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.GainNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(global.AudioNode);
+      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#gain", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("gain");
+      assert(node.gain instanceof global.AudioParam);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.gain = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.gain).to.be.instanceOf(global.AudioParam);
+      }, Error, "readonly");
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "GainNode",
         gain: {
           value: 1,

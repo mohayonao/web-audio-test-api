@@ -11,109 +11,99 @@ describe("BiquadFilterNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.BiquadFilterNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(global.AudioNode);
+      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#type", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("type");
+      assert(typeof node.type === "string");
     });
     it("should be an enum", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.type = "lowshelf";
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.type = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#frequency", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("frequency");
+      assert(node.frequency instanceof global.AudioParam);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.frequency = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.frequency).to.be.instanceOf(global.AudioParam);
+      }, Error, "readonly");
     });
   });
 
   describe("#detune", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("detune");
+      assert(node.detune instanceof global.AudioParam);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.detune = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.detune).to.be.instanceOf(global.AudioParam);
+      }, Error, "readonly");
     });
   });
 
   describe("#Q", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("Q");
+      assert(node.Q instanceof global.AudioParam);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.Q = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.Q).to.be.instanceOf(global.AudioParam);
+      }, Error, "readonly");
     });
   });
 
   describe("#gain", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("gain");
+      assert(node.gain instanceof global.AudioParam);
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.gain = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.gain).to.be.instanceOf(global.AudioParam);
+      }, Error, "readonly");
     });
   });
 
   describe("#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)", function() {
     it("should work", function() {
-      node.getFrequencyResponse(new Float32Array(128), new Float32Array(128), new Float32Array(128));
+      assert.doesNotThrow(function() {
+        node.getFrequencyResponse(new Float32Array(128), new Float32Array(128), new Float32Array(128));
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.getFrequencyResponse("INVALID", new Float32Array(128), new Float32Array(128));
-      }).to.throw(TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
+      }, TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.getFrequencyResponse(new Float32Array(128), "INVALID", new Float32Array(128));
-      }).to.throw(TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
+      }, TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.getFrequencyResponse(new Float32Array(128), new Float32Array(128), "INVALID");
-      }).to.throw(TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
+      }, TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "BiquadFilterNode",
         type: "lowpass",
         frequency: {

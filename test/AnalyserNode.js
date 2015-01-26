@@ -11,121 +11,124 @@ describe("AnalyserNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.AnalyserNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(global.AudioNode);
+      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#fftSize", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("fftSize");
+      assert(typeof node.fftSize === "number");
     });
     it("should be number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.fftSize = 512;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.fftSize = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#frequencyBinCount", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("frequencyBinCount");
+      assert(typeof node.frequencyBinCount === "number");
     });
     it("should be readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         node.frequencyBinCount = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be a number", function() {
-      expect(node.frequencyBinCount).to.be.a("number");
+      }, Error, "readonly");
     });
   });
 
   describe("#minDecibels", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("minDecibels");
+      assert(typeof node.minDecibels === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.minDecibels = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.minDecibels = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#maxDecibels", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("maxDecibels");
+      assert(typeof node.maxDecibels === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.maxDecibels = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.maxDecibels = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#smoothingTimeConstant", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("smoothingTimeConstant");
+      assert(typeof node.smoothingTimeConstant === "number");
     });
     it("should be type of number", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.maxDecibels = 0;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.maxDecibels = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#getFloatFrequencyData(array)", function() {
     it("should work", function() {
-      node.getFloatFrequencyData(new Float32Array(128));
+      assert.doesNotThrow(function() {
+        node.getFloatFrequencyData(new Float32Array(128));
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.getFloatFrequencyData("INVALID");
-      }).to.throw(TypeError, "AnalyserNode#getFloatFrequencyData(array)");
+      }, TypeError, "AnalyserNode#getFloatFrequencyData(array)");
     });
   });
 
   describe("#getByteFrequencyData(array)", function() {
     it("should work", function() {
-      node.getByteFrequencyData(new Uint8Array(128));
+      assert.doesNotThrow(function() {
+        node.getByteFrequencyData(new Uint8Array(128));
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.getByteFrequencyData("INVALID");
-      }).to.throw(TypeError, "AnalyserNode#getByteFrequencyData(array)");
+      }, TypeError, "AnalyserNode#getByteFrequencyData(array)");
     });
   });
 
   describe("#getByteTimeDomainData(array)", function() {
     it("should work", function() {
-      node.getByteTimeDomainData(new Uint8Array(128));
+      assert.doesNotThrow(function() {
+        node.getByteTimeDomainData(new Uint8Array(128));
+      });
     });
     it("throw error", function() {
-      expect(function() {
+      assert.throws(function() {
         node.getByteTimeDomainData("INVALID");
-      }).to.throw(TypeError, "AnalyserNode#getByteTimeDomainData(array)");
+      }, TypeError, "AnalyserNode#getByteTimeDomainData(array)");
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "AnalyserNode",
         fftSize: 2048,
         minDecibels: -100,

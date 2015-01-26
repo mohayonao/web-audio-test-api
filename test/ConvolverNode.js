@@ -11,46 +11,46 @@ describe("ConvolverNode", function() {
 
   describe("()", function() {
     it("throw illegal constructor", function() {
-      expect(function() {
+      assert.throws(function() {
         return new global.ConvolverNode();
-      }).to.throw(TypeError, "Illegal constructor");
+      }, TypeError, "Illegal constructor");
     });
     it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(global.AudioNode);
+      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#buffer", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("buffer");
+      assert(node.buffer === null);
     });
     it("should be an AudioBuffer", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.buffer = ctx.createBuffer(1, 128, 44100);
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.buffer = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#normalize", function() {
     it("should be exist", function() {
-      expect(node).to.have.property("normalize");
+      assert(typeof node.normalize === "boolean");
     });
     it("should be a boolean", function() {
-      expect(function() {
+      assert.doesNotThrow(function() {
         node.normalize = false;
-      }).to.not.throw();
-      expect(function() {
+      });
+      assert.throws(function() {
         node.normalize = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#toJSON()", function() {
     it("return json", function() {
-      expect(node.toJSON()).to.eql({
+      assert.deepEqual(node.toJSON(), {
         name: "ConvolverNode",
         normalize: true,
         inputs: []

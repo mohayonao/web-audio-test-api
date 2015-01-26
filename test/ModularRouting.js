@@ -15,7 +15,7 @@ describe("ModularRouting", function() {
       osc.connect(amp);
       amp.connect(ctx.destination);
 
-      expect(ctx.toJSON()).to.eql({
+      assert.deepEqual(ctx.toJSON(), {
         "name": "AudioDestinationNode",
         "inputs": [
           {
@@ -57,7 +57,7 @@ describe("ModularRouting", function() {
 
       ctx.$processTo("00:00.100");
 
-      expect(ctx.toJSON()).to.eql({
+      assert.deepEqual(ctx.toJSON(), {
         "name": "AudioDestinationNode",
         "inputs": [
           {
@@ -113,7 +113,7 @@ describe("ModularRouting", function() {
       amp.connect(ctx.destination);
       amp.disconnect();
 
-      expect(ctx.toJSON()).to.eql({
+      assert.deepEqual(ctx.toJSON(), {
         "name": "AudioDestinationNode",
         "inputs": []
       });
@@ -128,7 +128,7 @@ describe("ModularRouting", function() {
 
       osc.connect(ctx.destination);
 
-      expect(ctx.toJSON()).to.eql({
+      assert.deepEqual(ctx.toJSON(), {
         "name": "AudioDestinationNode",
         "inputs": [
           {
@@ -156,7 +156,7 @@ describe("ModularRouting", function() {
       osc.connect(osc.frequency);
       osc.connect(ctx.destination);
 
-      expect(ctx.toJSON()).to.eql({
+      assert.deepEqual(ctx.toJSON(), {
         "name": "AudioDestinationNode",
         "inputs": [
           {

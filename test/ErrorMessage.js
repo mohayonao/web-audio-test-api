@@ -11,87 +11,87 @@ describe("ErrorMessage", function() {
 
   describe("Readonly", function() {
     it("Object#property is readonly", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.detune = 0;
-      }).to.throw(Error, /^\w+#\w+ is readonly$/);
+      }, Error, /^\w+#\w+ is readonly$/);
     });
   });
 
   describe("Type", function() {
     it("Object#property should be a ..., but got *", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.channelCount = true;
-      }).to.throw(TypeError, /^\w+#\w+ should be an? \w+, but got [''\w]+$/);
+      }, TypeError, /^\w+#\w+ should be an? \w+, but got [''\w]+$/);
     });
   });
 
   describe("Enumeration", function() {
     it("Object#property should be any [ ... ], but got *", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = "INVALID";
-      }).to.throw(TypeError, /^\w+#\w+ should be any \[ [\w, ]+ \], but got [''\w]+$/);
+      }, TypeError, /^\w+#\w+ should be any \[ [\w, ]+ \], but got [''\w]+$/);
     });
   });
 
   describe("withID", function() {
     it("(Object#id)#property", function() {
       osc.$id = "LFO";
-      expect(function() {
+      assert.throws(function() {
         osc.type = "INVALID";
-      }).to.throw(TypeError, /^\(\w+#\w+\)#\w+/);
+      }, TypeError, /^\(\w+#\w+\)#\w+/);
     });
   });
 
   describe("toS", function() {
     it("string", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = "str";
-      }).to.throw(TypeError, "but got 'str'");
+      }, TypeError, "but got 'str'");
     });
     it("function", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = it;
-      }).to.throw(TypeError, "but got function");
+      }, TypeError, "but got function");
     });
     it("array", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = [];
-      }).to.throw(TypeError, "but got array");
+      }, TypeError, "but got array");
     });
     it("null", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = null;
-      }).to.throw(TypeError, "but got null");
+      }, TypeError, "but got null");
     });
     it("undefined", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = undefined;
-      }).to.throw(TypeError, "but got undefined");
+      }, TypeError, "but got undefined");
     });
     it("number", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = 100;
-      }).to.throw(TypeError, "but got 100");
+      }, TypeError, "but got 100");
     });
     it("boolean", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = true;
-      }).to.throw(TypeError, "but got true");
+      }, TypeError, "but got true");
     });
     it("Float32Array", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = new Float32Array(2);
-      }).to.throw(TypeError, "but got Float32Array");
+      }, TypeError, "but got Float32Array");
     });
     it("Date", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = new Date();
-      }).to.throw(TypeError, "but got Date");
+      }, TypeError, "but got Date");
     });
     it("Object", function() {
-      expect(function() {
+      assert.throws(function() {
         osc.type = { constructor: null };
-      }).to.throw(TypeError, "but got Object");
+      }, TypeError, "but got Object");
     });
   });
 
