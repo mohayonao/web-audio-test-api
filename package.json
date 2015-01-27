@@ -5,12 +5,13 @@
   "author": "Nao Yonamine <mohayonao@gmail.com>",
   "devDependencies": {
     "browserify": "^8.1.1",
-    "chai": "^1.10.0",
     "coveralls": "^2.11.2",
+    "espower-loader": "^0.10.0",
     "istanbul": "^0.3.5",
     "jshint": "^2.6.0",
     "jshint-stylish": "^1.0.0",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "power-assert": "^0.10.1"
   },
   "keywords": [
     "web audio api",
@@ -26,7 +27,7 @@
   "scripts": {
     "build": "npm run build-browser",
     "build-browser": "browserify src -o build/web-audio-test-api.js",
-    "cover": "istanbul cover mocha",
+    "cover": "istanbul cover node_modules/mocha/bin/_mocha",
     "lint": "jshint --reporter node_modules/jshint-stylish/stylish.js src test",
     "test": "mocha",
     "travis": "npm run lint && npm run cover"
