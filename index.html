@@ -3,16 +3,21 @@
 <head>
   <meta charset="utf-8">
   <title>web-audio-test-api.js - online test suites</title>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/chai/1.9.1/chai.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/sinon.js/1.7.3/sinon-min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+  <script src="test/bootstrap/assert.js"></script>
   <script src="build/web-audio-test-api.js"></script>
   <script>
     mocha.setup("bdd");
     window.onload = function() {
       mocha.run();
     };
-    window.expect = chai.expect;
+    window.global = window;
+    window.closeTo = function(actual, expected, delta) {
+      return Math.abs(actual - expected) <= delta;
+    };
   </script>
   <script src="./test/AnalyserNode.js"></script>
   <script src="./test/AudioBuffer.js"></script>
@@ -22,6 +27,8 @@
   <script src="./test/AudioNode.js"></script>
   <script src="./test/AudioParam.js"></script>
   <script src="./test/BiquadFilter.js"></script>
+  <script src="./test/ChannelMergerNode.js"></script>
+  <script src="./test/ChannelSplitterNode.js"></script>
   <script src="./test/ConvolverNode.js"></script>
   <script src="./test/DelayNode.js"></script>
   <script src="./test/DynamicsCompressorNode.js"></script>

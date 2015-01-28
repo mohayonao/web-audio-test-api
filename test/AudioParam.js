@@ -1,165 +1,147 @@
 "use strict";
 
 describe("AudioParam", function() {
-  var ctx = null;
-  var param = null;
+  var audioContext;
 
   beforeEach(function() {
-    var osc;
-    ctx = new global.AudioContext();
-    osc = ctx.createOscillator();
-    param = osc.frequency;
-    osc.connect(ctx.destination);
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("(): throws TypeError", function() {
       assert.throws(function() {
-        return new global.AudioParam();
-      }, TypeError, "Illegal constructor");
-    });
-  });
-
-  describe("#connect()", function() {
-    it("should be connected", function() {
-      var osc = ctx.createOscillator();
-      var amp = ctx.createGain();
-
-      assert.doesNotThrow(function() {
-        osc.connect(amp.gain);
-      });
+        global.AudioParam();
+      }, TypeError);
     });
   });
 
   describe("#value", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
       assert(typeof param.value === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-        param.value = 0;
-      });
+
+      param.value = 0;
+
       assert.throws(function() {
         param.value = "INVALID";
       }, TypeError);
     });
   });
 
-  describe("#setValueAtTime(value, startTime)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        param.setValueAtTime(0, 0);
-      });
-    });
-    it("throw error", function() {
+  describe("#setValueAtTime", function() {
+    it("(value: number, startTime: number): void", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
+      param.setValueAtTime(0, 0);
+
       assert.throws(function() {
         param.setValueAtTime("INVALID", 0);
-      }, TypeError, "AudioParam#setValueAtTime(value, startTime)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         param.setValueAtTime(0, "INVALID");
-      }, TypeError, "AudioParam#setValueAtTime(value, startTime)");
+      }, TypeError);
     });
   });
 
-  describe("#linearRampToValueAtTime(value, endTime)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        param.linearRampToValueAtTime(0, 0);
-      });
-    });
-    it("throw error", function() {
+  describe("#linearRampToValueAtTime", function() {
+    it("(value: number, endTime: number): void", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
+      param.linearRampToValueAtTime(0, 0);
+
       assert.throws(function() {
         param.linearRampToValueAtTime("INVALID", 0);
-      }, TypeError, "AudioParam#linearRampToValueAtTime(value, endTime)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         param.linearRampToValueAtTime(0, "INVALID");
-      }, TypeError, "AudioParam#linearRampToValueAtTime(value, endTime)");
+      }, TypeError);
     });
   });
 
-  describe("#exponentialRampToValueAtTime(value, endTime)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        param.exponentialRampToValueAtTime(0, 0);
-      });
-    });
-    it("throw error", function() {
+  describe("#exponentialRampToValueAtTime", function() {
+    it("(value: number, endTime: number): void", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
+      param.exponentialRampToValueAtTime(0, 0);
+
       assert.throws(function() {
         param.exponentialRampToValueAtTime("INVALID", 0);
-      }, TypeError, "AudioParam#exponentialRampToValueAtTime(value, endTime)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         param.exponentialRampToValueAtTime(0, "INVALID");
-      }, TypeError, "AudioParam#exponentialRampToValueAtTime(value, endTime)");
+      }, TypeError);
     });
   });
 
-  describe("#setTargetAtTime(target, startTime, timeConstant)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        param.setTargetAtTime(0, 0, 0);
-      });
-    });
-    it("throw error", function() {
+  describe("#setTargetAtTime", function() {
+    it("(target: number, startTime: number, timeConstant: number): void", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
+      param.setTargetAtTime(0, 0, 0);
+
       assert.throws(function() {
         param.setTargetAtTime("INVALID", 0, 0);
-      }, TypeError, "AudioParam#setTargetAtTime(target, startTime, timeConstant)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         param.setTargetAtTime(0, "INVALID", 0);
-      }, TypeError, "AudioParam#setTargetAtTime(target, startTime, timeConstant)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         param.setTargetAtTime(0, 0, "INVALID");
-      }, TypeError, "AudioParam#setTargetAtTime(target, startTime, timeConstant)");
+      }, TypeError);
     });
   });
 
-  describe("#setValueCurveAtTime(values, startTime, duration)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        param.setValueCurveAtTime(new Float32Array(32), 0, 0);
-      });
-    });
-    it("throw error", function() {
+  describe("#setValueCurveAtTime", function() {
+    it("(values: Float32Array, startTime: number, duration: number): void", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+      var values = new Float32Array(32);
+
+      param.setValueCurveAtTime(values, 0, 0);
+
       assert.throws(function() {
         param.setValueCurveAtTime("INVALID", 0, 0);
-      }, TypeError, "AudioParam#setValueCurveAtTime(values, startTime, duration)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
-        param.setValueCurveAtTime(new Float32Array(32), "INVALID", 0);
-      }, TypeError, "AudioParam#setValueCurveAtTime(values, startTime, duration)");
-    });
-    it("throw error", function() {
+        param.setValueCurveAtTime(values, "INVALID", 0);
+      }, TypeError);
+
       assert.throws(function() {
-        param.setValueCurveAtTime(new Float32Array(32), 0, "INVALID");
-      }, TypeError, "AudioParam#setValueCurveAtTime(values, startTime, duration)");
+        param.setValueCurveAtTime(values, 0, "INVALID");
+      }, TypeError);
     });
   });
 
-  describe("#cancelScheduledValues(startTime)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        param.cancelScheduledValues(0);
-      });
-    });
-    it("throw error", function() {
+  describe("#cancelScheduledValues", function() {
+    it("(startTime: number): void", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
+      param.cancelScheduledValues(0);
+
       assert.throws(function() {
         param.cancelScheduledValues("INVALID");
-      }, TypeError, "AudioParam#cancelScheduledValues(startTime)");
+      }, TypeError);
     });
   });
 
-  describe("#$valueAtTime(t)", function() {
-    it("SetValue", function() {
+  describe("#$valueAtTime", function() {
+    it("(time: number): number", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
       param.setValueAtTime(0, 0.000);
       param.setValueAtTime(0, 4.000);
       param.setValueAtTime(0, 1.000);
@@ -179,6 +161,9 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime(5.000) === 1000, "00:02.000");
     });
     it("LinearRampToValue", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
       param.setValueAtTime(0, 0.000);
       param.linearRampToValueAtTime(100, 1.000);
       param.linearRampToValueAtTime(1000, 4.000);
@@ -196,6 +181,9 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime(5.000) === 1000, "00:02.000");
     });
     it("ExponentialRampToValue", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
       param.setValueAtTime(0.0001, 0.000);
       param.exponentialRampToValueAtTime(100, 1.000);
       param.exponentialRampToValueAtTime(1000, 4.000);
@@ -213,6 +201,9 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime(5.000) === 1000, "00:02.000");
     });
     it("SetTarget", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
       param.setValueAtTime(0, 0.000);
       param.setTargetAtTime( 100, 1.000, 2);
       param.setTargetAtTime(1000, 3.500, 0.5);
@@ -230,6 +221,8 @@ describe("AudioParam", function() {
       assert(closeTo(param.$valueAtTime(5.000), 953.7652150780225, 1e-6), "00:05.000");
     });
     it("SetCurve", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
       var curve1 = new Float32Array([ 220, 330, 440, 330, 220 ]);
       var curve2 = new Float32Array([ 1, 2, 3, 4 ]);
 
@@ -257,6 +250,9 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime(8.000) === 4, "00:08.000");
     });
     it("Cancel", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
       param.setValueAtTime(0, 0.000);
       param.linearRampToValueAtTime( 100, 1.000);
       param.linearRampToValueAtTime(1000, 4.000);

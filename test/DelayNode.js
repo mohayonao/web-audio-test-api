@@ -1,38 +1,45 @@
 "use strict";
 
 describe("DelayNode", function() {
-  var ctx = null;
-  var node = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    node = ctx.createDelay();
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
       assert.throws(function() {
-        return new global.DelayNode();
-      }, TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      assert(node instanceof global.AudioNode);
+        global.DelayNode();
+      }, TypeError);
     });
   });
 
   describe("#delayTime", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createDelay();
+
       assert(node.delayTime instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.delayTime = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
+  describe("$maxDelayTime", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createDelay(10);
+
+      assert(typeof node.$maxDelayTime === "number");
+      assert(node.$maxDelayTime === 10);
+    });
+  });
+
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = audioContext.createDelay();
+
       assert.deepEqual(node.toJSON(), {
         name: "DelayNode",
         delayTime: {

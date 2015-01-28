@@ -1,38 +1,36 @@
 "use strict";
 
 describe("GainNode", function() {
-  var ctx = null;
-  var node = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    node = ctx.createGain();
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
       assert.throws(function() {
-        return new global.GainNode();
-      }, TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      assert(node instanceof global.AudioNode);
+        global.GainNode();
+      }, TypeError);
     });
   });
 
   describe("#gain", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createGain();
+
       assert(node.gain instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.gain = 0;
       }, Error, "readonly");
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = audioContext.createGain();
+
       assert.deepEqual(node.toJSON(), {
         name: "GainNode",
         gain: {

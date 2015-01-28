@@ -23,6 +23,8 @@
     "beforeEach": true,
     "afterEach": true,
     "after": true,
+    "sinon": true,
+    "_": true,
     "closeTo": true
   }
 }

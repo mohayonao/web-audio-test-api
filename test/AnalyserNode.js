@@ -1,58 +1,86 @@
 "use strict";
 
 describe("AnalyserNode", function() {
-  var ctx = null;
-  var node = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    node = ctx.createAnalyser();
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
       assert.throws(function() {
-        return new global.AnalyserNode();
+        global.AnalyserNode();
       }, TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#fftSize", function() {
-    it("should be exist", function() {
+    it("get/set: enum[32,64,128,256,512,1024,2048]", function() {
+      var node = audioContext.createAnalyser();
+
       assert(typeof node.fftSize === "number");
-    });
-    it("should be number", function() {
-      assert.doesNotThrow(function() {
-        node.fftSize = 512;
-      });
+
+      node.fftSize = 32;
+      assert(node.fftSize === 32);
+
+      node.fftSize = 64;
+      assert(node.fftSize === 64);
+
+      node.fftSize = 128;
+      assert(node.fftSize === 128);
+
+      node.fftSize = 256;
+      assert(node.fftSize === 256);
+
+      node.fftSize = 512;
+      assert(node.fftSize === 512);
+
+      node.fftSize = 512;
+      assert(node.fftSize === 512);
+
+      node.fftSize = 1024;
+      assert(node.fftSize === 1024);
+
+      node.fftSize = 2048;
+      assert(node.fftSize === 2048);
+
       assert.throws(function() {
-        node.fftSize = "INVALID";
+        node.fftSize = 1000;
       }, TypeError);
     });
   });
 
   describe("#frequencyBinCount", function() {
-    it("should be exist", function() {
+    it("get: number", function() {
+      var node = audioContext.createAnalyser();
+
       assert(typeof node.frequencyBinCount === "number");
-    });
-    it("should be readonly", function() {
+
+      node.fftSize = 2048;
+      assert(node.frequencyBinCount === 1024);
+
+      node.fftSize = 1024;
+      assert(node.frequencyBinCount === 512);
+
       assert.throws(function() {
-        node.frequencyBinCount = 0;
-      }, Error, "readonly");
+        node.frequencyBinCount = 256;
+      }, Error);
     });
   });
 
   describe("#minDecibels", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createAnalyser();
+
       assert(typeof node.minDecibels === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-        node.minDecibels = 0;
-      });
+
+      node.minDecibels = -50;
+      assert(node.minDecibels === -50);
+
+      node.minDecibels = -25;
+      assert(node.minDecibels === -25);
+
       assert.throws(function() {
         node.minDecibels = "INVALID";
       }, TypeError);
@@ -60,13 +88,17 @@ describe("AnalyserNode", function() {
   });
 
   describe("#maxDecibels", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createAnalyser();
+
       assert(typeof node.maxDecibels === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-        node.maxDecibels = 0;
-      });
+
+      node.maxDecibels = 15;
+      assert(node.maxDecibels === 15);
+
+      node.maxDecibels = 7.5;
+      assert(node.maxDecibels === 7.5);
+
       assert.throws(function() {
         node.maxDecibels = "INVALID";
       }, TypeError);
@@ -74,60 +106,69 @@ describe("AnalyserNode", function() {
   });
 
   describe("#smoothingTimeConstant", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createAnalyser();
+
       assert(typeof node.smoothingTimeConstant === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-        node.maxDecibels = 0;
-      });
+
+      node.smoothingTimeConstant = 0.4;
+      assert(node.smoothingTimeConstant === 0.4);
+
+      node.smoothingTimeConstant = 0.2;
+      assert(node.smoothingTimeConstant === 0.2);
+
       assert.throws(function() {
-        node.maxDecibels = "INVALID";
+        node.smoothingTimeConstant = "INVALID";
       }, TypeError);
     });
   });
 
-  describe("#getFloatFrequencyData(array)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        node.getFloatFrequencyData(new Float32Array(128));
-      });
-    });
-    it("throw error", function() {
+  describe("#getFloatFrequencyData", function() {
+    it("(array: Float32Array): void", function() {
+      var node = audioContext.createAnalyser();
+      var f32 = new Float32Array(128);
+      var i16 = new Int16Array(128);
+
+      node.getFloatFrequencyData(f32);
+
       assert.throws(function() {
-        node.getFloatFrequencyData("INVALID");
-      }, TypeError, "AnalyserNode#getFloatFrequencyData(array)");
+        node.getFloatFrequencyData(i16);
+      }, TypeError);
     });
   });
 
-  describe("#getByteFrequencyData(array)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        node.getByteFrequencyData(new Uint8Array(128));
-      });
-    });
-    it("throw error", function() {
+  describe("#getByteFrequencyData", function() {
+    it("(array: Uint8Array): void", function() {
+      var node = audioContext.createAnalyser();
+      var ui8 = new Uint8Array(128);
+      var i16 = new Int16Array(128);
+
+      node.getByteFrequencyData(ui8);
+
       assert.throws(function() {
-        node.getByteFrequencyData("INVALID");
-      }, TypeError, "AnalyserNode#getByteFrequencyData(array)");
+        node.getByteFrequencyData(i16);
+      }, TypeError);
     });
   });
 
-  describe("#getByteTimeDomainData(array)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        node.getByteTimeDomainData(new Uint8Array(128));
-      });
-    });
-    it("throw error", function() {
+  describe("#getByteTimeDomainData", function() {
+    it("(array: Uint8Array): void", function() {
+      var node = audioContext.createAnalyser();
+      var ui8 = new Uint8Array(128);
+      var i16 = new Int16Array(128);
+
+      node.getByteTimeDomainData(ui8);
+
       assert.throws(function() {
-        node.getByteTimeDomainData("INVALID");
-      }, TypeError, "AnalyserNode#getByteTimeDomainData(array)");
+        node.getByteTimeDomainData(i16);
+      }, TypeError);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = audioContext.createAnalyser();
+
       assert.deepEqual(node.toJSON(), {
         name: "AnalyserNode",
         fftSize: 2048,

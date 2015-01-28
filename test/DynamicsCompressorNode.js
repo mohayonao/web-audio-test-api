@@ -1,93 +1,96 @@
 "use strict";
 
 describe("DynamicsCompressorNode", function() {
-  var ctx = null;
-  var node = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    node = ctx.createDynamicsCompressor();
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
       assert.throws(function() {
-        return new global.DynamicsCompressorNode();
-      }, TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      assert(node instanceof global.AudioNode);
+        global.DynamicsCompressorNode();
+      }, TypeError);
     });
   });
 
   describe("#threshold", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createDynamicsCompressor();
+
       assert(node.threshold instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.threshold = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
   describe("#knee", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createDynamicsCompressor();
+
       assert(node.knee instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.knee = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
   describe("#ratio", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createDynamicsCompressor();
+
       assert(node.ratio instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.ratio = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
   describe("#reduction", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createDynamicsCompressor();
+
       assert(node.reduction instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.reduction = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
   describe("#attack", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createDynamicsCompressor();
+
       assert(node.attack instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.attack = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
   describe("#release", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createDynamicsCompressor();
+
       assert(node.release instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.release = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = audioContext.createDynamicsCompressor();
+
       assert.deepEqual(node.toJSON(), {
         name: "DynamicsCompressorNode",
         threshold: {

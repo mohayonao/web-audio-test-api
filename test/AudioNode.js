@@ -1,132 +1,138 @@
 "use strict";
 
 describe("AudioNode", function() {
-  var ctx = null;
-  var node = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    node = ctx.createOscillator();
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
       assert.throws(function() {
-        return new global.AudioNode();
-      }, TypeError, "Illegal constructor");
+        global.AudioNode();
+      }, TypeError);
     });
   });
 
   describe("#context", function() {
-    it("should be exist", function() {
-      assert(node.context === ctx);
+    it("get: AudioContext", function() {
+      var node = audioContext.createOscillator();
+
+      assert(node.context === audioContext);
+
+      assert.throws(function() {
+        node.context = null;
+      }, Error);
     });
   });
 
   describe("#numberOfInputs", function() {
-    it("should be exist", function() {
+    it("get: number", function() {
+      var node = audioContext.createOscillator();
+
       assert(typeof node.numberOfInputs === "number");
+
+      assert.throws(function() {
+        node.numberOfInputs = null;
+      }, Error);
     });
   });
 
   describe("#numberOfOutputs", function() {
-    it("should be exist", function() {
+    it("get: number", function() {
+      var node = audioContext.createOscillator();
+
       assert(typeof node.numberOfOutputs === "number");
+
+      assert.throws(function() {
+        node.numberOfOutputs = null;
+      }, Error);
     });
   });
 
   describe("#channelCount", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createOscillator();
+
       assert(typeof node.channelCount === "number");
     });
   });
 
   describe("#channelCountMode", function() {
-    it("should be exist", function() {
+    it("get/set: enum[max, clamped-max, explicit]", function() {
+      var node = audioContext.createOscillator();
+
       assert(typeof node.channelCountMode === "string");
     });
   });
 
   describe("#channelInterpretation", function() {
-    it("should be exist", function() {
+    it("get/set: enum[speakers, discrete]", function() {
+      var node = audioContext.createOscillator();
+
       assert(typeof node.channelInterpretation === "string");
     });
   });
 
-  describe("#connect(destination, output, input)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        node.connect(ctx.destination);
-      });
-    });
-    it("throw error", function() {
+  describe("#connect", function() {
+    it("(destination: AudioNode, [output: number], [input: number]): void", function() {
+      var node = audioContext.createOscillator();
+
+      node.connect(audioContext.destination);
+
+      node.connect(audioContext.destination, 0, 0);
+
+      assert.throws(function() {
+        node.connect(audioContext.destination, 2);
+      }, Error);
+
+      assert.throws(function() {
+        node.connect(audioContext.destination, 0, 2);
+      }, Error);
+
       assert.throws(function() {
         node.connect("INVALID");
-      }, TypeError, "connect(destination, output, input)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
-        node.connect(ctx.destination, "INVALID");
-      }, TypeError, "connect(destination, output, input)");
-    });
-    it("throw error", function() {
+        node.connect(audioContext.destination, "INVALID");
+      }, TypeError);
+
       assert.throws(function() {
-        node.connect(ctx.destination, 0, "INVALID");
-      }, TypeError, "connect(destination, output, input)");
-    });
-    it("throw error", function() {
+        node.connect(audioContext.destination, 0, "INVALID");
+      }, TypeError);
+
+      var anotherAudioContext = new global.AudioContext();
+
       assert.throws(function() {
-        node.connect(new global.AudioContext().destination);
-      }, Error, "connect(destination, output, input): cannot connect to a destination belonging to a different audio context");
-    });
-    it("throw error", function() {
-      assert.throws(function() {
-        node.connect(ctx.destination, 2);
-      }, Error, "connect(destination, output, input): output index (2) exceeds number of outputs (1)");
-    });
-    it("throw error", function() {
-      assert.throws(function() {
-        node.connect(ctx.destination, 0, 2);
-      }, Error, "connect(destination, output, input): input index (2) exceeds number of inputs (1)");
+        node.connect(anotherAudioContext.destination);
+      }, Error);
     });
   });
 
-  describe("#disconnect(output)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        node.disconnect();
-      });
-    });
-    it("throw error", function() {
+  describe("#disconnect", function() {
+    it("([output: number]): void", function() {
+      var node = audioContext.createOscillator();
+
+      node.disconnect();
+      node.disconnect(0);
+
       assert.throws(function() {
         node.disconnect("INVALID");
-      }, TypeError, "disconnect(output)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         node.disconnect(2);
-      }, Error, "disconnect(output): output index (2) exceeds number of outputs (1)");
+      }, Error);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
-      assert.deepEqual(node.toJSON(), {
-        name: "OscillatorNode",
-        type: "sine",
-        frequency: {
-          value: 440,
-          inputs: []
-        },
-        detune: {
-          value: 0,
-          inputs: []
-        },
-        inputs: []
-      });
-    });
-    it("return verbose json", function() {
-      ctx.VERBOSE_JSON = true;
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = audioContext.createOscillator();
+
+      audioContext.VERBOSE_JSON = true;
 
       assert.deepEqual(node.toJSON(), {
         name: "OscillatorNode",

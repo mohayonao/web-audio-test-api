@@ -1,108 +1,130 @@
 "use strict";
 
 describe("BiquadFilterNode", function() {
-  var ctx = null;
-  var node = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    node = ctx.createBiquadFilter();
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
       assert.throws(function() {
-        return new global.BiquadFilterNode();
+        global.BiquadFilterNode();
       }, TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      assert(node instanceof global.AudioNode);
     });
   });
 
   describe("#type", function() {
-    it("should be exist", function() {
+    it("get/set: enum[lowpass,highpass,bandpass,lowshelf,highshelf,peaking,notch,allpass]", function() {
+      var node = audioContext.createBiquadFilter();
+
       assert(typeof node.type === "string");
-    });
-    it("should be an enum", function() {
-      assert.doesNotThrow(function() {
-        node.type = "lowshelf";
-      });
+
+      node.type = "lowpass";
+      assert(node.type === "lowpass");
+
+      node.type = "highpass";
+      assert(node.type === "highpass");
+
+      node.type = "bandpass";
+      assert(node.type === "bandpass");
+
+      node.type = "lowshelf";
+      assert(node.type === "lowshelf");
+
+      node.type = "highshelf";
+      assert(node.type === "highshelf");
+
+      node.type = "peaking";
+      assert(node.type === "peaking");
+
+      node.type = "notch";
+      assert(node.type === "notch");
+
+      node.type = "allpass";
+      assert(node.type === "allpass");
+
       assert.throws(function() {
-        node.type = "INVALID";
+        node.type = "custom";
       }, TypeError);
     });
   });
 
   describe("#frequency", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createBiquadFilter();
+
       assert(node.frequency instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.frequency = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
   describe("#detune", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createBiquadFilter();
+
       assert(node.detune instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.detune = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
   describe("#Q", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createBiquadFilter();
+
       assert(node.Q instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
+
       assert.throws(function() {
         node.Q = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
   describe("#gain", function() {
-    it("should be exist", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createBiquadFilter();
+
       assert(node.gain instanceof global.AudioParam);
-    });
-    it("should be readonly", function() {
       assert.throws(function() {
         node.gain = 0;
-      }, Error, "readonly");
+      }, Error);
     });
   });
 
-  describe("#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        node.getFrequencyResponse(new Float32Array(128), new Float32Array(128), new Float32Array(128));
-      });
-    });
-    it("throw error", function() {
+  describe("#getFrequencyResponse", function() {
+    it("(frequencyHz: Float32Array, magResponse: Float32Array, phaseResponse: Float32Array): void", function() {
+      var node = audioContext.createBiquadFilter();
+      var f32f = new Float32Array(128);
+      var f32m = new Float32Array(128);
+      var f32p = new Float32Array(128);
+
+      node.getFrequencyResponse(f32f, f32p, f32m);
+
       assert.throws(function() {
-        node.getFrequencyResponse("INVALID", new Float32Array(128), new Float32Array(128));
-      }, TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
-    });
-    it("throw error", function() {
+        node.getFrequencyResponse("INVALID", f32p, f32m);
+      }, TypeError);
+
       assert.throws(function() {
-        node.getFrequencyResponse(new Float32Array(128), "INVALID", new Float32Array(128));
-      }, TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
-    });
-    it("throw error", function() {
+        node.getFrequencyResponse(f32f, "INVALID", f32m);
+      }, TypeError);
+
       assert.throws(function() {
-        node.getFrequencyResponse(new Float32Array(128), new Float32Array(128), "INVALID");
-      }, TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
+        node.getFrequencyResponse(f32f, f32p, "INVALID");
+      }, TypeError);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = audioContext.createBiquadFilter();
+
       assert.deepEqual(node.toJSON(), {
         name: "BiquadFilterNode",
         type: "lowpass",

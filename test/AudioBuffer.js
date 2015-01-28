@@ -1,103 +1,156 @@
 "use strict";
 
 describe("AudioBuffer", function() {
-  var ctx = null;
-  var buf = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    buf = ctx.createBuffer(1, 16, 44100);
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
       assert.throws(function() {
-        return new global.AudioBuffer();
-      }, TypeError, "Illegal constructor");
+        global.AudioBuffer();
+      }, TypeError);
     });
   });
 
   describe("#sampleRate", function() {
-    it("should be exist", function() {
-      assert(buf.sampleRate === 44100);
-    });
-    it("should be readonly", function() {
+    it("get: number", function() {
+      var buf1 = audioContext.createBuffer(1, 16, 44100);
+      var buf2 = audioContext.createBuffer(2, 32, 48000);
+
+      assert(typeof buf1.sampleRate === "number");
+      assert(typeof buf2.sampleRate === "number");
+      assert(buf1.sampleRate === 44100);
+      assert(buf2.sampleRate === 48000);
+
       assert.throws(function() {
-        buf.sampleRate = 0;
-      }, Error, "readonly");
+        buf1.sampleRate = 48000;
+      }, Error);
     });
   });
 
   describe("#length", function() {
-    it("should be exist", function() {
-      assert(buf.length === 16);
-    });
-    it("should be readonly", function() {
+    it("get: number", function() {
+      var buf1 = audioContext.createBuffer(1, 16, 44100);
+      var buf2 = audioContext.createBuffer(2, 32, 48000);
+
+      assert(typeof buf1.length === "number");
+      assert(typeof buf2.length === "number");
+      assert(buf1.length === 16);
+      assert(buf2.length === 32);
+
       assert.throws(function() {
-        buf.length = 0;
-      }, Error, "readonly");
+        buf1.length = 32;
+      }, Error);
     });
   });
 
   describe("#duration", function() {
-    it("should be exist", function() {
-      assert(buf.duration === 0.00036281179138321996);
-    });
-    it("should be readonly", function() {
+    it("get: number", function() {
+      var buf1 = audioContext.createBuffer(1, 16, 44100);
+      var buf2 = audioContext.createBuffer(2, 32, 48000);
+
+      assert(typeof buf1.duration === "number");
+      assert(typeof buf2.duration === "number");
+      assert(buf1.duration === 16 / 44100);
+      assert(buf2.duration === 32 / 48000);
+
       assert.throws(function() {
-        buf.duration = 0;
-      }, Error, "readonly");
+        buf1.duration = 32 / 48000;
+      }, Error);
     });
   });
 
   describe("#numberOfChannels", function() {
-    it("should be exist", function() {
-      assert(buf.numberOfChannels === 1);
-    });
-    it("should be readonly", function() {
+    it("get: number", function() {
+      var buf1 = audioContext.createBuffer(1, 16, 44100);
+      var buf2 = audioContext.createBuffer(2, 32, 48000);
+
+      assert(typeof buf1.numberOfChannels === "number");
+      assert(typeof buf2.numberOfChannels === "number");
+      assert(buf1.numberOfChannels === 1);
+      assert(buf2.numberOfChannels === 2);
+
       assert.throws(function() {
-        buf.numberOfChannels = 0;
-      }, Error, "readonly");
+        buf1.numberOfChannels = 2;
+      }, Error);
     });
   });
 
-  describe("#getChannelData(channel)", function() {
-    it("should work", function() {
-      assert(buf.getChannelData(0) instanceof Float32Array);
-    });
-    it("throw error", function() {
+  describe("#getChannelData", function() {
+    it("(channel: number): Float32Array", function() {
+      var buf1 = audioContext.createBuffer(1, 16, 44100);
+      var buf2 = audioContext.createBuffer(2, 32, 48000);
+
+      var dat1 = buf1.getChannelData(0);
+      var dat2 = buf2.getChannelData(1);
+
+      assert(dat1 instanceof Float32Array);
+      assert(dat2 instanceof Float32Array);
+      assert(dat1 === buf1.getChannelData(0));
+      assert(dat1 !== buf2.getChannelData(1));
+      assert(dat2 !== buf2.getChannelData(0));
+      assert(dat2 === buf2.getChannelData(1));
+      assert(dat1.length === 16);
+      assert(dat2.length === 32);
+
       assert.throws(function() {
-        buf.getChannelData(2);
-      }, Error, "channel index (2) exceeds number of channels (1)");
+        buf1.getChannelData(1);
+      }, Error);
+      assert.throws(function() {
+        buf2.getChannelData(2);
+      }, Error);
+      assert.throws(function() {
+        buf1.getChannelData("INVALID");
+      }, Error);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
-      assert.deepEqual(buf.toJSON(), {
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var buf1 = audioContext.createBuffer(1, 16, 44100);
+      var buf2 = audioContext.createBuffer(2, 32, 48000);
+      var dat1 = _.toArray(new Float32Array(_.range(16).map(Math.random)));
+      var dat2 = _.toArray(new Float32Array(_.range(32).map(Math.random)));
+
+      buf1.getChannelData(0).set(dat1);
+      buf2.getChannelData(0).set(dat2);
+      buf2.getChannelData(1).set(dat2);
+
+      assert.deepEqual(buf1.toJSON(), {
         name: "AudioBuffer",
-        sampleRate: 44100,
-        length: 16,
-        duration: 0.00036281179138321996,
-        numberOfChannels: 1
+        sampleRate: buf1.sampleRate,
+        length: buf1.length,
+        duration: buf1.duration,
+        numberOfChannels: buf1.numberOfChannels
       });
-    });
-    it("return verbose json", function() {
-      ctx.VERBOSE_JSON = true;
-
-      buf.getChannelData(0).set(new Float32Array([
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-      ]));
-
-      assert.deepEqual(buf.toJSON(), {
+      assert.deepEqual(buf2.toJSON(), {
         name: "AudioBuffer",
-        sampleRate: 44100,
-        length: 16,
-        duration: 0.00036281179138321996,
-        numberOfChannels: 1,
-        data: [
-          [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ]
-        ]
+        sampleRate: buf2.sampleRate,
+        length: buf2.length,
+        duration: buf2.duration,
+        numberOfChannels: buf2.numberOfChannels
+      });
+
+      audioContext.VERBOSE_JSON = true;
+
+      assert.deepEqual(buf1.toJSON(), {
+        name: "AudioBuffer",
+        sampleRate: buf1.sampleRate,
+        length: buf1.length,
+        duration: buf1.duration,
+        numberOfChannels: buf1.numberOfChannels,
+        data: [ dat1 ]
+      });
+      assert.deepEqual(buf2.toJSON(), {
+        name: "AudioBuffer",
+        sampleRate: buf2.sampleRate,
+        length: buf2.length,
+        duration: buf2.duration,
+        numberOfChannels: buf2.numberOfChannels,
+        data: [ dat2, dat2 ]
       });
     });
   });

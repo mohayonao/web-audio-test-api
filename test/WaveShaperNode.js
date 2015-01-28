@@ -1,33 +1,42 @@
 "use strict";
 
 describe("WaveShaperNode", function() {
-  var ctx = null;
-  var node = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    node = ctx.createWaveShaper();
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws", function() {
       assert.throws(function() {
-        return new global.WaveShaperNode();
-      }, TypeError, "Illegal constructor");
+        return new global.ScriptProcessorNode();
+      }, TypeError);
     });
-    it("should have been inherited from AudioNode", function() {
-      assert(node instanceof global.AudioNode);
+  });
+
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
+      assert.throws(function() {
+        global.WaveShaperNode();
+      }, TypeError);
     });
   });
 
   describe("#curve", function() {
-    it("should be exist", function() {
+    it("get/set: Float32Array", function() {
+      var node = audioContext.createWaveShaper();
+      var f32a = new Float32Array(128);
+      var f32b = new Float32Array(128);
+
       assert(node.curve === null);
-    });
-    it("should be a Float32Array", function() {
-      assert.doesNotThrow(function() {
-        node.curve = new Float32Array(64);
-      });
+
+      node.curve = f32a;
+      assert(node.curve === f32a);
+
+      node.curve = f32b;
+      assert(node.curve === f32b);
+
       assert.throws(function() {
         node.curve = "INVALID";
       }, TypeError);
@@ -35,21 +44,30 @@ describe("WaveShaperNode", function() {
   });
 
   describe("#oversample", function() {
-    it("should be exist", function() {
+    it("get/set: [none,2x,4x]", function() {
+      var node = audioContext.createWaveShaper();
+
       assert(typeof node.oversample === "string");
-    });
-    it("should be an enum", function() {
-      assert.doesNotThrow(function() {
-        node.oversample = "2x";
-      });
+
+      node.oversample = "none";
+      assert(node.oversample === "none");
+
+      node.oversample = "2x";
+      assert(node.oversample === "2x");
+
+      node.oversample = "4x";
+      assert(node.oversample === "4x");
+
       assert.throws(function() {
-        node.oversample = "INVALID";
-      }, TypeError);
+        node.oversample = "custom";
+      }, Error);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = audioContext.createWaveShaper();
+
       assert.deepEqual(node.toJSON(), {
         name: "WaveShaperNode",
         oversample: "none",

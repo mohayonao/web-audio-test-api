@@ -1,6 +1,7 @@
 "use strict";
 
 global.assert = require("power-assert");
+global.sinon = require("sinon");
 global.window = global;
 
 global.closeTo = function(actual, expected, delta) {
@@ -13,5 +14,7 @@ require("espower-loader")({
   cwd: process.cwd(),
   pattern: "test/**/*.js"
 });
+
+global._  = require("underscore");
 
 require("../../");

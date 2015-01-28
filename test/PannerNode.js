@@ -1,61 +1,71 @@
 "use strict";
 
 describe("PannerNode", function() {
-  var ctx = null;
-  var node = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    node = ctx.createPanner();
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
       assert.throws(function() {
-        return new global.PannerNode();
-      }, TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      assert(node instanceof global.AudioNode);
+        global.PannerNode();
+      }, TypeError);
     });
   });
 
   describe("#panningModel", function() {
-    it("should be exist", function() {
+    it("get/set: enum[equalpower,HRTF]", function() {
+      var node = audioContext.createPanner();
+
       assert(typeof node.panningModel === "string");
-    });
-    it("should be an enum", function() {
-      assert.doesNotThrow(function() {
-        node.panningModel = "equalpower";
-      });
+
+      node.panningModel = "equalpower";
+      assert(node.panningModel === "equalpower");
+
+      node.panningModel = "HRTF";
+      assert(node.panningModel === "HRTF");
+
       assert.throws(function() {
-        node.panningModel = "INVALID";
+        node.panningModel = "custom";
       }, TypeError);
     });
   });
 
   describe("#distanceModel", function() {
-    it("should be exist", function() {
+    it("get/set: enum[linear,inverse,exponential]", function() {
+      var node = audioContext.createPanner();
+
       assert(typeof node.distanceModel === "string");
-    });
-    it("should be an enum", function() {
-      assert.doesNotThrow(function() {
-        node.distanceModel = "linear";
-      });
+
+      node.distanceModel = "linear";
+      assert(node.distanceModel === "linear");
+
+      node.distanceModel = "inverse";
+      assert(node.distanceModel === "inverse");
+
+      node.distanceModel = "exponential";
+      assert(node.distanceModel === "exponential");
+
       assert.throws(function() {
-        node.distanceModel = "INVALID";
+        node.distanceModel = "custom";
       }, TypeError);
     });
   });
 
   describe("#refDistance", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createPanner();
+
       assert(typeof node.refDistance === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-        node.refDistance = 0;
-      });
+
+      node.refDistance = 0.5;
+      assert(node.refDistance === 0.5);
+
+      node.refDistance = 0.25;
+      assert(node.refDistance === 0.25);
+
       assert.throws(function() {
         node.refDistance = "INVALID";
       }, TypeError);
@@ -63,13 +73,17 @@ describe("PannerNode", function() {
   });
 
   describe("#maxDistance", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createPanner();
+
       assert(typeof node.maxDistance === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-        node.maxDistance = 0;
-      });
+
+      node.maxDistance = 5000;
+      assert(node.maxDistance === 5000);
+
+      node.maxDistance = 2500;
+      assert(node.maxDistance === 2500);
+
       assert.throws(function() {
         node.maxDistance = "INVALID";
       }, TypeError);
@@ -77,13 +91,17 @@ describe("PannerNode", function() {
   });
 
   describe("#rolloffFactor", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createPanner();
+
       assert(typeof node.rolloffFactor === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-        node.rolloffFactor = 0;
-      });
+
+      node.rolloffFactor = 0.5;
+      assert(node.rolloffFactor === 0.5);
+
+      node.rolloffFactor = 0.25;
+      assert(node.rolloffFactor === 0.25);
+
       assert.throws(function() {
         node.rolloffFactor = "INVALID";
       }, TypeError);
@@ -91,13 +109,17 @@ describe("PannerNode", function() {
   });
 
   describe("#coneInnerAngle", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createPanner();
+
       assert(typeof node.coneInnerAngle === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-        node.coneInnerAngle = 0;
-      });
+
+      node.coneInnerAngle = 180;
+      assert(node.coneInnerAngle === 180);
+
+      node.coneInnerAngle = 90;
+      assert(node.coneInnerAngle === 90);
+
       assert.throws(function() {
         node.coneInnerAngle = "INVALID";
       }, TypeError);
@@ -105,13 +127,17 @@ describe("PannerNode", function() {
   });
 
   describe("#coneOuterAngle", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createPanner();
+
       assert(typeof node.coneOuterAngle === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-        node.coneOuterAngle = 0;
-      });
+
+      node.coneOuterAngle = 180;
+      assert(node.coneOuterAngle === 180);
+
+      node.coneOuterAngle = 90;
+      assert(node.coneOuterAngle === 90);
+
       assert.throws(function() {
         node.coneOuterAngle = "INVALID";
       }, TypeError);
@@ -119,84 +145,87 @@ describe("PannerNode", function() {
   });
 
   describe("#coneOuterGain", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var node = audioContext.createPanner();
+
       assert(typeof node.coneOuterGain === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-        node.coneOuterGain = 0;
-      });
+
+      node.coneOuterGain = 1;
+      assert(node.coneOuterGain === 1);
+
+      node.coneOuterGain = 2;
+      assert(node.coneOuterGain === 2);
+
       assert.throws(function() {
         node.coneOuterGain = "INVALID";
       }, TypeError);
     });
   });
 
-  describe("#setPosition(x, y, z)", function() {
-    it("should work", function() {
+  describe("#setPosition", function() {
+    it("(x: number, y: number, z: number): void", function() {
+      var node = audioContext.createPanner();
+
       node.setPosition(0, 0, 0);
-    });
-    it("throw error", function() {
+
       assert.throws(function() {
         node.setPosition("INVALID", 0, 0);
-      }, TypeError, "PannerNode#setPosition(x, y, z)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         node.setPosition(0, "INVALID", 0);
-      }, TypeError, "PannerNode#setPosition(x, y, z)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         node.setPosition(0, 0, "INVALID");
-      }, TypeError, "PannerNode#setPosition(x, y, z)");
+      }, TypeError);
     });
   });
 
-  describe("#setOrientation(x, y, z)", function() {
-    it("should work", function() {
+  describe("#setOrientation", function() {
+    it("(x: number, y: number, z: number): void", function() {
+      var node = audioContext.createPanner();
+
       node.setOrientation(0, 0, 0);
-    });
-    it("throw error", function() {
+
       assert.throws(function() {
         node.setOrientation("INVALID", 0, 0);
-      }, TypeError, "PannerNode#setOrientation(x, y, z)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         node.setOrientation(0, "INVALID", 0);
-      }, TypeError, "PannerNode#setOrientation(x, y, z)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         node.setOrientation(0, 0, "INVALID");
-      }, TypeError, "PannerNode#setOrientation(x, y, z)");
+      }, TypeError);
     });
   });
 
-  describe("#setVelocity(x, y, z)", function() {
-    it("should work", function() {
+  describe("#setVelocity", function() {
+    it("(x: number, y: number, z: number): void", function() {
+      var node = audioContext.createPanner();
+
       node.setVelocity(0, 0, 0);
-    });
-    it("throw error", function() {
+
       assert.throws(function() {
         node.setVelocity("INVALID", 0, 0);
-      }, TypeError, "PannerNode#setVelocity(x, y, z)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         node.setVelocity(0, "INVALID", 0);
-      }, TypeError, "PannerNode#setVelocity(x, y, z)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         node.setVelocity(0, 0, "INVALID");
-      }, TypeError, "PannerNode#setVelocity(x, y, z)");
+      }, TypeError);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = audioContext.createPanner();
+
       assert.deepEqual(node.toJSON(), {
         name: "PannerNode",
         panningModel: "HRTF",

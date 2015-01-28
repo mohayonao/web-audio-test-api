@@ -1,30 +1,32 @@
 "use strict";
 
 describe("AudioListener", function() {
-  var ctx = null;
-  var listener = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    listener = ctx.listener;
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
       assert.throws(function() {
-        return new global.AudioListener();
-      }, TypeError, "Illegal constructor");
+        global.AudioListener();
+      }, TypeError);
     });
   });
 
   describe("#dopplerFactor", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var listener = audioContext.listener;
+
       assert(typeof listener.dopplerFactor === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-         listener.dopplerFactor = 0;
-      });
+
+      listener.dopplerFactor = 1;
+      assert(listener.dopplerFactor === 1);
+
+      listener.dopplerFactor = 2;
+      assert(listener.dopplerFactor === 2);
+
       assert.throws(function() {
         listener.dopplerFactor = "INVALID";
       }, TypeError);
@@ -32,99 +34,92 @@ describe("AudioListener", function() {
   });
 
   describe("#speedOfSound", function() {
-    it("should be exist", function() {
+    it("get/set: number", function() {
+      var listener = audioContext.listener;
+
       assert(typeof listener.speedOfSound === "number");
-    });
-    it("should be type of number", function() {
-      assert.doesNotThrow(function() {
-         listener.speedOfSound = 0;
-      });
+
+      listener.speedOfSound = 686.6;
+      assert(listener.speedOfSound === 686.6);
+
+      listener.speedOfSound = 1373.2;
+      assert(listener.speedOfSound === 1373.2);
+
       assert.throws(function() {
         listener.speedOfSound = "INVALID";
       }, TypeError);
     });
   });
-  describe("#setPosition(x, y, z)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        listener.setPosition(0, 0, 0);
-      });
-    });
-    it("throw error", function() {
+
+  describe("#setPosition", function() {
+    it("(x: number, y: number, z: number): void", function() {
+      var listener = audioContext.listener;
+
+      listener.setPosition(0, 0, 0);
+
       assert.throws(function() {
         listener.setPosition("INVALID", 0, 0);
-      }, TypeError, "AudioListener#setPosition(x, y, z)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
-        listener.setPosition(0, "INVALID", 0);
-      }, TypeError, "AudioListener#setPosition(x, y, z)");
-    });
-    it("throw error", function() {
+        listener.setPosition(0, "INVALID");
+      }, TypeError);
+
       assert.throws(function() {
         listener.setPosition(0, 0, "INVALID");
-      }, TypeError, "AudioListener#setPosition(x, y, z)");
+      }, TypeError);
     });
   });
 
-  describe("#setOrientation(x, y, z, xUp, yUp, zUp)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        listener.setOrientation(0, 0, 0, 0, 0, 0);
-      });
-    });
-    it("throw error", function() {
+  describe("#setOrientation", function() {
+    it("(x: number, y: number, z: number, xUp: number, yUp: number, zUp: number): void", function() {
+      var listener = audioContext.listener;
+
+      listener.setOrientation(0, 0, 0, 0, 0, 0);
+
       assert.throws(function() {
         listener.setOrientation("INVALID", 0, 0, 0, 0, 0);
-      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         listener.setOrientation(0, "INVALID", 0, 0, 0, 0);
-      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         listener.setOrientation(0, 0, "INVALID", 0, 0, 0);
-      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, "INVALID", 0, 0);
-      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, "INVALID", 0);
-      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, 0, "INVALID");
-      }, TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
+      }, TypeError);
     });
   });
 
-  describe("#setVelocity(x, y, z)", function() {
-    it("should work", function() {
-      assert.doesNotThrow(function() {
-        listener.setVelocity(0, 0, 0);
-      });
-    });
-    it("throw error", function() {
+  describe("#setVelocity", function() {
+    it("(x: number, y: number, z: number): void", function() {
+      var listener = audioContext.listener;
+
+      listener.setVelocity(0, 0, 0);
+
       assert.throws(function() {
         listener.setVelocity("INVALID", 0, 0);
-      }, TypeError, "AudioListener#setVelocity(x, y, z)");
-    });
-    it("throw error", function() {
+      }, TypeError);
+
       assert.throws(function() {
-        listener.setVelocity(0, "INVALID", 0);
-      }, TypeError, "AudioListener#setVelocity(x, y, z)");
-    });
-    it("throw error", function() {
+        listener.setVelocity(0, "INVALID");
+      }, TypeError);
+
       assert.throws(function() {
         listener.setVelocity(0, 0, "INVALID");
-      }, TypeError, "AudioListener#setVelocity(x, y, z)");
+      }, TypeError);
     });
   });
 

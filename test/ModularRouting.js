@@ -1,21 +1,21 @@
 "use strict";
 
 describe("ModularRouting", function() {
-  var ctx = null;
+  var audioContext = null;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
+    audioContext = new global.AudioContext();
   });
 
   describe("osc -> gain -> dest", function() {
     it("toJSON", function() {
-      var osc = ctx.createOscillator();
-      var amp = ctx.createGain();
+      var osc = audioContext.createOscillator();
+      var amp = audioContext.createGain();
 
       osc.connect(amp);
-      amp.connect(ctx.destination);
+      amp.connect(audioContext.destination);
 
-      assert.deepEqual(ctx.toJSON(), {
+      assert.deepEqual(audioContext.toJSON(), {
         "name": "AudioDestinationNode",
         "inputs": [
           {
@@ -47,17 +47,17 @@ describe("ModularRouting", function() {
 
   describe("osc -> gain(gain<-buSrc) -> dest", function() {
     it("toJSON", function() {
-      var osc = ctx.createOscillator();
-      var amp = ctx.createGain();
-      var bufSrc = ctx.createBufferSource();
+      var osc = audioContext.createOscillator();
+      var amp = audioContext.createGain();
+      var bufSrc = audioContext.createBufferSource();
 
       osc.connect(amp);
       bufSrc.connect(amp.gain);
-      amp.connect(ctx.destination);
+      amp.connect(audioContext.destination);
 
-      ctx.$processTo("00:00.100");
+      audioContext.$processTo("00:00.100");
 
-      assert.deepEqual(ctx.toJSON(), {
+      assert.deepEqual(audioContext.toJSON(), {
         "name": "AudioDestinationNode",
         "inputs": [
           {
@@ -102,18 +102,18 @@ describe("ModularRouting", function() {
 
   describe("osc -> gain -> x -> dest", function() {
     it("toJSON", function() {
-      var osc = ctx.createOscillator();
-      var amp = ctx.createGain();
+      var osc = audioContext.createOscillator();
+      var amp = audioContext.createGain();
 
       osc.connect(amp);
-      amp.connect(ctx.destination);
+      amp.connect(audioContext.destination);
       amp.disconnect();
 
       osc.connect(amp);
-      amp.connect(ctx.destination);
+      amp.connect(audioContext.destination);
       amp.disconnect();
 
-      assert.deepEqual(ctx.toJSON(), {
+      assert.deepEqual(audioContext.toJSON(), {
         "name": "AudioDestinationNode",
         "inputs": []
       });
@@ -122,13 +122,13 @@ describe("ModularRouting", function() {
 
   describe("osc#id -> dest", function() {
     it("toJSON", function() {
-      var osc = ctx.createOscillator();
+      var osc = audioContext.createOscillator();
 
       osc.$id = "id";
 
-      osc.connect(ctx.destination);
+      osc.connect(audioContext.destination);
 
-      assert.deepEqual(ctx.toJSON(), {
+      assert.deepEqual(audioContext.toJSON(), {
         "name": "AudioDestinationNode",
         "inputs": [
           {
@@ -149,14 +149,14 @@ describe("ModularRouting", function() {
     });
   });
 
-  describe("has circular", function() {
+  describe("circular", function() {
     it("toJSON", function() {
-      var osc = ctx.createOscillator();
+      var osc = audioContext.createOscillator();
 
       osc.connect(osc.frequency);
-      osc.connect(ctx.destination);
+      osc.connect(audioContext.destination);
 
-      assert.deepEqual(ctx.toJSON(), {
+      assert.deepEqual(audioContext.toJSON(), {
         "name": "AudioDestinationNode",
         "inputs": [
           {

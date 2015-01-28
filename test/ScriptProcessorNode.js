@@ -4,108 +4,131 @@ var BUFFER_SIZE = 256;
 var PROCESS_INTERVAL = BUFFER_SIZE / 44100;
 
 describe("ScriptProcessorNode", function() {
-  var ctx = null;
-  var node = null;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new global.AudioContext();
-    node = ctx.createScriptProcessor(BUFFER_SIZE, 2, 1);
+    audioContext = new global.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws", function() {
       assert.throws(function() {
         return new global.ScriptProcessorNode();
-      }, TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      assert(node instanceof global.AudioNode);
-    });
-  });
-
-  describe("invalid arguments", function() {
-    it("invalid buffer size", function() {
-      assert.throws(function() {
-        ctx.createScriptProcessor(0, 0, 0);
-      }, TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
-    });
-    it("invalid numberOfInputChannels", function() {
-      assert.throws(function() {
-        ctx.createScriptProcessor(BUFFER_SIZE, "INVALID", 0);
-      }, TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
-    });
-    it("invalid numberOfOutputChannels", function() {
-      assert.throws(function() {
-        ctx.createScriptProcessor(BUFFER_SIZE, 0, "INVALID");
-      }, TypeError, "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)");
+      }, TypeError);
     });
   });
 
   describe("#numberOfInputChannels", function() {
-    it("should be exist", function() {
-      assert(node.numberOfInputChannels === 2);
+    it("get: number", function() {
+      var node1 = audioContext.createScriptProcessor(1024, 1, 0);
+      var node2 = audioContext.createScriptProcessor(2048, 2, 0);
+
+      assert(node1.numberOfInputChannels === 1);
+      assert(node2.numberOfInputChannels === 2);
+
+      assert.throws(function() {
+        node1.numberOfInputChannels = 2;
+      }, Error);
     });
   });
 
   describe("#numberOfOutputChannels", function() {
-    it("should be exist", function() {
-      assert(node.numberOfOutputChannels === 1);
+    it("get: number", function() {
+      var node1 = audioContext.createScriptProcessor(1024, 0, 1);
+      var node2 = audioContext.createScriptProcessor(2048, 0, 2);
+
+      assert(node1.numberOfOutputChannels === 1);
+      assert(node2.numberOfOutputChannels === 2);
+
+      assert.throws(function() {
+        node1.numberOfOutputChannels = 2;
+      }, Error);
     });
   });
 
   describe("#bufferSize", function() {
-    it("should be exist", function() {
-      assert(node.bufferSize === BUFFER_SIZE);
-    });
-    it("should be readonly", function() {
+    it("get: number", function() {
+      var node1 = audioContext.createScriptProcessor(1024, 0, 1);
+      var node2 = audioContext.createScriptProcessor(2048, 0, 2);
+
+      assert(node1.bufferSize === 1024);
+      assert(node2.bufferSize === 2048);
+
       assert.throws(function() {
-        node.bufferSize = 0;
-      }, Error, "readonly");
+        node1.bufferSize = 2048;
+      }, Error);
     });
   });
 
   describe("#onaudioprocess", function() {
-    it("should be exist", function() {
+    it("get/set: function", function() {
+      var node = audioContext.createScriptProcessor(1024, 0, 1);
+      var fn1 = function() {};
+      var fn2 = function() {};
+
+      assert(node.onaudioprocess === null);
+
+      node.onaudioprocess = fn1;
+      assert(node.onaudioprocess === fn1);
+
+      node.onaudioprocess = fn2;
+      assert(node.onaudioprocess === fn2);
+
+      node.onaudioprocess = null;
       assert(node.onaudioprocess === null);
     });
-    it("should work", function() {
-      var passed = 0;
+    it("works", function() {
+      var node = audioContext.createScriptProcessor(256, 1, 1);
+      var spy = sinon.spy();
       var interval = PROCESS_INTERVAL * 0.25;
 
-      node.connect(ctx.destination);
-      node.onaudioprocess = function(e) {
-        passed += 1;
-        assert(e instanceof global.Event);
-        assert(e instanceof global.AudioProcessingEvent);
-        assert(typeof e.playbackTime === "number");
-        assert(e.inputBuffer instanceof global.AudioBuffer);
-        assert(e.outputBuffer instanceof global.AudioBuffer);
-      };
-      ctx.$process(0);
-      assert(passed === 0, "0/4");
-      ctx.$process(interval);
-      assert(passed === 1, "1/4");
-      ctx.$process(interval);
-      assert(passed === 1, "2/4");
-      ctx.$process(interval);
-      assert(passed === 1, "3/4");
-      ctx.$process(interval);
-      assert(passed === 2, "4/4");
-      ctx.$process(interval);
-      assert(passed === 2, "5/4");
-      ctx.$process(interval);
-      assert(passed === 2, "6/4");
-      ctx.$process(interval);
-      assert(passed === 2, "7/4");
-      ctx.$process(interval);
-      assert(passed === 3, "8/4");
-      ctx.$process(interval);
-      assert(passed === 3, "9/4");
+      node.onaudioprocess = spy;
+
+      node.connect(audioContext.destination);
+
+      audioContext.$process(0);
+      assert(spy.callCount === 0, "0/4");
+
+      audioContext.$process(interval);
+      assert(spy.callCount === 1, "1/4");
+
+      audioContext.$process(interval);
+      assert(spy.callCount === 1, "2/4");
+
+      audioContext.$process(interval);
+      assert(spy.callCount === 1, "3/4");
+
+      audioContext.$process(interval);
+      assert(spy.callCount === 2, "4/4");
+
+      audioContext.$process(interval);
+      assert(spy.callCount === 2, "5/4");
+
+      audioContext.$process(interval);
+      assert(spy.callCount === 2, "6/4");
+
+      audioContext.$process(interval);
+      assert(spy.callCount === 2, "7/4");
+
+      audioContext.$process(interval);
+      assert(spy.callCount === 3, "8/4");
+
+      audioContext.$process(interval);
+      assert(spy.callCount === 3, "9/4");
+
+      var e = spy.args[0][0];
+
+      assert(e instanceof global.AudioProcessingEvent);
+      assert(typeof e.playbackTime === "number");
+      assert(e.inputBuffer instanceof global.AudioBuffer);
+      assert(e.outputBuffer instanceof global.AudioBuffer);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = audioContext.createScriptProcessor(1024, 0, 1);
+
       assert.deepEqual(node.toJSON(), {
         name: "ScriptProcessorNode",
         inputs: []
@@ -116,11 +139,11 @@ describe("ScriptProcessorNode", function() {
 });
 
 describe("AudioProcessingEvent", function() {
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throws TypeError", function() {
       assert.throws(function() {
-        return new global.AudioProcessingEvent();
-      }, TypeError, "Illegal constructor");
+        global.AudioProcessingEvent();
+      }, TypeError);
     });
   });
 });

@@ -1,120 +1,113 @@
 "use strict";
 
 describe("OfflineAudioContext", function() {
-  var ctx = null;
+  var audioContext = null;
 
   beforeEach(function() {
-    ctx = new global.OfflineAudioContext(1, 44100, 44100);
+    audioContext = new global.OfflineAudioContext(1, 44100, 44100);
   });
 
-  describe("(numberOfChannels, length, sampleRate)", function() {
-    it("should return an instance of OfflineAudioContext", function() {
-      assert(ctx instanceof global.OfflineAudioContext);
-    });
-    it("should have been inherited from AudioContext", function() {
-      assert(ctx instanceof global.AudioContext);
-    });
-    it("throw error", function() {
+  describe("constructor", function() {
+    it("(numberOfChannels, length, sampleRate)", function() {
+      assert(audioContext instanceof global.OfflineAudioContext);
+      assert(audioContext instanceof global.AudioContext);
+
       assert.throws(function() {
-        ctx = new global.OfflineAudioContext("INVALID", 44100, 44100);
-      }, TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
-    });
-    it("throw error", function() {
+        audioContext = new global.OfflineAudioContext("INVALID", 44100, 44100);
+      }, TypeError);
+
       assert.throws(function() {
-        ctx = new global.OfflineAudioContext(1, "INVALID", 44100);
-      }, TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
-    });
-    it("throw error", function() {
+        audioContext = new global.OfflineAudioContext(1, "INVALID", 44100);
+      }, TypeError);
+
       assert.throws(function() {
-        ctx = new global.OfflineAudioContext(1, 44100, "INVALID");
-      }, TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
+        audioContext = new global.OfflineAudioContext(1, 44100, "INVALID");
+      }, TypeError);
     });
   });
 
   describe("#destination", function() {
-    it("should be an instance of AudioDestinationNode", function() {
-      assert(ctx.destination instanceof global.AudioDestinationNode);
-    });
-    it("should be readonly", function() {
-      assert.throws(function() {
-        ctx.destination = null;
-      }, Error, "readonly");
-    });
-  });
+    it("get: AudioDestinationNode", function() {
 
-  describe("#sampleRate", function() {
-    it("should be a number", function() {
-      assert(typeof ctx.sampleRate === "number");
-    });
-    it("should be readonly", function() {
-      assert.throws(function() {
-        ctx.sampleRate = 0;
-      }, Error, "readonly");
-    });
-  });
+      assert(audioContext.destination instanceof global.AudioDestinationNode);
 
-  describe("#currentTime", function() {
-    it("should be a number", function() {
-      assert(typeof ctx.currentTime === "number");
-    });
-    it("should be readonly", function() {
       assert.throws(function() {
-        ctx.currentTime = 0;
-      }, Error, "readonly");
-    });
-  });
-
-  describe("#listener", function() {
-    it("should be an instance of AudioListener", function() {
-      assert(ctx.listener instanceof global.AudioListener);
-    });
-    it("should be readonly", function() {
-      assert.throws(function() {
-        ctx.listener = null;
-      }, Error, "readonly");
-    });
-  });
-
-  describe("#startRendering()", function() {
-    it("throw error if called more than once", function() {
-      ctx.startRendering();
-      assert.throws(function() {
-        ctx.startRendering();
+        audioContext.destination = null;
       }, Error);
     });
   });
 
-  describe("#process", function() {
-    it("should work", function(done) {
-      ctx.oncomplete = function(e) {
+  describe("#sampleRate", function() {
+    it("get: number", function() {
+      assert(typeof audioContext.sampleRate === "number");
+
+      assert.throws(function() {
+        audioContext.sampleRate = 0;
+      }, Error);
+    });
+  });
+
+  describe("#currentTime", function() {
+    it("get: number", function() {
+      assert(typeof audioContext.currentTime === "number");
+
+      assert.throws(function() {
+        audioContext.currentTime = 0;
+      }, Error);
+    });
+  });
+
+  describe("#listener", function() {
+    it("get: AudioListener", function() {
+      assert(audioContext.listener instanceof global.AudioListener);
+
+      assert.throws(function() {
+        audioContext.listener = null;
+      }, Error);
+    });
+  });
+
+  describe("#startRendering", function() {
+    it("(): void", function() {
+      audioContext.startRendering();
+
+      assert.throws(function() {
+        audioContext.startRendering();
+      }, Error);
+    });
+  });
+
+  describe("oncomplete", function() {
+    it("works", function(done) {
+      audioContext.oncomplete = function(e) {
         assert(e instanceof global.Event);
         assert(e instanceof global.OfflineAudioCompletionEvent);
         assert(e.renderedBuffer instanceof global.AudioBuffer);
         done();
       };
-      ctx.startRendering();
-      ctx.$processTo("00:00.500");
-      ctx.$processTo("00:01.000");
-      ctx.$processTo("00:01.500");
+      audioContext.startRendering();
+      audioContext.$processTo("00:00.500");
+      audioContext.$processTo("00:01.000");
+      audioContext.$processTo("00:01.500");
     });
-    it("should not work", function() {
-      ctx.oncomplete = function() {
+    it("not work", function() {
+      audioContext.oncomplete = function() {
         throw new Error("NOT REACHED");
       };
-      ctx.$processTo("00:00.500");
-      ctx.$processTo("00:01.000");
-      ctx.$processTo("00:01.500");
+      audioContext.$processTo("00:00.500");
+      audioContext.$processTo("00:01.000");
+      audioContext.$processTo("00:01.500");
     });
   });
 
 });
 
 describe("OfflineAudioCompletionEvent", function() {
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  describe("constructor", function() {
+    it("() throw TypeError", function() {
       assert.throws(function() {
-        return new global.OfflineAudioCompletionEvent();
-      }, TypeError, "Illegal constructor");
+        global.OfflineAudioCompletionEvent();
+      }, TypeError);
     });
   });
 });
