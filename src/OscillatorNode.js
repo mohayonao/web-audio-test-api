@@ -7,6 +7,14 @@ var AudioParam = require("./AudioParam");
 
 var OscillatorType = "enum { sine, square, sawtooth, triangle }";
 
+/* istanbul ignore else */
+if (typeof global.OscillatorNode === "undefined") {
+  global.OscillatorNode = function OscillatorNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createOscillator()");
+  };
+  _.inherits(global.OscillatorNode, AudioNode);
+}
+
 function OscillatorNode(context) {
   AudioNode.call(this, context, {
     name: "OscillatorNode",

@@ -3,6 +3,14 @@
 var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 
+/* istanbul ignore else */
+if (typeof global.ConvolverNode === "undefined") {
+  global.ConvolverNode = function ConvolverNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createConvolver()");
+  };
+  _.inherits(global.ConvolverNode, AudioNode);
+}
+
 function ConvolverNode(context) {
   AudioNode.call(this, context, {
     name: "ConvolverNode",

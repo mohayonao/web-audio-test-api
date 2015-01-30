@@ -5,6 +5,14 @@ var AudioNode = require("./AudioNode");
 var AudioBuffer = require("./AudioBuffer");
 var AudioProcessingEvent = require("./AudioProcessingEvent");
 
+/* istanbul ignore else */
+if (typeof global.ScriptProcessorNode === "undefined") {
+  global.ScriptProcessorNode = function ScriptProcessorNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createScriptProcessor(bufferSize: number, [numberOfInputChannels: number], [numberOfOutputChannels: number])");
+  };
+  _.inherits(global.ScriptProcessorNode, AudioNode);
+}
+
 function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
   AudioNode.call(this, context, {
     name: "ScriptProcessorNode",

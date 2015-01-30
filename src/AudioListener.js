@@ -3,6 +3,13 @@
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
 
+/* istanbul ignore else */
+if (typeof global.AudioListener === "undefined") {
+  global.AudioListener = function AudioListener() {
+    throw new TypeError("Illegal constructor");
+  };
+}
+
 function AudioListener(context) {
   var dopplerFactor = 1;
   var speedOfSound = 343.3;

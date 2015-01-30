@@ -3,6 +3,14 @@
 var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 
+/* istanbul ignore else */
+if (typeof global.MediaStreamAudioDestinationNode === "undefined") {
+  global.MediaStreamAudioDestinationNode = function MediaStreamAudioDestinationNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createMediaStreamDestination()");
+  };
+  _.inherits(global.MediaStreamAudioDestinationNode, AudioNode);
+}
+
 function MediaStreamAudioDestinationNode(context) {
   AudioNode.call(this, context, {
     name: "MediaStreamAudioDestinationNode",

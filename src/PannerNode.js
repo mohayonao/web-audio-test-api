@@ -7,6 +7,14 @@ var AudioNode = require("./AudioNode");
 var PanningModelType = "enum { equalpower, HRTF }";
 var DistanceModelType = "enum { linear, inverse, exponential }";
 
+/* istanbul ignore else */
+if (typeof global.PannerNode === "undefined") {
+  global.PannerNode = function PannerNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createPanner()");
+  };
+  _.inherits(global.PannerNode, AudioNode);
+}
+
 function PannerNode(context) {
   AudioNode.call(this, context, {
     name: "PannerNode",

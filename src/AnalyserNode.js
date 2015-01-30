@@ -6,6 +6,14 @@ var AudioNode = require("./AudioNode");
 
 var FFTSize = "enum { 32, 64, 128, 256, 512, 1024, 2048 }";
 
+/* istanbul ignore else */
+if (typeof global.AnalyserNode === "undefined") {
+  global.AnalyserNode = function AnalyserNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createAnalyser()");
+  };
+  _.inherits(global.AnalyserNode, AudioNode);
+}
+
 function AnalyserNode(context) {
   AudioNode.call(this, context, {
     name: "AnalyserNode",

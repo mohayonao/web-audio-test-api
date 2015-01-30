@@ -3,6 +3,13 @@
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
 
+/* istanbul ignore else */
+if (typeof global.AudioBuffer === "undefined") {
+  global.AudioBuffer = function AudioBuffer() {
+    throw new TypeError("Illegal constructor: use audioContext.createBuffer(numberOfChannels: number, length: number, sampleRate: number)");
+  };
+}
+
 function AudioBuffer(context, numberOfChannels, length, sampleRate) {
   _.defineAttribute(this, "sampleRate", "readonly", sampleRate, function(msg) {
     throw new TypeError(_.formatter.concat(this, msg));

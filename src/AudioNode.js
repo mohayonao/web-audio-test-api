@@ -2,9 +2,18 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var EventTarget = require("./EventTarget");
 
 var ChannelCountMode = "enum { max, clamped-max, explicit }";
 var ChannelInterpretation = "enum { speakers, discrete }";
+
+/* istanbul ignore else */
+if (typeof global.AudioParam === "undefined") {
+  global.AudioNode = function AudioNode() {
+    throw new TypeError("Illegal constructor");
+  };
+  _.inherits(global.AudioNode, EventTarget);
+}
 
 function AudioNode(context, spec) {
   spec = spec || {};

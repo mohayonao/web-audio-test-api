@@ -3,6 +3,14 @@
 var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 
+/* istanbul ignore else */
+if (typeof global.AudioDestinationNode === "undefined") {
+  global.AudioDestinationNode = function AudioDestinationNode() {
+    throw new TypeError("Illegal constructor");
+  };
+  _.inherits(global.AudioDestinationNode, AudioNode);
+}
+
 function AudioDestinationNode(context) {
   AudioNode.call(this, context, {
     name: "AudioDestinationNode",

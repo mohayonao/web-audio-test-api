@@ -4,6 +4,14 @@ var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
+/* istanbul ignore else */
+if (typeof global.GainNode === "undefined") {
+  global.GainNode = function GainNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createGain()");
+  };
+  _.inherits(global.GainNode, AudioNode);
+}
+
 function GainNode(context) {
   AudioNode.call(this, context, {
     name: "GainNode",

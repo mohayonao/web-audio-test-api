@@ -5,6 +5,14 @@ var Inspector = require("./utils/Inspector");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
+/* istanbul ignore else */
+if (typeof global.AudioBufferSourceNode === "undefined") {
+  global.AudioBufferSourceNode = function AudioBufferSourceNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createBufferSource()");
+  };
+  _.inherits(global.AudioBufferSourceNode, AudioNode);
+}
+
 function AudioBufferSourceNode(context) {
   AudioNode.call(this, context, {
     name: "AudioBufferSourceNode",

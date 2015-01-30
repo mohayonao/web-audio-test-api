@@ -3,6 +3,13 @@
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
 
+/* istanbul ignore else */
+if (typeof global.AudioParam === "undefined") {
+  global.AudioParam = function AudioParam() {
+    throw new TypeError("Illegal constructor");
+  };
+}
+
 function AudioParam(node, name, defaultValue, minValue, maxValue) {
   var context = node.context;
 

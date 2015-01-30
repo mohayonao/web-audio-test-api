@@ -7,6 +7,14 @@ var AudioParam = require("./AudioParam");
 
 var BiquadFilterType = "enum { lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass }";
 
+/* istanbul ignore else */
+if (typeof global.BiquadFilterNode === "undefined") {
+  global.BiquadFilterNode = function BiquadFilterNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createBiquadFilter()");
+  };
+  _.inherits(global.BiquadFilterNode, AudioNode);
+}
+
 function BiquadFilterNode(context) {
   AudioNode.call(this, context, {
     name: "BiquadFilterNode",

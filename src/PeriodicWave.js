@@ -2,6 +2,13 @@
 
 var _ = require("./utils");
 
+/* istanbul ignore else */
+if (typeof global.PeriodicWave === "undefined") {
+  global.PeriodicWave = function PeriodicWave() {
+    throw new TypeError("Illegal constructor");
+  };
+}
+
 function PeriodicWave(real, imag) {
   Object.defineProperties(this, {
     $name: { value: "PeriodicWave" },

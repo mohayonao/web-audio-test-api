@@ -4,6 +4,14 @@ var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
+/* istanbul ignore else */
+if (typeof global.DynamicsCompressorNode === "undefined") {
+  global.DynamicsCompressorNode = function DynamicsCompressorNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createDynamicsCompressor()");
+  };
+  _.inherits(global.DynamicsCompressorNode, AudioNode);
+}
+
 function DynamicsCompressorNode(context) {
   AudioNode.call(this, context, {
     name: "DynamicsCompressorNode",

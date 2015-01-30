@@ -5,6 +5,14 @@ var AudioNode = require("./AudioNode");
 
 var OverSampleType = "enum { none, 2x, 4x }";
 
+/* istanbul ignore else */
+if (typeof global.WaveShaperNode === "undefined") {
+  global.WaveShaperNode = function WaveShaperNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createWaveShaper()");
+  };
+  _.inherits(global.WaveShaperNode, AudioNode);
+}
+
 function WaveShaperNode(context) {
   AudioNode.call(this, context, {
     name: "WaveShaperNode",

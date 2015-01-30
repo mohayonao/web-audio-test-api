@@ -4,6 +4,14 @@ var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
+/* istanbul ignore else */
+if (typeof global.DelayNode === "undefined") {
+  global.DelayNode = function DelayNode() {
+    throw new TypeError("Illegal constructor: use audioContext.createDelay([maxDelayTime: number])");
+  };
+  _.inherits(global.DelayNode, AudioNode);
+}
+
 function DelayNode(context, maxDelayTime) {
   AudioNode.call(this, context, {
     name: "DelayNode",
