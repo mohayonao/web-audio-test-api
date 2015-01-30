@@ -14,7 +14,7 @@ _.defaults = require("./defaults");
 
 _.article = require("./article");
 
-_.id = require("./id");
+_.name = require("./name");
 
 _.jsonCircularCheck = require("./jsonCircularCheck");
 
