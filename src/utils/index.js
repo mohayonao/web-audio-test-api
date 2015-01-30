@@ -16,8 +16,6 @@ _.defaults = require("./defaults");
 
 _.article = require("./article");
 
-_.check = require("./check");
-
 _.toS = require("./toS");
 
 _.id = require("./id");
