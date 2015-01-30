@@ -3,8 +3,10 @@
 var inherits = require("../../src/utils/inherits");
 
 describe("utils/inherits", function() {
-  it("(ctor: function, superCtor: function): void", function() {
+  it("(ctor: function, [superCtor: function]): void", function() {
     function A() {}
+    inherits(A, undefined);
+
     function B() {}
     inherits(B, A);
 
