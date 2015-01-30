@@ -14,15 +14,21 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext = new global.OfflineAudioContext("INVALID", 44100, 44100);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
 
       assert.throws(function() {
         audioContext = new global.OfflineAudioContext(1, "INVALID", 44100);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
 
       assert.throws(function() {
         audioContext = new global.OfflineAudioContext(1, 44100, "INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -33,7 +39,9 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext.destination = null;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -43,7 +51,9 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext.sampleRate = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -53,7 +63,9 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext.currentTime = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -63,7 +75,9 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext.listener = null;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -77,7 +91,28 @@ describe("OfflineAudioContext", function() {
     });
   });
 
-  describe("oncomplete", function() {
+  describe("#oncomplete", function() {
+    it("get/set: function", function() {
+      var fn1 = function() {};
+      var fn2 = function() {};
+
+      assert(audioContext.oncomplete === null);
+
+      audioContext.oncomplete = fn1;
+      assert(audioContext.oncomplete === fn1);
+
+      audioContext.oncomplete = fn2;
+      assert(audioContext.oncomplete === fn2);
+
+      audioContext.oncomplete = null;
+      assert(audioContext.oncomplete === null);
+
+      assert.throws(function() {
+        audioContext.oncomplete = "INVALID";
+      }, function(e) {
+        return e instanceof TypeError && /should be a function/.test(e.message);
+      });
+    });
     it("works", function(done) {
       audioContext.oncomplete = function(e) {
         assert(e instanceof global.Event);
@@ -107,7 +142,9 @@ describe("OfflineAudioCompletionEvent", function() {
     it("() throw TypeError", function() {
       assert.throws(function() {
         global.OfflineAudioCompletionEvent();
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 });

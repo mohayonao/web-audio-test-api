@@ -11,7 +11,9 @@ describe("ChannelMergerNode", function() {
     it("() throws TypeError", function() {
       assert.throws(function() {
         global.ChannelMergerNode();
-      }, TypeError, "Illegal constructor");
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 

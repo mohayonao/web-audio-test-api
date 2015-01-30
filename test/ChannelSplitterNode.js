@@ -11,7 +11,9 @@ describe("ChannelSplitterNode", function() {
     it("() throws TypeError", function() {
       assert.throws(function() {
         global.ChannelSplitterNode();
-      }, TypeError, "Illegal constructor");
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 

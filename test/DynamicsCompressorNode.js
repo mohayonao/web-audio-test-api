@@ -11,7 +11,9 @@ describe("DynamicsCompressorNode", function() {
     it("() throws TypeError", function() {
       assert.throws(function() {
         global.DynamicsCompressorNode();
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
@@ -23,7 +25,9 @@ describe("DynamicsCompressorNode", function() {
 
       assert.throws(function() {
         node.threshold = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -35,7 +39,9 @@ describe("DynamicsCompressorNode", function() {
 
       assert.throws(function() {
         node.knee = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -47,7 +53,9 @@ describe("DynamicsCompressorNode", function() {
 
       assert.throws(function() {
         node.ratio = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -59,7 +67,9 @@ describe("DynamicsCompressorNode", function() {
 
       assert.throws(function() {
         node.reduction = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -71,7 +81,9 @@ describe("DynamicsCompressorNode", function() {
 
       assert.throws(function() {
         node.attack = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -83,7 +95,9 @@ describe("DynamicsCompressorNode", function() {
 
       assert.throws(function() {
         node.release = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 

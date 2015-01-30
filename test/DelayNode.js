@@ -11,7 +11,9 @@ describe("DelayNode", function() {
     it("() throws TypeError", function() {
       assert.throws(function() {
         global.DelayNode();
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
@@ -23,7 +25,9 @@ describe("DelayNode", function() {
 
       assert.throws(function() {
         node.delayTime = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 

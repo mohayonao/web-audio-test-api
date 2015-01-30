@@ -11,12 +11,14 @@ describe("BiquadFilterNode", function() {
     it("() throws TypeError", function() {
       assert.throws(function() {
         global.BiquadFilterNode();
-      }, TypeError, "Illegal constructor");
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#type", function() {
-    it("get/set: enum[lowpass,highpass,bandpass,lowshelf,highshelf,peaking,notch,allpass]", function() {
+    it("get/set: BiquadFilterType", function() {
       var node = audioContext.createBiquadFilter();
 
       assert(typeof node.type === "string");
@@ -47,7 +49,9 @@ describe("BiquadFilterNode", function() {
 
       assert.throws(function() {
         node.type = "custom";
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be an enum/.test(e.message);
+      });
     });
   });
 
@@ -59,7 +63,9 @@ describe("BiquadFilterNode", function() {
 
       assert.throws(function() {
         node.frequency = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -71,7 +77,9 @@ describe("BiquadFilterNode", function() {
 
       assert.throws(function() {
         node.detune = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -83,7 +91,9 @@ describe("BiquadFilterNode", function() {
 
       assert.throws(function() {
         node.Q = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -94,7 +104,9 @@ describe("BiquadFilterNode", function() {
       assert(node.gain instanceof global.AudioParam);
       assert.throws(function() {
         node.gain = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -109,15 +121,21 @@ describe("BiquadFilterNode", function() {
 
       assert.throws(function() {
         node.getFrequencyResponse("INVALID", f32p, f32m);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
 
       assert.throws(function() {
         node.getFrequencyResponse(f32f, "INVALID", f32m);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
 
       assert.throws(function() {
         node.getFrequencyResponse(f32f, f32p, "INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
     });
   });
 

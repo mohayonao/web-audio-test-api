@@ -11,7 +11,9 @@ describe("AudioBuffer", function() {
     it("() throws TypeError", function() {
       assert.throws(function() {
         global.AudioBuffer();
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
@@ -27,7 +29,9 @@ describe("AudioBuffer", function() {
 
       assert.throws(function() {
         buf1.sampleRate = 48000;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -43,7 +47,9 @@ describe("AudioBuffer", function() {
 
       assert.throws(function() {
         buf1.length = 32;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -59,7 +65,9 @@ describe("AudioBuffer", function() {
 
       assert.throws(function() {
         buf1.duration = 32 / 48000;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -75,7 +83,9 @@ describe("AudioBuffer", function() {
 
       assert.throws(function() {
         buf1.numberOfChannels = 2;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -98,13 +108,19 @@ describe("AudioBuffer", function() {
 
       assert.throws(function() {
         buf1.getChannelData(1);
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /exceeds number of channels/.test(e.message);
+      });
       assert.throws(function() {
         buf2.getChannelData(2);
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /exceeds number of channels/.test(e.message);
+      });
       assert.throws(function() {
         buf1.getChannelData("INVALID");
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 

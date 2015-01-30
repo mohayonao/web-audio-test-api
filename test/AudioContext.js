@@ -28,7 +28,9 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.destination = null;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -38,7 +40,9 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.sampleRate = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -48,7 +52,9 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.currentTime = 0;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -58,7 +64,9 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.listener = null;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -67,6 +75,24 @@ describe("AudioContext", function() {
       var buf = audioContext.createBuffer(2, 128, 44100);
 
       assert(buf instanceof global.AudioBuffer);
+
+      assert.throws(function() {
+        audioContext.createBuffer("INVALID", 128, 44100);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createBuffer(2, "INVALID", 44100);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createBuffer(2, 128, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -76,15 +102,21 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.decodeAudioData("INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be an ArrayBuffer/.test(e.message);
+      });
 
       assert.throws(function() {
         audioContext.decodeAudioData(audioData, "INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a function/.test(e.message);
+      });
 
       assert.throws(function() {
         audioContext.decodeAudioData(audioData, function() {}, "INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a function/.test(e.message);
+      });
 
       audioContext.decodeAudioData(audioData, function(buffer) {
         assert(buffer instanceof global.AudioBuffer);
@@ -158,6 +190,20 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.createScriptProcessor(0, 1, 1);
+      }, function(e) {
+        return e instanceof TypeError && /should be an enum/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createScriptProcessor(1024, "INVALID", 1);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createScriptProcessor(1024, 1, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
       });
     });
   });
@@ -183,6 +229,12 @@ describe("AudioContext", function() {
       var node = audioContext.createDelay();
 
       assert(node instanceof global.DelayNode);
+
+      assert.throws(function() {
+        audioContext.createDelay("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -223,6 +275,12 @@ describe("AudioContext", function() {
       var node = audioContext.createChannelSplitter();
 
       assert(node instanceof global.ChannelSplitterNode);
+
+      assert.throws(function() {
+        audioContext.createChannelSplitter("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -231,6 +289,12 @@ describe("AudioContext", function() {
       var node = audioContext.createChannelMerger();
 
       assert(node instanceof global.ChannelMergerNode);
+
+      assert.throws(function() {
+        audioContext.createChannelMerger("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -254,9 +318,36 @@ describe("AudioContext", function() {
     it("(real: Float32Array, imag: Float32Array): PeriodicWave", function() {
       var real = new Float32Array(128);
       var imag = new Float32Array(128);
+      var f128 = new Float32Array(128);
+      var f256 = new Float32Array(256);
+      var f8192 = new Float32Array(8192);
       var wave = audioContext.createPeriodicWave(real, imag);
 
       assert(wave instanceof global.PeriodicWave);
+
+      assert.throws(function() {
+        audioContext.createPeriodicWave("INVALID", imag);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createPeriodicWave(real, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createPeriodicWave(f128, f256);
+      }, function(e) {
+        return e instanceof TypeError && /must match/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createPeriodicWave(f8192, f8192);
+      }, function(e) {
+        return e instanceof TypeError && /exceeds allow maximum of 4096/.test(e.message);
+      });
     });
   });
 

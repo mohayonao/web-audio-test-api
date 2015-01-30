@@ -11,7 +11,69 @@ describe("AudioParam", function() {
     it("(): throws TypeError", function() {
       assert.throws(function() {
         global.AudioParam();
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
+    });
+  });
+
+  describe("#name", function() {
+    it("get: string", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
+      assert(typeof param.name === "string");
+
+      assert.throws(function() {
+        param.name = "INVALID";
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
+    });
+  });
+
+  describe("#defaultValue", function() {
+    it("get: number", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
+      assert(typeof param.defaultValue === "number");
+
+      assert.throws(function() {
+        param.defaultValue = "INVALID";
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
+    });
+  });
+
+  describe("#minValue", function() {
+    it("get: number", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
+      assert(typeof param.minValue === "number");
+
+      assert.throws(function() {
+        param.minValue = "INVALID";
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
+    });
+  });
+
+  describe("#maxValue", function() {
+    it("get: number", function() {
+      var node = audioContext.createOscillator();
+      var param = node.frequency;
+
+      assert(typeof param.maxValue === "number");
+
+      assert.throws(function() {
+        param.maxValue = "INVALID";
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -26,7 +88,9 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.value = "INVALID";
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -39,11 +103,15 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.setValueAtTime("INVALID", 0);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
 
       assert.throws(function() {
         param.setValueAtTime(0, "INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -56,11 +124,15 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.linearRampToValueAtTime("INVALID", 0);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
 
       assert.throws(function() {
         param.linearRampToValueAtTime(0, "INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -73,11 +145,15 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.exponentialRampToValueAtTime("INVALID", 0);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
 
       assert.throws(function() {
         param.exponentialRampToValueAtTime(0, "INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -90,15 +166,21 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.setTargetAtTime("INVALID", 0, 0);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
 
       assert.throws(function() {
         param.setTargetAtTime(0, "INVALID", 0);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
 
       assert.throws(function() {
         param.setTargetAtTime(0, 0, "INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -112,15 +194,21 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.setValueCurveAtTime("INVALID", 0, 0);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
 
       assert.throws(function() {
         param.setValueCurveAtTime(values, "INVALID", 0);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
 
       assert.throws(function() {
         param.setValueCurveAtTime(values, 0, "INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -133,7 +221,9 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.cancelScheduledValues("INVALID");
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 

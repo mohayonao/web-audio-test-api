@@ -1,30 +1,13 @@
 "use strict";
 
 describe("PeriodicWave", function() {
-  var ctx = null;
-  var f128 = new Float32Array(128);
-  var f256 = new Float32Array(256);
-  var f8192 = new Float32Array(8192);
-
-  beforeEach(function() {
-    ctx = new global.AudioContext();
-  });
-
   describe("()", function() {
     it("throw illegal constructor", function() {
       assert.throws(function() {
         return new global.PeriodicWave();
-      }, TypeError, "Illegal constructor");
-    });
-    it("throw error if length is not match", function() {
-      assert.throws(function() {
-        ctx.createPeriodicWave(f128, f256);
-      }, Error, "must match");
-    });
-    it("throw error if length > 4096", function() {
-      assert.throws(function() {
-        ctx.createPeriodicWave(f8192, f8192);
-      }, Error, "maximum of 4096");
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 

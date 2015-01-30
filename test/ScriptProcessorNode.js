@@ -14,7 +14,9 @@ describe("ScriptProcessorNode", function() {
     it("() throws", function() {
       assert.throws(function() {
         return new global.ScriptProcessorNode();
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
@@ -28,7 +30,9 @@ describe("ScriptProcessorNode", function() {
 
       assert.throws(function() {
         node1.numberOfInputChannels = 2;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -42,7 +46,9 @@ describe("ScriptProcessorNode", function() {
 
       assert.throws(function() {
         node1.numberOfOutputChannels = 2;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -56,7 +62,9 @@ describe("ScriptProcessorNode", function() {
 
       assert.throws(function() {
         node1.bufferSize = 2048;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -76,6 +84,12 @@ describe("ScriptProcessorNode", function() {
 
       node.onaudioprocess = null;
       assert(node.onaudioprocess === null);
+
+      assert.throws(function() {
+        node.onaudioprocess = "INVALID";
+      }, function(e) {
+        return e instanceof TypeError && /should be a function/.test(e.message);
+      });
     });
     it("works", function() {
       var node = audioContext.createScriptProcessor(256, 1, 1);
@@ -143,7 +157,9 @@ describe("AudioProcessingEvent", function() {
     it("() throws TypeError", function() {
       assert.throws(function() {
         global.AudioProcessingEvent();
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 });

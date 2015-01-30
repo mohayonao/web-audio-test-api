@@ -11,7 +11,9 @@ describe("ConvolverNode", function() {
     it("() throws TypeError", function() {
       assert.throws(function() {
         global.ConvolverNode();
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
@@ -28,6 +30,9 @@ describe("ConvolverNode", function() {
 
       node.buffer = buf2;
       assert(node.buffer === buf2);
+
+      node.buffer = null;
+      assert(node.buffer === null);
 
       assert.throws(function() {
         node.buffer = "INVALID";

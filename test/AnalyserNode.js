@@ -11,12 +11,14 @@ describe("AnalyserNode", function() {
     it("() throws TypeError", function() {
       assert.throws(function() {
         global.AnalyserNode();
-      }, TypeError, "Illegal constructor");
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#fftSize", function() {
-    it("get/set: enum[32,64,128,256,512,1024,2048]", function() {
+    it("get/set: FFTSize", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.fftSize === "number");
@@ -46,8 +48,10 @@ describe("AnalyserNode", function() {
       assert(node.fftSize === 2048);
 
       assert.throws(function() {
-        node.fftSize = 1000;
-      }, TypeError);
+        node.fftSize = 4096;
+      }, function(e) {
+        return e instanceof TypeError && /should be an enum/.test(e.message);
+      });
     });
   });
 
@@ -65,7 +69,9 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.frequencyBinCount = 256;
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
@@ -83,7 +89,9 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.minDecibels = "INVALID";
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -101,7 +109,9 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.maxDecibels = "INVALID";
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -119,7 +129,9 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.smoothingTimeConstant = "INVALID";
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
@@ -133,7 +145,9 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.getFloatFrequencyData(i16);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
     });
   });
 
@@ -147,7 +161,9 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.getByteFrequencyData(i16);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be an Uint8Array/.test(e.message);
+      });
     });
   });
 
@@ -161,7 +177,9 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.getByteTimeDomainData(i16);
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be an Uint8Array/.test(e.message);
+      });
     });
   });
 

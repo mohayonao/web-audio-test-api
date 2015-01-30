@@ -8,18 +8,12 @@ describe("WaveShaperNode", function() {
   });
 
   describe("constructor", function() {
-    it("() throws", function() {
-      assert.throws(function() {
-        return new global.ScriptProcessorNode();
-      }, TypeError);
-    });
-  });
-
-  describe("constructor", function() {
     it("() throws TypeError", function() {
       assert.throws(function() {
         global.WaveShaperNode();
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
@@ -37,14 +31,19 @@ describe("WaveShaperNode", function() {
       node.curve = f32b;
       assert(node.curve === f32b);
 
+      node.curve = null;
+      assert(node.curve === null);
+
       assert.throws(function() {
         node.curve = "INVALID";
-      }, TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
     });
   });
 
   describe("#oversample", function() {
-    it("get/set: [none,2x,4x]", function() {
+    it("get/set: OverSampleType", function() {
       var node = audioContext.createWaveShaper();
 
       assert(typeof node.oversample === "string");
@@ -60,7 +59,9 @@ describe("WaveShaperNode", function() {
 
       assert.throws(function() {
         node.oversample = "custom";
-      }, Error);
+      }, function(e) {
+        return e instanceof TypeError && /should be an enum/.test(e.message);
+      });
     });
   });
 
