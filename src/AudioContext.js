@@ -24,6 +24,8 @@ var DynamicsCompressorNode = require("./DynamicsCompressorNode");
 var OscillatorNode = require("./OscillatorNode");
 var PeriodicWave = require("./PeriodicWave");
 
+require("./MediaStream");
+
 function AudioContext() {
   var destination = new AudioDestinationNode(this);
   var sampleRate = global.WebAudioTestAPI.sampleRate;
@@ -143,8 +145,16 @@ AudioContext.prototype.createMediaElementSource = function() {
   return new MediaElementAudioSourceNode(this);
 };
 
-AudioContext.prototype.createMediaStreamSource = function() {
-  return new MediaStreamAudioSourceNode(this);
+AudioContext.prototype.createMediaStreamSource = function(mediaStream) {
+  var inspector = new Inspector(this, "createMediaStreamSource", [
+    { name: "mediaStream", type: "MediaStream" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  return new MediaStreamAudioSourceNode(this, mediaStream);
 };
 
 AudioContext.prototype.createMediaStreamDestination = function() {

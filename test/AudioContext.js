@@ -167,10 +167,17 @@ describe("AudioContext", function() {
   });
 
   describe("#createMediaStreamSource", function() {
-    it("(): MediaStreamAudioSourceNode", function() {
-      var node = audioContext.createMediaStreamSource();
+    it("(mediaStream: MediaStream): MediaStreamAudioSourceNode", function() {
+      var stream = new global.WebAudioTestAPI.MediaStream();
+      var node = audioContext.createMediaStreamSource(stream);
 
       assert(node instanceof global.MediaStreamAudioSourceNode);
+
+      assert.throws(function() {
+        audioContext.createMediaStreamSource("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a MediaStream/.test(e.message);
+      });
     });
   });
 
