@@ -30,10 +30,6 @@ global.WebAudioTestAPI = WebAudioTestAPI;
 
 var Event = require("./Event");
 
-global.EventTarget = ILLEGAL_CONSTRUCTOR(
-  null, new TypeError("Illegal constructor")
-);
-
 global.OfflineAudioCompletionEvent = ILLEGAL_CONSTRUCTOR(
   Event, new TypeError("Illegal constructor")
 );

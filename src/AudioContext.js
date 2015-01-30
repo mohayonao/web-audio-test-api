@@ -2,6 +2,7 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var EventTarget = require("./EventTarget");
 var AudioDestinationNode = require("./AudioDestinationNode");
 var AudioListener = require("./AudioListener");
 var AudioBuffer = require("./AudioBuffer");
@@ -51,7 +52,7 @@ function AudioContext() {
   this._targetTime  = 0;
   this._remain = 0;
 }
-_.inherits(AudioContext, global.EventTarget);
+_.inherits(AudioContext, EventTarget);
 
 AudioContext.WEB_AUDIO_TEST_API_VERSION = global.WebAudioTestAPI.VERSION;
 
