@@ -10,8 +10,6 @@ _.NOP = /* istanbul ignore next */ function() {};
 
 _.inherits = require("./inherits");
 
-_.format = require("./format");
-
 _.defaults = require("./defaults");
 
 _.article = require("./article");
