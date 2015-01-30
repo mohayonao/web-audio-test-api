@@ -100,11 +100,13 @@ AudioBufferSourceNode.prototype.stop = function(when) {
   this._stopTime = when;
 };
 
-AudioBufferSourceNode.prototype.$stateAtTime = function(t) {
+AudioBufferSourceNode.prototype.$stateAtTime = function(time) {
+  time = _.toSeconds(time);
+
   if (this._startTime === Infinity) {
     return "UNSCHEDULED";
   }
-  if (t < this._startTime) {
+  if (time < this._startTime) {
     return "SCHEDULED";
   }
 
@@ -113,7 +115,7 @@ AudioBufferSourceNode.prototype.$stateAtTime = function(t) {
     stopTime = Math.min(stopTime, this._startTime + this.buffer.duration);
   }
 
-  if (t < stopTime) {
+  if (time < stopTime) {
     return "PLAYING";
   }
 

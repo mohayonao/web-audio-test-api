@@ -251,19 +251,19 @@ describe("OscillatorNode", function() {
   });
 
   describe("$stateAtTime", function() {
-    it("(time: number): string", function() {
+    it("(time: number|string): string", function() {
       var node = new WebAudioTestAPI.OscillatorNode(audioContext);
 
-      assert(node.$stateAtTime(0.05) === "UNSCHEDULED");
-      assert(node.$stateAtTime(0.15) === "UNSCHEDULED");
-      assert(node.$stateAtTime(0.25) === "UNSCHEDULED");
+      assert(node.$stateAtTime("00:00.050") === "UNSCHEDULED");
+      assert(node.$stateAtTime("00:00.150") === "UNSCHEDULED");
+      assert(node.$stateAtTime("00:00.250") === "UNSCHEDULED");
 
       node.start(0.1);
       node.stop(0.2);
 
-      assert(node.$stateAtTime(0.05) === "SCHEDULED");
-      assert(node.$stateAtTime(0.15) === "PLAYING");
-      assert(node.$stateAtTime(0.25) === "FINISHED");
+      assert(node.$stateAtTime("00:00.050") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.150") === "PLAYING");
+      assert(node.$stateAtTime("00:00.250") === "FINISHED");
     });
   });
 

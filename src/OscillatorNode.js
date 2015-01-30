@@ -127,14 +127,19 @@ OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
   this._custom = periodicWave;
 };
 
-OscillatorNode.prototype.$stateAtTime = function(t) {
+OscillatorNode.prototype.$stateAtTime = function(time) {
+  time = _.toSeconds(time);
+
   if (this._startTime === Infinity) {
     return "UNSCHEDULED";
-  } else if (t < this._startTime) {
+  }
+  if (time < this._startTime) {
     return "SCHEDULED";
-  } else if (t < this._stopTime) {
+  }
+  if (time < this._stopTime) {
     return "PLAYING";
   }
+
   return "FINISHED";
 };
 

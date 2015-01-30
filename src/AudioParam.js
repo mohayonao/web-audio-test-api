@@ -179,7 +179,9 @@ AudioParam.prototype.toJSON = function(memo) {
   }, memo || /* istanbul ignore next */ []);
 };
 
-AudioParam.prototype.$valueAtTime = function(t) {
+AudioParam.prototype.$valueAtTime = function(time) {
+  time = _.toSeconds(time);
+
   var value  = this._value;
   var events = this.$events;
   var t0;
@@ -188,10 +190,10 @@ AudioParam.prototype.$valueAtTime = function(t) {
     var e0 = events[i];
     var e1 = events[i + 1];
 
-    if (t < e0.time) {
+    if (time < e0.time) {
       break;
     }
-    t0 = Math.min(t, e1 ? e1.time : t);
+    t0 = Math.min(time, e1 ? e1.time : time);
 
     if (e1 && e1.type === "LinearRampToValue") {
       value = linTo(value, e0.value, e1.value, t0, e0.time, e1.time);

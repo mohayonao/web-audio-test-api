@@ -228,8 +228,8 @@ describe("AudioParam", function() {
     });
   });
 
-  describe("#$valueAtTime", function() {
-    it("(time: number): number", function() {
+  describe("$valueAtTime", function() {
+    it("(time: number|string): number", function() {
       var node = new WebAudioTestAPI.AudioNode(audioContext);
       var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
@@ -239,17 +239,19 @@ describe("AudioParam", function() {
       param.setValueAtTime(100, 1.000);
       param.setValueAtTime(1000, 4.000);
 
-      assert(param.$valueAtTime(0.000) ===    0, "00:00.000");
-      assert(param.$valueAtTime(0.500) ===    0, "00:00.500");
-      assert(param.$valueAtTime(1.000) ===  100, "00:01.000");
-      assert(param.$valueAtTime(1.500) ===  100, "00:01.500");
-      assert(param.$valueAtTime(2.000) ===  100, "00:02.000");
-      assert(param.$valueAtTime(2.500) ===  100, "00:02.500");
-      assert(param.$valueAtTime(3.000) ===  100, "00:02.000");
-      assert(param.$valueAtTime(3.500) ===  100, "00:02.500");
-      assert(param.$valueAtTime(4.000) === 1000, "00:02.000");
-      assert(param.$valueAtTime(4.500) === 1000, "00:02.500");
-      assert(param.$valueAtTime(5.000) === 1000, "00:02.000");
+      assert(param.$valueAtTime("00:00.000") ===    0);
+      assert(param.$valueAtTime("00:00.500") ===    0);
+      assert(param.$valueAtTime("00:00.999") ===    0);
+      assert(param.$valueAtTime("00:01.000") ===  100);
+      assert(param.$valueAtTime("00:01.500") ===  100);
+      assert(param.$valueAtTime("00:02.000") ===  100);
+      assert(param.$valueAtTime("00:02.500") ===  100);
+      assert(param.$valueAtTime("00:03.000") ===  100);
+      assert(param.$valueAtTime("00:03.500") ===  100);
+      assert(param.$valueAtTime("00:03.999") ===  100);
+      assert(param.$valueAtTime("00:04.000") === 1000);
+      assert(param.$valueAtTime("00:04.500") === 1000);
+      assert(param.$valueAtTime("00:05.000") === 1000);
     });
     it("LinearRampToValue", function() {
       var node = new WebAudioTestAPI.AudioNode(audioContext);
@@ -259,17 +261,19 @@ describe("AudioParam", function() {
       param.linearRampToValueAtTime(100, 1.000);
       param.linearRampToValueAtTime(1000, 4.000);
 
-      assert(param.$valueAtTime(0.000) ===    0, "00:00.000");
-      assert(param.$valueAtTime(0.500) ===   50, "00:00.500");
-      assert(param.$valueAtTime(1.000) ===  100, "00:01.000");
-      assert(param.$valueAtTime(1.500) ===  250, "00:01.500");
-      assert(param.$valueAtTime(2.000) ===  400, "00:02.000");
-      assert(param.$valueAtTime(2.500) ===  550, "00:02.500");
-      assert(param.$valueAtTime(3.000) ===  700, "00:02.000");
-      assert(param.$valueAtTime(3.500) ===  850, "00:02.500");
-      assert(param.$valueAtTime(4.000) === 1000, "00:02.000");
-      assert(param.$valueAtTime(4.500) === 1000, "00:02.500");
-      assert(param.$valueAtTime(5.000) === 1000, "00:02.000");
+      assert(param.$valueAtTime("00:00.000") ===    0.000);
+      assert(param.$valueAtTime("00:00.500") ===   50.000);
+      assert(param.$valueAtTime("00:00.999") ===   99.900);
+      assert(param.$valueAtTime("00:01.000") ===  100.000);
+      assert(param.$valueAtTime("00:01.500") ===  250.000);
+      assert(param.$valueAtTime("00:02.000") ===  400.000);
+      assert(param.$valueAtTime("00:02.500") ===  550.000);
+      assert(param.$valueAtTime("00:03.000") ===  700.000);
+      assert(param.$valueAtTime("00:03.500") ===  850.000);
+      assert(param.$valueAtTime("00:03.999") ===  999.700);
+      assert(param.$valueAtTime("00:04.000") === 1000.000);
+      assert(param.$valueAtTime("00:04.500") === 1000.000);
+      assert(param.$valueAtTime("00:05.000") === 1000.000);
     });
     it("ExponentialRampToValue", function() {
       var node = new WebAudioTestAPI.AudioNode(audioContext);
@@ -279,17 +283,19 @@ describe("AudioParam", function() {
       param.exponentialRampToValueAtTime(100, 1.000);
       param.exponentialRampToValueAtTime(1000, 4.000);
 
-      assert(closeTo(param.$valueAtTime(0.000), 0.0001, 1e-6), "00:00.000");
-      assert(closeTo(param.$valueAtTime(0.500), 0.1, 1e-6), "00:00.500");
-      assert(closeTo(param.$valueAtTime(1.000), 100, 1e-6), "00:01.000");
-      assert(closeTo(param.$valueAtTime(1.500), 146.77992676220694, 1e-6), "00:01.500");
-      assert(closeTo(param.$valueAtTime(2.000), 215.44346900318837, 1e-6), "00:02.000");
-      assert(closeTo(param.$valueAtTime(2.500), 316.22776601683796, 1e-6), "00:02.500");
-      assert(closeTo(param.$valueAtTime(3.000), 464.15888336127784, 1e-6), "00:02.000");
-      assert(closeTo(param.$valueAtTime(3.500), 681.2920690579613, 1e-6), "00:02.500");
-      assert(param.$valueAtTime(4.000) === 1000, "00:02.000");
-      assert(param.$valueAtTime(4.500) === 1000, "00:02.500");
-      assert(param.$valueAtTime(5.000) === 1000, "00:02.000");
+      assert(closeTo(param.$valueAtTime("00:00.000"),   0.000, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:00.500"),   0.100, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:00.999"),  98.627, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:01.000"), 100.000, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:01.500"), 146.779, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:02.000"), 215.443, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:02.500"), 316.227, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:03.000"), 464.158, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:03.500"), 681.292, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:03.999"), 999.232, 1e-3));
+      assert(param.$valueAtTime("00:04.000") === 1000);
+      assert(param.$valueAtTime("00:04.500") === 1000);
+      assert(param.$valueAtTime("00:05.000") === 1000);
     });
     it("SetTarget", function() {
       var node = new WebAudioTestAPI.AudioNode(audioContext);
@@ -299,17 +305,18 @@ describe("AudioParam", function() {
       param.setTargetAtTime( 100, 1.000, 2);
       param.setTargetAtTime(1000, 3.500, 0.5);
 
-      assert(param.$valueAtTime(0.000) === 0, "00:00.000");
-      assert(param.$valueAtTime(0.500) === 0, "00:00.500");
-      assert(param.$valueAtTime(1.000) === -0, "00:01.000");
-      assert(closeTo(param.$valueAtTime(1.500), 22.119921692859506, 1e-6), "00:01.500");
-      assert(closeTo(param.$valueAtTime(2.000), 39.346934028736655, 1e-6), "00:02.000");
-      assert(closeTo(param.$valueAtTime(2.500), 52.763344725898534, 1e-6), "00:02.500");
-      assert(closeTo(param.$valueAtTime(3.000), 63.212055882855765, 1e-6), "00:03.000");
-      assert(closeTo(param.$valueAtTime(3.500), 71.34952031398099, 1e-6), "00:03.500");
-      assert(closeTo(param.$valueAtTime(4.000), 658.3685804895155, 1e-6), "00:04.000");
-      assert(closeTo(param.$valueAtTime(4.500), 874.3208243038764, 1e-6), "00:04.500");
-      assert(closeTo(param.$valueAtTime(5.000), 953.7652150780225, 1e-6), "00:05.000");
+      assert(param.$valueAtTime("00:00.000") === 0);
+      assert(param.$valueAtTime("00:00.500") === 0);
+      assert(param.$valueAtTime("00:00.999") === 0);
+      assert(param.$valueAtTime("00:01.000") === 0);
+      assert(closeTo(param.$valueAtTime("00:01.500"),  22.119, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:02.000"),  39.346, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:02.500"),  52.763, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:03.000"),  63.212, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:03.500"),  71.349, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:04.000"), 658.368, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:04.500"), 874.320, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:05.000"), 953.765, 1e-3));
     });
     it("SetCurve", function() {
       var node = new WebAudioTestAPI.AudioNode(audioContext);
@@ -321,24 +328,37 @@ describe("AudioParam", function() {
       param.setValueCurveAtTime(curve1, 1.000, 2);
       param.setValueCurveAtTime(curve2, 4.000, 4);
 
-      assert(param.$valueAtTime(0.000) ===   0, "00:00.000");
-      assert(param.$valueAtTime(0.500) ===   0, "00:00.500");
-      assert(param.$valueAtTime(1.000) === 220, "00:01.000");
-      assert(param.$valueAtTime(1.500) === 330, "00:01.500");
-      assert(param.$valueAtTime(2.000) === 440, "00:02.000");
-      assert(param.$valueAtTime(2.500) === 330, "00:02.500");
-      assert(param.$valueAtTime(3.000) === 220, "00:03.000");
-      assert(param.$valueAtTime(3.500) === 220, "00:03.500");
+      assert(param.$valueAtTime("00:00.000") ===   0);
+      assert(param.$valueAtTime("00:00.999") ===   0);
 
-      assert(param.$valueAtTime(4.000) === 1, "00:04.000");
-      assert(param.$valueAtTime(4.500) === 1, "00:04.500");
-      assert(param.$valueAtTime(5.000) === 2, "00:05.000");
-      assert(param.$valueAtTime(5.500) === 2, "00:05.500");
-      assert(param.$valueAtTime(6.000) === 3, "00:06.000");
-      assert(param.$valueAtTime(6.500) === 3, "00:06.500");
-      assert(param.$valueAtTime(7.000) === 4, "00:07.000");
-      assert(param.$valueAtTime(7.500) === 4, "00:07.500");
-      assert(param.$valueAtTime(8.000) === 4, "00:08.000");
+      assert(param.$valueAtTime("00:01.000") === 220);
+      assert(param.$valueAtTime("00:01.400") === 220);
+
+      assert(param.$valueAtTime("00:01.401") === 330);
+      assert(param.$valueAtTime("00:01.799") === 330);
+
+      assert(param.$valueAtTime("00:01.800") === 440);
+      assert(param.$valueAtTime("00:02.199") === 440);
+
+      assert(param.$valueAtTime("00:02.200") === 330);
+      assert(param.$valueAtTime("00:02.599") === 330);
+
+      assert(param.$valueAtTime("00:02.600") === 220);
+      assert(param.$valueAtTime("00:03.000") === 220);
+
+      assert(param.$valueAtTime("00:04.000") === 1);
+      assert(param.$valueAtTime("00:04.999") === 1);
+
+      assert(param.$valueAtTime("00:05.000") === 2);
+      assert(param.$valueAtTime("00:05.999") === 2);
+
+      assert(param.$valueAtTime("00:06.000") === 3);
+      assert(param.$valueAtTime("00:06.999") === 3);
+
+      assert(param.$valueAtTime("00:07.000") === 4);
+      assert(param.$valueAtTime("00:07.999") === 4);
+
+      assert(param.$valueAtTime("00:08.000") === 4);
     });
     it("Cancel", function() {
       var node = new WebAudioTestAPI.AudioNode(audioContext);
@@ -349,17 +369,18 @@ describe("AudioParam", function() {
       param.linearRampToValueAtTime(1000, 4.000);
       param.cancelScheduledValues(3.000);
 
-      assert(param.$valueAtTime(0.000) ===   0, "00:00.000");
-      assert(param.$valueAtTime(0.500) ===  50, "00:00.500");
-      assert(param.$valueAtTime(1.000) === 100, "00:01.000");
-      assert(param.$valueAtTime(1.500) === 100, "00:01.500");
-      assert(param.$valueAtTime(2.000) === 100, "00:02.000");
-      assert(param.$valueAtTime(2.500) === 100, "00:02.500");
-      assert(param.$valueAtTime(3.000) === 100, "00:02.000");
-      assert(param.$valueAtTime(3.500) === 100, "00:02.500");
-      assert(param.$valueAtTime(4.000) === 100, "00:02.000");
-      assert(param.$valueAtTime(4.500) === 100, "00:02.500");
-      assert(param.$valueAtTime(5.000) === 100, "00:02.000");
+      assert(param.$valueAtTime("00:00.000") ===   0.000);
+      assert(param.$valueAtTime("00:00.500") ===  50.000);
+      assert(param.$valueAtTime("00:00.999") ===  99.900);
+      assert(param.$valueAtTime("00:01.000") === 100.000);
+      assert(param.$valueAtTime("00:01.500") === 100.000);
+      assert(param.$valueAtTime("00:02.000") === 100.000);
+      assert(param.$valueAtTime("00:02.500") === 100.000);
+      assert(param.$valueAtTime("00:03.000") === 100.000);
+      assert(param.$valueAtTime("00:03.500") === 100.000);
+      assert(param.$valueAtTime("00:04.000") === 100.000);
+      assert(param.$valueAtTime("00:04.500") === 100.000);
+      assert(param.$valueAtTime("00:05.000") === 100.000);
     });
   });
 
