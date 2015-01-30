@@ -159,10 +159,17 @@ describe("AudioContext", function() {
   });
 
   describe("#createMediaElementSource", function() {
-    it("(): MediaElementAudioSourceNode", function() {
-      var node = audioContext.createMediaElementSource();
+    it("(mediaElement: HTMLMediaElement): MediaElementAudioSourceNode", function() {
+      var element = new global.WebAudioTestAPI.HTMLMediaElement();
+      var node = audioContext.createMediaElementSource(element);
 
       assert(node instanceof global.MediaElementAudioSourceNode);
+
+      assert.throws(function() {
+        audioContext.createMediaElementSource("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a HTMLMediaElement/.test(e.message);
+      });
     });
   });
 

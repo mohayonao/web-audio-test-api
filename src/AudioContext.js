@@ -25,6 +25,7 @@ var OscillatorNode = require("./OscillatorNode");
 var PeriodicWave = require("./PeriodicWave");
 
 require("./MediaStream");
+require("./HTMLMediaElement");
 
 function AudioContext() {
   var destination = new AudioDestinationNode(this);
@@ -141,8 +142,16 @@ AudioContext.prototype.createBufferSource = function() {
   return new AudioBufferSourceNode(this);
 };
 
-AudioContext.prototype.createMediaElementSource = function() {
-  return new MediaElementAudioSourceNode(this);
+AudioContext.prototype.createMediaElementSource = function(mediaElement) {
+  var inspector = new Inspector(this, "createMediaElementSource", [
+    { name: "mediaElement", type: "HTMLMediaElement" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  return new MediaElementAudioSourceNode(this, mediaElement);
 };
 
 AudioContext.prototype.createMediaStreamSource = function(mediaStream) {
