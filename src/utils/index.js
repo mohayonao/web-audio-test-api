@@ -32,4 +32,6 @@ _.$type = require("./type");
 
 _.$enum = require("./enum");
 
+_.formatter = require("./formatter");
+
 module.exports = _;
