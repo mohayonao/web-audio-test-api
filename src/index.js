@@ -28,20 +28,18 @@ WebAudioTestAPI.currentTimeIncr = WebAudioTestAPI.bufferSize / WebAudioTestAPI.s
 
 global.WebAudioTestAPI = WebAudioTestAPI;
 
-global.Event = ILLEGAL_CONSTRUCTOR(
-  null, new TypeError("Illegal constructor")
-);
+var Event = require("./Event");
 
 global.EventTarget = ILLEGAL_CONSTRUCTOR(
   null, new TypeError("Illegal constructor")
 );
 
 global.OfflineAudioCompletionEvent = ILLEGAL_CONSTRUCTOR(
-  global.Event, new TypeError("Illegal constructor")
+  Event, new TypeError("Illegal constructor")
 );
 
 global.AudioProcessingEvent = ILLEGAL_CONSTRUCTOR(
-  global.Event, new TypeError("Illegal constructor")
+  Event, new TypeError("Illegal constructor")
 );
 
 global.AudioBuffer = ILLEGAL_CONSTRUCTOR(
