@@ -16,6 +16,8 @@ _.jsonCircularCheck = require("./jsonCircularCheck");
 
 _.toMicroseconds = require("./toMicroseconds");
 
+_.toSeconds = require("./toSeconds");
+
 _.typeCheck = require("./typeCheck");
 
 _.formatter = require("./formatter");
