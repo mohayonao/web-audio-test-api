@@ -1,10 +1,10 @@
 "use strict";
 
-var id = require("./id");
+var name = require("./name");
 
-module.exports = function(node, func, memo) {
+function jsonCircularCheck(node, func, memo) {
   if (memo.indexOf(node) !== -1) {
-    return "<circular:" + id(node) + ">";
+    return "<circular:" + name(node) + ">";
   }
   memo.push(node);
 
@@ -13,4 +13,6 @@ module.exports = function(node, func, memo) {
   memo.pop();
 
   return result;
-};
+}
+
+module.exports = jsonCircularCheck;

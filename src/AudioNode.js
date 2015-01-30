@@ -69,7 +69,7 @@ AudioNode.prototype.toJSON = function(memo) {
   return _.jsonCircularCheck(this, function(memo) {
     var json = {};
 
-    json.name = _.id(this);
+    json.name = _.name(this);
 
     this.$jsonAttrs.forEach(function(key) {
       if (this[key] && this[key].toJSON) {
