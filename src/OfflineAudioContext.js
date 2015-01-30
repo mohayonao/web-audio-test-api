@@ -2,12 +2,15 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var EventTarget = require("./EventTarget");
 var AudioBuffer = require("./AudioBuffer");
 var AudioDestinationNode = require("./AudioDestinationNode");
 var AudioListener = require("./AudioListener");
 var OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
 
 function OfflineAudioContext(numberOfChannels, length, sampleRate) {
+  EventTarget.call(this);
+
   var inspector = new Inspector(this, null, [
     { name: "numberOfChannels", type: "number" },
     { name: "length"          , type: "number" },
@@ -19,7 +22,7 @@ function OfflineAudioContext(numberOfChannels, length, sampleRate) {
   });
 
   var destination = new AudioDestinationNode(this);
-  var currentTime = function() { return this._currentTime; };
+  var currentTime = function() { return this._microCurrentTime / (1000 * 1000); };
   var listener = new AudioListener(this);
   var oncomplete = null;
 
@@ -44,13 +47,12 @@ function OfflineAudioContext(numberOfChannels, length, sampleRate) {
     $context: { value: this }
   });
 
-  this._currentTime = 0;
-  this._targetTime  = 0;
-  this._remain = 0;
+  this._microCurrentTime = 0;
+  this._processedSamples = 0;
+  this._tick = 0;
 
   this._numberOfChannels = numberOfChannels;
   this._length = length;
-  this._processed = 0;
   this._rendering = false;
 }
 _.inherits(OfflineAudioContext, global.AudioContext);
@@ -65,34 +67,34 @@ OfflineAudioContext.prototype.startRendering = function() {
   this._rendering = true;
 };
 
-OfflineAudioContext.prototype.$process = function(duration) {
-  var dx;
-
-  if (!this._rendering || this._length <= this._processed) {
+OfflineAudioContext.prototype._process = function(microseconds) {
+  if (!this._rendering || this._length <= this._processedSamples) {
     return;
   }
 
-  this._targetTime += duration;
+  var nextMicroCurrentTime = this._microCurrentTime + microseconds;
 
-  while (this._currentTime < this._targetTime) {
-    if (this._remain) {
-      dx = this._remain;
-      this._remain = 0;
-    } else {
-      dx = Math.min(global.WebAudioTestAPI.currentTimeIncr, this._targetTime - this._currentTime);
-      this._remain = global.WebAudioTestAPI.currentTimeIncr - dx;
+  while (this._microCurrentTime < nextMicroCurrentTime) {
+    var _nextMicroCurrentTime = Math.min(this._microCurrentTime + 1000, nextMicroCurrentTime);
+    var _nextProcessedSamples = Math.floor(_nextMicroCurrentTime / (1000 * 1000) * this.sampleRate);
+    var inNumSamples = _nextProcessedSamples - this._processedSamples;
+
+    this.destination.$process(inNumSamples, ++this._tick);
+
+    this._microCurrentTime = _nextMicroCurrentTime;
+    this._processedSamples = _nextProcessedSamples;
+
+    if (this._length <= this._processedSamples) {
+      break;
     }
-    this.destination.$process(this._currentTime, this._currentTime + dx);
-    this._currentTime = this._currentTime + dx;
-    this._processed += global.WebAudioTestAPI.bufferSize * (dx / global.WebAudioTestAPI.currentTimeIncr);
   }
 
-  if (this._length <= this._processed && this.oncomplete) {
-    var e = new OfflineAudioCompletionEvent(this);
+  if (this._length <= this._processedSamples) {
+    var event = new OfflineAudioCompletionEvent(this);
 
-    e.renderedBuffer = new AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);
+    event.renderedBuffer = new AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);
 
-    this.oncomplete(e);
+    this.dispatchEvent(event);
   }
 };
 

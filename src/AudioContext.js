@@ -28,9 +28,11 @@ require("./MediaStream");
 require("./HTMLMediaElement");
 
 function AudioContext() {
+  EventTarget.call(this);
+
   var destination = new AudioDestinationNode(this);
   var sampleRate = global.WebAudioTestAPI.sampleRate;
-  var currentTime = function() { return this._currentTime; };
+  var currentTime = function() { return this._microCurrentTime / (1000 * 1000); };
   var listener = new AudioListener(this);
 
   _.defineAttribute(this, "destination", "readonly", destination, function(msg) {
@@ -51,9 +53,9 @@ function AudioContext() {
     $context: { value: this },
   });
 
-  this._currentTime = 0;
-  this._targetTime  = 0;
-  this._remain = 0;
+  this._microCurrentTime = 0;
+  this._processedSamples = 0;
+  this._tick = 0;
 }
 _.inherits(AudioContext, EventTarget);
 
@@ -249,41 +251,38 @@ AudioContext.prototype.toJSON = function() {
   return this.destination.toJSON([]);
 };
 
-AudioContext.prototype.$process = function(duration) {
-  var dx;
-
-  this._targetTime += duration;
-
-  while (this._currentTime < this._targetTime) {
-    if (this._remain) {
-      dx = this._remain;
-      this._remain = 0;
-    } else {
-      dx = Math.min(global.WebAudioTestAPI.currentTimeIncr, this._targetTime - this._currentTime);
-      this._remain = global.WebAudioTestAPI.currentTimeIncr - dx;
-    }
-    this.destination.$process(this._currentTime, this._currentTime + dx);
-    this._currentTime = this._currentTime + dx;
-  }
+AudioContext.prototype.$process = function(time) {
+  this._process(_.toMicroseconds(time));
 };
 
 AudioContext.prototype.$processTo = function(time) {
-  time = String(time).match(/^(\d\d):(\d\d)\.(\d\d\d)/);
-  if (time) {
-    time = (+time[1]) * 60 + (+time[2]) + (+time[3]) * 0.001;
-    if (this._currentTime < time) {
-      this.$process(time - this._currentTime);
-    }
+  time = _.toMicroseconds(time);
+  if (this._microCurrentTime < time) {
+    this._process(time - this._microCurrentTime);
   }
 };
 
 AudioContext.prototype.$reset = function() {
-  this._currentTime = 0;
-  this._targetTime  = 0;
-  this._remain = 0;
+  this._microCurrentTime = 0;
+  this._processedSamples = 0;
   this.destination.$inputs.forEach(function(node) {
     node.disconnect();
   });
+};
+
+AudioContext.prototype._process = function(microseconds) {
+  var nextMicroCurrentTime = this._microCurrentTime + microseconds;
+
+  while (this._microCurrentTime < nextMicroCurrentTime) {
+    var _nextMicroCurrentTime = Math.min(this._microCurrentTime + 1000, nextMicroCurrentTime);
+    var _nextProcessedSamples = Math.floor(_nextMicroCurrentTime / (1000 * 1000) * this.sampleRate);
+    var inNumSamples = _nextProcessedSamples - this._processedSamples;
+
+    this._microCurrentTime = _nextMicroCurrentTime;
+    this._processedSamples = _nextProcessedSamples;
+
+    this.destination.$process(inNumSamples, ++this._tick);
+  }
 };
 
 module.exports = global.WebAudioTestAPI.AudioContext = AudioContext;

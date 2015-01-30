@@ -18,6 +18,8 @@ if (typeof global.AudioParam === "undefined") {
 function AudioNode(context, spec) {
   spec = spec || {};
 
+  EventTarget.call(this);
+
   var numberOfInputs = _.defaults(spec.numberOfInputs, 1);
   var numberOfOutputs = _.defaults(spec.numberOfOutputs, 1);
   var channelCount = _.defaults(spec.channelCount, 2);
@@ -50,7 +52,7 @@ function AudioNode(context, spec) {
     $jsonAttrs: { value: _.defaults(spec.jsonAttrs, []) },
   });
   this._outputs = [];
-  this._currentTime = -1;
+  this._tick = -1;
 }
 _.inherits(AudioNode, global.AudioNode);
 
@@ -145,23 +147,20 @@ AudioNode.prototype.toJSON = function(memo) {
   }, memo || /* istanbul ignore next */ []);
 };
 
-AudioNode.prototype.$process = function(currentTime, nextCurrentTime) {
+AudioNode.prototype.$process = function(inNumSamples, tick) {
   /* istanbul ignore else */
-  if (currentTime !== this._currentTime) {
-    this._currentTime = currentTime;
-
+  if (this._tick !== tick) {
+    this._tick = tick;
     this.$inputs.forEach(function(src) {
-      src.$process(currentTime, nextCurrentTime);
+      src.$process(inNumSamples, tick);
     });
-
     Object.keys(this).forEach(function(key) {
       if (this[key] instanceof global.AudioParam) {
-        this[key].$process(currentTime, nextCurrentTime);
+        this[key].$process(inNumSamples, tick);
       }
     }, this);
-
     if (this._process) {
-      this._process(currentTime, nextCurrentTime);
+      this._process(inNumSamples);
     }
   }
 };

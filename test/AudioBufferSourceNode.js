@@ -143,49 +143,63 @@ describe("AudioBufferSourceNode", function() {
     it("works", function() {
       var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
       var buf = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 44100 * 0.25, 44100);
-      var spy = sinon.spy();
+      var onended = sinon.spy();
 
       node.buffer = buf;
-      node.onended = spy;
+      node.onended = onended;
 
       node.connect(audioContext.destination);
       node.start(0.1);
       node.stop(0.15);
 
-      assert(spy.callCount === 0, "00:00.000");
+      audioContext.$processTo("00:00.000");
+      assert(onended.callCount === 0, "00:00.000");
 
-      node.context.$processTo("00:00.149");
-      assert(spy.callCount === 0, "00:00.149");
+      audioContext.$processTo("00:00.149");
+      assert(onended.callCount === 0, "00:00.149");
 
-      // TODO: FIX
-      node.context.$processTo("00:00.151");
-      assert(spy.callCount === 1, "00:00.151");
+      audioContext.$processTo("00:00.150");
+      assert(onended.callCount === 1, "00:00.150");
+      assert(onended.calledOn(node), "00:00.150");
 
-      node.context.$processTo("00:00.200");
-      assert(spy.callCount === 1, "00:00.200");
+      audioContext.$processTo("00:00.200");
+      assert(onended.callCount === 1, "00:00.200");
+
+      var event = onended.args[0][0];
+
+      assert(event instanceof global.Event);
+      assert(event.type === "ended");
+      assert(event.target === node);
     });
     it("works auto stop", function() {
       var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
       var buf = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 44100 * 0.25, 44100);
-      var spy = sinon.spy();
+      var onended = sinon.spy();
 
       node.buffer = buf;
-      node.onended = spy;
+      node.onended = onended;
 
       node.connect(node.context.destination);
       node.start(0.1);
 
-      assert(spy.callCount === 0, "00:00.000");
+      audioContext.$processTo("00:00.000");
+      assert(onended.callCount === 0, "00:00.000");
 
-      node.context.$processTo("00:00.349");
-      assert(spy.callCount === 0, "00:00.349");
+      audioContext.$processTo("00:00.349");
+      assert(onended.callCount === 0, "00:00.349");
 
-      // TODO: FIX
-      node.context.$processTo("00:00.352");
-      assert(spy.callCount === 1, "00:00.352");
+      audioContext.$processTo("00:00.350");
+      assert(onended.callCount === 1, "00:00.350");
+      assert(onended.calledOn(node), "00:00.350");
 
-      node.context.$processTo("00:00.400");
-      assert(spy.callCount === 1, "00:00.400");
+      audioContext.$processTo("00:00.400");
+      assert(onended.callCount === 1, "00:00.400");
+
+      var event = onended.args[0][0];
+
+      assert(event instanceof global.Event);
+      assert(event.type === "ended");
+      assert(event.target === node);
     });
   });
 

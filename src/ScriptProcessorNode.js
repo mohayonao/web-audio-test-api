@@ -43,21 +43,19 @@ function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberO
 }
 _.inherits(ScriptProcessorNode, global.ScriptProcessorNode);
 
-ScriptProcessorNode.prototype._process = function(currentTime, nextCurrentTime) {
-  var numSamples = ((nextCurrentTime - currentTime) / global.WebAudioTestAPI.currentTimeIncr) * global.WebAudioTestAPI.bufferSize;
+ScriptProcessorNode.prototype._process = function(inNumSamples) {
+  this._numSamples -= inNumSamples;
 
-  this._numSamples -= numSamples;
-
-  if (this._numSamples <= 0 && this.onaudioprocess) {
+  if (this._numSamples <= 0) {
     this._numSamples += this.bufferSize;
 
-    var e = new AudioProcessingEvent(this);
+    var event = new AudioProcessingEvent(this);
 
-    e.playbackTime = this.context.currentTime;
-    e.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
-    e.outputBuffer = new AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
+    event.playbackTime = this.context.currentTime + this.bufferSize / this.context.sampleRate;
+    event.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
+    event.outputBuffer = new AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
 
-    this.onaudioprocess(e);
+    this.dispatchEvent(event);
   }
 };
 

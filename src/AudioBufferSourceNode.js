@@ -4,6 +4,7 @@ var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
+var Event = require("./Event");
 
 /* istanbul ignore else */
 if (typeof global.AudioBufferSourceNode === "undefined") {
@@ -102,24 +103,27 @@ AudioBufferSourceNode.prototype.stop = function(when) {
 AudioBufferSourceNode.prototype.$stateAtTime = function(t) {
   if (this._startTime === Infinity) {
     return "UNSCHEDULED";
-  } else if (t < this._startTime) {
+  }
+  if (t < this._startTime) {
     return "SCHEDULED";
-  } else if (t < this._stopTime) {
+  }
+
+  var stopTime = this._stopTime;
+  if (!this.loop && this.buffer) {
+    stopTime = Math.min(stopTime, this._startTime + this.buffer.duration);
+  }
+
+  if (t < stopTime) {
     return "PLAYING";
   }
+
   return "FINISHED";
 };
 
-AudioBufferSourceNode.prototype._process = function(currentTime, nextCurrentTime) {
-  if (!this._firedOnEnded) {
-    if (!this.loop && this.buffer && this._startTime + this.buffer.duration <= nextCurrentTime) {
-      this._stopTime = Math.min(this._startTime + this.buffer.duration, this._stopTime);
-    }
-
-    if (this.$stateAtTime(currentTime) === "FINISHED" && this.onended) {
-      this.onended({});
-      this._firedOnEnded = true;
-    }
+AudioBufferSourceNode.prototype._process = function() {
+  if (!this._firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
+    this.dispatchEvent(new Event("ended", this));
+    this._firedOnEnded = true;
   }
 };
 

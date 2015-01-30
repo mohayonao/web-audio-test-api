@@ -1,8 +1,5 @@
 "use strict";
 
-var BUFFER_SIZE = 256;
-var PROCESS_INTERVAL = BUFFER_SIZE / 44100;
-
 describe("ScriptProcessorNode", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
@@ -93,50 +90,50 @@ describe("ScriptProcessorNode", function() {
       });
     });
     it("works", function() {
+      // 256 / 44100 = 5.805msec -> 11.610msec -> 17.415msec
       var node = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 256, 1, 1);
-      var spy = sinon.spy();
-      var interval = PROCESS_INTERVAL * 0.25;
+      var onaudioprocess = sinon.spy();
 
-      node.onaudioprocess = spy;
+      node.onaudioprocess = onaudioprocess;
 
       node.connect(audioContext.destination);
 
-      audioContext.$process(0);
-      assert(spy.callCount === 0, "0/4");
+      audioContext.$processTo("00:00.000");
+      assert(onaudioprocess.callCount === 0, "00:00.000");
 
-      audioContext.$process(interval);
-      assert(spy.callCount === 1, "1/4");
+      audioContext.$processTo("00:00.001");
+      assert(onaudioprocess.callCount === 1, "00:00.001");
+      assert(onaudioprocess.calledOn(node), "00:00.001");
 
-      audioContext.$process(interval);
-      assert(spy.callCount === 1, "2/4");
+      audioContext.$processTo("00:00.005");
+      assert(onaudioprocess.callCount === 1, "00:00.005");
 
-      audioContext.$process(interval);
-      assert(spy.callCount === 1, "3/4");
+      audioContext.$processTo("00:00.006");
+      assert(onaudioprocess.callCount === 2, "00:00.006");
+      assert(onaudioprocess.calledOn(node), "00:00.006");
 
-      audioContext.$process(interval);
-      assert(spy.callCount === 2, "4/4");
+      audioContext.$processTo("00:00.011");
+      assert(onaudioprocess.callCount === 2, "00:00.011");
 
-      audioContext.$process(interval);
-      assert(spy.callCount === 2, "5/4");
+      audioContext.$processTo("00:00.012");
+      assert(onaudioprocess.callCount === 3, "00:00.012");
+      assert(onaudioprocess.calledOn(node), "00:00.012");
 
-      audioContext.$process(interval);
-      assert(spy.callCount === 2, "6/4");
+      audioContext.$processTo("00:00.017");
+      assert(onaudioprocess.callCount === 3, "00:00.017");
 
-      audioContext.$process(interval);
-      assert(spy.callCount === 2, "7/4");
+      audioContext.$processTo("00:00.018");
+      assert(onaudioprocess.callCount === 4, "00:00.018");
+      assert(onaudioprocess.calledOn(node), "00:00.018");
 
-      audioContext.$process(interval);
-      assert(spy.callCount === 3, "8/4");
+      var event = onaudioprocess.args[0][0];
 
-      audioContext.$process(interval);
-      assert(spy.callCount === 3, "9/4");
-
-      var e = spy.args[0][0];
-
-      assert(e instanceof global.AudioProcessingEvent);
-      assert(typeof e.playbackTime === "number");
-      assert(e.inputBuffer instanceof global.AudioBuffer);
-      assert(e.outputBuffer instanceof global.AudioBuffer);
+      assert(event instanceof global.AudioProcessingEvent);
+      assert(event.inputBuffer instanceof global.AudioBuffer);
+      assert(event.outputBuffer instanceof global.AudioBuffer);
+      assert(event.type === "audioprocess");
+      assert(event.target === node);
+      assert(typeof event.playbackTime === "number");
     });
   });
 

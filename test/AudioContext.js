@@ -366,23 +366,34 @@ describe("AudioContext", function() {
   });
 
   describe("$process", function() {
-    it("(time: number): void", function() {
-      assert.doesNotThrow(function() {
-        audioContext.$process(0.5);
-        audioContext.$process(0.5);
-        audioContext.$process(0.5);
-      });
+    it("(time: number|string): void", function() {
+      audioContext.$process(0.125);
+      assert(audioContext.currentTime === 0.125, "00:00.125");
+
+      audioContext.$process(0.125);
+      assert(audioContext.currentTime === 0.250, "00:00.250");
+
+      audioContext.$process(0.250);
+      assert(audioContext.currentTime === 0.500, "00:00.500");
+
+      audioContext.$process("00:00.500");
+      assert(audioContext.currentTime === 1.000, "00:01.000");
     });
   });
 
   describe("#$processTo", function() {
-    it("(time: string): void", function() {
-      assert.doesNotThrow(function() {
-        audioContext.$processTo(0.5);
-        audioContext.$processTo("00:00.005");
-        audioContext.$processTo("00:00.010");
-        audioContext.$processTo("00:00.005");
-      });
+    it("(time: number|string): void", function() {
+      audioContext.$processTo(0.125);
+      assert(audioContext.currentTime === 0.125, "00:00.125");
+
+      audioContext.$processTo(0.125);
+      assert(audioContext.currentTime === 0.125, "00:00.125");
+
+      audioContext.$processTo(0.250);
+      assert(audioContext.currentTime === 0.250, "00:00.250");
+
+      audioContext.$processTo("00:00.500");
+      assert(audioContext.currentTime === 0.500, "00:00.500");
     });
   });
 
@@ -390,9 +401,24 @@ describe("AudioContext", function() {
     it("(): void", function() {
       audioContext.createGain().connect(audioContext.destination);
 
-      audioContext.$process(0.5);
-      audioContext.$process(0.5);
-      audioContext.$process(0.5);
+      assert.deepEqual(audioContext.toJSON(), {
+        name: "AudioDestinationNode",
+        inputs: [
+          {
+            name: "GainNode",
+            gain: {
+              value: 1,
+              inputs: []
+            },
+            inputs: []
+          }
+        ]
+      });
+
+      audioContext.$processTo(0.125);
+
+      assert(audioContext.currentTime === 0.125);
+
       audioContext.$reset();
 
       assert(audioContext.currentTime === 0);

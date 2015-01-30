@@ -97,25 +97,32 @@ describe("OscillatorNode", function() {
     });
     it("works", function() {
       var node = new WebAudioTestAPI.OscillatorNode(audioContext);
-      var spy = sinon.spy();
+      var onended = sinon.spy();
 
-      node.onended = spy;
+      node.onended = onended;
 
       node.connect(audioContext.destination);
       node.start(0.1);
       node.stop(0.15);
 
-      assert(spy.callCount === 0, "00:00.000");
+      audioContext.$processTo("00:00.000");
+      assert(onended.callCount === 0, "00:00.000");
 
-      node.context.$processTo("00:00.149");
-      assert(spy.callCount === 0, "00:00.149");
+      audioContext.$processTo("00:00.149");
+      assert(onended.callCount === 0, "00:00.149");
 
-      // TODO: FIX
-      node.context.$processTo("00:00.151");
-      assert(spy.callCount === 1, "00:00.151");
+      audioContext.$processTo("00:00.150");
+      assert(onended.callCount === 1, "00:00.150");
+      assert(onended.calledOn(node), "00:00.150");
 
-      node.context.$processTo("00:00.200");
-      assert(spy.callCount === 1, "00:00.200");
+      audioContext.$processTo("00:00.200");
+      assert(onended.callCount === 1, "00:00.200");
+
+      var event = onended.args[0][0];
+
+      assert(event instanceof global.Event);
+      assert(event.type === "ended");
+      assert(event.target === node);
     });
   });
 
@@ -226,15 +233,19 @@ describe("OscillatorNode", function() {
       assert(node.$state === "UNSCHEDULED");
 
       node.start(0.1);
+
+      audioContext.$processTo("00:00.099");
       assert(node.$state === "SCHEDULED");
 
-      audioContext.$process(0.1);
+      audioContext.$processTo("00:00.100");
       assert(node.$state === "PLAYING");
 
       node.stop(0.2);
+
+      audioContext.$processTo("00:00.199");
       assert(node.$state === "PLAYING");
 
-      audioContext.$process(0.1);
+      audioContext.$processTo("00:00.200");
       assert(node.$state === "FINISHED");
     });
   });

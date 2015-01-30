@@ -4,7 +4,7 @@ describe("OfflineAudioContext", function() {
   var audioContext = null;
 
   beforeEach(function() {
-    audioContext = new global.OfflineAudioContext(1, 44100, 44100);
+    audioContext = new global.OfflineAudioContext(2, 441, 44100);
   });
 
   describe("constructor", function() {
@@ -13,19 +13,19 @@ describe("OfflineAudioContext", function() {
       assert(audioContext instanceof global.AudioContext);
 
       assert.throws(function() {
-        audioContext = new global.OfflineAudioContext("INVALID", 44100, 44100);
+        audioContext = new global.OfflineAudioContext("INVALID", 441, 44100);
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
 
       assert.throws(function() {
-        audioContext = new global.OfflineAudioContext(1, "INVALID", 44100);
+        audioContext = new global.OfflineAudioContext(2, "INVALID", 44100);
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
 
       assert.throws(function() {
-        audioContext = new global.OfflineAudioContext(1, 44100, "INVALID");
+        audioContext = new global.OfflineAudioContext(2, 441, "INVALID");
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
@@ -113,25 +113,38 @@ describe("OfflineAudioContext", function() {
         return e instanceof TypeError && /should be a function/.test(e.message);
       });
     });
-    it("works", function(done) {
-      audioContext.oncomplete = function(e) {
-        assert(e instanceof global.Event);
-        assert(e instanceof global.OfflineAudioCompletionEvent);
-        assert(e.renderedBuffer instanceof global.AudioBuffer);
-        done();
-      };
+    it("works", function() {
+      var oncomplete = sinon.spy();
+
+      audioContext.oncomplete = oncomplete;
+
       audioContext.startRendering();
-      audioContext.$processTo("00:00.500");
-      audioContext.$processTo("00:01.000");
-      audioContext.$processTo("00:01.500");
+
+      audioContext.$processTo("00:00.009");
+      assert(oncomplete.callCount === 0, "00:00.009");
+
+      audioContext.$processTo("00:00.010");
+      assert(oncomplete.callCount === 1, "00:00.010");
+      assert(oncomplete.calledOn(audioContext), "00:00.010");
+
+      audioContext.$processTo("00:00.100");
+      assert(oncomplete.callCount === 1, "00:00.100");
+
+      var event = oncomplete.args[0][0];
+
+      assert(event instanceof global.OfflineAudioCompletionEvent);
+      assert(event.renderedBuffer instanceof global.AudioBuffer);
+      assert(event.type === "complete");
+      assert(event.target = audioContext);
     });
     it("not work", function() {
-      audioContext.oncomplete = function() {
-        throw new Error("NOT REACHED");
-      };
-      audioContext.$processTo("00:00.500");
-      audioContext.$processTo("00:01.000");
-      audioContext.$processTo("00:01.500");
+      var oncomplete = sinon.spy();
+
+      audioContext.oncomplete = oncomplete;
+
+      audioContext.$processTo("00:00.100");
+
+      assert(oncomplete.callCount === 0, "00:00.100");
     });
   });
 

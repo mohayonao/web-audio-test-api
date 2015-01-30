@@ -4,6 +4,7 @@ var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
+var Event = require("./Event");
 
 var OscillatorType = "enum { sine, square, sawtooth, triangle }";
 
@@ -137,9 +138,9 @@ OscillatorNode.prototype.$stateAtTime = function(t) {
   return "FINISHED";
 };
 
-OscillatorNode.prototype._process = function(currentTime) {
-  if (!this._firedOnEnded && this.$stateAtTime(currentTime) === "FINISHED" && this.onended) {
-    this.onended({});
+OscillatorNode.prototype._process = function() {
+  if (!this._firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
+    this.dispatchEvent(new Event("ended", this));
     this._firedOnEnded = true;
   }
 };

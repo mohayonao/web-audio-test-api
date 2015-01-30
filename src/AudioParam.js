@@ -54,7 +54,7 @@ function AudioParam(node, name, defaultValue, minValue, maxValue) {
   });
 
   this._value = this.defaultValue;
-  this._currentTime = -1;
+  this._tick = -1;
 }
 _.inherits(AudioParam, global.AudioParam);
 
@@ -217,13 +217,12 @@ AudioParam.prototype.$valueAtTime = function(t) {
   return value;
 };
 
-AudioParam.prototype.$process = function(currentTime, nextCurrentTime) {
+AudioParam.prototype.$process = function(inNumSamples, tick) {
   /* istanbul ignore else */
-  if (currentTime !== this._currentTime) {
-    this._currentTime = currentTime;
-
+  if (this._tick !== tick) {
+    this._tick = tick;
     this.$inputs.forEach(function(src) {
-      src.$process(currentTime, nextCurrentTime);
+      src.$process(inNumSamples, tick);
     });
   }
 };
