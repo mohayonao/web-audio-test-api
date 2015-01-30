@@ -59,47 +59,6 @@ _.inherits(AudioContext, EventTarget);
 
 AudioContext.WEB_AUDIO_TEST_API_VERSION = global.WebAudioTestAPI.VERSION;
 
-AudioContext.prototype.$process = function(duration) {
-  var dx;
-
-  this._targetTime += duration;
-
-  while (this._currentTime < this._targetTime) {
-    if (this._remain) {
-      dx = this._remain;
-      this._remain = 0;
-    } else {
-      dx = Math.min(global.WebAudioTestAPI.currentTimeIncr, this._targetTime - this._currentTime);
-      this._remain = global.WebAudioTestAPI.currentTimeIncr - dx;
-    }
-    this.destination.$process(this._currentTime, this._currentTime + dx);
-    this._currentTime = this._currentTime + dx;
-  }
-};
-
-AudioContext.prototype.$processTo = function(time) {
-  time = String(time).match(/^(\d\d):(\d\d)\.(\d\d\d)/);
-  if (time) {
-    time = (+time[1]) * 60 + (+time[2]) + (+time[3]) * 0.001;
-    if (this._currentTime < time) {
-      this.$process(time - this._currentTime);
-    }
-  }
-};
-
-AudioContext.prototype.$reset = function() {
-  this._currentTime = 0;
-  this._targetTime  = 0;
-  this._remain = 0;
-  this.destination.$inputs.forEach(function(node) {
-    node.disconnect();
-  });
-};
-
-AudioContext.prototype.toJSON = function() {
-  return this.destination.toJSON([]);
-};
-
 AudioContext.prototype.createBuffer = function(numberOfChannels, length, sampleRate) {
   var inspector = new Inspector(this, null, [
     { name: "numberOfChannels", type: "number" },
@@ -284,6 +243,47 @@ AudioContext.prototype.createPeriodicWave = function(real, imag) {
   });
 
   return new PeriodicWave(real, imag);
+};
+
+AudioContext.prototype.toJSON = function() {
+  return this.destination.toJSON([]);
+};
+
+AudioContext.prototype.$process = function(duration) {
+  var dx;
+
+  this._targetTime += duration;
+
+  while (this._currentTime < this._targetTime) {
+    if (this._remain) {
+      dx = this._remain;
+      this._remain = 0;
+    } else {
+      dx = Math.min(global.WebAudioTestAPI.currentTimeIncr, this._targetTime - this._currentTime);
+      this._remain = global.WebAudioTestAPI.currentTimeIncr - dx;
+    }
+    this.destination.$process(this._currentTime, this._currentTime + dx);
+    this._currentTime = this._currentTime + dx;
+  }
+};
+
+AudioContext.prototype.$processTo = function(time) {
+  time = String(time).match(/^(\d\d):(\d\d)\.(\d\d\d)/);
+  if (time) {
+    time = (+time[1]) * 60 + (+time[2]) + (+time[3]) * 0.001;
+    if (this._currentTime < time) {
+      this.$process(time - this._currentTime);
+    }
+  }
+};
+
+AudioContext.prototype.$reset = function() {
+  this._currentTime = 0;
+  this._targetTime  = 0;
+  this._remain = 0;
+  this.destination.$inputs.forEach(function(node) {
+    node.disconnect();
+  });
 };
 
 module.exports = global.WebAudioTestAPI.AudioContext = AudioContext;

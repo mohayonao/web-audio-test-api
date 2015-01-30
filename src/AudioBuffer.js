@@ -36,30 +36,6 @@ function AudioBuffer(context, numberOfChannels, length, sampleRate) {
 }
 _.inherits(AudioBuffer, global.AudioBuffer);
 
-function f32ToArray(f32) {
-  var a = new Array(f32.length);
-  for (var i = 0, imax = a.length; i < imax; ++i) {
-    a[i] = f32[i];
-  }
-  return a;
-}
-
-AudioBuffer.prototype.toJSON = function() {
-  var json = {
-    name: this.$name,
-    sampleRate: this.sampleRate,
-    length: this.length,
-    duration: this.duration,
-    numberOfChannels: this.numberOfChannels
-  };
-
-  if (this.$context.VERBOSE_JSON) {
-    json.data = this._data.map(f32ToArray);
-  }
-
-  return json;
-};
-
 AudioBuffer.prototype.getChannelData = function(channel) {
   var inspector = new Inspector(this, "getChannelData", [
     { name: "channel", type: "number" }
@@ -73,6 +49,24 @@ AudioBuffer.prototype.getChannelData = function(channel) {
     );
   });
   return this._data[channel];
+};
+
+AudioBuffer.prototype.toJSON = function() {
+  var json = {
+    name: this.$name,
+    sampleRate: this.sampleRate,
+    length: this.length,
+    duration: this.duration,
+    numberOfChannels: this.numberOfChannels
+  };
+
+  if (this.$context.VERBOSE_JSON) {
+    json.data = this._data.map(function(data) {
+      return Array.prototype.slice.call(data);
+    });
+  }
+
+  return json;
 };
 
 module.exports = global.WebAudioTestAPI.AudioBuffer = AudioBuffer;

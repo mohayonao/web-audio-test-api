@@ -80,24 +80,6 @@ function OscillatorNode(context) {
 }
 _.inherits(OscillatorNode, global.OscillatorNode);
 
-OscillatorNode.prototype.$stateAtTime = function(t) {
-  if (this._startTime === Infinity) {
-    return "UNSCHEDULED";
-  } else if (t < this._startTime) {
-    return "SCHEDULED";
-  } else if (t < this._stopTime) {
-    return "PLAYING";
-  }
-  return "FINISHED";
-};
-
-OscillatorNode.prototype._process = function(currentTime) {
-  if (!this._firedOnEnded && this.$stateAtTime(currentTime) === "FINISHED" && this.onended) {
-    this.onended({});
-    this._firedOnEnded = true;
-  }
-};
-
 OscillatorNode.prototype.start = function(when) {
   var inspector = new Inspector(this, "start", [
     { name: "when", type: "optional number" },
@@ -142,6 +124,24 @@ OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
 
   this._type = "custom";
   this._custom = periodicWave;
+};
+
+OscillatorNode.prototype.$stateAtTime = function(t) {
+  if (this._startTime === Infinity) {
+    return "UNSCHEDULED";
+  } else if (t < this._startTime) {
+    return "SCHEDULED";
+  } else if (t < this._stopTime) {
+    return "PLAYING";
+  }
+  return "FINISHED";
+};
+
+OscillatorNode.prototype._process = function(currentTime) {
+  if (!this._firedOnEnded && this.$stateAtTime(currentTime) === "FINISHED" && this.onended) {
+    this.onended({});
+    this._firedOnEnded = true;
+  }
 };
 
 module.exports = global.WebAudioTestAPI.OscillatorNode = OscillatorNode;

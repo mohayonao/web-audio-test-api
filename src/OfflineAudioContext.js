@@ -55,6 +55,16 @@ function OfflineAudioContext(numberOfChannels, length, sampleRate) {
 }
 _.inherits(OfflineAudioContext, global.AudioContext);
 
+OfflineAudioContext.prototype.startRendering = function() {
+  var inspector = new Inspector(this, "startRendering", []);
+
+  inspector.assert(!this._rendering, function() {
+    throw Error(inspector.form + "; must only be called one time");
+  });
+
+  this._rendering = true;
+};
+
 OfflineAudioContext.prototype.$process = function(duration) {
   var dx;
 
@@ -84,16 +94,6 @@ OfflineAudioContext.prototype.$process = function(duration) {
 
     this.oncomplete(e);
   }
-};
-
-OfflineAudioContext.prototype.startRendering = function() {
-  var inspector = new Inspector(this, "startRendering", []);
-
-  inspector.assert(!this._rendering, function() {
-    throw Error(inspector.form + "; must only be called one time");
-  });
-
-  this._rendering = true;
 };
 
 module.exports = global.WebAudioTestAPI.OfflineAudioContext = OfflineAudioContext;

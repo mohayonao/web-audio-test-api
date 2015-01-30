@@ -64,30 +64,6 @@ function AudioBufferSourceNode(context) {
 }
 _.inherits(AudioBufferSourceNode, global.AudioBufferSourceNode);
 
-AudioBufferSourceNode.prototype.$stateAtTime = function(t) {
-  if (this._startTime === Infinity) {
-    return "UNSCHEDULED";
-  } else if (t < this._startTime) {
-    return "SCHEDULED";
-  } else if (t < this._stopTime) {
-    return "PLAYING";
-  }
-  return "FINISHED";
-};
-
-AudioBufferSourceNode.prototype._process = function(currentTime, nextCurrentTime) {
-  if (!this._firedOnEnded) {
-    if (!this.loop && this.buffer && this._startTime + this.buffer.duration <= nextCurrentTime) {
-      this._stopTime = Math.min(this._startTime + this.buffer.duration, this._stopTime);
-    }
-
-    if (this.$stateAtTime(currentTime) === "FINISHED" && this.onended) {
-      this.onended({});
-      this._firedOnEnded = true;
-    }
-  }
-};
-
 AudioBufferSourceNode.prototype.start = function(when) {
   var inspector = new Inspector(this, "start", [
     { name: "when", type: "optional number" },
@@ -121,6 +97,30 @@ AudioBufferSourceNode.prototype.stop = function(when) {
   });
 
   this._stopTime = when;
+};
+
+AudioBufferSourceNode.prototype.$stateAtTime = function(t) {
+  if (this._startTime === Infinity) {
+    return "UNSCHEDULED";
+  } else if (t < this._startTime) {
+    return "SCHEDULED";
+  } else if (t < this._stopTime) {
+    return "PLAYING";
+  }
+  return "FINISHED";
+};
+
+AudioBufferSourceNode.prototype._process = function(currentTime, nextCurrentTime) {
+  if (!this._firedOnEnded) {
+    if (!this.loop && this.buffer && this._startTime + this.buffer.duration <= nextCurrentTime) {
+      this._stopTime = Math.min(this._startTime + this.buffer.duration, this._stopTime);
+    }
+
+    if (this.$stateAtTime(currentTime) === "FINISHED" && this.onended) {
+      this.onended({});
+      this._firedOnEnded = true;
+    }
+  }
 };
 
 module.exports = global.WebAudioTestAPI.AudioBufferSourceNode = AudioBufferSourceNode;
