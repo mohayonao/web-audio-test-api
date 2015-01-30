@@ -32,6 +32,8 @@ _.$type = require("./type");
 
 _.$enum = require("./enum");
 
+_.typeCheck = require("./typeCheck");
+
 _.formatter = require("./formatter");
 
 module.exports = _;
