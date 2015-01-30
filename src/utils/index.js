@@ -14,6 +14,8 @@ _.name = require("./name");
 
 _.jsonCircularCheck = require("./jsonCircularCheck");
 
+_.toMicroseconds = require("./toMicroseconds");
+
 _.typeCheck = require("./typeCheck");
 
 _.formatter = require("./formatter");
