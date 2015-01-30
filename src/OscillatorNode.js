@@ -5,6 +5,8 @@ var Inspector = require("./utils/Inspector");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
+var OscillatorType = "enum { sine, square, sawtooth, triangle }";
+
 function OscillatorNode(context) {
   AudioNode.call(this, {
     context: context,
@@ -17,10 +19,38 @@ function OscillatorNode(context) {
     channelInterpretation: "speakers"
   });
 
-  _.$enum(this, "type", [ "sine", "square", "sawtooth", "triangle" ], "sine");
-  _.$read(this, "frequency", new AudioParam(this, "frequency", 440, 0, 100000));
-  _.$read(this, "detune", new AudioParam(this, "detune", 0, -4800, 4800));
-  _.$type(this, "onended", "function", null);
+  var type = "sine";
+  var frequency = new AudioParam(this, "frequency", 440, 0, 100000);
+  var detune = new AudioParam(this, "detune", 0, -4800, 4800);
+  var onended = null;
+
+  Object.defineProperty(this, "type", {
+    get: function() {
+      return this._custom ? "custom" : this._type;
+    },
+    set: function(newValue) {
+      if (_.typeCheck(newValue, OscillatorType )) {
+        this._type = newValue;
+      } else {
+        var msg = "";
+
+        msg += "type ";
+        msg += _.formatter.shouldBeButGot(OscillatorType, newValue);
+
+        throw new TypeError(_.formatter.concat(this, msg));
+      }
+    },
+    enumerable: true
+  });
+  _.defineAttribute(this, "frequency", "readonly", frequency, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "detune", "readonly", detune, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "onended", "function|null", onended, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   Object.defineProperties(this, {
     $state: {
@@ -35,6 +65,7 @@ function OscillatorNode(context) {
     }
   });
 
+  this._type = type;
   this._custom = null;
   this._startTime = Infinity;
   this._stopTime  = Infinity;

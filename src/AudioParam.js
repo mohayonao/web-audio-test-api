@@ -6,17 +6,37 @@ var Inspector = require("./utils/Inspector");
 function AudioParam(node, name, defaultValue, minValue, maxValue) {
   var context = node.context;
 
-  _.$read(this, "name", name);
-  _.$read(this, "defaultValue", defaultValue);
-  _.$read(this, "minValue", minValue);
-  _.$read(this, "maxValue", maxValue);
-  _.$type(this, "value", {
-    type: "number",
-    getter: function() {
+  _.defineAttribute(this, "name", "readonly", name, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "defaultValue", "readonly", defaultValue, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "minValue", "readonly", minValue, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "maxValue", "readonly", maxValue, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  Object.defineProperty(this, "value", {
+    get: function() {
       this._value = this.$valueAtTime(context.currentTime);
       return this._value;
-    }
-  }, defaultValue);
+    },
+    set: function(newValue) {
+      if (_.typeCheck(newValue, "number")) {
+        this._value = newValue;
+      } else {
+        var msg = "";
+
+        msg += "type ";
+        msg += _.formatter.shouldBeButGot("number", newValue);
+
+        throw new TypeError(_.formatter.concat(this, msg));
+      }
+    },
+    enumerable: true
+  });
 
   Object.defineProperties(this, {
     $name   : { value: "AudioParam" },
@@ -26,6 +46,7 @@ function AudioParam(node, name, defaultValue, minValue, maxValue) {
     $events : { value: [] },
   });
 
+  this._value = this.defaultValue;
   this._currentTime = -1;
 }
 _.inherits(AudioParam, global.AudioParam);

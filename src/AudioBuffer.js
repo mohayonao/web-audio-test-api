@@ -4,10 +4,18 @@ var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
 
 function AudioBuffer(context, numberOfChannels, length, sampleRate) {
-  _.$read(this, "sampleRate", sampleRate);
-  _.$read(this, "length", length);
-  _.$read(this, "duration", length / sampleRate);
-  _.$read(this, "numberOfChannels", numberOfChannels);
+  _.defineAttribute(this, "sampleRate", "readonly", sampleRate, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "length", "readonly", length, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "duration", "readonly", length / sampleRate, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "numberOfChannels", "readonly", numberOfChannels, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   Object.defineProperties(this, {
     $name   : { value: "AudioBuffer" },

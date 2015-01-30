@@ -16,10 +16,21 @@ function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberO
     channelCountMode: "max",
     channelInterpretation: "speakers"
   });
-  _.$read(this, "numberOfInputChannels", numberOfInputChannels);
-  _.$read(this, "numberOfOutputChannels", numberOfOutputChannels);
-  _.$read(this, "bufferSize", bufferSize);
-  _.$type(this, "onaudioprocess", "function", null);
+
+  var onaudioprocess = null;
+
+  _.defineAttribute(this, "numberOfInputChannels", "readonly", numberOfInputChannels, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "numberOfOutputChannels", "readonly", numberOfOutputChannels, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "bufferSize", "readonly", bufferSize, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "onaudioprocess", "function|null", onaudioprocess, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   this._numSamples = 0;
 }

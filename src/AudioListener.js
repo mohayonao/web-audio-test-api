@@ -4,8 +4,15 @@ var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
 
 function AudioListener(context) {
-  _.$type(this, "dopplerFactor", "number", 1);
-  _.$type(this, "speedOfSound", "number", 343.3);
+  var dopplerFactor = 1;
+  var speedOfSound = 343.3;
+
+  _.defineAttribute(this, "dopplerFactor", "number", dopplerFactor, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "speedOfSound", "number", speedOfSound, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   Object.defineProperties(this, {
     $name   : { value: "AudioListener" },

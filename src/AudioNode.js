@@ -3,13 +3,35 @@
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
 
+var ChannelCountMode = "enum { max, clamped-max, explicit }";
+var ChannelInterpretation = "enum { speakers, discrete }";
+
 function AudioNode(spec) {
-  _.$read(this, "context", spec.context);
-  _.$read(this, "numberOfInputs", spec.numberOfInputs);
-  _.$read(this, "numberOfOutputs", spec.numberOfOutputs);
-  _.$type(this, "channelCount", "number", spec.channelCount);
-  _.$enum(this, "channelCountMode", [ "max", "clamped-max", "explicit" ], spec.channelCountMode);
-  _.$enum(this, "channelInterpretation", [ "speakers", "discrete" ], spec.channelInterpretation);
+  var context = spec.context;
+  var numberOfInputs = spec.numberOfInputs;
+  var numberOfOutputs = spec.numberOfOutputs;
+  var channelCount = spec.channelCount;
+  var channelCountMode = spec.channelCountMode;
+  var channelInterpretation = spec.channelInterpretation;
+
+  _.defineAttribute(this, "context", "readonly", context, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "numberOfInputs", "readonly", numberOfInputs, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "numberOfOutputs", "readonly", numberOfOutputs, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "channelCount", "number", channelCount, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "channelCountMode", ChannelCountMode, channelCountMode, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "channelInterpretation", ChannelInterpretation, channelInterpretation, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   Object.defineProperties(this, {
     $name     : { value: spec.name },

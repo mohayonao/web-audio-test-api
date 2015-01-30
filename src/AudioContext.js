@@ -24,10 +24,23 @@ var OscillatorNode = require("./OscillatorNode");
 var PeriodicWave = require("./PeriodicWave");
 
 function AudioContext() {
-  _.$read(this, "destination", new AudioDestinationNode(this));
-  _.$read(this, "sampleRate", _.SAMPLERATE);
-  _.$read(this, "currentTime", function() { return this._currentTime; });
-  _.$read(this, "listener", new AudioListener(this));
+  var destination = new AudioDestinationNode(this);
+  var sampleRate = _.SAMPLERATE;
+  var currentTime = function() { return this._currentTime; };
+  var listener = new AudioListener(this);
+
+  _.defineAttribute(this, "destination", "readonly", destination, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "sampleRate", "readonly", sampleRate, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "currentTime", "readonly", currentTime, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "listener", "readonly", listener, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   Object.defineProperties(this, {
     $name   : { value : "AudioContext" },

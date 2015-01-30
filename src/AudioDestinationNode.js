@@ -14,7 +14,12 @@ function AudioDestinationNode(context) {
     channelCountMode: "explicit",
     channelInterpretation: "speakers"
   });
-  _.$read(this, "maxChannelCount", 2);
+
+  var maxChannelCount = 2;
+
+  _.defineAttribute(this, "maxChannelCount", "readonly", maxChannelCount, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 }
 _.inherits(AudioDestinationNode, global.AudioDestinationNode);
 

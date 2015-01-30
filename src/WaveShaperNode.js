@@ -3,6 +3,8 @@
 var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 
+var OverSampleType = "enum { none, 2x, 4x }";
+
 function WaveShaperNode(context) {
   AudioNode.call(this, {
     context: context,
@@ -14,8 +16,16 @@ function WaveShaperNode(context) {
     channelCountMode: "max",
     channelInterpretation: "speakers"
   });
-  _.$type(this, "curve", Float32Array, null);
-  _.$enum(this, "oversample", [ "none", "2x", "4x" ], "none");
+
+  var curve = null;
+  var oversample = "none";
+
+  _.defineAttribute(this, "curve", "Float32Array|null", curve, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "oversample", OverSampleType, oversample, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 }
 _.inherits(WaveShaperNode, global.WaveShaperNode);
 

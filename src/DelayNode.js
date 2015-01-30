@@ -15,7 +15,12 @@ function DelayNode(context, maxDelayTime) {
     channelCountMode: "max",
     channelInterpretation: "speakers"
   });
-  _.$read(this, "delayTime", new AudioParam(this, "delayTime", 0, 0, maxDelayTime));
+
+  var delayTime = new AudioParam(this, "delayTime", 0, 0, maxDelayTime);
+
+  _.defineAttribute(this, "delayTime", "readonly", delayTime, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   Object.defineProperties(this, {
     $maxDelayTime: { value: maxDelayTime }

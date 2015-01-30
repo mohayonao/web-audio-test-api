@@ -4,7 +4,6 @@ var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
-var AudioBuffer = require("./AudioBuffer");
 
 function AudioBufferSourceNode(context) {
   AudioNode.call(this, {
@@ -17,12 +16,32 @@ function AudioBufferSourceNode(context) {
     channelCountMode: "max",
     channelInterpretation: "speakers"
   });
-  _.$type(this, "buffer", AudioBuffer, null);
-  _.$read(this, "playbackRate", new AudioParam(this, "playbackRate", 1, 0, 1024));
-  _.$type(this, "loop", "boolean", false);
-  _.$type(this, "loopStart", "number", 0);
-  _.$type(this, "loopEnd", "number", 0);
-  _.$type(this, "onended", "function", null);
+
+  var buffer = null;
+  var playbackRate = new AudioParam(this, "playbackRate", 1, 0, 1024);
+  var loop = false;
+  var loopStart = 0;
+  var loopEnd = 0;
+  var onended = null;
+
+  _.defineAttribute(this, "buffer", "AudioBuffer|null", buffer, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "playbackRate", "readonly", playbackRate, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "loop", "boolean", loop, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "loopStart", "number", loopStart, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "loopEnd", "number", loopEnd, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "onended", "function|null", onended, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   Object.defineProperties(this, {
     $state: {

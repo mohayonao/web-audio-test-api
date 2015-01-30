@@ -18,11 +18,26 @@ function OfflineAudioContext(numberOfChannels, length, sampleRate) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  _.$read(this, "destination", new AudioDestinationNode(this));
-  _.$read(this, "sampleRate", sampleRate);
-  _.$read(this, "currentTime", function() { return this._currentTime; });
-  _.$read(this, "listener", new AudioListener(this));
-  _.$type(this, "oncomplete", "function", null);
+  var destination = new AudioDestinationNode(this);
+  var currentTime = function() { return this._currentTime; };
+  var listener = new AudioListener(this);
+  var oncomplete = null;
+
+  _.defineAttribute(this, "destination", "readonly", destination, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "sampleRate", "readonly", sampleRate, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "currentTime", "readonly", currentTime, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "listener", "readonly", listener, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "oncomplete", "function|null", oncomplete, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   Object.defineProperties(this, {
     $name   : { value: "OfflineAudioContext" },

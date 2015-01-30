@@ -15,7 +15,12 @@ function GainNode(context) {
     channelCountMode: "max",
     channelInterpretation: "speakers"
   });
-  _.$read(this, "gain", new AudioParam(this, "gain", 1.0, 0.0, 1.0));
+
+  var gain = new AudioParam(this, "gain", 1.0, 0.0, 1.0);
+
+  _.defineAttribute(this, "gain", "readonly", gain, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 }
 _.inherits(GainNode, global.GainNode);
 
