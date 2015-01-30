@@ -22,12 +22,6 @@ _.id = require("./id");
 
 _.jsonCircularCheck = require("./jsonCircularCheck");
 
-_.$read = require("./read");
-
-_.$type = require("./type");
-
-_.$enum = require("./enum");
-
 _.typeCheck = require("./typeCheck");
 
 _.formatter = require("./formatter");
