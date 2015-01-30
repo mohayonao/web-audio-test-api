@@ -11,6 +11,12 @@ describe("AudioContext", function() {
     it("()", function() {
       assert(audioContext instanceof global.AudioContext);
       assert(audioContext instanceof global.EventTarget);
+
+      assert.throws(function() {
+        global.AudioContext();
+      }, function(e) {
+        return e instanceof TypeError && /Failed to construct/.test(e.message);
+      });
     });
   });
 

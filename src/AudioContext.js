@@ -28,6 +28,10 @@ require("./MediaStream");
 require("./HTMLMediaElement");
 
 function AudioContext() {
+  if (!(this instanceof AudioContext)) {
+    throw new TypeError("Failed to construct 'AudioContext': Please use the 'new' operator");
+  }
+
   EventTarget.call(this);
 
   var destination = new AudioDestinationNode(this);

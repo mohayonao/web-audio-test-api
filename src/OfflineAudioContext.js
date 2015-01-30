@@ -9,6 +9,10 @@ var AudioListener = require("./AudioListener");
 var OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
 
 function OfflineAudioContext(numberOfChannels, length, sampleRate) {
+  if (!(this instanceof OfflineAudioContext)) {
+    throw new TypeError("Failed to construct 'AudioContext': Please use the 'new' operator");
+  }
+
   EventTarget.call(this);
 
   var inspector = new Inspector(this, null, [

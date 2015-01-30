@@ -8,9 +8,15 @@ describe("OfflineAudioContext", function() {
   });
 
   describe("constructor", function() {
-    it("(numberOfChannels, length, sampleRate)", function() {
+    it("(numberOfChannels: number, length: number, sampleRate: number)", function() {
       assert(audioContext instanceof global.OfflineAudioContext);
       assert(audioContext instanceof global.AudioContext);
+
+      assert.throws(function() {
+        global.OfflineAudioContext();
+      }, function(e) {
+        return e instanceof TypeError && /Failed to construct/.test(e.message);
+      });
 
       assert.throws(function() {
         audioContext = new global.OfflineAudioContext("INVALID", 441, 44100);
