@@ -20,8 +20,6 @@ _.toS = require("./toS");
 
 _.id = require("./id");
 
-_.caption = require("./caption");
-
 _.jsonCircularCheck = require("./jsonCircularCheck");
 
 _.$read = require("./read");
