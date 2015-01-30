@@ -32,4 +32,6 @@ _.typeCheck = require("./typeCheck");
 
 _.formatter = require("./formatter");
 
+_.defineAttribute = require("./defineAttribute");
+
 module.exports = _;
