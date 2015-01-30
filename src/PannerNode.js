@@ -2,18 +2,16 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
 var PanningModelType = "enum { equalpower, HRTF }";
 var DistanceModelType = "enum { linear, inverse, exponential }";
 
-/* istanbul ignore else */
-if (typeof global.PannerNode === "undefined") {
-  global.PannerNode = function PannerNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createPanner()");
-  };
-  _.inherits(global.PannerNode, AudioNode);
-}
+var PannerNodeConstructor = function PannerNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createPanner()");
+};
+_.inherits(PannerNodeConstructor, AudioNode);
 
 function PannerNode(context) {
   AudioNode.call(this, context, {
@@ -63,7 +61,9 @@ function PannerNode(context) {
     throw new TypeError(_.formatter.concat(this, msg));
   });
 }
-_.inherits(PannerNode, global.PannerNode);
+_.inherits(PannerNode, PannerNodeConstructor);
+
+PannerNode.exports = PannerNodeConstructor;
 
 PannerNode.prototype.setPosition = function() {
   var inspector = new Inspector(this, "setPosition", [
@@ -101,4 +101,4 @@ PannerNode.prototype.setVelocity = function() {
   });
 };
 
-module.exports = global.WebAudioTestAPI.PannerNode = PannerNode;
+module.exports = WebAudioTestAPI.PannerNode = PannerNode;

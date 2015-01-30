@@ -1,16 +1,14 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
-/* istanbul ignore else */
-if (typeof global.DelayNode === "undefined") {
-  global.DelayNode = function DelayNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createDelay([maxDelayTime: number])");
-  };
-  _.inherits(global.DelayNode, AudioNode);
-}
+var DelayNodeConstructor = function DelayNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createDelay([maxDelayTime: number])");
+};
+_.inherits(DelayNodeConstructor, AudioNode);
 
 function DelayNode(context, maxDelayTime) {
   AudioNode.call(this, context, {
@@ -33,6 +31,8 @@ function DelayNode(context, maxDelayTime) {
     $maxDelayTime: { value: maxDelayTime }
   });
 }
-_.inherits(DelayNode, global.DelayNode);
+_.inherits(DelayNode, DelayNodeConstructor);
 
-module.exports = global.WebAudioTestAPI.DelayNode = DelayNode;
+DelayNode.exports = DelayNodeConstructor;
+
+module.exports = WebAudioTestAPI.DelayNode = DelayNode;

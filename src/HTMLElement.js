@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var Element = require("./Element");
 
 /* istanbul ignore else */
@@ -15,4 +16,4 @@ function HTMLElement() {
 }
 _.inherits(HTMLElement, global.HTMLElement);
 
-module.exports = global.WebAudioTestAPI.HTMLElement = HTMLElement;
+module.exports = WebAudioTestAPI.HTMLElement = HTMLElement;

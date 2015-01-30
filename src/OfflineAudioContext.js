@@ -2,10 +2,12 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
-var EventTarget = require("./EventTarget");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
+var AudioContext = require("./AudioContext");
 var AudioBuffer = require("./AudioBuffer");
 var AudioDestinationNode = require("./AudioDestinationNode");
 var AudioListener = require("./AudioListener");
+var EventTarget = require("./EventTarget");
 var OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
 
 function OfflineAudioContext(numberOfChannels, length, sampleRate) {
@@ -59,7 +61,7 @@ function OfflineAudioContext(numberOfChannels, length, sampleRate) {
   this._length = length;
   this._rendering = false;
 }
-_.inherits(OfflineAudioContext, global.AudioContext);
+_.inherits(OfflineAudioContext, AudioContext);
 
 OfflineAudioContext.prototype.startRendering = function() {
   var inspector = new Inspector(this, "startRendering", []);
@@ -102,4 +104,4 @@ OfflineAudioContext.prototype._process = function(microseconds) {
   }
 };
 
-module.exports = global.WebAudioTestAPI.OfflineAudioContext = OfflineAudioContext;
+module.exports = WebAudioTestAPI.OfflineAudioContext = OfflineAudioContext;

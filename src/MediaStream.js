@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var EventTarget = require("./EventTarget");
 
 /* istanbul ignore else */
@@ -15,4 +16,4 @@ function MediaStream() {
 }
 _.inherits(MediaStream, global.MediaStream);
 
-module.exports = global.WebAudioTestAPI.MediaStream = MediaStream;
+module.exports = WebAudioTestAPI.MediaStream = MediaStream;

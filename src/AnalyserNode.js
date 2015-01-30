@@ -2,17 +2,15 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
 var FFTSize = "enum { 32, 64, 128, 256, 512, 1024, 2048 }";
 
-/* istanbul ignore else */
-if (typeof global.AnalyserNode === "undefined") {
-  global.AnalyserNode = function AnalyserNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createAnalyser()");
-  };
-  _.inherits(global.AnalyserNode, AudioNode);
-}
+var AnalyserNodeConstructor = function AnalyserNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createAnalyser()");
+};
+_.inherits(AnalyserNodeConstructor, AudioNode);
 
 function AnalyserNode(context) {
   AudioNode.call(this, context, {
@@ -47,7 +45,9 @@ function AnalyserNode(context) {
     throw new TypeError(_.formatter.concat(this, msg));
   });
 }
-_.inherits(AnalyserNode, global.AnalyserNode);
+_.inherits(AnalyserNode, AnalyserNodeConstructor);
+
+AnalyserNode.exports = AnalyserNodeConstructor;
 
 AnalyserNode.prototype.getFloatFrequencyData = function() {
   var inspector = new Inspector(this, "getFloatFrequencyData", [
@@ -79,4 +79,4 @@ AnalyserNode.prototype.getByteTimeDomainData = function() {
   });
 };
 
-module.exports = global.WebAudioTestAPI.AnalyserNode = AnalyserNode;
+module.exports = WebAudioTestAPI.AnalyserNode = AnalyserNode;

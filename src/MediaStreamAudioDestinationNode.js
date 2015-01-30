@@ -1,15 +1,13 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
-/* istanbul ignore else */
-if (typeof global.MediaStreamAudioDestinationNode === "undefined") {
-  global.MediaStreamAudioDestinationNode = function MediaStreamAudioDestinationNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createMediaStreamDestination()");
-  };
-  _.inherits(global.MediaStreamAudioDestinationNode, AudioNode);
-}
+var MediaStreamAudioDestinationNodeConstructor = function MediaStreamAudioDestinationNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createMediaStreamDestination()");
+};
+_.inherits(MediaStreamAudioDestinationNodeConstructor, AudioNode);
 
 function MediaStreamAudioDestinationNode(context) {
   AudioNode.call(this, context, {
@@ -22,6 +20,8 @@ function MediaStreamAudioDestinationNode(context) {
     channelInterpretation: "speakers"
   });
 }
-_.inherits(MediaStreamAudioDestinationNode, global.MediaStreamAudioDestinationNode);
+_.inherits(MediaStreamAudioDestinationNode, MediaStreamAudioDestinationNodeConstructor);
 
-module.exports = global.WebAudioTestAPI.MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode;
+MediaStreamAudioDestinationNode.exports = MediaStreamAudioDestinationNodeConstructor;
+
+module.exports = WebAudioTestAPI.MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode;

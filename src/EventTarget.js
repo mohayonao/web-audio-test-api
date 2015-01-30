@@ -2,6 +2,7 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 
 /* istanbul ignore else */
 if (typeof global.EventTarget === "undefined") {
@@ -73,4 +74,4 @@ EventTarget.prototype.$listeners = function(type) {
   return (this._listeners[type] || /* istanbul ignore next */ []).slice();
 };
 
-module.exports = global.WebAudioTestAPI.EventTarget = EventTarget;
+module.exports = WebAudioTestAPI.EventTarget = EventTarget;

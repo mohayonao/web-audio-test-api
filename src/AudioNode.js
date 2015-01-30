@@ -2,18 +2,17 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
+var AudioParam = require("./AudioParam");
 var EventTarget = require("./EventTarget");
 
 var ChannelCountMode = "enum { max, clamped-max, explicit }";
 var ChannelInterpretation = "enum { speakers, discrete }";
 
-/* istanbul ignore else */
-if (typeof global.AudioParam === "undefined") {
-  global.AudioNode = function AudioNode() {
-    throw new TypeError("Illegal constructor");
-  };
-  _.inherits(global.AudioNode, EventTarget);
-}
+var AudioNodeConstructor = function AudioNode() {
+  throw new TypeError("Illegal constructor");
+};
+_.inherits(AudioNodeConstructor, EventTarget);
 
 function AudioNode(context, spec) {
   spec = spec || {};
@@ -54,7 +53,9 @@ function AudioNode(context, spec) {
   this._outputs = [];
   this._tick = -1;
 }
-_.inherits(AudioNode, global.AudioNode);
+_.inherits(AudioNode, AudioNodeConstructor);
+
+AudioNode.exports = AudioNodeConstructor;
 
 AudioNode.prototype.connect = function(destination) {
   var inspector = new Inspector(this, "connect", [
@@ -155,7 +156,7 @@ AudioNode.prototype.$process = function(inNumSamples, tick) {
       src.$process(inNumSamples, tick);
     });
     Object.keys(this).forEach(function(key) {
-      if (this[key] instanceof global.AudioParam) {
+      if (this[key] instanceof AudioParam) {
         this[key].$process(inNumSamples, tick);
       }
     }, this);
@@ -165,4 +166,4 @@ AudioNode.prototype.$process = function(inNumSamples, tick) {
   }
 };
 
-module.exports = global.WebAudioTestAPI.AudioNode = AudioNode;
+module.exports = WebAudioTestAPI.AudioNode = AudioNode;

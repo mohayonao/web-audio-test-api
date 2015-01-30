@@ -1,15 +1,13 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
-/* istanbul ignore else */
-if (typeof global.ConvolverNode === "undefined") {
-  global.ConvolverNode = function ConvolverNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createConvolver()");
-  };
-  _.inherits(global.ConvolverNode, AudioNode);
-}
+var ConvolverNodeConstructor = function ConvolverNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createConvolver()");
+};
+_.inherits(ConvolverNodeConstructor, AudioNode);
 
 function ConvolverNode(context) {
   AudioNode.call(this, context, {
@@ -32,6 +30,8 @@ function ConvolverNode(context) {
     throw new TypeError(_.formatter.concat(this, msg));
   });
 }
-_.inherits(ConvolverNode, global.ConvolverNode);
+_.inherits(ConvolverNode, ConvolverNodeConstructor);
 
-module.exports = global.WebAudioTestAPI.ConvolverNode = ConvolverNode;
+ConvolverNode.exports = ConvolverNodeConstructor;
+
+module.exports = WebAudioTestAPI.ConvolverNode = ConvolverNode;

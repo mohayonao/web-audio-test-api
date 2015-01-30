@@ -1,17 +1,15 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
 var OverSampleType = "enum { none, 2x, 4x }";
 
-/* istanbul ignore else */
-if (typeof global.WaveShaperNode === "undefined") {
-  global.WaveShaperNode = function WaveShaperNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createWaveShaper()");
-  };
-  _.inherits(global.WaveShaperNode, AudioNode);
-}
+var WaveShaperNodeConstructor = function WaveShaperNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createWaveShaper()");
+};
+_.inherits(WaveShaperNodeConstructor, AudioNode);
 
 function WaveShaperNode(context) {
   AudioNode.call(this, context, {
@@ -34,6 +32,8 @@ function WaveShaperNode(context) {
     throw new TypeError(_.formatter.concat(this, msg));
   });
 }
-_.inherits(WaveShaperNode, global.WaveShaperNode);
+_.inherits(WaveShaperNode, WaveShaperNodeConstructor);
 
-module.exports = global.WebAudioTestAPI.WaveShaperNode = WaveShaperNode;
+WaveShaperNode.exports = WaveShaperNodeConstructor;
+
+module.exports = WebAudioTestAPI.WaveShaperNode = WaveShaperNode;

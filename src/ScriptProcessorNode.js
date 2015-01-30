@@ -1,17 +1,15 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 var AudioBuffer = require("./AudioBuffer");
 var AudioProcessingEvent = require("./AudioProcessingEvent");
 
-/* istanbul ignore else */
-if (typeof global.ScriptProcessorNode === "undefined") {
-  global.ScriptProcessorNode = function ScriptProcessorNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createScriptProcessor(bufferSize: number, [numberOfInputChannels: number], [numberOfOutputChannels: number])");
-  };
-  _.inherits(global.ScriptProcessorNode, AudioNode);
-}
+var ScriptProcessorNodeConstructor = function ScriptProcessorNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createScriptProcessor(bufferSize: number, [numberOfInputChannels: number], [numberOfOutputChannels: number])");
+};
+_.inherits(ScriptProcessorNodeConstructor, AudioNode);
 
 function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
   AudioNode.call(this, context, {
@@ -41,7 +39,9 @@ function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberO
 
   this._numSamples = 0;
 }
-_.inherits(ScriptProcessorNode, global.ScriptProcessorNode);
+_.inherits(ScriptProcessorNode, ScriptProcessorNodeConstructor);
+
+ScriptProcessorNode.exports = ScriptProcessorNodeConstructor;
 
 ScriptProcessorNode.prototype._process = function(inNumSamples) {
   this._numSamples -= inNumSamples;
@@ -59,4 +59,4 @@ ScriptProcessorNode.prototype._process = function(inNumSamples) {
   }
 };
 
-module.exports = global.WebAudioTestAPI.ScriptProcessorNode = ScriptProcessorNode;
+module.exports = WebAudioTestAPI.ScriptProcessorNode = ScriptProcessorNode;

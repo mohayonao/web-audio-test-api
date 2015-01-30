@@ -1,15 +1,13 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
-/* istanbul ignore else */
-if (typeof global.ChannelMergerNode === "undefined") {
-  global.ChannelMergerNode = function ChannelMergerNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createChannelMerger([numberOfInputs: number])");
-  };
-  _.inherits(global.ChannelMergerNode, AudioNode);
-}
+var ChannelMergerNodeConstructor = function ChannelMergerNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createChannelMerger([numberOfInputs: number])");
+};
+_.inherits(ChannelMergerNodeConstructor, AudioNode);
 
 function ChannelMergerNode(context, numberOfInputs) {
   AudioNode.call(this, context, {
@@ -22,6 +20,8 @@ function ChannelMergerNode(context, numberOfInputs) {
     channelInterpretation: "speakers"
   });
 }
-_.inherits(ChannelMergerNode, global.ChannelMergerNode);
+_.inherits(ChannelMergerNode, ChannelMergerNodeConstructor);
 
-module.exports = global.WebAudioTestAPI.ChannelMergerNode = ChannelMergerNode;
+ChannelMergerNode.exports = ChannelMergerNodeConstructor;
+
+module.exports = WebAudioTestAPI.ChannelMergerNode = ChannelMergerNode;

@@ -2,14 +2,12 @@
 
 var _ = require("./utils");
 var AudioNode = require("./AudioNode");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 
-/* istanbul ignore else */
-if (typeof global.AudioDestinationNode === "undefined") {
-  global.AudioDestinationNode = function AudioDestinationNode() {
-    throw new TypeError("Illegal constructor");
-  };
-  _.inherits(global.AudioDestinationNode, AudioNode);
-}
+var AudioDestinationNodeConstructor = function AudioDestinationNode() {
+  throw new TypeError("Illegal constructor");
+};
+_.inherits(AudioDestinationNodeConstructor, AudioNode);
 
 function AudioDestinationNode(context) {
   AudioNode.call(this, context, {
@@ -28,6 +26,8 @@ function AudioDestinationNode(context) {
     throw new TypeError(_.formatter.concat(this, msg));
   });
 }
-_.inherits(AudioDestinationNode, global.AudioDestinationNode);
+_.inherits(AudioDestinationNode, AudioDestinationNodeConstructor);
 
-module.exports = global.WebAudioTestAPI.AudioDestinationNode = AudioDestinationNode;
+AudioDestinationNode.exports = AudioDestinationNodeConstructor;
+
+module.exports = WebAudioTestAPI.AudioDestinationNode = AudioDestinationNode;

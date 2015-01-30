@@ -2,13 +2,11 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 
-/* istanbul ignore else */
-if (typeof global.AudioBuffer === "undefined") {
-  global.AudioBuffer = function AudioBuffer() {
-    throw new TypeError("Illegal constructor: use audioContext.createBuffer(numberOfChannels: number, length: number, sampleRate: number)");
-  };
-}
+var AudioBufferConstructor = function AudioBuffer() {
+  throw new TypeError("Illegal constructor: use audioContext.createBuffer(numberOfChannels: number, length: number, sampleRate: number)");
+};
 
 function AudioBuffer(context, numberOfChannels, length, sampleRate) {
   _.defineAttribute(this, "sampleRate", "readonly", sampleRate, function(msg) {
@@ -34,7 +32,9 @@ function AudioBuffer(context, numberOfChannels, length, sampleRate) {
     this._data[i] = new Float32Array(length);
   }
 }
-_.inherits(AudioBuffer, global.AudioBuffer);
+_.inherits(AudioBuffer, AudioBufferConstructor);
+
+AudioBuffer.exports = AudioBufferConstructor;
 
 AudioBuffer.prototype.getChannelData = function(channel) {
   var inspector = new Inspector(this, "getChannelData", [
@@ -69,4 +69,4 @@ AudioBuffer.prototype.toJSON = function() {
   return json;
 };
 
-module.exports = global.WebAudioTestAPI.AudioBuffer = AudioBuffer;
+module.exports = WebAudioTestAPI.AudioBuffer = AudioBuffer;

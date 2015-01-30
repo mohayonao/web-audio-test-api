@@ -2,19 +2,17 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 var Event = require("./Event");
 
 var OscillatorType = "enum { sine, square, sawtooth, triangle }";
 
-/* istanbul ignore else */
-if (typeof global.OscillatorNode === "undefined") {
-  global.OscillatorNode = function OscillatorNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createOscillator()");
-  };
-  _.inherits(global.OscillatorNode, AudioNode);
-}
+var OscillatorNodeConstructor = function OscillatorNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createOscillator()");
+};
+_.inherits(OscillatorNodeConstructor, AudioNode);
 
 function OscillatorNode(context) {
   AudioNode.call(this, context, {
@@ -79,7 +77,9 @@ function OscillatorNode(context) {
   this._stopTime  = Infinity;
   this._firedOnEnded = false;
 }
-_.inherits(OscillatorNode, global.OscillatorNode);
+_.inherits(OscillatorNode, OscillatorNodeConstructor);
+
+OscillatorNode.exports = OscillatorNodeConstructor;
 
 OscillatorNode.prototype.start = function(when) {
   var inspector = new Inspector(this, "start", [
@@ -150,4 +150,4 @@ OscillatorNode.prototype._process = function() {
   }
 };
 
-module.exports = global.WebAudioTestAPI.OscillatorNode = OscillatorNode;
+module.exports = WebAudioTestAPI.OscillatorNode = OscillatorNode;

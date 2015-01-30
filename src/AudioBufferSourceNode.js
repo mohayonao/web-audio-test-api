@@ -2,17 +2,15 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 var Event = require("./Event");
 
-/* istanbul ignore else */
-if (typeof global.AudioBufferSourceNode === "undefined") {
-  global.AudioBufferSourceNode = function AudioBufferSourceNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createBufferSource()");
-  };
-  _.inherits(global.AudioBufferSourceNode, AudioNode);
-}
+var AudioBufferSourceNodeConstructor = function AudioBufferSourceNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createBufferSource()");
+};
+_.inherits(AudioBufferSourceNodeConstructor, AudioNode);
 
 function AudioBufferSourceNode(context) {
   AudioNode.call(this, context, {
@@ -63,7 +61,9 @@ function AudioBufferSourceNode(context) {
   this._stopTime  = Infinity;
   this._firedOnEnded = false;
 }
-_.inherits(AudioBufferSourceNode, global.AudioBufferSourceNode);
+_.inherits(AudioBufferSourceNode, AudioBufferSourceNodeConstructor);
+
+AudioBufferSourceNode.exports = AudioBufferSourceNodeConstructor;
 
 AudioBufferSourceNode.prototype.start = function(when) {
   var inspector = new Inspector(this, "start", [
@@ -129,4 +129,4 @@ AudioBufferSourceNode.prototype._process = function() {
   }
 };
 
-module.exports = global.WebAudioTestAPI.AudioBufferSourceNode = AudioBufferSourceNode;
+module.exports = WebAudioTestAPI.AudioBufferSourceNode = AudioBufferSourceNode;

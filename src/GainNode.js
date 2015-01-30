@@ -1,16 +1,14 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
-/* istanbul ignore else */
-if (typeof global.GainNode === "undefined") {
-  global.GainNode = function GainNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createGain()");
-  };
-  _.inherits(global.GainNode, AudioNode);
-}
+var GainNodeConstructor = function GainNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createGain()");
+};
+_.inherits(GainNodeConstructor, AudioNode);
 
 function GainNode(context) {
   AudioNode.call(this, context, {
@@ -29,6 +27,8 @@ function GainNode(context) {
     throw new TypeError(_.formatter.concat(this, msg));
   });
 }
-_.inherits(GainNode, global.GainNode);
+_.inherits(GainNode, GainNodeConstructor);
 
-module.exports = global.WebAudioTestAPI.GainNode = GainNode;
+GainNode.exports = GainNodeConstructor;
+
+module.exports = WebAudioTestAPI.GainNode = GainNode;

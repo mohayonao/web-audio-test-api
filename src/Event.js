@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 
 function Event(name, target) {
   this.type = name;
@@ -14,4 +15,4 @@ if (typeof global.Event === "undefined") {
   global.Event = Event;
 }
 
-module.exports = global.WebAudioTestAPI.Event = Event;
+module.exports = WebAudioTestAPI.Event = Event;

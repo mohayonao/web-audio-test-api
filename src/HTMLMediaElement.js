@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var HTMLElement = require("./HTMLElement");
 
 /* istanbul ignore else */
@@ -15,4 +16,4 @@ function HTMLMediaElement() {
 }
 _.inherits(HTMLMediaElement, global.HTMLMediaElement);
 
-module.exports = global.WebAudioTestAPI.HTMLMediaElement = HTMLMediaElement;
+module.exports = WebAudioTestAPI.HTMLMediaElement = HTMLMediaElement;

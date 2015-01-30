@@ -2,13 +2,11 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 
-/* istanbul ignore else */
-if (typeof global.AudioListener === "undefined") {
-  global.AudioListener = function AudioListener() {
-    throw new TypeError("Illegal constructor");
-  };
-}
+var AudioListenerConstructor = function AudioListener() {
+  throw new TypeError("Illegal constructor");
+};
 
 function AudioListener(context) {
   var dopplerFactor = 1;
@@ -26,7 +24,9 @@ function AudioListener(context) {
     $context: { value: context }
   });
 }
-_.inherits(AudioListener, global.AudioListener);
+_.inherits(AudioListener, AudioListenerConstructor);
+
+AudioListener.exports = AudioListenerConstructor;
 
 AudioListener.prototype.setPosition = function() {
   var inspector = new Inspector(this, "setPosition", [
@@ -67,4 +67,4 @@ AudioListener.prototype.setVelocity = function() {
   });
 };
 
-module.exports = global.WebAudioTestAPI.AudioListener = AudioListener;
+module.exports = WebAudioTestAPI.AudioListener = AudioListener;

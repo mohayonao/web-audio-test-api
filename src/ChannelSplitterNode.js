@@ -1,15 +1,13 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
-/* istanbul ignore else */
-if (typeof global.ChannelSplitterNode === "undefined") {
-  global.ChannelSplitterNode = function ChannelSplitterNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createChannelSplitter([numberOfOutputs: number])");
-  };
-  _.inherits(global.ChannelSplitterNode, AudioNode);
-}
+var ChannelSplitterNodeConstructor = function ChannelSplitterNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createChannelSplitter([numberOfOutputs: number])");
+};
+_.inherits(ChannelSplitterNodeConstructor, AudioNode);
 
 function ChannelSplitterNode(context, numberOfOutputs) {
   AudioNode.call(this, context, {
@@ -22,6 +20,8 @@ function ChannelSplitterNode(context, numberOfOutputs) {
     channelInterpretation: "speakers"
   });
 }
-_.inherits(ChannelSplitterNode, global.ChannelSplitterNode);
+_.inherits(ChannelSplitterNode, ChannelSplitterNodeConstructor);
 
-module.exports = global.WebAudioTestAPI.ChannelSplitterNode = ChannelSplitterNode;
+ChannelSplitterNode.exports = ChannelSplitterNodeConstructor;
+
+module.exports = WebAudioTestAPI.ChannelSplitterNode = ChannelSplitterNode;

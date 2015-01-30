@@ -1,13 +1,11 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 
-/* istanbul ignore else */
-if (typeof global.PeriodicWave === "undefined") {
-  global.PeriodicWave = function PeriodicWave() {
-    throw new TypeError("Illegal constructor");
-  };
-}
+var PeriodicWaveConstructor = function PeriodicWave() {
+  throw new TypeError("Illegal constructor");
+};
 
 function PeriodicWave(real, imag) {
   Object.defineProperties(this, {
@@ -16,6 +14,8 @@ function PeriodicWave(real, imag) {
     $imag: { value: imag },
   });
 }
-_.inherits(PeriodicWave, global.PeriodicWave);
+_.inherits(PeriodicWave, PeriodicWaveConstructor);
 
-module.exports = global.WebAudioTestAPI.PeriodicWave = PeriodicWave;
+PeriodicWave.exports = PeriodicWaveConstructor;
+
+module.exports = WebAudioTestAPI.PeriodicWave = PeriodicWave;

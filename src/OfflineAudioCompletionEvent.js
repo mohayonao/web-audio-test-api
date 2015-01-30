@@ -1,15 +1,13 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var Event = require("./Event");
 
-/* istanbul ignore else */
-if (typeof global.OfflineAudioCompletionEvent === "undefined") {
-  global.OfflineAudioCompletionEvent = function OfflineAudioCompletionEvent() {
-    throw new TypeError("Illegal constructor");
-  };
-  _.inherits(global.OfflineAudioCompletionEvent, Event);
-}
+var OfflineAudioCompletionEventConstructor = function OfflineAudioCompletionEvent() {
+  throw new TypeError("Illegal constructor");
+};
+_.inherits(OfflineAudioCompletionEventConstructor, Event);
 
 function OfflineAudioCompletionEvent(node) {
   Event.call(this, "complete", node);
@@ -18,6 +16,8 @@ function OfflineAudioCompletionEvent(node) {
     $node: { value: node }
   });
 }
-_.inherits(OfflineAudioCompletionEvent, global.OfflineAudioCompletionEvent);
+_.inherits(OfflineAudioCompletionEvent, OfflineAudioCompletionEventConstructor);
 
-module.exports = global.WebAudioTestAPI.OfflineAudioCompletionEvent = OfflineAudioCompletionEvent;
+OfflineAudioCompletionEvent.exports = OfflineAudioCompletionEventConstructor;
+
+module.exports = WebAudioTestAPI.OfflineAudioCompletionEvent = OfflineAudioCompletionEvent;

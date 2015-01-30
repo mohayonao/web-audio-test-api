@@ -2,7 +2,7 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
-var EventTarget = require("./EventTarget");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioDestinationNode = require("./AudioDestinationNode");
 var AudioListener = require("./AudioListener");
 var AudioBuffer = require("./AudioBuffer");
@@ -23,6 +23,7 @@ var ChannelMergerNode = require("./ChannelMergerNode");
 var DynamicsCompressorNode = require("./DynamicsCompressorNode");
 var OscillatorNode = require("./OscillatorNode");
 var PeriodicWave = require("./PeriodicWave");
+var EventTarget = require("./EventTarget");
 
 require("./MediaStream");
 require("./HTMLMediaElement");
@@ -35,7 +36,7 @@ function AudioContext() {
   EventTarget.call(this);
 
   var destination = new AudioDestinationNode(this);
-  var sampleRate = global.WebAudioTestAPI.sampleRate;
+  var sampleRate = WebAudioTestAPI.sampleRate;
   var currentTime = function() { return this._microCurrentTime / (1000 * 1000); };
   var listener = new AudioListener(this);
 
@@ -63,7 +64,7 @@ function AudioContext() {
 }
 _.inherits(AudioContext, EventTarget);
 
-AudioContext.WEB_AUDIO_TEST_API_VERSION = global.WebAudioTestAPI.VERSION;
+AudioContext.WEB_AUDIO_TEST_API_VERSION = WebAudioTestAPI.VERSION;
 
 AudioContext.prototype.createBuffer = function(numberOfChannels, length, sampleRate) {
   var inspector = new Inspector(this, null, [
@@ -289,4 +290,4 @@ AudioContext.prototype._process = function(microseconds) {
   }
 };
 
-module.exports = global.WebAudioTestAPI.AudioContext = AudioContext;
+module.exports = WebAudioTestAPI.AudioContext = AudioContext;

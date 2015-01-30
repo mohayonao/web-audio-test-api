@@ -2,18 +2,16 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
 var BiquadFilterType = "enum { lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass }";
 
-/* istanbul ignore else */
-if (typeof global.BiquadFilterNode === "undefined") {
-  global.BiquadFilterNode = function BiquadFilterNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createBiquadFilter()");
-  };
-  _.inherits(global.BiquadFilterNode, AudioNode);
-}
+var BiquadFilterNodeConstructor = function BiquadFilterNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createBiquadFilter()");
+};
+_.inherits(BiquadFilterNodeConstructor, AudioNode);
 
 function BiquadFilterNode(context) {
   AudioNode.call(this, context, {
@@ -48,7 +46,9 @@ function BiquadFilterNode(context) {
     throw new TypeError(_.formatter.concat(this, msg));
   });
 }
-_.inherits(BiquadFilterNode, global.BiquadFilterNode);
+_.inherits(BiquadFilterNode, BiquadFilterNodeConstructor);
+
+BiquadFilterNode.exports = BiquadFilterNodeConstructor;
 
 BiquadFilterNode.prototype.getFrequencyResponse = function() {
   var inspector = new Inspector(this, "getFrequencyResponse", [
@@ -62,4 +62,4 @@ BiquadFilterNode.prototype.getFrequencyResponse = function() {
   });
 };
 
-module.exports = global.WebAudioTestAPI.BiquadFilterNode = BiquadFilterNode;
+module.exports = WebAudioTestAPI.BiquadFilterNode = BiquadFilterNode;

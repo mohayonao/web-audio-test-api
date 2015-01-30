@@ -2,13 +2,11 @@
 
 var _ = require("./utils");
 var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 
-/* istanbul ignore else */
-if (typeof global.AudioParam === "undefined") {
-  global.AudioParam = function AudioParam() {
-    throw new TypeError("Illegal constructor");
-  };
-}
+var AudioParamConstructor = function AudioParam() {
+  throw new TypeError("Illegal constructor");
+};
 
 function AudioParam(node, name, defaultValue, minValue, maxValue) {
   var context = node.context;
@@ -56,7 +54,9 @@ function AudioParam(node, name, defaultValue, minValue, maxValue) {
   this._value = this.defaultValue;
   this._tick = -1;
 }
-_.inherits(AudioParam, global.AudioParam);
+_.inherits(AudioParam, AudioParamConstructor);
+
+AudioParam.exports = AudioParamConstructor;
 
 AudioParam.prototype.setValueAtTime = function(value, startTime) {
   var inspector = new Inspector(this, "setValueTime", [
@@ -277,4 +277,4 @@ function setCurveValue(v, t, t0, t1, curve) {
   return _.defaults(curve[(curve.length * dt)|0], v);
 }
 
-module.exports = global.WebAudioTestAPI.AudioParam = AudioParam;
+module.exports = WebAudioTestAPI.AudioParam = AudioParam;

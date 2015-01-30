@@ -1,8 +1,7 @@
 "use strict";
 
-var WebAudioTestAPI = require("../src");
-
 describe("WebAudioTestAPI", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
 
   after(function() {
     WebAudioTestAPI.use();

@@ -1,16 +1,14 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
-/* istanbul ignore else */
-if (typeof global.DynamicsCompressorNode === "undefined") {
-  global.DynamicsCompressorNode = function DynamicsCompressorNode() {
-    throw new TypeError("Illegal constructor: use audioContext.createDynamicsCompressor()");
-  };
-  _.inherits(global.DynamicsCompressorNode, AudioNode);
-}
+var DynamicsCompressorNodeConstructor = function DynamicsCompressorNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createDynamicsCompressor()");
+};
+_.inherits(DynamicsCompressorNodeConstructor, AudioNode);
 
 function DynamicsCompressorNode(context) {
   AudioNode.call(this, context, {
@@ -49,6 +47,8 @@ function DynamicsCompressorNode(context) {
     throw new TypeError(_.formatter.concat(this, msg));
   });
 }
-_.inherits(DynamicsCompressorNode, global.DynamicsCompressorNode);
+_.inherits(DynamicsCompressorNode, DynamicsCompressorNodeConstructor);
 
-module.exports = global.WebAudioTestAPI.DynamicsCompressorNode = DynamicsCompressorNode;
+DynamicsCompressorNode.exports = DynamicsCompressorNodeConstructor;
+
+module.exports = WebAudioTestAPI.DynamicsCompressorNode = DynamicsCompressorNode;
