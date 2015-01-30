@@ -94,4 +94,4 @@ PannerNode.prototype.setVelocity = function() {
   });
 };
 
-module.exports = PannerNode;
+module.exports = global.WebAudioTestAPI.PannerNode = PannerNode;

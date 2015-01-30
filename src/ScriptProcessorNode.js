@@ -37,7 +37,7 @@ function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberO
 _.inherits(ScriptProcessorNode, global.ScriptProcessorNode);
 
 ScriptProcessorNode.prototype._process = function(currentTime, nextCurrentTime) {
-  var numSamples = ((nextCurrentTime - currentTime) / _.CURRENT_TIME_INCR) * _.BUFFER_SIZE;
+  var numSamples = ((nextCurrentTime - currentTime) / global.WebAudioTestAPI.currentTimeIncr) * global.WebAudioTestAPI.bufferSize;
 
   this._numSamples -= numSamples;
 
@@ -54,4 +54,4 @@ ScriptProcessorNode.prototype._process = function(currentTime, nextCurrentTime) 
   }
 };
 
-module.exports = ScriptProcessorNode;
+module.exports = global.WebAudioTestAPI.ScriptProcessorNode = ScriptProcessorNode;

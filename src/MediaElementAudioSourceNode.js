@@ -17,4 +17,4 @@ function MediaElementAudioSourceNode(context) {
 }
 _.inherits(MediaElementAudioSourceNode, global.MediaElementAudioSourceNode);
 
-module.exports = MediaElementAudioSourceNode;
+module.exports = global.WebAudioTestAPI.MediaElementAudioSourceNode = MediaElementAudioSourceNode;

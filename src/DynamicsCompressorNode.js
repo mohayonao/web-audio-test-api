@@ -44,4 +44,4 @@ function DynamicsCompressorNode(context) {
 }
 _.inherits(DynamicsCompressorNode, global.DynamicsCompressorNode);
 
-module.exports = DynamicsCompressorNode;
+module.exports = global.WebAudioTestAPI.DynamicCompressorNode = DynamicsCompressorNode;

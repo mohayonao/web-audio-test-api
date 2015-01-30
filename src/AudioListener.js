@@ -60,4 +60,4 @@ AudioListener.prototype.setVelocity = function() {
   });
 };
 
-module.exports = AudioListener;
+module.exports = global.WebAudioTestAPI.AudioListener = AudioListener;

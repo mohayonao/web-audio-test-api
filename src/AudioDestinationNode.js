@@ -23,4 +23,4 @@ function AudioDestinationNode(context) {
 }
 _.inherits(AudioDestinationNode, global.AudioDestinationNode);
 
-module.exports = AudioDestinationNode;
+module.exports = global.WebAudioTestAPI.AudioDestinationNode = AudioDestinationNode;

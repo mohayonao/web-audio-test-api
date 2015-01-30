@@ -72,4 +72,4 @@ AnalyserNode.prototype.getByteTimeDomainData = function() {
   });
 };
 
-module.exports = AnalyserNode;
+module.exports = global.WebAudioTestAPI.AnalyserNode = AnalyserNode;

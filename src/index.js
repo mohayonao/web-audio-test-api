@@ -17,6 +17,17 @@ function ILLEGAL_CONSTRUCTOR(superCtor, err) {
   return ctor;
 }
 
+var WebAudioTestAPI = {};
+
+WebAudioTestAPI.VERSION = "0.1.16";
+WebAudioTestAPI.sampleRate = 44100;
+
+// TODO: DEPRECATED
+WebAudioTestAPI.bufferSize = 128;
+WebAudioTestAPI.currentTimeIncr = WebAudioTestAPI.bufferSize / WebAudioTestAPI.sampleRate;
+
+global.WebAudioTestAPI = WebAudioTestAPI;
+
 global.Event = ILLEGAL_CONSTRUCTOR(
   null, new TypeError("Illegal constructor")
 );
@@ -126,3 +137,5 @@ global.MediaStreamAudioDestinationNode = ILLEGAL_CONSTRUCTOR(
 global.AudioContext = require("./AudioContext");
 
 global.OfflineAudioContext = require("./OfflineAudioContext");
+
+module.exports = WebAudioTestAPI;

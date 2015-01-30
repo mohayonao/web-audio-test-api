@@ -24,4 +24,4 @@ function GainNode(context) {
 }
 _.inherits(GainNode, global.GainNode);
 
-module.exports = GainNode;
+module.exports = global.WebAudioTestAPI.GainNode = GainNode;

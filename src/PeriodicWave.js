@@ -11,4 +11,4 @@ function PeriodicWave(real, imag) {
 }
 _.inherits(PeriodicWave, global.PeriodicWave);
 
-module.exports = PeriodicWave;
+module.exports = global.WebAudioTestAPI.PeriodicWave = PeriodicWave;

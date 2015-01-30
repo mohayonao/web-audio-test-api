@@ -20,7 +20,7 @@ function BiquadFilterNode(context) {
   });
 
   var type = "lowpass";
-  var frequency = new AudioParam(this, "frequency", 350, 10, _.SAMPLERATE / 2);
+  var frequency = new AudioParam(this, "frequency", 350, 10, context.sampleRate / 2);
   var detune = new AudioParam(this, "detune", 0, -4800, 4800);
   var Q = new AudioParam(this, "Q", 1, 0.0001, 1000);
   var gain = new AudioParam(this, "gain", 0, -40, 40);
@@ -55,4 +55,4 @@ BiquadFilterNode.prototype.getFrequencyResponse = function() {
   });
 };
 
-module.exports = BiquadFilterNode;
+module.exports = global.WebAudioTestAPI.BiquadFilterNode = BiquadFilterNode;

@@ -68,4 +68,4 @@ AudioBuffer.prototype.getChannelData = function(channel) {
   return this._data[channel];
 };
 
-module.exports = AudioBuffer;
+module.exports = global.WebAudioTestAPI.AudioBuffer = AudioBuffer;

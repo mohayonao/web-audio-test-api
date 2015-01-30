@@ -17,4 +17,4 @@ function MediaStreamAudioDestinationNode(context) {
 }
 _.inherits(MediaStreamAudioDestinationNode, global.MediaStreamAudioDestinationNode);
 
-module.exports = MediaStreamAudioDestinationNode;
+module.exports = global.WebAudioTestAPI.MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode;

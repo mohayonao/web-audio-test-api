@@ -29,4 +29,4 @@ function WaveShaperNode(context) {
 }
 _.inherits(WaveShaperNode, global.WaveShaperNode);
 
-module.exports = WaveShaperNode;
+module.exports = global.WebAudioTestAPI.WaveShaperNode = WaveShaperNode;

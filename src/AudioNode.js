@@ -156,4 +156,4 @@ AudioNode.prototype.disconnect = function() {
   }, this);
 };
 
-module.exports = AudioNode;
+module.exports = global.WebAudioTestAPI.AudioNode = AudioNode;

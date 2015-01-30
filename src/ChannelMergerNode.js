@@ -17,4 +17,4 @@ function ChannelMergerNode(context, numberOfInputs) {
 }
 _.inherits(ChannelMergerNode, global.ChannelMergerNode);
 
-module.exports = ChannelMergerNode;
+module.exports = global.WebAudioTestAPI.ChannelMergerNode = ChannelMergerNode;

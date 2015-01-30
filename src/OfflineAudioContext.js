@@ -69,12 +69,12 @@ OfflineAudioContext.prototype.$process = function(duration) {
       dx = this._remain;
       this._remain = 0;
     } else {
-      dx = Math.min(_.CURRENT_TIME_INCR, this._targetTime - this._currentTime);
-      this._remain = _.CURRENT_TIME_INCR - dx;
+      dx = Math.min(global.WebAudioTestAPI.currentTimeIncr, this._targetTime - this._currentTime);
+      this._remain = global.WebAudioTestAPI.currentTimeIncr - dx;
     }
     this.destination.$process(this._currentTime, this._currentTime + dx);
     this._currentTime = this._currentTime + dx;
-    this._processed += _.BUFFER_SIZE * (dx / _.CURRENT_TIME_INCR);
+    this._processed += global.WebAudioTestAPI.bufferSize * (dx / global.WebAudioTestAPI.currentTimeIncr);
   }
 
   if (this._length <= this._processed && this.oncomplete) {
@@ -96,4 +96,4 @@ OfflineAudioContext.prototype.startRendering = function() {
   this._rendering = true;
 };
 
-module.exports = OfflineAudioContext;
+module.exports = global.WebAudioTestAPI.OfflineAudioContext = OfflineAudioContext;

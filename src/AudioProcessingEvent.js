@@ -12,4 +12,4 @@ function AudioProcessingEvent(node) {
 }
 _.inherits(AudioProcessingEvent, global.AudioProcessingEvent);
 
-module.exports = AudioProcessingEvent;
+module.exports = global.WebAudioTestAPI.AudioProcessingEvent = AudioProcessingEvent;

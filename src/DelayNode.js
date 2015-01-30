@@ -28,4 +28,4 @@ function DelayNode(context, maxDelayTime) {
 }
 _.inherits(DelayNode, global.DelayNode);
 
-module.exports = DelayNode;
+module.exports = global.WebAudioTestAPI.DelayNode = DelayNode;

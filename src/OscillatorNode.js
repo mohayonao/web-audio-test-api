@@ -137,4 +137,4 @@ OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
   this._custom = periodicWave;
 };
 
-module.exports = OscillatorNode;
+module.exports = global.WebAudioTestAPI.OscillatorNode = OscillatorNode;

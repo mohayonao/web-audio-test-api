@@ -116,4 +116,4 @@ AudioBufferSourceNode.prototype.stop = function(when) {
   this._stopTime = when;
 };
 
-module.exports = AudioBufferSourceNode;
+module.exports = global.WebAudioTestAPI.AudioBufferSourceNode = AudioBufferSourceNode;

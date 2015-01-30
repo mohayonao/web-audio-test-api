@@ -25,7 +25,7 @@ var PeriodicWave = require("./PeriodicWave");
 
 function AudioContext() {
   var destination = new AudioDestinationNode(this);
-  var sampleRate = _.SAMPLERATE;
+  var sampleRate = global.WebAudioTestAPI.sampleRate;
   var currentTime = function() { return this._currentTime; };
   var listener = new AudioListener(this);
 
@@ -53,7 +53,7 @@ function AudioContext() {
 }
 _.inherits(AudioContext, global.EventTarget);
 
-AudioContext.WEB_AUDIO_TEST_API_VERSION = _.VERSION;
+AudioContext.WEB_AUDIO_TEST_API_VERSION = global.WebAudioTestAPI.VERSION;
 
 AudioContext.prototype.$process = function(duration) {
   var dx;
@@ -65,8 +65,8 @@ AudioContext.prototype.$process = function(duration) {
       dx = this._remain;
       this._remain = 0;
     } else {
-      dx = Math.min(_.CURRENT_TIME_INCR, this._targetTime - this._currentTime);
-      this._remain = _.CURRENT_TIME_INCR - dx;
+      dx = Math.min(global.WebAudioTestAPI.currentTimeIncr, this._targetTime - this._currentTime);
+      this._remain = global.WebAudioTestAPI.currentTimeIncr - dx;
     }
     this.destination.$process(this._currentTime, this._currentTime + dx);
     this._currentTime = this._currentTime + dx;
@@ -129,7 +129,7 @@ AudioContext.prototype.decodeAudioData = function(audioData, successCallback, er
     if (_this.DECODE_AUDIO_DATA_FAILED) {
       errorCallback();
     } else {
-      successCallback(_this.DECODE_AUDIO_DATA_RESULT || new AudioBuffer(_this, 2, 1024, _.SAMPLERATE));
+      successCallback(_this.DECODE_AUDIO_DATA_RESULT || new AudioBuffer(_this, 2, 1024, _this.sampleRate));
     }
   }, 0);
 };
@@ -266,4 +266,4 @@ AudioContext.prototype.createPeriodicWave = function(real, imag) {
   return new PeriodicWave(real, imag);
 };
 
-module.exports = AudioContext;
+module.exports = global.WebAudioTestAPI.AudioContext = AudioContext;

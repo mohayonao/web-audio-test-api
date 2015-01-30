@@ -269,4 +269,4 @@ AudioParam.prototype.cancelScheduledValues = function(startTime) {
   }
 };
 
-module.exports = AudioParam;
+module.exports = global.WebAudioTestAPI.AudioParam = AudioParam;

@@ -17,4 +17,4 @@ function ChannelSplitterNode(context, numberOfOutputs) {
 }
 _.inherits(ChannelSplitterNode, global.ChannelSplitterNode);
 
-module.exports = ChannelSplitterNode;
+module.exports = global.WebAudioTestAPI.ChannelSplitterNode = ChannelSplitterNode;

@@ -10,4 +10,4 @@ function OfflineAudioCompletionEvent(node) {
 }
 _.inherits(OfflineAudioCompletionEvent, global.OfflineAudioCompletionEvent);
 
-module.exports = OfflineAudioCompletionEvent;
+module.exports = global.WebAudioTestAPI.OfflineAudioCompletionEvent = OfflineAudioCompletionEvent;

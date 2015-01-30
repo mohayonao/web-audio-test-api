@@ -27,4 +27,4 @@ function ConvolverNode(context) {
 }
 _.inherits(ConvolverNode, global.ConvolverNode);
 
-module.exports = ConvolverNode;
+module.exports = global.WebAudioTestAPI.ConvolverNode = ConvolverNode;
