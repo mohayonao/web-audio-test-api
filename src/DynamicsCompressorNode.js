@@ -5,8 +5,7 @@ var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
 function DynamicsCompressorNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "DynamicsCompressorNode",
     jsonAttrs: [ "threshold", "knee", "ratio", "reduction", "attack", "release" ],
     numberOfInputs  : 1,

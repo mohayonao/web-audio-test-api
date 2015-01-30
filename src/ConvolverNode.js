@@ -4,8 +4,7 @@ var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 
 function ConvolverNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "ConvolverNode",
     jsonAttrs: [ "normalize" ],
     numberOfInputs  : 1,

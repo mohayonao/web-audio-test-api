@@ -6,8 +6,7 @@ var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
 function AudioBufferSourceNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "AudioBufferSourceNode",
     jsonAttrs: [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ],
     numberOfInputs  : 0,

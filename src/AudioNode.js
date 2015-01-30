@@ -6,13 +6,14 @@ var Inspector = require("./utils/Inspector");
 var ChannelCountMode = "enum { max, clamped-max, explicit }";
 var ChannelInterpretation = "enum { speakers, discrete }";
 
-function AudioNode(spec) {
-  var context = spec.context;
-  var numberOfInputs = spec.numberOfInputs;
-  var numberOfOutputs = spec.numberOfOutputs;
-  var channelCount = spec.channelCount;
-  var channelCountMode = spec.channelCountMode;
-  var channelInterpretation = spec.channelInterpretation;
+function AudioNode(context, spec) {
+  spec = spec || {};
+
+  var numberOfInputs = _.defaults(spec.numberOfInputs, 1);
+  var numberOfOutputs = _.defaults(spec.numberOfOutputs, 1);
+  var channelCount = _.defaults(spec.channelCount, 2);
+  var channelCountMode = _.defaults(spec.channelCountMode, "max");
+  var channelInterpretation = _.defaults(spec.channelInterpretation, "speakers");
 
   _.defineAttribute(this, "context", "readonly", context, function(msg) {
     throw new TypeError(_.formatter.concat(this, msg));
@@ -34,10 +35,10 @@ function AudioNode(spec) {
   });
 
   Object.defineProperties(this, {
-    $name     : { value: spec.name },
-    $context  : { value: spec.context },
+    $name     : { value: _.defaults(spec.name, "AudioNode") },
+    $context  : { value: context },
     $inputs   : { value: [] },
-    $jsonAttrs: { value: spec.jsonAttrs },
+    $jsonAttrs: { value: _.defaults(spec.jsonAttrs, []) },
   });
   this._outputs = [];
   this._currentTime = -1;

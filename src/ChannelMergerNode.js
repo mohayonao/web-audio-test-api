@@ -4,8 +4,7 @@ var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 
 function ChannelMergerNode(context, numberOfInputs) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "ChannelMergerNode",
     jsonAttrs: [],
     numberOfInputs  : numberOfInputs,

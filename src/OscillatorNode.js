@@ -8,8 +8,7 @@ var AudioParam = require("./AudioParam");
 var OscillatorType = "enum { sine, square, sawtooth, triangle }";
 
 function OscillatorNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "OscillatorNode",
     jsonAttrs:  [ "type", "frequency", "detune" ],
     numberOfInputs  : 0,

@@ -5,8 +5,7 @@ var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
 function DelayNode(context, maxDelayTime) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "DelayNode",
     jsonAttrs: [ "delayTime"　],
     numberOfInputs  : 1,

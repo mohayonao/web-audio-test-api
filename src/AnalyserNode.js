@@ -7,8 +7,7 @@ var AudioNode = require("./AudioNode");
 var FFTSize = "enum { 32, 64, 128, 256, 512, 1024, 2048 }";
 
 function AnalyserNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "AnalyserNode",
     jsonAttrs: [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ],
     numberOfInputs  : 1,

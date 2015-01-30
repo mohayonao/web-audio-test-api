@@ -8,8 +8,7 @@ var AudioParam = require("./AudioParam");
 var BiquadFilterType = "enum { lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass }";
 
 function BiquadFilterNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "BiquadFilterNode",
     jsonAttrs: [ "type", "frequency", "detune", "Q", "gain" ],
     numberOfInputs  : 1,

@@ -5,8 +5,7 @@ var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
 function GainNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "GainNode",
     jsonAttrs: [ "gain"　],
     numberOfInputs  : 1,

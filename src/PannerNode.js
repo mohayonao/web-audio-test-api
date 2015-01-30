@@ -8,8 +8,7 @@ var PanningModelType = "enum { equalpower, HRTF }";
 var DistanceModelType = "enum { linear, inverse, exponential }";
 
 function PannerNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "PannerNode",
     jsonAttrs: [
       "panningModel", "distanceModel", "refDistance", "maxDistance",

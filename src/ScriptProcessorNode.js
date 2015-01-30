@@ -6,8 +6,7 @@ var AudioBuffer = require("./AudioBuffer");
 var AudioProcessingEvent = require("./AudioProcessingEvent");
 
 function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "ScriptProcessorNode",
     jsonAttrs: [],
     numberOfInputs  : 1,

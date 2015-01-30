@@ -6,8 +6,7 @@ var AudioNode = require("./AudioNode");
 var OverSampleType = "enum { none, 2x, 4x }";
 
 function WaveShaperNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "WaveShaperNode",
     jsonAttrs: [ "oversample" ],
     numberOfInputs  : 1,

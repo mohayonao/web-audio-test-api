@@ -4,8 +4,7 @@ var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 
 function MediaElementAudioSourceNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "MediaElementAudioSourceNode",
     jsonAttrs: [],
     numberOfInputs  : 0,
