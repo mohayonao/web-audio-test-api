@@ -4,9 +4,6 @@ var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 
 function ChannelSplitterNode(context, numberOfOutputs) {
-  _.check("ChannelSplitterNode(numberOfOutputs)", {
-    numberOfOutputs: { type: "number", given: numberOfOutputs }
-  });
   AudioNode.call(this, {
     context: context,
     name: "ChannelSplitterNode",

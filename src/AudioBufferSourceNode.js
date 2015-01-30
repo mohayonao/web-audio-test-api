@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 var AudioBuffer = require("./AudioBuffer");
@@ -61,42 +62,38 @@ AudioBufferSourceNode.prototype._process = function(currentTime, nextCurrentTime
   }
 };
 
-AudioBufferSourceNode.prototype.start = function(when, offset, duration) {
-  var caption = _.caption(this, "start(when, offset, duration)");
-  _.check(caption, {
-    when    : { type: "number", given: _.defaults(when    , 0) },
-    offset  : { type: "number", given: _.defaults(offset  , 0) },
-    duration: { type: "number", given: _.defaults(duration, 0) },
+AudioBufferSourceNode.prototype.start = function(when) {
+  var inspector = new Inspector(this, "start", [
+    { name: "when", type: "optional number" },
+    { name: "offset", type: "optional number" },
+    { name: "duration", type: "optional number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
-  if (this._startTime !== Infinity) {
-    throw new Error(_.format(
-      "#{caption} cannot start more than once", {
-        caption: caption
-      }
-    ));
-  }
-  this._startTime = when;
+  inspector.assert(this._startTime === Infinity, function() {
+    throw new Error(inspector.form + "; cannot start more than once");
+  });
+
+  this._startTime = _.defaults(when, 0);
 };
 
 AudioBufferSourceNode.prototype.stop = function(when) {
-  var caption = _.caption(this, "stop(when)");
-  _.check(caption, {
-    when: { type: "number", given: _.defaults(when, 0) }
+  var inspector = new Inspector(this, "stop", [
+    { name: "when", type: "optional number" }
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
-  if (this._startTime === Infinity) {
-    throw new Error(_.format(
-      "#{caption} cannot call stop without calling start first", {
-      caption: caption
-      }
-    ));
-  }
-  if (this._stopTime !== Infinity) {
-    throw new Error(_.format(
-      "#{caption} cannot stop more than once", {
-        caption: caption
-      }
-    ));
-  }
+  inspector.assert(this._startTime !== Infinity, function() {
+    throw new Error(inspector.form + "; cannot call stop without calling start first");
+  });
+  inspector.assert(this._stopTime === Infinity, function() {
+    throw new Error(inspector.form + "; cannot stop more than once");
+  });
+
   this._stopTime = when;
 };
 

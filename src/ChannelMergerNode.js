@@ -4,9 +4,6 @@ var _ = require("./utils");
 var AudioNode = require("./AudioNode");
 
 function ChannelMergerNode(context, numberOfInputs) {
-  _.check("ChannelMergerNode(numberOfInputs)", {
-    numberOfInputs: { type: "number", given: numberOfInputs }
-  });
   AudioNode.call(this, {
     context: context,
     name: "ChannelMergerNode",

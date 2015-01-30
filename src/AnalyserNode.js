@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
 var AudioNode = require("./AudioNode");
 
 function AnalyserNode(context) {
@@ -22,21 +23,33 @@ function AnalyserNode(context) {
 }
 _.inherits(AnalyserNode, global.AnalyserNode);
 
-AnalyserNode.prototype.getFloatFrequencyData = function(array) {
-  _.check(_.caption(this, "getFloatFrequencyData(array)"), {
-    array: { type: "Float32Array", given: array }
+AnalyserNode.prototype.getFloatFrequencyData = function() {
+  var inspector = new Inspector(this, "getFloatFrequencyData", [
+    { name: "array", type: "Float32Array" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-AnalyserNode.prototype.getByteFrequencyData = function(array) {
-  _.check(_.caption(this, "getByteFrequencyData(array)"), {
-    array: { type: "Uint8Array", given: array }
+AnalyserNode.prototype.getByteFrequencyData = function() {
+  var inspector = new Inspector(this, "getByteFrequencyData", [
+    { name: "array", type: "Uint8Array" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-AnalyserNode.prototype.getByteTimeDomainData = function(array) {
-  _.check(_.caption(this, "getByteTimeDomainData(array)"), {
-    array: { type: "Uint8Array", given: array }
+AnalyserNode.prototype.getByteTimeDomainData = function() {
+  var inspector = new Inspector(this, "getByteTimeDomainData", [
+    { name: "array", type: "Uint8Array" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 };
 

@@ -1,13 +1,9 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
 
 function AudioBuffer(context, numberOfChannels, length, sampleRate) {
-  _.check("AudioBuffer(numerOfChannels, length, sampleRate)", {
-    numberOfChannels: { type: "number", given: numberOfChannels },
-    length          : { type: "number", given: length           },
-    sampleRate      : { type: "number", given: sampleRate       },
-  });
   _.$read(this, "sampleRate", sampleRate);
   _.$read(this, "length", length);
   _.$read(this, "duration", length / sampleRate);
@@ -50,16 +46,18 @@ AudioBuffer.prototype.toJSON = function() {
 };
 
 AudioBuffer.prototype.getChannelData = function(channel) {
-  if (0 <= channel && channel < this._data.length) {
-    return this._data[channel];
-  }
-  throw new Error(_.format(
-    "#{caption}: channel index (#{index}) exceeds number of channels (#{length})", {
-      caption: _.caption(this, "getChannelData(channel)"),
-      index  : channel,
-      length : this._data.length
-    }
-  ));
+  var inspector = new Inspector(this, "getChannelData", [
+    { name: "channel", type: "number" }
+  ]);
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+  inspector.assert(0 <= channel && channel < this._data.length, function() {
+    throw new TypeError(
+      inspector.form + "; channel index (" + channel + ") exceeds number of channels (#{" + this._data.length + "})"
+    );
+  });
+  return this._data[channel];
 };
 
 module.exports = AudioBuffer;

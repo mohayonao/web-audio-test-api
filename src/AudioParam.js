@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
 
 function AudioParam(node, name, defaultValue, minValue, maxValue) {
   var context = node.context;
@@ -141,10 +142,15 @@ function insertEvent(_this, event) {
 }
 
 AudioParam.prototype.setValueAtTime = function(value, startTime) {
-  _.check("AudioParam#setValueAtTime(value, startTime)", {
-    value    : { type: "number", given: value     },
-    startTime: { type: "number", given: startTime },
+  var inspector = new Inspector(this, "setValueTime", [
+    { name: "value"    , type: "number" },
+    { name: "startTime", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
+
   insertEvent(this, {
     type : "SetValue",
     value: value,
@@ -153,10 +159,15 @@ AudioParam.prototype.setValueAtTime = function(value, startTime) {
 };
 
 AudioParam.prototype.linearRampToValueAtTime = function(value, endTime) {
-  _.check("AudioParam#linearRampToValueAtTime(value, endTime)", {
-    value  : { type: "number", given: value   },
-    endTime: { type: "number", given: endTime },
+  var inspector = new Inspector(this, "linearRampToValueAtTime", [
+    { name: "value"  , type: "number" },
+    { name: "endTime", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
+
   insertEvent(this, {
     type : "LinearRampToValue",
     value: value,
@@ -165,10 +176,15 @@ AudioParam.prototype.linearRampToValueAtTime = function(value, endTime) {
 };
 
 AudioParam.prototype.exponentialRampToValueAtTime = function(value, endTime) {
-  _.check("AudioParam#exponentialRampToValueAtTime(value, endTime)", {
-    value  : { type: "number", given: value   },
-    endTime: { type: "number", given: endTime },
+  var inspector = new Inspector(this, "exponentialRampToValueAtTime", [
+    { name: "value"  , type: "number" },
+    { name: "endTime", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
+
   insertEvent(this, {
     type : "ExponentialRampToValue",
     value: value,
@@ -177,11 +193,16 @@ AudioParam.prototype.exponentialRampToValueAtTime = function(value, endTime) {
 };
 
 AudioParam.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
-  _.check("AudioParam#setTargetAtTime(target, startTime, timeConstant)", {
-    target      : { type: "number", given: target       },
-    startTime   : { type: "number", given: startTime    },
-    timeConstant: { type: "number", given: timeConstant },
+  var inspector = new Inspector(this, "setTargetAtTime", [
+    { name: "target"      , type: "number" },
+    { name: "startTime"   , type: "number" },
+    { name: "timeConstant", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
+
   insertEvent(this, {
     type : "SetTarget",
     value: target,
@@ -191,11 +212,16 @@ AudioParam.prototype.setTargetAtTime = function(target, startTime, timeConstant)
 };
 
 AudioParam.prototype.setValueCurveAtTime = function(values, startTime, duration) {
-  _.check("AudioParam#setValueCurveAtTime(values, startTime, duration)", {
-    values   : { type: "Float32Array", given: values },
-    startTime: { type: "number"      , given: startTime },
-    duration : { type: "number"      , given: duration }
+  var inspector = new Inspector(this, "setValueCurveAtTime", [
+    { name: "values"   , type: "Float32Array" },
+    { name: "startTime", type: "number" },
+    { name: "duration" , type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
+
   insertEvent(this, {
     type : "SetValueCurve",
     time : startTime,
@@ -205,9 +231,14 @@ AudioParam.prototype.setValueCurveAtTime = function(values, startTime, duration)
 };
 
 AudioParam.prototype.cancelScheduledValues = function(startTime) {
-  _.check("AudioParam#cancelScheduledValues(startTime)", {
-    startTime: { type: "number", given: startTime }
+  var inspector = new Inspector(this, "cancelScheduledValues", [
+    { name: "startTime", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
+
   var events = this.$events;
 
   for (var i = 0, imax = events.length; i < imax; ++i) {

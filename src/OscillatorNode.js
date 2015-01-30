@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
@@ -60,46 +61,47 @@ OscillatorNode.prototype._process = function(currentTime) {
 };
 
 OscillatorNode.prototype.start = function(when) {
-  var caption = _.caption(this, "start(when)");
-  _.check(caption, {
-    when: { type: "number", given: _.defaults(when, 0) }
+  var inspector = new Inspector(this, "start", [
+    { name: "when", type: "optional number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
-  if (this._startTime !== Infinity) {
-    throw new Error(_.format(
-      "#{caption} cannot start more than once", {
-        caption: caption
-      }
-    ));
-  }
-  this._startTime = when;
+  inspector.assert(this._startTime === Infinity, function() {
+    throw new Error(inspector.form + "; cannot start more than once");
+  });
+
+  this._startTime = _.defaults(when, 0);
 };
 
 OscillatorNode.prototype.stop = function(when) {
-  var caption = _.caption(this, "stop(when)");
-  _.check(caption, {
-    when: { type: "number", given: _.defaults(when, 0) }
+  var inspector = new Inspector(this, "stop", [
+    { name: "when", type: "optional number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
-  if (this._startTime === Infinity) {
-    throw new Error(_.format(
-      "#{caption} cannot call stop without calling start first", {
-        caption: caption
-      }
-    ));
-  }
-  if (this._stopTime !== Infinity) {
-    throw new Error(_.format(
-      "#{caption} cannot stop more than once", {
-        caption: caption
-      }
-    ));
-  }
-  this._stopTime = when;
+  inspector.assert(this._startTime !== Infinity, function() {
+    throw new Error(inspector.form + "; cannot call stop without calling start first");
+  });
+  inspector.assert(this._stopTime === Infinity, function() {
+    throw new Error(inspector.form + "; cannot stop more than once");
+  });
+
+  this._stopTime = _.defaults(when, 0);
 };
 
 OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
-  _.check(_.caption(this, "setPeriodicWave(periodicWave)"), {
-    periodicWave: { type: "PeriodicWave", given: periodicWave }
+  var inspector = new Inspector(this, "setPeriodicWave", [
+    { name: "periodicWave", type: "PeriodicWave" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
+
   this._type = "custom";
   this._custom = periodicWave;
 };

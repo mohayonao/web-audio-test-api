@@ -6,18 +6,6 @@ var AudioBuffer = require("./AudioBuffer");
 var AudioProcessingEvent = require("./AudioProcessingEvent");
 
 function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-  if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
-    throw new TypeError(_.format(
-      "#{caption}: invalid bufferSize: #{0}", {
-        caption   : "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)",
-        bufferSize: _.toS(bufferSize)
-      }
-    ));
-  }
-  _.check("ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)", {
-    numberOfInputChannels : { type: "number", given: numberOfInputChannels  },
-    numberOfOutputChannels: { type: "number", given: numberOfOutputChannels },
-  });
   AudioNode.call(this, {
     context: context,
     name: "ScriptProcessorNode",

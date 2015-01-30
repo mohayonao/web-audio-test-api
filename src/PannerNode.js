@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
 var AudioNode = require("./AudioNode");
 
 function PannerNode(context) {
@@ -28,27 +29,39 @@ function PannerNode(context) {
 }
 _.inherits(PannerNode, global.PannerNode);
 
-PannerNode.prototype.setPosition = function(x, y, z) {
-  _.check(_.caption(this, "setPosition(x, y, z)"), {
-    x: { type: "number", given: x },
-    y: { type: "number", given: y },
-    z: { type: "number", given: z },
+PannerNode.prototype.setPosition = function() {
+  var inspector = new Inspector(this, "setPosition", [
+    { name: "x", type: "number" },
+    { name: "y", type: "number" },
+    { name: "z", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-PannerNode.prototype.setOrientation = function(x, y, z) {
-  _.check(_.caption(this, "setOrientation(x, y, z)"), {
-    x: { type: "number", given: x },
-    y: { type: "number", given: y },
-    z: { type: "number", given: z },
+PannerNode.prototype.setOrientation = function() {
+  var inspector = new Inspector(this, "setOrientation", [
+    { name: "x", type: "number" },
+    { name: "y", type: "number" },
+    { name: "z", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-PannerNode.prototype.setVelocity = function(x, y, z) {
-  _.check(_.caption(this, "setVelocity(x, y, z)"), {
-    x: { type: "number", given: x },
-    y: { type: "number", given: y },
-    z: { type: "number", given: z },
+PannerNode.prototype.setVelocity = function() {
+  var inspector = new Inspector(this, "setVelocity", [
+    { name: "x", type: "number" },
+    { name: "y", type: "number" },
+    { name: "z", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 };
 

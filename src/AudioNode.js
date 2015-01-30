@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
 
 function AudioNode(spec) {
   _.$read(this, "context", spec.context);
@@ -72,53 +73,34 @@ AudioNode.prototype.toJSON = function(memo) {
   }, memo || /* istanbul ignore next */ []);
 };
 
-AudioNode.prototype.connect = function(destination, output, input) {
-  var caption = _.caption(this, "connect(destination, output, input)");
+AudioNode.prototype.connect = function(destination) {
+  var inspector = new Inspector(this, "connect", [
+    { name: "destination", type: "AudioNode | AudioParam", validate: sameContext },
+    { name: "output"     , type: "optional number", validate: checkNumberOfOutput },
+    { name: "input"      , type: "optional number", validate: checkNumberOfInput },
+  ]);
 
-  output = _.defaults(output, 0);
-  input  = _.defaults(input , 0);
-
-  if (!(destination instanceof global.AudioNode || destination instanceof global.AudioParam)) {
-    throw new TypeError(_.format(
-      "#{caption}: '#{name}' should be #{type}, but got #{given}", {
-        caption: caption,
-        name   : "destination",
-        type   : "an instance of AudioNode or AudioParam",
-        given  : _.toS(destination)
-      }
-    ));
+  function sameContext(value) {
+    if (this.$context !== value.$context) {
+      return "cannot connect to a destination belonging to a different audio context";
+    }
   }
 
-  _.check(caption, {
-    output: { type: "number", given: output },
-    input : { type: "number", given: input  },
+  function checkNumberOfOutput(value, name) {
+    if (value < 0 || this.numberOfOutputs <= value) {
+      return name + " index (" + value + ") exceeds number of outputs (" + this.numberOfOutputs + ")";
+    }
+  }
+
+  function checkNumberOfInput(value, name) {
+    if (value < 0 || destination.numberOfInputs <= value) {
+      return name + " index (" + value + ") exceeds number of inputs (" + destination.numberOfInputs + ")";
+    }
+  }
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
-
-  if (this.$context !== destination.$context) {
-    throw new Error(_.format(
-      "#{caption}: cannot connect to a destination belonging to a different audio context", {
-        caption: caption
-      }
-    ));
-  }
-  if (output < 0 || this.numberOfOutputs <= output) {
-    throw new Error(_.format(
-      "#{caption}: output index (#{index}) exceeds number of outputs (#{length})", {
-        caption: caption,
-        index  : output,
-        length : this.numberOfOutputs
-      }
-    ));
-  }
-  if (input < 0 || destination.numberOfInputs <= input) {
-    throw new Error(_.format(
-      "#{caption}: input index (#{index}) exceeds number of inputs (#{length})", {
-        caption: caption,
-        index  : input,
-        length : destination.numberOfInputs
-      }
-    ));
-  }
 
   var index = this._outputs.indexOf(destination);
   /* istanbul ignore else */
@@ -128,24 +110,20 @@ AudioNode.prototype.connect = function(destination, output, input) {
   }
 };
 
-AudioNode.prototype.disconnect = function(output) {
-  var caption = _.caption(this, "disconnect(output)");
+AudioNode.prototype.disconnect = function() {
+  var inspector = new Inspector(this, "connect", [
+    { name: "output", type: "optional number", validate: checkNumberOfOutput },
+  ]);
 
-  output = _.defaults(output, 0);
-
-  _.check(caption, {
-    output: { type: "number", given: output }
-  });
-
-  if (output < 0 || this.numberOfOutputs <= output) {
-    throw new Error(_.format(
-      "#{caption}: output index (#{index}) exceeds number of outputs (#{length})", {
-        caption: caption,
-        index  : output,
-        length : this.numberOfOutputs
-      }
-    ));
+  function checkNumberOfOutput(value, name) {
+    if (value < 0 || this.numberOfOutputs <= value) {
+      return name + " index (" + value + ") exceeds number of outputs (" + this.numberOfOutputs + ")";
+    }
   }
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
 
   this._outputs.splice(0).forEach(function(dst) {
     var index = dst.$inputs.indexOf(this);

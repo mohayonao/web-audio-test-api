@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
 var AudioNode = require("./AudioNode");
 var AudioParam = require("./AudioParam");
 
@@ -25,11 +26,15 @@ function BiquadFilterNode(context) {
 }
 _.inherits(BiquadFilterNode, global.BiquadFilterNode);
 
-BiquadFilterNode.prototype.getFrequencyResponse = function(frequencyHz, magResponse, phaseResponse) {
-  _.check(_.caption(this, "getFrequencyResponse(frequencyHz, magResponse, phaseResponse)"), {
-    frequencyHz  : { type: "Float32Array", given: frequencyHz },
-    magResponse  : { type: "Float32Array", given: magResponse },
-    phaseResponse: { type: "Float32Array", given: phaseResponse },
+BiquadFilterNode.prototype.getFrequencyResponse = function() {
+  var inspector = new Inspector(this, "getFrequencyResponse", [
+    { name: "frequencyHz"  , type: "Float32Array" },
+    { name: "magResponse"  , type: "Float32Array" },
+    { name: "phaseResponse", type: "Float32Array" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 };
 

@@ -1,16 +1,21 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
 var AudioBuffer = require("./AudioBuffer");
 var AudioDestinationNode = require("./AudioDestinationNode");
 var AudioListener = require("./AudioListener");
 var OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
 
 function OfflineAudioContext(numberOfChannels, length, sampleRate) {
-  _.check("OfflineAudioContext(numberOfChannels, length, sampleRate)", {
-    numberOfChannels: { type: "number", given: numberOfChannels },
-    length          : { type: "number", given: length           },
-    sampleRate      : { type: "number", given: sampleRate       },
+  var inspector = new Inspector(this, null, [
+    { name: "numberOfChannels", type: "number" },
+    { name: "length"          , type: "number" },
+    { name: "sampleRate"      , type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 
   _.$read(this, "destination", new AudioDestinationNode(this));
@@ -67,13 +72,12 @@ OfflineAudioContext.prototype.$process = function(duration) {
 };
 
 OfflineAudioContext.prototype.startRendering = function() {
-  if (this._rendering) {
-    throw new Error(_.format(
-      "#{caption} must only be called one time", {
-        caption: _.caption(this, "startRendering()")
-      }
-    ));
-  }
+  var inspector = new Inspector(this, "startRendering", []);
+
+  inspector.assert(!this._rendering, function() {
+    throw Error(inspector.form + "; must only be called one time");
+  });
+
   this._rendering = true;
 };
 

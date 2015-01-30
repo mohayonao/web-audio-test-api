@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
 var AudioDestinationNode = require("./AudioDestinationNode");
 var AudioListener = require("./AudioListener");
 var AudioBuffer = require("./AudioBuffer");
@@ -83,17 +84,33 @@ AudioContext.prototype.toJSON = function() {
 };
 
 AudioContext.prototype.createBuffer = function(numberOfChannels, length, sampleRate) {
+  var inspector = new Inspector(this, null, [
+    { name: "numberOfChannels", type: "number" },
+    { name: "length"          , type: "number" },
+    { name: "sampleRate"      , type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
   return new AudioBuffer(this, numberOfChannels, length, sampleRate);
 };
 
 AudioContext.prototype.decodeAudioData = function(audioData, successCallback, errorCallback) {
+  var inspector = new Inspector(this, "decodeAudioData", [
+    { name: "audioData"      , type: "ArrayBuffer" },
+    { name: "successCallback", type: "function" },
+    { name: "errorCallback"  , type: "optional function" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
   successCallback = _.defaults(successCallback, _.NOP);
   errorCallback   = _.defaults(errorCallback  , _.NOP);
-  _.check("AudioContext#decodeAudioData(audioData, successCallback, errorCallback)", {
-    audioData      : { type: "ArrayBuffer", given: audioData       },
-    successCallback: { type: "function"   , given: successCallback },
-    errorCallback  : { type: "function"   , given: errorCallback   },
-  });
+
   var _this = this;
   setTimeout(function() {
     if (_this.DECODE_AUDIO_DATA_FAILED) {
@@ -121,7 +138,21 @@ AudioContext.prototype.createMediaStreamDestination = function() {
 };
 
 AudioContext.prototype.createScriptProcessor = function(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-  return new ScriptProcessorNode(this, _.defaults(bufferSize, 0), _.defaults(numberOfInputChannels, 2), _.defaults(numberOfOutputChannels, 2));
+  var inspector = new Inspector(this, "createScriptProcessor", [
+    { name: "bufferSize"            , type: /* optional */ "enum { 256, 512, 1024, 2048, 4096, 8192, 16384 }" },
+    { name: "numberOfInputChannels" , type: "optional number" },
+    { name: "numberOfOutputChannels", type: "optional number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  bufferSize = _.defaults(bufferSize, 0);
+  numberOfInputChannels  = _.defaults(numberOfInputChannels , 2);
+  numberOfOutputChannels = _.defaults(numberOfOutputChannels, 2);
+
+  return new ScriptProcessorNode(this, bufferSize, numberOfInputChannels, numberOfOutputChannels);
 };
 
 AudioContext.prototype.createAnalyser = function() {
@@ -133,7 +164,17 @@ AudioContext.prototype.createGain = function() {
 };
 
 AudioContext.prototype.createDelay = function(maxDelayTime) {
-  return new DelayNode(this, _.defaults(maxDelayTime, 1.0));
+  var inspector = new Inspector(this, "createDelay", [
+    { name: "maxDelayTime", type: "optional number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  maxDelayTime = _.defaults(maxDelayTime, 1.0);
+
+  return new DelayNode(this, maxDelayTime);
 };
 
 AudioContext.prototype.createBiquadFilter = function() {
@@ -153,11 +194,31 @@ AudioContext.prototype.createConvolver = function() {
 };
 
 AudioContext.prototype.createChannelSplitter = function(numberOfOutputs) {
-  return new ChannelSplitterNode(this, _.defaults(numberOfOutputs, 6));
+  var inspector = new Inspector(this, "createChannelSplitter", [
+    { name: "numberOfOutputs", type: "optional number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  numberOfOutputs = _.defaults(numberOfOutputs, 6);
+
+  return new ChannelSplitterNode(this, numberOfOutputs);
 };
 
 AudioContext.prototype.createChannelMerger = function(numberOfInputs) {
-  return new ChannelMergerNode(this, _.defaults(numberOfInputs, 6));
+  var inspector = new Inspector(this, "createChannelMerger", [
+    { name: "numberOfInputs", type: "optional number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  numberOfInputs = _.defaults(numberOfInputs, 6);
+
+  return new ChannelMergerNode(this, numberOfInputs);
 };
 
 AudioContext.prototype.createDynamicsCompressor = function() {
@@ -169,6 +230,26 @@ AudioContext.prototype.createOscillator = function() {
 };
 
 AudioContext.prototype.createPeriodicWave = function(real, imag) {
+  var inspector = new Inspector(this, "createPeriodicWave", [
+    { name: "real", type: "Float32Array", validate: over4096 },
+    { name: "imag", type: "Float32Array", validate: over4096 },
+  ]);
+
+  function over4096(value, name) {
+    if (4096 < value.length) {
+      return "length of " + name + " array (" + value.length + ") exceeds allow maximum of 4096";
+    }
+  }
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+  inspector.assert(real.length === imag.length, function() {
+    throw new TypeError(
+      inspector.form + "; length of real array (" + real.length + ") and length of imaginary array (" + imag.length + ") must match"
+    );
+  });
+
   return new PeriodicWave(real, imag);
 };
 
