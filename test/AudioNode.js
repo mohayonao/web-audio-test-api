@@ -1,6 +1,7 @@
 "use strict";
 
 describe("AudioNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,7 +20,7 @@ describe("AudioNode", function() {
 
   describe("#context", function() {
     it("get: AudioContext", function() {
-      var node = audioContext.createOscillator();
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
 
       assert(node.context === audioContext);
 
@@ -33,7 +34,7 @@ describe("AudioNode", function() {
 
   describe("#numberOfInputs", function() {
     it("get: number", function() {
-      var node = audioContext.createOscillator();
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
 
       assert(typeof node.numberOfInputs === "number");
 
@@ -47,7 +48,7 @@ describe("AudioNode", function() {
 
   describe("#numberOfOutputs", function() {
     it("get: number", function() {
-      var node = audioContext.createOscillator();
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
 
       assert(typeof node.numberOfOutputs === "number");
 
@@ -61,7 +62,7 @@ describe("AudioNode", function() {
 
   describe("#channelCount", function() {
     it("get/set: number", function() {
-      var node = audioContext.createOscillator();
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
 
       assert(typeof node.channelCount === "number");
 
@@ -81,7 +82,7 @@ describe("AudioNode", function() {
 
   describe("#channelCountMode", function() {
     it("get/set: ChannelCountMode", function() {
-      var node = audioContext.createOscillator();
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
 
       assert(typeof node.channelCountMode === "string");
 
@@ -104,7 +105,7 @@ describe("AudioNode", function() {
 
   describe("#channelInterpretation", function() {
     it("get/set: ChannelInterpretation", function() {
-      var node = audioContext.createOscillator();
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
 
       assert(typeof node.channelInterpretation === "string");
 
@@ -124,7 +125,7 @@ describe("AudioNode", function() {
 
   describe("#connect", function() {
     it("(destination: AudioNode, [output: number], [input: number]): void", function() {
-      var node = audioContext.createOscillator();
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
 
       node.connect(audioContext.destination);
 
@@ -172,7 +173,7 @@ describe("AudioNode", function() {
 
   describe("#disconnect", function() {
     it("([output: number]): void", function() {
-      var node = audioContext.createOscillator();
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
 
       node.disconnect();
       node.disconnect(0);
@@ -193,22 +194,18 @@ describe("AudioNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = audioContext.createOscillator();
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
+        name: "AudioNode",
+        inputs: []
+      });
 
       audioContext.VERBOSE_JSON = true;
 
       assert.deepEqual(node.toJSON(), {
-        name: "OscillatorNode",
-        type: "sine",
-        frequency: {
-          value: 440,
-          inputs: []
-        },
-        detune: {
-          value: 0,
-          inputs: []
-        },
-        numberOfInputs: 0,
+        name: "AudioNode",
+        numberOfInputs: 1,
         numberOfOutputs: 1,
         channelCount: 2,
         channelCountMode: "max",

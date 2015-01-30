@@ -1,6 +1,7 @@
 "use strict";
 
 describe("ChannelMergerNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,7 +20,7 @@ describe("ChannelMergerNode", function() {
 
   describe("#toJSON()", function() {
     it("(): object", function() {
-      var node = audioContext.createChannelMerger();
+      var node = new WebAudioTestAPI.ChannelMergerNode(audioContext);
 
       assert.deepEqual(node.toJSON(), {
         name: "ChannelMergerNode",

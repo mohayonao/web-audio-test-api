@@ -1,6 +1,7 @@
 "use strict";
 
 describe("AudioParam", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,8 +20,8 @@ describe("AudioParam", function() {
 
   describe("#name", function() {
     it("get: string", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       assert(typeof param.name === "string");
 
@@ -34,8 +35,8 @@ describe("AudioParam", function() {
 
   describe("#defaultValue", function() {
     it("get: number", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       assert(typeof param.defaultValue === "number");
 
@@ -49,8 +50,8 @@ describe("AudioParam", function() {
 
   describe("#minValue", function() {
     it("get: number", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       assert(typeof param.minValue === "number");
 
@@ -64,8 +65,8 @@ describe("AudioParam", function() {
 
   describe("#maxValue", function() {
     it("get: number", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       assert(typeof param.maxValue === "number");
 
@@ -79,8 +80,8 @@ describe("AudioParam", function() {
 
   describe("#value", function() {
     it("get/set: number", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       assert(typeof param.value === "number");
 
@@ -96,8 +97,8 @@ describe("AudioParam", function() {
 
   describe("#setValueAtTime", function() {
     it("(value: number, startTime: number): void", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       param.setValueAtTime(0, 0);
 
@@ -117,8 +118,8 @@ describe("AudioParam", function() {
 
   describe("#linearRampToValueAtTime", function() {
     it("(value: number, endTime: number): void", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       param.linearRampToValueAtTime(0, 0);
 
@@ -138,8 +139,8 @@ describe("AudioParam", function() {
 
   describe("#exponentialRampToValueAtTime", function() {
     it("(value: number, endTime: number): void", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       param.exponentialRampToValueAtTime(0, 0);
 
@@ -159,8 +160,8 @@ describe("AudioParam", function() {
 
   describe("#setTargetAtTime", function() {
     it("(target: number, startTime: number, timeConstant: number): void", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       param.setTargetAtTime(0, 0, 0);
 
@@ -186,8 +187,8 @@ describe("AudioParam", function() {
 
   describe("#setValueCurveAtTime", function() {
     it("(values: Float32Array, startTime: number, duration: number): void", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
       var values = new Float32Array(32);
 
       param.setValueCurveAtTime(values, 0, 0);
@@ -214,8 +215,8 @@ describe("AudioParam", function() {
 
   describe("#cancelScheduledValues", function() {
     it("(startTime: number): void", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       param.cancelScheduledValues(0);
 
@@ -229,8 +230,8 @@ describe("AudioParam", function() {
 
   describe("#$valueAtTime", function() {
     it("(time: number): number", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       param.setValueAtTime(0, 0.000);
       param.setValueAtTime(0, 4.000);
@@ -251,8 +252,8 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime(5.000) === 1000, "00:02.000");
     });
     it("LinearRampToValue", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       param.setValueAtTime(0, 0.000);
       param.linearRampToValueAtTime(100, 1.000);
@@ -271,8 +272,8 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime(5.000) === 1000, "00:02.000");
     });
     it("ExponentialRampToValue", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       param.setValueAtTime(0.0001, 0.000);
       param.exponentialRampToValueAtTime(100, 1.000);
@@ -291,8 +292,8 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime(5.000) === 1000, "00:02.000");
     });
     it("SetTarget", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       param.setValueAtTime(0, 0.000);
       param.setTargetAtTime( 100, 1.000, 2);
@@ -311,8 +312,8 @@ describe("AudioParam", function() {
       assert(closeTo(param.$valueAtTime(5.000), 953.7652150780225, 1e-6), "00:05.000");
     });
     it("SetCurve", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
       var curve1 = new Float32Array([ 220, 330, 440, 330, 220 ]);
       var curve2 = new Float32Array([ 1, 2, 3, 4 ]);
 
@@ -340,8 +341,8 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime(8.000) === 4, "00:08.000");
     });
     it("Cancel", function() {
-      var node = audioContext.createOscillator();
-      var param = node.frequency;
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
       param.setValueAtTime(0, 0.000);
       param.linearRampToValueAtTime( 100, 1.000);

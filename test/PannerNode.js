@@ -1,6 +1,7 @@
 "use strict";
 
 describe("PannerNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,7 +20,7 @@ describe("PannerNode", function() {
 
   describe("#panningModel", function() {
     it("get/set: PanningModelType", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       assert(typeof node.panningModel === "string");
 
@@ -39,7 +40,7 @@ describe("PannerNode", function() {
 
   describe("#distanceModel", function() {
     it("get/set: DistanceModelType", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       assert(typeof node.distanceModel === "string");
 
@@ -62,7 +63,7 @@ describe("PannerNode", function() {
 
   describe("#refDistance", function() {
     it("get/set: number", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       assert(typeof node.refDistance === "number");
 
@@ -82,7 +83,7 @@ describe("PannerNode", function() {
 
   describe("#maxDistance", function() {
     it("get/set: number", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       assert(typeof node.maxDistance === "number");
 
@@ -102,7 +103,7 @@ describe("PannerNode", function() {
 
   describe("#rolloffFactor", function() {
     it("get/set: number", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       assert(typeof node.rolloffFactor === "number");
 
@@ -122,7 +123,7 @@ describe("PannerNode", function() {
 
   describe("#coneInnerAngle", function() {
     it("get/set: number", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       assert(typeof node.coneInnerAngle === "number");
 
@@ -142,7 +143,7 @@ describe("PannerNode", function() {
 
   describe("#coneOuterAngle", function() {
     it("get/set: number", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       assert(typeof node.coneOuterAngle === "number");
 
@@ -162,7 +163,7 @@ describe("PannerNode", function() {
 
   describe("#coneOuterGain", function() {
     it("get/set: number", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       assert(typeof node.coneOuterGain === "number");
 
@@ -182,7 +183,7 @@ describe("PannerNode", function() {
 
   describe("#setPosition", function() {
     it("(x: number, y: number, z: number): void", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       node.setPosition(0, 0, 0);
 
@@ -208,7 +209,7 @@ describe("PannerNode", function() {
 
   describe("#setOrientation", function() {
     it("(x: number, y: number, z: number): void", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       node.setOrientation(0, 0, 0);
 
@@ -234,7 +235,7 @@ describe("PannerNode", function() {
 
   describe("#setVelocity", function() {
     it("(x: number, y: number, z: number): void", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       node.setVelocity(0, 0, 0);
 
@@ -260,7 +261,7 @@ describe("PannerNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = audioContext.createPanner();
+      var node = new WebAudioTestAPI.PannerNode(audioContext);
 
       assert.deepEqual(node.toJSON(), {
         name: "PannerNode",

@@ -1,6 +1,7 @@
 "use strict";
 
 describe("AudioBuffer", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,8 +20,8 @@ describe("AudioBuffer", function() {
 
   describe("#sampleRate", function() {
     it("get: number", function() {
-      var buf1 = audioContext.createBuffer(1, 16, 44100);
-      var buf2 = audioContext.createBuffer(2, 32, 48000);
+      var buf1 = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 16, 44100);
+      var buf2 = new WebAudioTestAPI.AudioBuffer(audioContext, 2, 32, 48000);
 
       assert(typeof buf1.sampleRate === "number");
       assert(typeof buf2.sampleRate === "number");
@@ -37,8 +38,8 @@ describe("AudioBuffer", function() {
 
   describe("#length", function() {
     it("get: number", function() {
-      var buf1 = audioContext.createBuffer(1, 16, 44100);
-      var buf2 = audioContext.createBuffer(2, 32, 48000);
+      var buf1 = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 16, 44100);
+      var buf2 = new WebAudioTestAPI.AudioBuffer(audioContext, 2, 32, 48000);
 
       assert(typeof buf1.length === "number");
       assert(typeof buf2.length === "number");
@@ -55,8 +56,8 @@ describe("AudioBuffer", function() {
 
   describe("#duration", function() {
     it("get: number", function() {
-      var buf1 = audioContext.createBuffer(1, 16, 44100);
-      var buf2 = audioContext.createBuffer(2, 32, 48000);
+      var buf1 = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 16, 44100);
+      var buf2 = new WebAudioTestAPI.AudioBuffer(audioContext, 2, 32, 48000);
 
       assert(typeof buf1.duration === "number");
       assert(typeof buf2.duration === "number");
@@ -73,8 +74,8 @@ describe("AudioBuffer", function() {
 
   describe("#numberOfChannels", function() {
     it("get: number", function() {
-      var buf1 = audioContext.createBuffer(1, 16, 44100);
-      var buf2 = audioContext.createBuffer(2, 32, 48000);
+      var buf1 = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 16, 44100);
+      var buf2 = new WebAudioTestAPI.AudioBuffer(audioContext, 2, 32, 48000);
 
       assert(typeof buf1.numberOfChannels === "number");
       assert(typeof buf2.numberOfChannels === "number");
@@ -91,8 +92,8 @@ describe("AudioBuffer", function() {
 
   describe("#getChannelData", function() {
     it("(channel: number): Float32Array", function() {
-      var buf1 = audioContext.createBuffer(1, 16, 44100);
-      var buf2 = audioContext.createBuffer(2, 32, 48000);
+      var buf1 = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 16, 44100);
+      var buf2 = new WebAudioTestAPI.AudioBuffer(audioContext, 2, 32, 48000);
 
       var dat1 = buf1.getChannelData(0);
       var dat2 = buf2.getChannelData(1);
@@ -126,8 +127,8 @@ describe("AudioBuffer", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var buf1 = audioContext.createBuffer(1, 16, 44100);
-      var buf2 = audioContext.createBuffer(2, 32, 48000);
+      var buf1 = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 16, 44100);
+      var buf2 = new WebAudioTestAPI.AudioBuffer(audioContext, 2, 32, 48000);
       var dat1 = _.toArray(new Float32Array(_.range(16).map(Math.random)));
       var dat2 = _.toArray(new Float32Array(_.range(32).map(Math.random)));
 

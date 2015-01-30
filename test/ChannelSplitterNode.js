@@ -1,6 +1,7 @@
 "use strict";
 
 describe("ChannelSplitterNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,7 +20,7 @@ describe("ChannelSplitterNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = audioContext.createChannelSplitter();
+      var node = new WebAudioTestAPI.ChannelSplitterNode(audioContext);
 
       assert.deepEqual(node.toJSON(), {
         name: "ChannelSplitterNode",

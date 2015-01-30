@@ -4,6 +4,7 @@ var BUFFER_SIZE = 256;
 var PROCESS_INTERVAL = BUFFER_SIZE / 44100;
 
 describe("ScriptProcessorNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -22,8 +23,8 @@ describe("ScriptProcessorNode", function() {
 
   describe("#numberOfInputChannels", function() {
     it("get: number", function() {
-      var node1 = audioContext.createScriptProcessor(1024, 1, 0);
-      var node2 = audioContext.createScriptProcessor(2048, 2, 0);
+      var node1 = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 1024, 1, 0);
+      var node2 = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 2048, 2, 0);
 
       assert(node1.numberOfInputChannels === 1);
       assert(node2.numberOfInputChannels === 2);
@@ -38,8 +39,8 @@ describe("ScriptProcessorNode", function() {
 
   describe("#numberOfOutputChannels", function() {
     it("get: number", function() {
-      var node1 = audioContext.createScriptProcessor(1024, 0, 1);
-      var node2 = audioContext.createScriptProcessor(2048, 0, 2);
+      var node1 = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 1024, 0, 1);
+      var node2 = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 2048, 0, 2);
 
       assert(node1.numberOfOutputChannels === 1);
       assert(node2.numberOfOutputChannels === 2);
@@ -54,8 +55,8 @@ describe("ScriptProcessorNode", function() {
 
   describe("#bufferSize", function() {
     it("get: number", function() {
-      var node1 = audioContext.createScriptProcessor(1024, 0, 1);
-      var node2 = audioContext.createScriptProcessor(2048, 0, 2);
+      var node1 = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 1024, 0, 1);
+      var node2 = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 2048, 0, 2);
 
       assert(node1.bufferSize === 1024);
       assert(node2.bufferSize === 2048);
@@ -70,7 +71,7 @@ describe("ScriptProcessorNode", function() {
 
   describe("#onaudioprocess", function() {
     it("get/set: function", function() {
-      var node = audioContext.createScriptProcessor(1024, 0, 1);
+      var node = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 1024, 0, 1);
       var fn1 = function() {};
       var fn2 = function() {};
 
@@ -92,7 +93,7 @@ describe("ScriptProcessorNode", function() {
       });
     });
     it("works", function() {
-      var node = audioContext.createScriptProcessor(256, 1, 1);
+      var node = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 256, 1, 1);
       var spy = sinon.spy();
       var interval = PROCESS_INTERVAL * 0.25;
 
@@ -141,7 +142,7 @@ describe("ScriptProcessorNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = audioContext.createScriptProcessor(1024, 0, 1);
+      var node = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 1024, 0, 1);
 
       assert.deepEqual(node.toJSON(), {
         name: "ScriptProcessorNode",

@@ -1,6 +1,7 @@
 "use strict";
 
 describe("BiquadFilterNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,7 +20,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#type", function() {
     it("get/set: BiquadFilterType", function() {
-      var node = audioContext.createBiquadFilter();
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
 
       assert(typeof node.type === "string");
 
@@ -57,7 +58,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#frequency", function() {
     it("get: AudioParam", function() {
-      var node = audioContext.createBiquadFilter();
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
 
       assert(node.frequency instanceof global.AudioParam);
 
@@ -71,7 +72,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#detune", function() {
     it("get: AudioParam", function() {
-      var node = audioContext.createBiquadFilter();
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
 
       assert(node.detune instanceof global.AudioParam);
 
@@ -85,7 +86,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#Q", function() {
     it("get: AudioParam", function() {
-      var node = audioContext.createBiquadFilter();
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
 
       assert(node.Q instanceof global.AudioParam);
 
@@ -99,7 +100,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#gain", function() {
     it("get: AudioParam", function() {
-      var node = audioContext.createBiquadFilter();
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
 
       assert(node.gain instanceof global.AudioParam);
       assert.throws(function() {
@@ -112,7 +113,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#getFrequencyResponse", function() {
     it("(frequencyHz: Float32Array, magResponse: Float32Array, phaseResponse: Float32Array): void", function() {
-      var node = audioContext.createBiquadFilter();
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
       var f32f = new Float32Array(128);
       var f32m = new Float32Array(128);
       var f32p = new Float32Array(128);
@@ -141,7 +142,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = audioContext.createBiquadFilter();
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
 
       assert.deepEqual(node.toJSON(), {
         name: "BiquadFilterNode",

@@ -1,6 +1,7 @@
 "use strict";
 
 describe("DynamicsCompressorNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,7 +20,7 @@ describe("DynamicsCompressorNode", function() {
 
   describe("#threshold", function() {
     it("get: AudioParam", function() {
-      var node = audioContext.createDynamicsCompressor();
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
 
       assert(node.threshold instanceof global.AudioParam);
 
@@ -33,7 +34,7 @@ describe("DynamicsCompressorNode", function() {
 
   describe("#knee", function() {
     it("get: AudioParam", function() {
-      var node = audioContext.createDynamicsCompressor();
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
 
       assert(node.knee instanceof global.AudioParam);
 
@@ -47,7 +48,7 @@ describe("DynamicsCompressorNode", function() {
 
   describe("#ratio", function() {
     it("get: AudioParam", function() {
-      var node = audioContext.createDynamicsCompressor();
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
 
       assert(node.ratio instanceof global.AudioParam);
 
@@ -61,7 +62,7 @@ describe("DynamicsCompressorNode", function() {
 
   describe("#reduction", function() {
     it("get: AudioParam", function() {
-      var node = audioContext.createDynamicsCompressor();
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
 
       assert(node.reduction instanceof global.AudioParam);
 
@@ -75,7 +76,7 @@ describe("DynamicsCompressorNode", function() {
 
   describe("#attack", function() {
     it("get: AudioParam", function() {
-      var node = audioContext.createDynamicsCompressor();
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
 
       assert(node.attack instanceof global.AudioParam);
 
@@ -89,7 +90,7 @@ describe("DynamicsCompressorNode", function() {
 
   describe("#release", function() {
     it("get: AudioParam", function() {
-      var node = audioContext.createDynamicsCompressor();
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
 
       assert(node.release instanceof global.AudioParam);
 
@@ -103,7 +104,7 @@ describe("DynamicsCompressorNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = audioContext.createDynamicsCompressor();
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
 
       assert.deepEqual(node.toJSON(), {
         name: "DynamicsCompressorNode",

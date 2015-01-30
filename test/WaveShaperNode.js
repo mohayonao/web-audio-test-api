@@ -1,6 +1,7 @@
 "use strict";
 
 describe("WaveShaperNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,7 +20,7 @@ describe("WaveShaperNode", function() {
 
   describe("#curve", function() {
     it("get/set: Float32Array", function() {
-      var node = audioContext.createWaveShaper();
+      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
       var f32a = new Float32Array(128);
       var f32b = new Float32Array(128);
 
@@ -44,7 +45,7 @@ describe("WaveShaperNode", function() {
 
   describe("#oversample", function() {
     it("get/set: OverSampleType", function() {
-      var node = audioContext.createWaveShaper();
+      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
 
       assert(typeof node.oversample === "string");
 
@@ -67,7 +68,7 @@ describe("WaveShaperNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = audioContext.createWaveShaper();
+      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
 
       assert.deepEqual(node.toJSON(), {
         name: "WaveShaperNode",

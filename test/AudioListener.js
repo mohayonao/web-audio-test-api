@@ -1,6 +1,7 @@
 "use strict";
 
 describe("AudioListener", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,7 +20,7 @@ describe("AudioListener", function() {
 
   describe("#dopplerFactor", function() {
     it("get/set: number", function() {
-      var listener = audioContext.listener;
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
 
       assert(typeof listener.dopplerFactor === "number");
 
@@ -39,7 +40,7 @@ describe("AudioListener", function() {
 
   describe("#speedOfSound", function() {
     it("get/set: number", function() {
-      var listener = audioContext.listener;
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
 
       assert(typeof listener.speedOfSound === "number");
 
@@ -59,7 +60,7 @@ describe("AudioListener", function() {
 
   describe("#setPosition", function() {
     it("(x: number, y: number, z: number): void", function() {
-      var listener = audioContext.listener;
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
 
       listener.setPosition(0, 0, 0);
 
@@ -85,7 +86,7 @@ describe("AudioListener", function() {
 
   describe("#setOrientation", function() {
     it("(x: number, y: number, z: number, xUp: number, yUp: number, zUp: number): void", function() {
-      var listener = audioContext.listener;
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
 
       listener.setOrientation(0, 0, 0, 0, 0, 0);
 
@@ -129,7 +130,7 @@ describe("AudioListener", function() {
 
   describe("#setVelocity", function() {
     it("(x: number, y: number, z: number): void", function() {
-      var listener = audioContext.listener;
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
 
       listener.setVelocity(0, 0, 0);
 

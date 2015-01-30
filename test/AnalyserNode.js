@@ -1,6 +1,7 @@
 "use strict";
 
 describe("AnalyserNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
@@ -19,7 +20,7 @@ describe("AnalyserNode", function() {
 
   describe("#fftSize", function() {
     it("get/set: FFTSize", function() {
-      var node = audioContext.createAnalyser();
+      var node = new WebAudioTestAPI.AnalyserNode(audioContext);
 
       assert(typeof node.fftSize === "number");
 
@@ -57,7 +58,7 @@ describe("AnalyserNode", function() {
 
   describe("#frequencyBinCount", function() {
     it("get: number", function() {
-      var node = audioContext.createAnalyser();
+      var node = new WebAudioTestAPI.AnalyserNode(audioContext);
 
       assert(typeof node.frequencyBinCount === "number");
 
@@ -77,7 +78,7 @@ describe("AnalyserNode", function() {
 
   describe("#minDecibels", function() {
     it("get/set: number", function() {
-      var node = audioContext.createAnalyser();
+      var node = new WebAudioTestAPI.AnalyserNode(audioContext);
 
       assert(typeof node.minDecibels === "number");
 
@@ -97,7 +98,7 @@ describe("AnalyserNode", function() {
 
   describe("#maxDecibels", function() {
     it("get/set: number", function() {
-      var node = audioContext.createAnalyser();
+      var node = new WebAudioTestAPI.AnalyserNode(audioContext);
 
       assert(typeof node.maxDecibels === "number");
 
@@ -117,7 +118,7 @@ describe("AnalyserNode", function() {
 
   describe("#smoothingTimeConstant", function() {
     it("get/set: number", function() {
-      var node = audioContext.createAnalyser();
+      var node = new WebAudioTestAPI.AnalyserNode(audioContext);
 
       assert(typeof node.smoothingTimeConstant === "number");
 
@@ -137,7 +138,7 @@ describe("AnalyserNode", function() {
 
   describe("#getFloatFrequencyData", function() {
     it("(array: Float32Array): void", function() {
-      var node = audioContext.createAnalyser();
+      var node = new WebAudioTestAPI.AnalyserNode(audioContext);
       var f32 = new Float32Array(128);
       var i16 = new Int16Array(128);
 
@@ -153,7 +154,7 @@ describe("AnalyserNode", function() {
 
   describe("#getByteFrequencyData", function() {
     it("(array: Uint8Array): void", function() {
-      var node = audioContext.createAnalyser();
+      var node = new WebAudioTestAPI.AnalyserNode(audioContext);
       var ui8 = new Uint8Array(128);
       var i16 = new Int16Array(128);
 
@@ -169,7 +170,7 @@ describe("AnalyserNode", function() {
 
   describe("#getByteTimeDomainData", function() {
     it("(array: Uint8Array): void", function() {
-      var node = audioContext.createAnalyser();
+      var node = new WebAudioTestAPI.AnalyserNode(audioContext);
       var ui8 = new Uint8Array(128);
       var i16 = new Int16Array(128);
 
@@ -185,7 +186,7 @@ describe("AnalyserNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = audioContext.createAnalyser();
+      var node = new WebAudioTestAPI.AnalyserNode(audioContext);
 
       assert.deepEqual(node.toJSON(), {
         name: "AnalyserNode",
