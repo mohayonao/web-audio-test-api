@@ -5,11 +5,15 @@ describe("AudioListener", function() {
   var audioContext;
 
   beforeEach(function() {
-    audioContext = new global.AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
   describe("constructor", function() {
-    it("() throws TypeError", function() {
+    it("()", function() {
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+
+      assert(listener instanceof global.AudioListener);
+
       assert.throws(function() {
         global.AudioListener();
       }, function(e) {

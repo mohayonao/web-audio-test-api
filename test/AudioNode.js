@@ -5,11 +5,16 @@ describe("AudioNode", function() {
   var audioContext;
 
   beforeEach(function() {
-    audioContext = new global.AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
   describe("constructor", function() {
-    it("() throws TypeError", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+
+      assert(node instanceof global.AudioNode);
+      assert(node instanceof global.EventTarget);
+
       assert.throws(function() {
         global.AudioNode();
       }, function(e) {
@@ -161,7 +166,7 @@ describe("AudioNode", function() {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
 
-      var anotherAudioContext = new global.AudioContext();
+      var anotherAudioContext = new WebAudioTestAPI.AudioContext();
 
       assert.throws(function() {
         node.connect(anotherAudioContext.destination);
@@ -211,6 +216,64 @@ describe("AudioNode", function() {
         channelCountMode: "max",
         channelInterpretation: "speakers",
         inputs: []
+      });
+    });
+  });
+
+  describe("works", function() {
+    it("connect", function() {
+      var node1 = new WebAudioTestAPI.AudioNode(audioContext);
+      var node2 = new WebAudioTestAPI.AudioNode(audioContext);
+      var node3 = new WebAudioTestAPI.AudioNode(audioContext);
+
+      node1.$id = "foo";
+      node2.$id = "bar";
+      node3.$id = "baz";
+
+      node3.connect(node2);
+      node2.connect(node1);
+      node1.connect(node3);
+
+      assert.deepEqual(node1.toJSON(), {
+        name: "AudioNode#foo",
+        inputs: [
+          {
+            name: "AudioNode#bar",
+            inputs: [
+              {
+                name: "AudioNode#baz",
+                inputs: [
+                  "<circular:AudioNode#foo>"
+                ]
+              }
+            ]
+          }
+        ]
+      });
+    });
+
+    it("disconnect", function() {
+      var node1 = new WebAudioTestAPI.AudioNode(audioContext);
+      var node2 = new WebAudioTestAPI.AudioNode(audioContext);
+      var node3 = new WebAudioTestAPI.AudioNode(audioContext);
+
+      node1.$id = "foo";
+      node2.$id = "bar";
+      node3.$id = "baz";
+
+      node3.connect(node2);
+      node2.connect(node1);
+      node1.connect(node3);
+      node3.disconnect();
+
+      assert.deepEqual(node1.toJSON(), {
+        name: "AudioNode#foo",
+        inputs: [
+          {
+            name: "AudioNode#bar",
+            inputs: []
+          }
+        ]
       });
     });
   });

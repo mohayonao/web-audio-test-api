@@ -1,8 +1,19 @@
 "use strict";
 
 describe("PeriodicWave", function() {
-  describe("()", function() {
-    it("throw illegal constructor", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
+
+  beforeEach(function() {
+    audioContext = new WebAudioTestAPI.AudioContext();
+  });
+
+  describe("constructor", function() {
+    it("()", function() {
+      var wave = new WebAudioTestAPI.PeriodicWave();
+
+      assert(wave instanceof global.PeriodicWave);
+
       assert.throws(function() {
         return new global.PeriodicWave();
       }, function(e) {

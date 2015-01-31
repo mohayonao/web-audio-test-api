@@ -5,11 +5,16 @@ describe("ChannelMergerNode", function() {
   var audioContext;
 
   beforeEach(function() {
-    audioContext = new global.AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
   describe("constructor", function() {
-    it("() throws TypeError", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.ChannelMergerNode(audioContext);
+
+      assert(node instanceof global.ChannelMergerNode);
+      assert(node instanceof global.AudioNode);
+
       assert.throws(function() {
         global.ChannelMergerNode();
       }, function(e) {

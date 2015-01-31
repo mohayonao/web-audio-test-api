@@ -5,11 +5,16 @@ describe("DelayNode", function() {
   var audioContext;
 
   beforeEach(function() {
-    audioContext = new global.AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
   describe("constructor", function() {
-    it("() throws TypeError", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.DelayNode(audioContext);
+
+      assert(node instanceof global.DelayNode);
+      assert(node instanceof global.AudioNode);
+
       assert.throws(function() {
         global.DelayNode();
       }, function(e) {
@@ -22,7 +27,7 @@ describe("DelayNode", function() {
     it("get: AudioParam", function() {
       var node = new WebAudioTestAPI.DelayNode(audioContext, 0);
 
-      assert(node.delayTime instanceof global.AudioParam);
+      assert(node.delayTime instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.delayTime = 0;
@@ -48,7 +53,7 @@ describe("DelayNode", function() {
   });
 
   describe("$maxDelayTime", function() {
-    it("get: AudioParam", function() {
+    it("get: number", function() {
       var node = new WebAudioTestAPI.DelayNode(audioContext, 10);
 
       assert(typeof node.$maxDelayTime === "number");

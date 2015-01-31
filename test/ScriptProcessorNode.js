@@ -5,11 +5,16 @@ describe("ScriptProcessorNode", function() {
   var audioContext;
 
   beforeEach(function() {
-    audioContext = new global.AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
   describe("constructor", function() {
-    it("() throws", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.ScriptProcessorNode(audioContext);
+
+      assert(node instanceof global.ScriptProcessorNode);
+      assert(node instanceof global.AudioNode);
+
       assert.throws(function() {
         return new global.ScriptProcessorNode();
       }, function(e) {
@@ -89,10 +94,25 @@ describe("ScriptProcessorNode", function() {
         return e instanceof TypeError && /should be a function/.test(e.message);
       });
     });
-    it("works", function() {
+  });
+
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 1024, 0, 1);
+
+      assert.deepEqual(node.toJSON(), {
+        name: "ScriptProcessorNode",
+        inputs: []
+      });
+    });
+  });
+
+  describe("works", function() {
+    it("onaudioprocess", function() {
       // 256 / 44100 = 5.805msec -> 11.610msec -> 17.415msec
       var node = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 256, 1, 1);
       var onaudioprocess = sinon.spy();
+      var event;
 
       node.onaudioprocess = onaudioprocess;
 
@@ -104,6 +124,8 @@ describe("ScriptProcessorNode", function() {
       audioContext.$processTo("00:00.001");
       assert(onaudioprocess.callCount === 1, "00:00.001");
       assert(onaudioprocess.calledOn(node), "00:00.001");
+      event = onaudioprocess.args[0][0];
+      assert(audioContext.currentTime < event.playbackTime);
 
       audioContext.$processTo("00:00.005");
       assert(onaudioprocess.callCount === 1, "00:00.005");
@@ -111,6 +133,8 @@ describe("ScriptProcessorNode", function() {
       audioContext.$processTo("00:00.006");
       assert(onaudioprocess.callCount === 2, "00:00.006");
       assert(onaudioprocess.calledOn(node), "00:00.006");
+      event = onaudioprocess.args[1][0];
+      assert(audioContext.currentTime < event.playbackTime);
 
       audioContext.$processTo("00:00.011");
       assert(onaudioprocess.callCount === 2, "00:00.011");
@@ -118,6 +142,8 @@ describe("ScriptProcessorNode", function() {
       audioContext.$processTo("00:00.012");
       assert(onaudioprocess.callCount === 3, "00:00.012");
       assert(onaudioprocess.calledOn(node), "00:00.012");
+      event = onaudioprocess.args[2][0];
+      assert(audioContext.currentTime < event.playbackTime);
 
       audioContext.$processTo("00:00.017");
       assert(onaudioprocess.callCount === 3, "00:00.017");
@@ -125,26 +151,19 @@ describe("ScriptProcessorNode", function() {
       audioContext.$processTo("00:00.018");
       assert(onaudioprocess.callCount === 4, "00:00.018");
       assert(onaudioprocess.calledOn(node), "00:00.018");
+      event = onaudioprocess.args[3][0];
+      assert(audioContext.currentTime < event.playbackTime);
 
-      var event = onaudioprocess.args[0][0];
+      event = onaudioprocess.args[0][0];
 
-      assert(event instanceof global.AudioProcessingEvent);
-      assert(event.inputBuffer instanceof global.AudioBuffer);
-      assert(event.outputBuffer instanceof global.AudioBuffer);
+      assert(event instanceof WebAudioTestAPI.AudioProcessingEvent);
+      assert(event.inputBuffer instanceof WebAudioTestAPI.AudioBuffer);
+      assert(event.outputBuffer instanceof WebAudioTestAPI.AudioBuffer);
       assert(event.type === "audioprocess");
       assert(event.target === node);
       assert(typeof event.playbackTime === "number");
-    });
-  });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
-      var node = new WebAudioTestAPI.ScriptProcessorNode(audioContext, 1024, 0, 1);
-
-      assert.deepEqual(node.toJSON(), {
-        name: "ScriptProcessorNode",
-        inputs: []
-      });
+      assert(onaudioprocess.args[0][0] !== onaudioprocess.args[1][0]);
     });
   });
 

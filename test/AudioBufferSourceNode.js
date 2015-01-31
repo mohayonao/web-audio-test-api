@@ -5,11 +5,16 @@ describe("AudioBufferSourceNode", function() {
   var audioContext;
 
   beforeEach(function() {
-    audioContext = new global.AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
   describe("constructor", function() {
-    it("() throws TypeError", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert(node instanceof global.AudioBufferSourceNode);
+      assert(node instanceof global.AudioNode);
+
       assert.throws(function() {
         global.AudioBufferSourceNode();
       }, function(e) {
@@ -47,7 +52,7 @@ describe("AudioBufferSourceNode", function() {
     it("get: AudioParam", function() {
       var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
 
-      assert(node.playbackRate instanceof global.AudioParam);
+      assert(node.playbackRate instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.playbackRate = 0;
@@ -139,67 +144,6 @@ describe("AudioBufferSourceNode", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a function/.test(e.message);
       });
-    });
-    it("works", function() {
-      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
-      var buf = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 44100 * 0.25, 44100);
-      var onended = sinon.spy();
-
-      node.buffer = buf;
-      node.onended = onended;
-
-      node.connect(audioContext.destination);
-      node.start(0.1);
-      node.stop(0.15);
-
-      audioContext.$processTo("00:00.000");
-      assert(onended.callCount === 0, "00:00.000");
-
-      audioContext.$processTo("00:00.149");
-      assert(onended.callCount === 0, "00:00.149");
-
-      audioContext.$processTo("00:00.150");
-      assert(onended.callCount === 1, "00:00.150");
-      assert(onended.calledOn(node), "00:00.150");
-
-      audioContext.$processTo("00:00.200");
-      assert(onended.callCount === 1, "00:00.200");
-
-      var event = onended.args[0][0];
-
-      assert(event instanceof global.Event);
-      assert(event.type === "ended");
-      assert(event.target === node);
-    });
-    it("works auto stop", function() {
-      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
-      var buf = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 44100 * 0.25, 44100);
-      var onended = sinon.spy();
-
-      node.buffer = buf;
-      node.onended = onended;
-
-      node.connect(node.context.destination);
-      node.start(0.1);
-
-      audioContext.$processTo("00:00.000");
-      assert(onended.callCount === 0, "00:00.000");
-
-      audioContext.$processTo("00:00.349");
-      assert(onended.callCount === 0, "00:00.349");
-
-      audioContext.$processTo("00:00.350");
-      assert(onended.callCount === 1, "00:00.350");
-      assert(onended.calledOn(node), "00:00.350");
-
-      audioContext.$processTo("00:00.400");
-      assert(onended.callCount === 1, "00:00.400");
-
-      var event = onended.args[0][0];
-
-      assert(event instanceof global.Event);
-      assert(event.type === "ended");
-      assert(event.target === node);
     });
   });
 
@@ -357,17 +301,9 @@ describe("AudioBufferSourceNode", function() {
 
       assert(node.$state === "UNSCHEDULED");
 
-      node.start(0.1);
-      assert(node.$state === "SCHEDULED");
+      node.start(0);
 
-      audioContext.$processTo("00:00.100");
       assert(node.$state === "PLAYING");
-
-      node.stop(0.2);
-      assert(node.$state === "PLAYING");
-
-      audioContext.$processTo("00:00.200");
-      assert(node.$state === "FINISHED");
     });
   });
 
@@ -375,16 +311,122 @@ describe("AudioBufferSourceNode", function() {
     it("(time: number|string): string", function() {
       var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
 
-      assert(node.$stateAtTime("00:00.050") === "UNSCHEDULED");
-      assert(node.$stateAtTime("00:00.150") === "UNSCHEDULED");
-      assert(node.$stateAtTime("00:00.250") === "UNSCHEDULED");
+      assert(node.$stateAtTime("00:00.000") === "UNSCHEDULED");
 
-      node.start(0.1);
-      node.stop(0.2);
+      node.start(0);
 
-      assert(node.$stateAtTime("00:00.050") === "SCHEDULED");
-      assert(node.$stateAtTime("00:00.150") === "PLAYING");
-      assert(node.$stateAtTime("00:00.250") === "FINISHED");
+      assert(node.$stateAtTime("00:00.000") === "PLAYING");
+    });
+  });
+
+  describe("works", function() {
+    it("onended", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+      var buf = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 44100 * 0.025, 44100);
+      var onended = sinon.spy();
+      var event;
+
+      node.buffer = buf;
+      node.loop = true;
+      node.onended = onended;
+
+      node.connect(audioContext.destination);
+
+      assert(node.$state === "UNSCHEDULED");
+
+      node.start(0.100);
+      node.stop(0.150);
+
+      audioContext.$processTo("00:00.000");
+      assert(node.$state === "SCHEDULED", "00:00.000");
+      assert(onended.callCount === 0, "00:00.000");
+
+      audioContext.$processTo("00:00.099");
+      assert(node.$state === "SCHEDULED", "00:00.099");
+      assert(onended.callCount === 0, "00:00.099");
+
+      audioContext.$processTo("00:00.100");
+      assert(node.$state === "PLAYING", "00:00.100");
+      assert(onended.callCount === 0, "00:00.100");
+
+      audioContext.$processTo("00:00.149");
+      assert(node.$state === "PLAYING", "00:00.149");
+      assert(onended.callCount === 0, "00:00.149");
+
+      audioContext.$processTo("00:00.150");
+      assert(node.$state === "FINISHED", "00:00.150");
+      assert(onended.callCount === 1, "00:00.150");
+      assert(onended.calledOn(node), "00:00.150");
+
+      audioContext.$processTo("00:00.200");
+      assert(node.$state === "FINISHED", "00:00.200");
+      assert(onended.callCount === 1, "00:00.200");
+
+      event = onended.args[0][0];
+
+      assert(event instanceof WebAudioTestAPI.Event);
+      assert(event.type === "ended");
+      assert(event.target === node);
+
+      assert(node.$stateAtTime("00:00.000") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.099") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.100") === "PLAYING");
+      assert(node.$stateAtTime("00:00.149") === "PLAYING");
+      assert(node.$stateAtTime("00:00.150") === "FINISHED");
+      assert(node.$stateAtTime("00:00.200") === "FINISHED");
+    });
+    it("onended (auto stop)", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+      var buf = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 44100 * 0.025, 44100);
+      var onended = sinon.spy();
+      var event;
+
+      node.buffer = buf;
+      node.onended = onended;
+
+      node.connect(node.context.destination);
+
+      assert(node.$state === "UNSCHEDULED");
+
+      node.start(0.100);
+
+      audioContext.$processTo("00:00.000");
+      assert(node.$state === "SCHEDULED", "00:00.000");
+      assert(onended.callCount === 0, "00:00.000");
+
+      audioContext.$processTo("00:00.099");
+      assert(node.$state === "SCHEDULED", "00:00.099");
+      assert(onended.callCount === 0, "00:00.099");
+
+      audioContext.$processTo("00:00.100");
+      assert(node.$state === "PLAYING", "00:00.100");
+      assert(onended.callCount === 0, "00:00.100");
+
+      audioContext.$processTo("00:00.124");
+      assert(node.$state === "PLAYING", "00:00.124");
+      assert(onended.callCount === 0, "00:00.124");
+
+      audioContext.$processTo("00:00.125");
+      assert(node.$state === "FINISHED", "00:00.125");
+      assert(onended.callCount === 1, "00:00.125");
+      assert(onended.calledOn(node), "00:00.125");
+
+      audioContext.$processTo("00:00.200");
+      assert(node.$state === "FINISHED", "00:00.200");
+      assert(onended.callCount === 1, "00:00.200");
+
+      event = onended.args[0][0];
+
+      assert(event instanceof WebAudioTestAPI.Event);
+      assert(event.type === "ended");
+      assert(event.target === node);
+
+      assert(node.$stateAtTime("00:00.000") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.099") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.100") === "PLAYING");
+      assert(node.$stateAtTime("00:00.124") === "PLAYING");
+      assert(node.$stateAtTime("00:00.125") === "FINISHED");
+      assert(node.$stateAtTime("00:00.200") === "FINISHED");
     });
   });
 

@@ -1,8 +1,20 @@
 "use strict";
 
 describe("MediaElementAudioSourceNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
+
+  beforeEach(function() {
+    audioContext = new WebAudioTestAPI.AudioContext();
+  });
+
   describe("constructor", function() {
-    it("() throws TypeError", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.MediaElementAudioSourceNode(audioContext);
+
+      assert(node instanceof global.MediaElementAudioSourceNode);
+      assert(node instanceof global.AudioNode);
+
       assert.throws(function() {
         global.MediaElementAudioSourceNode();
       }, function(e) {

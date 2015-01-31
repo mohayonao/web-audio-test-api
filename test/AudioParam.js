@@ -5,11 +5,16 @@ describe("AudioParam", function() {
   var audioContext;
 
   beforeEach(function() {
-    audioContext = new global.AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
   describe("constructor", function() {
-    it("(): throws TypeError", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
+
+      assert(param instanceof global.AudioParam);
+
       assert.throws(function() {
         global.AudioParam();
       }, function(e) {
@@ -86,6 +91,8 @@ describe("AudioParam", function() {
       assert(typeof param.value === "number");
 
       param.value = 0;
+
+      assert(param.value === 0);
 
       assert.throws(function() {
         param.value = "INVALID";
@@ -233,15 +240,38 @@ describe("AudioParam", function() {
       var node = new WebAudioTestAPI.AudioNode(audioContext);
       var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 
+      node.$id = "foo";
+
       assert.deepEqual(param.toJSON(), {
         value: 0,
         inputs: []
+      });
+
+      node.connect(param);
+
+      assert.deepEqual(param.toJSON(), {
+        value: 0,
+        inputs: [
+          {
+            name: "AudioNode#foo",
+            inputs: []
+          }
+        ]
       });
     });
   });
 
   describe("$valueAtTime", function() {
     it("(time: number|string): number", function() {
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
+
+      assert(typeof param.$valueAtTime("00:00.000") === "number");
+    });
+  });
+
+  describe("works", function() {
+    it("SetValueAtTime", function() {
       var node = new WebAudioTestAPI.AudioNode(audioContext);
       var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
 

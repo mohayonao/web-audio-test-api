@@ -5,11 +5,16 @@ describe("BiquadFilterNode", function() {
   var audioContext;
 
   beforeEach(function() {
-    audioContext = new global.AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
   describe("constructor", function() {
-    it("() throws TypeError", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+
+      assert(node instanceof global.BiquadFilterNode);
+      assert(node instanceof global.AudioNode);
+
       assert.throws(function() {
         global.BiquadFilterNode();
       }, function(e) {
@@ -60,7 +65,7 @@ describe("BiquadFilterNode", function() {
     it("get: AudioParam", function() {
       var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
 
-      assert(node.frequency instanceof global.AudioParam);
+      assert(node.frequency instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.frequency = 0;
@@ -74,7 +79,7 @@ describe("BiquadFilterNode", function() {
     it("get: AudioParam", function() {
       var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
 
-      assert(node.detune instanceof global.AudioParam);
+      assert(node.detune instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.detune = 0;
@@ -88,7 +93,7 @@ describe("BiquadFilterNode", function() {
     it("get: AudioParam", function() {
       var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
 
-      assert(node.Q instanceof global.AudioParam);
+      assert(node.Q instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.Q = 0;
@@ -102,7 +107,7 @@ describe("BiquadFilterNode", function() {
     it("get: AudioParam", function() {
       var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
 
-      assert(node.gain instanceof global.AudioParam);
+      assert(node.gain instanceof WebAudioTestAPI.AudioParam);
       assert.throws(function() {
         node.gain = 0;
       }, function(e) {

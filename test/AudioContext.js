@@ -1,10 +1,11 @@
 "use strict";
 
 describe("AudioContext", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
   beforeEach(function() {
-    audioContext = new global.AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
   describe("constructor", function() {
@@ -23,14 +24,14 @@ describe("AudioContext", function() {
   describe(".WEB_AUDIO_TEST_API_VERSION", function() {
     it("check", function() {
       if (typeof global.WEB_AUDIO_TEST_API_VERSION === "string") {
-        assert(global.AudioContext.WEB_AUDIO_TEST_API_VERSION === global.WEB_AUDIO_TEST_API_VERSION);
+        assert(WebAudioTestAPI.AudioContext.WEB_AUDIO_TEST_API_VERSION === global.WEB_AUDIO_TEST_API_VERSION);
       }
     });
   });
 
   describe("#destination", function() {
     it("get: AudioDestinationNode", function() {
-      assert(audioContext.destination instanceof global.AudioDestinationNode);
+      assert(audioContext.destination instanceof WebAudioTestAPI.AudioDestinationNode);
 
       assert.throws(function() {
         audioContext.destination = null;
@@ -66,7 +67,7 @@ describe("AudioContext", function() {
 
   describe("#listener", function() {
     it("get: AudioListener", function() {
-      assert(audioContext.listener instanceof global.AudioListener);
+      assert(audioContext.listener instanceof WebAudioTestAPI.AudioListener);
 
       assert.throws(function() {
         audioContext.listener = null;
@@ -80,7 +81,7 @@ describe("AudioContext", function() {
     it("(numberOfChannels: number, length: number, sampleRate: number): AudioBuffer", function() {
       var buf = audioContext.createBuffer(2, 128, 44100);
 
-      assert(buf instanceof global.AudioBuffer);
+      assert(buf instanceof WebAudioTestAPI.AudioBuffer);
 
       assert.throws(function() {
         audioContext.createBuffer("INVALID", 128, 44100);
@@ -125,7 +126,7 @@ describe("AudioContext", function() {
       });
 
       audioContext.decodeAudioData(audioData, function(buffer) {
-        assert(buffer instanceof global.AudioBuffer);
+        assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
         done();
       }, function() {
         throw new Error("NOT REACHED");
@@ -160,16 +161,16 @@ describe("AudioContext", function() {
     it("(): AudioBufferSourceNode", function() {
       var node = audioContext.createBufferSource();
 
-      assert(node instanceof global.AudioBufferSourceNode);
+      assert(node instanceof WebAudioTestAPI.AudioBufferSourceNode);
     });
   });
 
   describe("#createMediaElementSource", function() {
     it("(mediaElement: HTMLMediaElement): MediaElementAudioSourceNode", function() {
-      var element = new global.WebAudioTestAPI.HTMLMediaElement();
+      var element = new WebAudioTestAPI.HTMLMediaElement();
       var node = audioContext.createMediaElementSource(element);
 
-      assert(node instanceof global.MediaElementAudioSourceNode);
+      assert(node instanceof WebAudioTestAPI.MediaElementAudioSourceNode);
 
       assert.throws(function() {
         audioContext.createMediaElementSource("INVALID");
@@ -181,10 +182,10 @@ describe("AudioContext", function() {
 
   describe("#createMediaStreamSource", function() {
     it("(mediaStream: MediaStream): MediaStreamAudioSourceNode", function() {
-      var stream = new global.WebAudioTestAPI.MediaStream();
+      var stream = new WebAudioTestAPI.MediaStream();
       var node = audioContext.createMediaStreamSource(stream);
 
-      assert(node instanceof global.MediaStreamAudioSourceNode);
+      assert(node instanceof WebAudioTestAPI.MediaStreamAudioSourceNode);
 
       assert.throws(function() {
         audioContext.createMediaStreamSource("INVALID");
@@ -198,7 +199,7 @@ describe("AudioContext", function() {
     it("(): MediaStreamAudioDestinationNode", function() {
       var node = audioContext.createMediaStreamDestination();
 
-      assert(node instanceof global.MediaStreamAudioDestinationNode);
+      assert(node instanceof WebAudioTestAPI.MediaStreamAudioDestinationNode);
     });
   });
 
@@ -206,7 +207,7 @@ describe("AudioContext", function() {
     it("(bufferSize: number, numberOfInputChannels: number, numberOfOutputChannels: number): ScriptProcessorNode", function() {
       var node = audioContext.createScriptProcessor(1024, 1, 1);
 
-      assert(node instanceof global.ScriptProcessorNode);
+      assert(node instanceof WebAudioTestAPI.ScriptProcessorNode);
 
       assert.throws(function() {
         audioContext.createScriptProcessor(0, 1, 1);
@@ -232,7 +233,7 @@ describe("AudioContext", function() {
     it("(): AnalyserNode", function() {
       var node = audioContext.createAnalyser();
 
-      assert(node instanceof global.AnalyserNode);
+      assert(node instanceof WebAudioTestAPI.AnalyserNode);
     });
   });
 
@@ -240,7 +241,7 @@ describe("AudioContext", function() {
     it("(): GainNode", function() {
       var node = audioContext.createGain();
 
-      assert(node instanceof global.GainNode);
+      assert(node instanceof WebAudioTestAPI.GainNode);
     });
   });
 
@@ -248,7 +249,7 @@ describe("AudioContext", function() {
     it("(): DelayNode", function() {
       var node = audioContext.createDelay();
 
-      assert(node instanceof global.DelayNode);
+      assert(node instanceof WebAudioTestAPI.DelayNode);
 
       assert.throws(function() {
         audioContext.createDelay("INVALID");
@@ -262,7 +263,7 @@ describe("AudioContext", function() {
     it("(): BiquadFilterNode", function() {
       var node = audioContext.createBiquadFilter();
 
-      assert(node instanceof global.BiquadFilterNode);
+      assert(node instanceof WebAudioTestAPI.BiquadFilterNode);
     });
   });
 
@@ -270,7 +271,7 @@ describe("AudioContext", function() {
     it("(): WaveShaperNode", function() {
       var node = audioContext.createWaveShaper();
 
-      assert(node instanceof global.WaveShaperNode);
+      assert(node instanceof WebAudioTestAPI.WaveShaperNode);
     });
   });
 
@@ -278,7 +279,7 @@ describe("AudioContext", function() {
     it("(): PannerNode", function() {
       var node = audioContext.createPanner();
 
-      assert(node instanceof global.PannerNode);
+      assert(node instanceof WebAudioTestAPI.PannerNode);
     });
   });
 
@@ -286,7 +287,7 @@ describe("AudioContext", function() {
     it("(): ConvolverNode", function() {
       var node = audioContext.createConvolver();
 
-      assert(node instanceof global.ConvolverNode);
+      assert(node instanceof WebAudioTestAPI.ConvolverNode);
     });
   });
 
@@ -294,7 +295,7 @@ describe("AudioContext", function() {
     it("(): ChannelSplitterNode", function() {
       var node = audioContext.createChannelSplitter();
 
-      assert(node instanceof global.ChannelSplitterNode);
+      assert(node instanceof WebAudioTestAPI.ChannelSplitterNode);
 
       assert.throws(function() {
         audioContext.createChannelSplitter("INVALID");
@@ -308,7 +309,7 @@ describe("AudioContext", function() {
     it("(): ChannelMergerNode", function() {
       var node = audioContext.createChannelMerger();
 
-      assert(node instanceof global.ChannelMergerNode);
+      assert(node instanceof WebAudioTestAPI.ChannelMergerNode);
 
       assert.throws(function() {
         audioContext.createChannelMerger("INVALID");
@@ -322,7 +323,7 @@ describe("AudioContext", function() {
     it("(): DynamicsCompressorNode", function() {
       var node = audioContext.createDynamicsCompressor();
 
-      assert(node instanceof global.DynamicsCompressorNode);
+      assert(node instanceof WebAudioTestAPI.DynamicsCompressorNode);
     });
   });
 
@@ -330,7 +331,7 @@ describe("AudioContext", function() {
     it("(): OscillatorNode", function() {
       var node = audioContext.createOscillator();
 
-      assert(node instanceof global.OscillatorNode);
+      assert(node instanceof WebAudioTestAPI.OscillatorNode);
     });
   });
 
@@ -343,7 +344,7 @@ describe("AudioContext", function() {
       var f8192 = new Float32Array(8192);
       var wave = audioContext.createPeriodicWave(real, imag);
 
-      assert(wave instanceof global.PeriodicWave);
+      assert(wave instanceof WebAudioTestAPI.PeriodicWave);
 
       assert.throws(function() {
         audioContext.createPeriodicWave("INVALID", imag);
@@ -396,7 +397,7 @@ describe("AudioContext", function() {
     });
   });
 
-  describe("#$processTo", function() {
+  describe("$processTo", function() {
     it("(time: number|string): void", function() {
       audioContext.$processTo(0.125);
       assert(audioContext.currentTime === 0.125, "00:00.125");
@@ -414,7 +415,9 @@ describe("AudioContext", function() {
 
   describe("$reset", function() {
     it("(): void", function() {
-      audioContext.createGain().connect(audioContext.destination);
+      var gain = audioContext.createGain();
+
+      gain.connect(audioContext.destination);
 
       assert.deepEqual(audioContext.toJSON(), {
         name: "AudioDestinationNode",
@@ -441,6 +444,68 @@ describe("AudioContext", function() {
         name: "AudioDestinationNode",
         inputs: []
       });
+    });
+  });
+
+  describe("works", function() {
+    it("$processTo", function() {
+      var amp = audioContext.createGain();
+      var osc = audioContext.createOscillator();
+      var bufSrc = audioContext.createBufferSource();
+      var buf = audioContext.createBuffer(1, 44100 * 0.025, 44100);
+      var onended = sinon.spy();
+      var event;
+
+      bufSrc.buffer = buf;
+      bufSrc.onended = onended;
+
+      bufSrc.connect(osc.frequency);
+      osc.connect(amp);
+      amp.connect(audioContext.destination);
+
+      assert(audioContext.toJSON(), {
+        name: "AudioDestinationNode",
+        inputs: [
+          {
+            name: "GainNode",
+            gain: {
+              value: 1,
+              inputs: []
+            },
+            inputs: [
+              {
+                name: "OscillatorNode",
+                type: "sine",
+                frequency: {
+                  value: 440,
+                  inputs: [ bufSrc.toJSON() ]
+                },
+                detune: {
+                  value: 0,
+                  inputs: []
+                },
+                inputs: []
+              }
+            ]
+          }
+        ]
+      });
+
+      assert(bufSrc.$state === "UNSCHEDULED");
+
+      bufSrc.start(0.100);
+
+      audioContext.$processTo("00:00.124");
+      assert(onended.callCount === 0, "00:00.124");
+
+      audioContext.$processTo("00:00.125");
+      assert(onended.callCount === 1, "00:00.125");
+
+      event = onended.args[0][0];
+
+      assert(event instanceof WebAudioTestAPI.Event);
+      assert(event.type === "ended");
+      assert(event.target === bufSrc);
     });
   });
 

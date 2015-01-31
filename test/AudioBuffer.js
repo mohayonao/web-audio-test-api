@@ -5,11 +5,15 @@ describe("AudioBuffer", function() {
   var audioContext;
 
   beforeEach(function() {
-    audioContext = new global.AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
   describe("constructor", function() {
-    it("() throws TypeError", function() {
+    it("()", function() {
+      var buf = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 16, 44100);
+
+      assert(buf instanceof global.AudioBuffer);
+
       assert.throws(function() {
         global.AudioBuffer();
       }, function(e) {
