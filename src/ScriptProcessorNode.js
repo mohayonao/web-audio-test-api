@@ -14,7 +14,6 @@ _.inherits(ScriptProcessorNodeConstructor, AudioNode);
 function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
   AudioNode.call(this, context, {
     name: "ScriptProcessorNode",
-    jsonAttrs: [],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : numberOfInputChannels,

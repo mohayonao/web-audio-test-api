@@ -14,7 +14,6 @@ _.inherits(WaveShaperNodeConstructor, AudioNode);
 function WaveShaperNode(context) {
   AudioNode.call(this, context, {
     name: "WaveShaperNode",
-    jsonAttrs: [ "oversample" ],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : 2,
@@ -35,5 +34,6 @@ function WaveShaperNode(context) {
 _.inherits(WaveShaperNode, WaveShaperNodeConstructor);
 
 WaveShaperNode.exports = WaveShaperNodeConstructor;
+WaveShaperNode.jsonAttrs = [ "oversample" ];
 
 module.exports = WebAudioTestAPI.WaveShaperNode = WaveShaperNode;

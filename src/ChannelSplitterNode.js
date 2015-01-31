@@ -12,7 +12,6 @@ _.inherits(ChannelSplitterNodeConstructor, AudioNode);
 function ChannelSplitterNode(context, numberOfOutputs) {
   AudioNode.call(this, context, {
     name: "ChannelSplitterNode",
-    jsonAttrs: [],
     numberOfInputs  : 1,
     numberOfOutputs : numberOfOutputs,
     channelCount    : 2,

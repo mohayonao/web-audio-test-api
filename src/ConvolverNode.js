@@ -12,7 +12,6 @@ _.inherits(ConvolverNodeConstructor, AudioNode);
 function ConvolverNode(context) {
   AudioNode.call(this, context, {
     name: "ConvolverNode",
-    jsonAttrs: [ "normalize" ],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : 2,
@@ -33,5 +32,6 @@ function ConvolverNode(context) {
 _.inherits(ConvolverNode, ConvolverNodeConstructor);
 
 ConvolverNode.exports = ConvolverNodeConstructor;
+ConvolverNode.jsonAttrs = [ "normalize" ];
 
 module.exports = WebAudioTestAPI.ConvolverNode = ConvolverNode;

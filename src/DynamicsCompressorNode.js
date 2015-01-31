@@ -13,7 +13,6 @@ _.inherits(DynamicsCompressorNodeConstructor, AudioNode);
 function DynamicsCompressorNode(context) {
   AudioNode.call(this, context, {
     name: "DynamicsCompressorNode",
-    jsonAttrs: [ "threshold", "knee", "ratio", "reduction", "attack", "release" ],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : 2,
@@ -50,5 +49,6 @@ function DynamicsCompressorNode(context) {
 _.inherits(DynamicsCompressorNode, DynamicsCompressorNodeConstructor);
 
 DynamicsCompressorNode.exports = DynamicsCompressorNodeConstructor;
+DynamicsCompressorNode.jsonAttrs = [ "threshold", "knee", "ratio", "reduction", "attack", "release" ];
 
 module.exports = WebAudioTestAPI.DynamicsCompressorNode = DynamicsCompressorNode;

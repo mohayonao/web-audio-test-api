@@ -12,7 +12,6 @@ _.inherits(MediaStreamAudioDestinationNodeConstructor, AudioNode);
 function MediaStreamAudioDestinationNode(context) {
   AudioNode.call(this, context, {
     name: "MediaStreamAudioDestinationNode",
-    jsonAttrs:  [],
     numberOfInputs  : 1,
     numberOfOutputs : 0,
     channelCount    : 2,

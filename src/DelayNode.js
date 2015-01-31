@@ -13,7 +13,6 @@ _.inherits(DelayNodeConstructor, AudioNode);
 function DelayNode(context, maxDelayTime) {
   AudioNode.call(this, context, {
     name: "DelayNode",
-    jsonAttrs: [ "delayTime"　],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : 2,
@@ -34,5 +33,6 @@ function DelayNode(context, maxDelayTime) {
 _.inherits(DelayNode, DelayNodeConstructor);
 
 DelayNode.exports = DelayNodeConstructor;
+DelayNode.jsonAttrs = [ "delayTime"　];
 
 module.exports = WebAudioTestAPI.DelayNode = DelayNode;

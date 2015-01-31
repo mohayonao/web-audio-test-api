@@ -17,7 +17,6 @@ _.inherits(OscillatorNodeConstructor, AudioNode);
 function OscillatorNode(context) {
   AudioNode.call(this, context, {
     name: "OscillatorNode",
-    jsonAttrs:  [ "type", "frequency", "detune" ],
     numberOfInputs  : 0,
     numberOfOutputs : 1,
     channelCount    : 2,
@@ -80,6 +79,7 @@ function OscillatorNode(context) {
 _.inherits(OscillatorNode, OscillatorNodeConstructor);
 
 OscillatorNode.exports = OscillatorNodeConstructor;
+OscillatorNode.jsonAttrs = [ "type", "frequency", "detune" ];
 
 OscillatorNode.prototype.start = function(when) {
   var inspector = new Inspector(this, "start", [

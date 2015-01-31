@@ -12,7 +12,6 @@ _.inherits(AudioDestinationNodeConstructor, AudioNode);
 function AudioDestinationNode(context) {
   AudioNode.call(this, context, {
     name: "AudioDestinationNode",
-    jsonAttrs: [],
     numberOfInputs  : 1,
     numberOfOutputs : 0,
     channelCount    : 2,

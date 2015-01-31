@@ -16,10 +16,6 @@ _.inherits(PannerNodeConstructor, AudioNode);
 function PannerNode(context) {
   AudioNode.call(this, context, {
     name: "PannerNode",
-    jsonAttrs: [
-      "panningModel", "distanceModel", "refDistance", "maxDistance",
-      "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
-    ],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : 2,
@@ -64,6 +60,10 @@ function PannerNode(context) {
 _.inherits(PannerNode, PannerNodeConstructor);
 
 PannerNode.exports = PannerNodeConstructor;
+PannerNode.jsonAttrs = [
+  "panningModel", "distanceModel", "refDistance", "maxDistance",
+  "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
+];
 
 PannerNode.prototype.setPosition = function() {
   var inspector = new Inspector(this, "setPosition", [

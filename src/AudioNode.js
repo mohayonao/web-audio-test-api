@@ -45,10 +45,9 @@ function AudioNode(context, spec) {
   });
 
   Object.defineProperties(this, {
-    $name     : { value: _.defaults(spec.name, "AudioNode") },
-    $context  : { value: context },
-    $inputs   : { value: [] },
-    $jsonAttrs: { value: _.defaults(spec.jsonAttrs, []) },
+    $name   : { value: _.defaults(spec.name, "AudioNode") },
+    $context: { value: context },
+    $inputs : { value: [] },
   });
   this._outputs = [];
   this._tick = -1;
@@ -124,7 +123,7 @@ AudioNode.prototype.toJSON = function(memo) {
 
     json.name = _.name(this);
 
-    this.$jsonAttrs.forEach(function(key) {
+    (this.constructor.jsonAttrs || []).forEach(function(key) {
       if (this[key] && this[key].toJSON) {
         json[key] = this[key].toJSON(memo);
       } else {

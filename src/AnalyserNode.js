@@ -15,7 +15,6 @@ _.inherits(AnalyserNodeConstructor, AudioNode);
 function AnalyserNode(context) {
   AudioNode.call(this, context, {
     name: "AnalyserNode",
-    jsonAttrs: [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : 1,
@@ -48,6 +47,7 @@ function AnalyserNode(context) {
 _.inherits(AnalyserNode, AnalyserNodeConstructor);
 
 AnalyserNode.exports = AnalyserNodeConstructor;
+AnalyserNode.jsonAttrs = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
 
 AnalyserNode.prototype.getFloatFrequencyData = function() {
   var inspector = new Inspector(this, "getFloatFrequencyData", [

@@ -12,7 +12,6 @@ _.inherits(ChannelMergerNodeConstructor, AudioNode);
 function ChannelMergerNode(context, numberOfInputs) {
   AudioNode.call(this, context, {
     name: "ChannelMergerNode",
-    jsonAttrs: [],
     numberOfInputs  : numberOfInputs,
     numberOfOutputs : 1,
     channelCount    : 2,

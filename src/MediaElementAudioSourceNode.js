@@ -12,7 +12,6 @@ _.inherits(MediaElementAudioSourceNodeConstructor, AudioNode);
 function MediaElementAudioSourceNode(context) {
   AudioNode.call(this, context, {
     name: "MediaElementAudioSourceNode",
-    jsonAttrs: [],
     numberOfInputs  : 0,
     numberOfOutputs : 1,
     channelCount    : 2,

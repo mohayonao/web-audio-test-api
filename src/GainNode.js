@@ -13,7 +13,6 @@ _.inherits(GainNodeConstructor, AudioNode);
 function GainNode(context) {
   AudioNode.call(this, context, {
     name: "GainNode",
-    jsonAttrs: [ "gain"　],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : 2,
@@ -30,5 +29,6 @@ function GainNode(context) {
 _.inherits(GainNode, GainNodeConstructor);
 
 GainNode.exports = GainNodeConstructor;
+GainNode.jsonAttrs = [ "gain"　];
 
 module.exports = WebAudioTestAPI.GainNode = GainNode;

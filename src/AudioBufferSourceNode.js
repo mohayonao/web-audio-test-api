@@ -15,7 +15,6 @@ _.inherits(AudioBufferSourceNodeConstructor, AudioNode);
 function AudioBufferSourceNode(context) {
   AudioNode.call(this, context, {
     name: "AudioBufferSourceNode",
-    jsonAttrs: [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ],
     numberOfInputs  : 0,
     numberOfOutputs : 1,
     channelCount    : 2,
@@ -64,6 +63,7 @@ function AudioBufferSourceNode(context) {
 _.inherits(AudioBufferSourceNode, AudioBufferSourceNodeConstructor);
 
 AudioBufferSourceNode.exports = AudioBufferSourceNodeConstructor;
+AudioBufferSourceNode.jsonAttrs = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
 
 AudioBufferSourceNode.prototype.start = function(when) {
   var inspector = new Inspector(this, "start", [

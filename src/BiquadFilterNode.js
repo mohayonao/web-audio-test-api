@@ -16,7 +16,6 @@ _.inherits(BiquadFilterNodeConstructor, AudioNode);
 function BiquadFilterNode(context) {
   AudioNode.call(this, context, {
     name: "BiquadFilterNode",
-    jsonAttrs: [ "type", "frequency", "detune", "Q", "gain" ],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : 2,
@@ -49,6 +48,7 @@ function BiquadFilterNode(context) {
 _.inherits(BiquadFilterNode, BiquadFilterNodeConstructor);
 
 BiquadFilterNode.exports = BiquadFilterNodeConstructor;
+BiquadFilterNode.jsonAttrs = [ "type", "frequency", "detune", "Q", "gain" ];
 
 BiquadFilterNode.prototype.getFrequencyResponse = function() {
   var inspector = new Inspector(this, "getFrequencyResponse", [
