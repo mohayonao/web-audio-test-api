@@ -1,13 +1,17 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
+var MediaStreamAudioDestinationNodeConstructor = function MediaStreamAudioDestinationNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createMediaStreamDestination()");
+};
+_.inherits(MediaStreamAudioDestinationNodeConstructor, AudioNode);
+
 function MediaStreamAudioDestinationNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "MediaStreamAudioDestinationNode",
-    jsonAttrs:  [],
     numberOfInputs  : 1,
     numberOfOutputs : 0,
     channelCount    : 2,
@@ -15,6 +19,8 @@ function MediaStreamAudioDestinationNode(context) {
     channelInterpretation: "speakers"
   });
 }
-_.inherits(MediaStreamAudioDestinationNode, global.MediaStreamAudioDestinationNode);
+_.inherits(MediaStreamAudioDestinationNode, MediaStreamAudioDestinationNodeConstructor);
 
-module.exports = MediaStreamAudioDestinationNode;
+MediaStreamAudioDestinationNode.exports = MediaStreamAudioDestinationNodeConstructor;
+
+module.exports = WebAudioTestAPI.MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode;

@@ -1,56 +1,81 @@
 "use strict";
 
 describe("WaveShaperNode", function() {
-  var ctx = null;
-  var node = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new AudioContext();
-    node = ctx.createWaveShaper();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
-      expect(function() {
-        return new WaveShaperNode();
-      }).to.throw(TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+  describe("constructor", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
+
+      assert(node instanceof global.WaveShaperNode);
+      assert(node instanceof global.AudioNode);
+
+      assert.throws(function() {
+        global.WaveShaperNode();
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#curve", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("curve");
-    });
-    it("should be a Float32Array", function() {
-      expect(function() {
-        node.curve = new Float32Array(64);
-      }).to.not.throw();
-      expect(function() {
+    it("get/set: Float32Array", function() {
+      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
+      var f32a = new Float32Array(128);
+      var f32b = new Float32Array(128);
+
+      assert(node.curve === null);
+
+      node.curve = f32a;
+      assert(node.curve === f32a);
+
+      node.curve = f32b;
+      assert(node.curve === f32b);
+
+      node.curve = null;
+      assert(node.curve === null);
+
+      assert.throws(function() {
         node.curve = "INVALID";
-      }).to.throw(TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
     });
   });
 
   describe("#oversample", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("oversample");
-    });
-    it("should be an enum", function() {
-      expect(function() {
-        node.oversample = "2x";
-      }).to.not.throw();
-      expect(function() {
-        node.oversample = "INVALID";
-      }).to.throw(TypeError);
+    it("get/set: OverSampleType", function() {
+      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
+
+      assert(typeof node.oversample === "string");
+
+      node.oversample = "none";
+      assert(node.oversample === "none");
+
+      node.oversample = "2x";
+      assert(node.oversample === "2x");
+
+      node.oversample = "4x";
+      assert(node.oversample === "4x");
+
+      assert.throws(function() {
+        node.oversample = "custom";
+      }, function(e) {
+        return e instanceof TypeError && /should be an enum/.test(e.message);
+      });
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
-      expect(node.toJSON()).to.eql({
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
         name: "WaveShaperNode",
         oversample: "none",
         inputs: []

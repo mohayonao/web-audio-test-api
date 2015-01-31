@@ -1,204 +1,212 @@
 "use strict";
 
 describe("OscillatorNode", function() {
-  var ctx = null;
-  var node = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new AudioContext();
-    node = ctx.createOscillator();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
-      expect(function() {
-        return new OscillatorNode();
-      }).to.throw(TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+  describe("constructor", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert(node instanceof global.OscillatorNode);
+      assert(node instanceof global.AudioNode);
+
+      assert.throws(function() {
+        global.OscillatorNode();
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#type", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("type");
-    });
-    it("should be an enum", function() {
-      expect(function() {
-        node.type = "sawtooth";
-      }).to.not.throw();
-      expect(function() {
-        node.type = "INVALID";
-      }).to.throw(TypeError);
+    it("get/set: OscillatorType", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert(typeof node.type === "string");
+
+      node.type = "sine";
+      assert(node.type === "sine");
+
+      node.type = "square";
+      assert(node.type === "square");
+
+      node.type = "sawtooth";
+      assert(node.type === "sawtooth");
+
+      node.type = "triangle";
+      assert(node.type === "triangle");
+
+      assert.throws(function() {
+        node.type = "custom";
+      }, function(e) {
+        return e instanceof TypeError && /should be an enum/.test(e.message);
+      });
     });
   });
 
   describe("#frequency", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("frequency");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert(node.frequency instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.frequency = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.frequency).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#detune", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("detune");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert(node.detune instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.detune = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.detune).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#onended", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("onended");
-    });
-    it("should be a function", function() {
-      expect(function() {
-        node.onended = it;
-        expect(node.onended).to.equal(it);
-      }).to.not.throw();
-      expect(function() {
-        node.onended = it;
-        node.onended = null;
-        expect(node.onended).to.equal(null);
-      }, "nullable").to.not.throw();
-      expect(function() {
+    it("get/set: function", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+      var fn1 = function() {};
+      var fn2 = function() {};
+
+      assert(node.onended === null);
+
+      node.onended = fn1;
+      assert(node.onended === fn1);
+
+      node.onended = fn2;
+      assert(node.onended === fn2);
+
+      node.onended = null;
+      assert(node.onended === null);
+
+      assert.throws(function() {
         node.onended = "INVALID";
-      }).to.throw(TypeError);
-    });
-    it("works", function() {
-      var passed = 0;
-
-      node.onended = function() {
-        passed += 1;
-      };
-
-      node.connect(node.context.destination);
-      node.start(0);
-      node.stop(0.15);
-
-      expect(passed, "00:00.000").to.equal(0);
-
-      node.context.$processTo("00:00.100");
-      expect(passed, "00:00.100").to.equal(0);
-
-      node.context.$processTo("00:00.200");
-      expect(passed, "00:00.200").to.equal(1);
-
-      node.context.$processTo("00:00.300");
-      expect(passed, "00:00.300").to.equal(1);
+      }, function(e) {
+        return e instanceof TypeError && /should be a function/.test(e.message);
+      });
     });
   });
 
-  describe("#$state", function() {
-    it("return #$stateAtTime(currentTime)", function() {
-      expect(node.$state).to.equal("UNSCHEDULED");
+  describe("#start", function() {
+    it("(): void", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
 
-      node.start(0.1);
-      expect(node.$state).to.equal("SCHEDULED");
+      node.start();
 
-      node.context.$processTo("00:00.100");
-      expect(node.$state).to.equal("PLAYING");
-
-      node.stop(0.2);
-      expect(node.$state).to.equal("PLAYING");
-
-      node.context.$processTo("00:00.200");
-      expect(node.$state).to.equal("FINISHED");
-    });
-  });
-
-  describe("#$stateAtTime(t)", function() {
-    it("return the state at the specified time", function() {
-
-      node.start(0.1);
-      node.stop(0.2);
-
-      expect(node.$stateAtTime(0.05)).to.equal("SCHEDULED");
-      expect(node.$stateAtTime(0.15)).to.equal("PLAYING");
-      expect(node.$stateAtTime(0.25)).to.equal("FINISHED");
-    });
-  });
-
-  describe("#start(when)", function() {
-    it("should work", function() {
-      expect(function() {
+      assert.throws(function() {
         node.start();
-      }).to.not.throw();
+      }, Error, "call twice");
     });
-    it("throw error", function() {
-      expect(function() {
+    it("(when: number): void", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert.throws(function() {
         node.start("INVALID");
-      }).throw(TypeError, "OscillatorNode#start(when)");
-    });
-    it("throw error if called more than once", function() {
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
       node.start(0);
-      expect(function() {
+
+      assert.throws(function() {
         node.start(0);
-      }).to.throw(Error);
+      }, Error, "call twice");
     });
   });
 
   describe("#stop(when)", function() {
-    it("should work", function() {
-      node.start();
-      expect(function() {
+    it("(): void", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert.throws(function() {
         node.stop();
-      }).to.not.throw();
-    });
-    it("throw error", function() {
+      }, Error, "not start yet");
+
       node.start();
-      expect(function() {
+
+      assert.throws(function() {
         node.stop("INVALID");
-      }).to.throw(TypeError, "OscillatorNode#stop(when)");
-    });
-    it("throw error if called without calling start first", function() {
-      expect(function() {
-        node.stop();
-      }).to.throw(Error);
-    });
-    it("throw error if called more than once", function() {
-      node.start();
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
       node.stop();
-      expect(function() {
+
+      assert.throws(function() {
         node.stop();
-      }).to.throw(Error);
+      }, Error, "call twice");
+
+      assert.throws(function() {
+        node.start();
+      }, Error);
+    });
+    it("(when: number): void", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert.throws(function() {
+        node.stop(0);
+      }, Error, "not start yet");
+
+      node.start(0);
+
+      assert.throws(function() {
+        node.stop("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      node.stop(0);
+
+      assert.throws(function() {
+        node.stop(0);
+      }, Error, "call twice");
+
+      assert.throws(function() {
+        node.start(0);
+      }, Error);
     });
   });
 
-  describe("#setPeriodicWave(periodicWave)", function() {
-    it("should work", function() {
-      var periodicWave = ctx.createPeriodicWave(new Float32Array(128), new Float32Array(128));
-      expect(function() {
-        node.setPeriodicWave(periodicWave);
-      }).to.not.throw();
-      expect(node.type).to.equal("custom");
-      expect(node.$custom).to.equal(periodicWave);
-    });
-    it("throw error", function() {
-      expect(function() {
+  describe("#setPeriodicWave", function() {
+    it("(periodicWave: PeriodicWave): void", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+      var periodicWave = new WebAudioTestAPI.PeriodicWave(
+        audioContext, new Float32Array(128), new Float32Array(128)
+      );
+
+      node.setPeriodicWave(periodicWave);
+
+      assert(node.type === "custom");
+      assert(node.$custom === periodicWave);
+
+      assert.throws(function() {
         node.setPeriodicWave("INVALID");
-      }).throw(TypeError, "OscillatorNode#setPeriodicWave(periodicWave)");
+      }, function(e) {
+        return e instanceof TypeError && /should be a PeriodicWave/.test(e.message);
+      });
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
-      expect(node.toJSON()).to.eql({
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
         name: "OscillatorNode",
         type: "sine",
         frequency: {
@@ -211,6 +219,85 @@ describe("OscillatorNode", function() {
         },
         inputs: []
       });
+    });
+  });
+
+  describe("$state", function() {
+    it("get: string", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert(node.$state === "UNSCHEDULED");
+
+      node.start(0);
+
+      assert(node.$state === "PLAYING");
+    });
+  });
+
+  describe("$stateAtTime", function() {
+    it("(time: number|string): string", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert(node.$stateAtTime("00:00.000") === "UNSCHEDULED");
+
+      node.start(0);
+
+      assert(node.$stateAtTime("00:00.000") === "PLAYING");
+    });
+  });
+
+  describe("works", function() {
+    it("onended", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+      var onended = sinon.spy();
+      var event;
+
+      node.onended = onended;
+
+      node.connect(audioContext.destination);
+
+      assert(node.$state === "UNSCHEDULED");
+
+      node.start(0.100);
+      node.stop(0.150);
+
+      audioContext.$processTo("00:00.000");
+      assert(node.$state === "SCHEDULED", "00:00.000");
+      assert(onended.callCount === 0, "00:00.000");
+
+      audioContext.$processTo("00:00.099");
+      assert(node.$state === "SCHEDULED", "00:00.099");
+      assert(onended.callCount === 0, "00:00.099");
+
+      audioContext.$processTo("00:00.100");
+      assert(node.$state === "PLAYING", "00:00.100");
+      assert(onended.callCount === 0, "00:00.100");
+
+      audioContext.$processTo("00:00.149");
+      assert(node.$state === "PLAYING", "00:00.149");
+      assert(onended.callCount === 0, "00:00.149");
+
+      audioContext.$processTo("00:00.150");
+      assert(node.$state === "FINISHED", "00:00.150");
+      assert(onended.callCount === 1, "00:00.150");
+      assert(onended.calledOn(node), "00:00.150");
+
+      audioContext.$processTo("00:00.200");
+      assert(node.$state === "FINISHED", "00:00.200");
+      assert(onended.callCount === 1, "00:00.200");
+
+      event = onended.args[0][0];
+
+      assert(event instanceof WebAudioTestAPI.Event);
+      assert(event.type === "ended");
+      assert(event.target === node);
+
+      assert(node.$stateAtTime("00:00.000") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.099") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.100") === "PLAYING");
+      assert(node.$stateAtTime("00:00.149") === "PLAYING");
+      assert(node.$stateAtTime("00:00.150") === "FINISHED");
+      assert(node.$stateAtTime("00:00.200") === "FINISHED");
     });
   });
 

@@ -1,42 +1,47 @@
 "use strict";
 
 describe("GainNode", function() {
-  var ctx = null;
-  var node = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new AudioContext();
-    node = ctx.createGain();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
-      expect(function() {
-        return new GainNode();
-      }).to.throw(TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+  describe("constructor", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.GainNode(audioContext);
+
+      assert(node instanceof global.GainNode);
+      assert(node instanceof global.AudioNode);
+
+      assert.throws(function() {
+        global.GainNode();
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#gain", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("gain");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.GainNode(audioContext);
+
+      assert(node.gain instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.gain = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.gain).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
-      expect(node.toJSON()).to.eql({
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.GainNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
         name: "GainNode",
         gain: {
           value: 1,

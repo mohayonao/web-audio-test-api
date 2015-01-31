@@ -1,16 +1,17 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
+var ChannelSplitterNodeConstructor = function ChannelSplitterNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createChannelSplitter([numberOfOutputs: number])");
+};
+_.inherits(ChannelSplitterNodeConstructor, AudioNode);
+
 function ChannelSplitterNode(context, numberOfOutputs) {
-  _.check("ChannelSplitterNode(numberOfOutputs)", {
-    numberOfOutputs: { type: "number", given: numberOfOutputs }
-  });
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "ChannelSplitterNode",
-    jsonAttrs: [],
     numberOfInputs  : 1,
     numberOfOutputs : numberOfOutputs,
     channelCount    : 2,
@@ -18,6 +19,8 @@ function ChannelSplitterNode(context, numberOfOutputs) {
     channelInterpretation: "speakers"
   });
 }
-_.inherits(ChannelSplitterNode, global.ChannelSplitterNode);
+_.inherits(ChannelSplitterNode, ChannelSplitterNodeConstructor);
 
-module.exports = ChannelSplitterNode;
+ChannelSplitterNode.exports = ChannelSplitterNodeConstructor;
+
+module.exports = WebAudioTestAPI.ChannelSplitterNode = ChannelSplitterNode;

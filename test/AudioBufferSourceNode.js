@@ -1,265 +1,268 @@
 "use strict";
 
 describe("AudioBufferSourceNode", function() {
-  var ctx = null;
-  var node = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new AudioContext();
-    node = ctx.createBufferSource();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
-      expect(function() {
-        return new AudioBufferSourceNode();
-      }).to.throw(TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+  describe("constructor", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert(node instanceof global.AudioBufferSourceNode);
+      assert(node instanceof global.AudioNode);
+
+      assert.throws(function() {
+        global.AudioBufferSourceNode();
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#buffer", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("buffer");
+    it("get/set: AudioBuffer", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+      var buf1 = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 16, 44100);
+      var buf2 = new WebAudioTestAPI.AudioBuffer(audioContext, 2, 32, 48000);
+
+      assert(node.buffer === null);
+
+      node.buffer = buf1;
+      assert(node.buffer === buf1);
+
+      node.buffer = buf2;
+      assert(node.buffer === buf2);
+
+      node.buffer = null;
+      assert(node.buffer === null);
+
+      assert.throws(function() {
+        node.buffer = "INVALID";
+      }, function(e) {
+        return e instanceof TypeError && /should be an AudioBuffer/.test(e.message);
+      });
     });
   });
 
   describe("#playbackRate", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("playbackRate");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert(node.playbackRate instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.playbackRate = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.playbackRate).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#loop", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("loop");
-    });
-    it("should be a boolean", function() {
-      expect(function() {
-        node.loop = true;
-      }).to.not.throw();
-      expect(function() {
-        node.loop = "INVALID";
-      }).to.throw(TypeError);
+    it("get/set: boolean", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert(typeof node.loop === "boolean");
+
+      node.loop = true;
+      assert(node.loop === true);
+
+      node.loop = false;
+      assert(node.loop === false);
+
+      assert.throws(function() {
+        node.loop = 0;
+      }, function(e) {
+        return e instanceof TypeError && /should be a boolean/.test(e.message);
+      });
     });
   });
 
   describe("#loopStart", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("loopStart");
-    });
-    it("should be a number", function() {
-      expect(function() {
-        node.loopStart = 0;
-      }).to.not.throw();
-      expect(function() {
+    it("get/set: number", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert(typeof node.loopStart === "number");
+
+      node.loopStart = 1;
+      assert(node.loopStart === 1);
+
+      node.loopStart = 2;
+      assert(node.loopStart === 2);
+
+      assert.throws(function() {
         node.loopStart = "INVALID";
-      }).to.throw(TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
   describe("#loopEnd", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("loopEnd");
-    });
-    it("should be a number", function() {
-      expect(function() {
-        node.loopEnd = 0;
-      }).to.not.throw();
-      expect(function() {
+    it("get/set: number", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert(typeof node.loopEnd === "number");
+
+      node.loopEnd = 1;
+      assert(node.loopEnd === 1);
+
+      node.loopEnd = 2;
+      assert(node.loopEnd === 2);
+
+      assert.throws(function() {
         node.loopEnd = "INVALID";
-      }).to.throw(TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
   describe("#onended", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("onended");
-    });
-    it("should be a function", function() {
-      expect(function() {
-        node.onended = it;
-        expect(node.onended).to.equal(it);
-      }).to.not.throw();
-      expect(function() {
-        node.onended = it;
-        node.onended = null;
-        expect(node.onended).to.equal(null);
-      }, "nullable").to.not.throw();
-      expect(function() {
+    it("get/set: function", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+      var fn1 = function() {};
+      var fn2 = function() {};
+
+      assert(node.onended === null);
+
+      node.onended = fn1;
+      assert(node.onended === fn1);
+
+      node.onended = fn2;
+      assert(node.onended === fn2);
+
+      node.onended = null;
+      assert(node.onended === null);
+
+      assert.throws(function() {
         node.onended = "INVALID";
-      }).to.throw(TypeError);
-    });
-    it("works", function() {
-      var passed = 0;
-
-      node.onended = function() {
-        passed = node.context.currentTime;
-      };
-
-      node.buffer = node.context.createBuffer(
-        1, node.context.sampleRate * 0.25, node.context.sampleRate
-      );
-
-      node.connect(node.context.destination);
-      node.start(0.1);
-      node.stop(0.15);
-
-      expect(passed, "00:00.000").to.equal(0);
-
-      node.context.$processTo("00:00.050");
-      expect(passed, "00:00.050").to.equal(0);
-
-      node.context.$processTo("00:00.100");
-      expect(passed, "00:00.100").to.equal(0);
-
-      node.context.$processTo("00:00.200");
-      expect(passed, "00:00.200").to.closeTo(0.15, 1e-2);
-
-      node.context.$processTo("00:00.300");
-      expect(passed, "00:00.300").to.closeTo(0.15, 1e-2);
-
-      node.context.$processTo("00:00.400");
-      expect(passed, "00:00.400").to.closeTo(0.15, 1e-2);
-
-      node.context.$processTo("00:00.500");
-      expect(passed, "00:00.500").to.closeTo(0.15, 1e-2);
-    });
-    it("works auto stop", function() {
-      var passed = 0;
-
-      node.onended = function() {
-        passed = node.context.currentTime;
-      };
-
-      node.buffer = node.context.createBuffer(
-        1, node.context.sampleRate * 0.25, node.context.sampleRate
-      );
-
-      node.connect(node.context.destination);
-      node.start(0.1);
-
-      expect(passed, "00:00.000").to.equal(0);
-
-      node.context.$processTo("00:00.050");
-      expect(passed, "00:00.050").to.equal(0);
-
-      node.context.$processTo("00:00.100");
-      expect(passed, "00:00.100").to.equal(0);
-
-      node.context.$processTo("00:00.200");
-      expect(passed, "00:00.200").to.equal(0);
-
-      node.context.$processTo("00:00.300");
-      expect(passed, "00:00.300").to.equal(0);
-
-      node.context.$processTo("00:00.400");
-      expect(passed, "00:00.400").to.closeTo(0.35, 1e-2);
-
-      node.context.$processTo("00:00.500");
-      expect(passed, "00:00.500").to.closeTo(0.35, 1e-2);
+      }, function(e) {
+        return e instanceof TypeError && /should be a function/.test(e.message);
+      });
     });
   });
 
-  describe("#$state", function() {
-    it("return #$stateAtTime(currentTime)", function() {
-      expect(node.$state).to.equal("UNSCHEDULED");
+  describe("#start", function() {
+    it("(): void", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
 
-      node.start(0.1);
-      expect(node.$state).to.equal("SCHEDULED");
+      node.start();
 
-      ctx.$process(0.1);
-      expect(node.$state).to.equal("PLAYING");
-
-      node.stop(0.2);
-      expect(node.$state).to.equal("PLAYING");
-
-      ctx.$process(0.1);
-      expect(node.$state).to.equal("FINISHED");
-    });
-  });
-
-  describe("#$stateAtTime(t)", function() {
-    it("return the state at the specified time", function() {
-
-      node.start(0.1);
-      node.stop(0.2);
-
-      expect(node.$stateAtTime(0.05)).to.equal("SCHEDULED");
-      expect(node.$stateAtTime(0.15)).to.equal("PLAYING");
-      expect(node.$stateAtTime(0.25)).to.equal("FINISHED");
-    });
-  });
-
-  describe("#start(when, offset, duration)", function() {
-    it("should work", function() {
-      expect(function() {
+      assert.throws(function() {
         node.start();
-      }).to.not.throw();
+      }, Error, "call twice");
     });
-    it("throw error", function() {
-      expect(function() {
+    it("(when: number): void", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert.throws(function() {
         node.start("INVALID");
-      }).throw(TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
-    });
-    it("throw error", function() {
-      expect(function() {
-        node.start(0, "INVALID");
-      }).throw(TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
-    });
-    it("throw error", function() {
-      expect(function() {
-        node.start(0, 0, "INVALID");
-      }).throw(TypeError, "AudioBufferSourceNode#start(when, offset, duration)");
-    });
-    it("throw error if called more than once", function() {
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
       node.start(0);
-      expect(function() {
+
+      assert.throws(function() {
         node.start(0);
-      }).to.throw(Error);
+      }, Error, "call twice");
+    });
+    it("(when: number, offset: number): void", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert.throws(function() {
+        node.start(0, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      node.start(0, 0);
+
+      assert.throws(function() {
+        node.start(0, 0);
+      }, Error, "call twice");
+    });
+    it("(when: number, offset: number, duration: number): void", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert.throws(function() {
+        node.start(0, 0, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      node.start(0, 0, 0);
+
+      assert.throws(function() {
+        node.start(0, 0, 0);
+      }, Error, "call twice");
     });
   });
 
   describe("#stop(when)", function() {
-    it("should work", function() {
-      node.start();
-      expect(function() {
+    it("(): void", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert.throws(function() {
         node.stop();
-      }).to.not.throw();
-    });
-    it("throw error", function() {
+      }, Error, "not start yet");
+
       node.start();
-      expect(function() {
+
+      assert.throws(function() {
         node.stop("INVALID");
-      }).to.throw(TypeError, "AudioBufferSourceNode#stop(when)");
-    });
-    it("throw error if called without calling start first", function() {
-      expect(function() {
-        node.stop();
-      }).to.throw(Error);
-    });
-    it("throw error if called more than once", function() {
-      node.start();
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
       node.stop();
-      expect(function() {
+
+      assert.throws(function() {
         node.stop();
-      }).to.throw(Error);
+      }, Error, "call twice");
+
+      assert.throws(function() {
+        node.start();
+      }, Error);
+    });
+    it("(when: number): void", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert.throws(function() {
+        node.stop(0);
+      }, Error, "not start yet");
+
+      node.start(0);
+
+      assert.throws(function() {
+        node.stop("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      node.stop(0);
+
+      assert.throws(function() {
+        node.stop(0);
+      }, Error, "call twice");
+
+      assert.throws(function() {
+        node.start(0);
+      }, Error);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
-      expect(node.toJSON()).to.eql({
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+      var buf = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 16, 44100);
+
+      assert.deepEqual(node.toJSON(), {
         name: "AudioBufferSourceNode",
         buffer: null,
         playbackRate: {
@@ -271,6 +274,159 @@ describe("AudioBufferSourceNode", function() {
         loopEnd: 0,
         inputs: []
       });
+
+      node.buffer = buf;
+      node.loop = true;
+      node.loopStart = 1;
+      node.loopEnd = 2;
+
+      assert.deepEqual(node.toJSON(), {
+        name: "AudioBufferSourceNode",
+        buffer: buf.toJSON(),
+        playbackRate: {
+          value: 1,
+          inputs: []
+        },
+        loop: true,
+        loopStart: 1,
+        loopEnd: 2,
+        inputs: []
+      });
+    });
+  });
+
+  describe("$state", function() {
+    it("get: string", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert(node.$state === "UNSCHEDULED");
+
+      node.start(0);
+
+      assert(node.$state === "PLAYING");
+    });
+  });
+
+  describe("$stateAtTime", function() {
+    it("(time: number|string): string", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert(node.$stateAtTime("00:00.000") === "UNSCHEDULED");
+
+      node.start(0);
+
+      assert(node.$stateAtTime("00:00.000") === "PLAYING");
+    });
+  });
+
+  describe("works", function() {
+    it("onended", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+      var buf = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 44100 * 0.025, 44100);
+      var onended = sinon.spy();
+      var event;
+
+      node.buffer = buf;
+      node.loop = true;
+      node.onended = onended;
+
+      node.connect(audioContext.destination);
+
+      assert(node.$state === "UNSCHEDULED");
+
+      node.start(0.100);
+      node.stop(0.150);
+
+      audioContext.$processTo("00:00.000");
+      assert(node.$state === "SCHEDULED", "00:00.000");
+      assert(onended.callCount === 0, "00:00.000");
+
+      audioContext.$processTo("00:00.099");
+      assert(node.$state === "SCHEDULED", "00:00.099");
+      assert(onended.callCount === 0, "00:00.099");
+
+      audioContext.$processTo("00:00.100");
+      assert(node.$state === "PLAYING", "00:00.100");
+      assert(onended.callCount === 0, "00:00.100");
+
+      audioContext.$processTo("00:00.149");
+      assert(node.$state === "PLAYING", "00:00.149");
+      assert(onended.callCount === 0, "00:00.149");
+
+      audioContext.$processTo("00:00.150");
+      assert(node.$state === "FINISHED", "00:00.150");
+      assert(onended.callCount === 1, "00:00.150");
+      assert(onended.calledOn(node), "00:00.150");
+
+      audioContext.$processTo("00:00.200");
+      assert(node.$state === "FINISHED", "00:00.200");
+      assert(onended.callCount === 1, "00:00.200");
+
+      event = onended.args[0][0];
+
+      assert(event instanceof WebAudioTestAPI.Event);
+      assert(event.type === "ended");
+      assert(event.target === node);
+
+      assert(node.$stateAtTime("00:00.000") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.099") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.100") === "PLAYING");
+      assert(node.$stateAtTime("00:00.149") === "PLAYING");
+      assert(node.$stateAtTime("00:00.150") === "FINISHED");
+      assert(node.$stateAtTime("00:00.200") === "FINISHED");
+    });
+    it("onended (auto stop)", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+      var buf = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 44100 * 0.025, 44100);
+      var onended = sinon.spy();
+      var event;
+
+      node.buffer = buf;
+      node.onended = onended;
+
+      node.connect(node.context.destination);
+
+      assert(node.$state === "UNSCHEDULED");
+
+      node.start(0.100);
+
+      audioContext.$processTo("00:00.000");
+      assert(node.$state === "SCHEDULED", "00:00.000");
+      assert(onended.callCount === 0, "00:00.000");
+
+      audioContext.$processTo("00:00.099");
+      assert(node.$state === "SCHEDULED", "00:00.099");
+      assert(onended.callCount === 0, "00:00.099");
+
+      audioContext.$processTo("00:00.100");
+      assert(node.$state === "PLAYING", "00:00.100");
+      assert(onended.callCount === 0, "00:00.100");
+
+      audioContext.$processTo("00:00.124");
+      assert(node.$state === "PLAYING", "00:00.124");
+      assert(onended.callCount === 0, "00:00.124");
+
+      audioContext.$processTo("00:00.125");
+      assert(node.$state === "FINISHED", "00:00.125");
+      assert(onended.callCount === 1, "00:00.125");
+      assert(onended.calledOn(node), "00:00.125");
+
+      audioContext.$processTo("00:00.200");
+      assert(node.$state === "FINISHED", "00:00.200");
+      assert(onended.callCount === 1, "00:00.200");
+
+      event = onended.args[0][0];
+
+      assert(event instanceof WebAudioTestAPI.Event);
+      assert(event.type === "ended");
+      assert(event.target === node);
+
+      assert(node.$stateAtTime("00:00.000") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.099") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.100") === "PLAYING");
+      assert(node.$stateAtTime("00:00.124") === "PLAYING");
+      assert(node.$stateAtTime("00:00.125") === "FINISHED");
+      assert(node.$stateAtTime("00:00.200") === "FINISHED");
     });
   });
 

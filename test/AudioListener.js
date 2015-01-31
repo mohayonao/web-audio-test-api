@@ -1,124 +1,160 @@
 "use strict";
 
 describe("AudioListener", function() {
-  var ctx = null;
-  var listener = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new AudioContext();
-    listener = ctx.listener;
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
-      expect(function() {
-        return new AudioListener();
-      }).to.throw(TypeError, "Illegal constructor");
+  describe("constructor", function() {
+    it("()", function() {
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+
+      assert(listener instanceof global.AudioListener);
+
+      assert.throws(function() {
+        global.AudioListener();
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#dopplerFactor", function() {
-    it("should be exist", function() {
-      expect(listener).to.have.property("dopplerFactor");
-    });
-    it("should be type of number", function() {
-      expect(function() {
-         listener.dopplerFactor = 0;
-      }).to.not.throw();
-      expect(function() {
+    it("get/set: number", function() {
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+
+      assert(typeof listener.dopplerFactor === "number");
+
+      listener.dopplerFactor = 1;
+      assert(listener.dopplerFactor === 1);
+
+      listener.dopplerFactor = 2;
+      assert(listener.dopplerFactor === 2);
+
+      assert.throws(function() {
         listener.dopplerFactor = "INVALID";
-      }).to.throw(TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
   describe("#speedOfSound", function() {
-    it("should be exist", function() {
-      expect(listener).to.have.property("speedOfSound");
-    });
-    it("should be type of number", function() {
-      expect(function() {
-         listener.speedOfSound = 0;
-      }).to.not.throw();
-      expect(function() {
+    it("get/set: number", function() {
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+
+      assert(typeof listener.speedOfSound === "number");
+
+      listener.speedOfSound = 686.6;
+      assert(listener.speedOfSound === 686.6);
+
+      listener.speedOfSound = 1373.2;
+      assert(listener.speedOfSound === 1373.2);
+
+      assert.throws(function() {
         listener.speedOfSound = "INVALID";
-      }).to.throw(TypeError);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
-  describe("#setPosition(x, y, z)", function() {
-    it("should work", function() {
+
+  describe("#setPosition", function() {
+    it("(x: number, y: number, z: number): void", function() {
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+
       listener.setPosition(0, 0, 0);
-    });
-    it("throw error", function() {
-      expect(function() {
+
+      assert.throws(function() {
         listener.setPosition("INVALID", 0, 0);
-      }).to.throw(TypeError, "AudioListener#setPosition(x, y, z)");
-    });
-    it("throw error", function() {
-      expect(function() {
-        listener.setPosition(0, "INVALID", 0);
-      }).to.throw(TypeError, "AudioListener#setPosition(x, y, z)");
-    });
-    it("throw error", function() {
-      expect(function() {
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        listener.setPosition(0, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
         listener.setPosition(0, 0, "INVALID");
-      }).to.throw(TypeError, "AudioListener#setPosition(x, y, z)");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
-  describe("#setOrientation(x, y, z, xUp, yUp, zUp)", function() {
-    it("should work", function() {
+  describe("#setOrientation", function() {
+    it("(x: number, y: number, z: number, xUp: number, yUp: number, zUp: number): void", function() {
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+
       listener.setOrientation(0, 0, 0, 0, 0, 0);
-    });
-    it("throw error", function() {
-      expect(function() {
+
+      assert.throws(function() {
         listener.setOrientation("INVALID", 0, 0, 0, 0, 0);
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
-    });
-    it("throw error", function() {
-      expect(function() {
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
         listener.setOrientation(0, "INVALID", 0, 0, 0, 0);
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
-    });
-    it("throw error", function() {
-      expect(function() {
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
         listener.setOrientation(0, 0, "INVALID", 0, 0, 0);
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
-    });
-    it("throw error", function() {
-      expect(function() {
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
         listener.setOrientation(0, 0, 0, "INVALID", 0, 0);
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
-    });
-    it("throw error", function() {
-      expect(function() {
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, "INVALID", 0);
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
-    });
-    it("throw error", function() {
-      expect(function() {
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, 0, "INVALID");
-      }).to.throw(TypeError, "AudioListener#setOrientation(x, y, z, xUp, yUp, zUp)");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
-  describe("#setVelocity(x, y, z)", function() {
-    it("should work", function() {
+  describe("#setVelocity", function() {
+    it("(x: number, y: number, z: number): void", function() {
+      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+
       listener.setVelocity(0, 0, 0);
-    });
-    it("throw error", function() {
-      expect(function() {
+
+      assert.throws(function() {
         listener.setVelocity("INVALID", 0, 0);
-      }).to.throw(TypeError, "AudioListener#setVelocity(x, y, z)");
-    });
-    it("throw error", function() {
-      expect(function() {
-        listener.setVelocity(0, "INVALID", 0);
-      }).to.throw(TypeError, "AudioListener#setVelocity(x, y, z)");
-    });
-    it("throw error", function() {
-      expect(function() {
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        listener.setVelocity(0, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
         listener.setVelocity(0, 0, "INVALID");
-      }).to.throw(TypeError, "AudioListener#setVelocity(x, y, z)");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 

@@ -1,119 +1,155 @@
 "use strict";
 
 describe("BiquadFilterNode", function() {
-  var ctx = null;
-  var node = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new AudioContext();
-    node = ctx.createBiquadFilter();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
-      expect(function() {
-        return new BiquadFilterNode();
-      }).to.throw(TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+  describe("constructor", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+
+      assert(node instanceof global.BiquadFilterNode);
+      assert(node instanceof global.AudioNode);
+
+      assert.throws(function() {
+        global.BiquadFilterNode();
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#type", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("type");
-    });
-    it("should be an enum", function() {
-      expect(function() {
-        node.type = "lowshelf";
-      }).to.not.throw();
-      expect(function() {
-        node.type = "INVALID";
-      }).to.throw(TypeError);
+    it("get/set: BiquadFilterType", function() {
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+
+      assert(typeof node.type === "string");
+
+      node.type = "lowpass";
+      assert(node.type === "lowpass");
+
+      node.type = "highpass";
+      assert(node.type === "highpass");
+
+      node.type = "bandpass";
+      assert(node.type === "bandpass");
+
+      node.type = "lowshelf";
+      assert(node.type === "lowshelf");
+
+      node.type = "highshelf";
+      assert(node.type === "highshelf");
+
+      node.type = "peaking";
+      assert(node.type === "peaking");
+
+      node.type = "notch";
+      assert(node.type === "notch");
+
+      node.type = "allpass";
+      assert(node.type === "allpass");
+
+      assert.throws(function() {
+        node.type = "custom";
+      }, function(e) {
+        return e instanceof TypeError && /should be an enum/.test(e.message);
+      });
     });
   });
 
   describe("#frequency", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("frequency");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+
+      assert(node.frequency instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.frequency = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.frequency).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#detune", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("detune");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+
+      assert(node.detune instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.detune = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.detune).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#Q", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("Q");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+
+      assert(node.Q instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.Q = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.Q).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#gain", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("gain");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+
+      assert(node.gain instanceof WebAudioTestAPI.AudioParam);
+      assert.throws(function() {
         node.gain = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.gain).to.be.instanceOf(AudioParam);
-    });
-  });
-
-  describe("#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)", function() {
-    it("should work", function() {
-      node.getFrequencyResponse(new Float32Array(128), new Float32Array(128), new Float32Array(128));
-    });
-    it("throw error", function() {
-      expect(function() {
-        node.getFrequencyResponse("INVALID", new Float32Array(128), new Float32Array(128));
-      }).to.throw(TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
-    });
-    it("throw error", function() {
-      expect(function() {
-        node.getFrequencyResponse(new Float32Array(128), "INVALID", new Float32Array(128));
-      }).to.throw(TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
-    });
-    it("throw error", function() {
-      expect(function() {
-        node.getFrequencyResponse(new Float32Array(128), new Float32Array(128), "INVALID");
-      }).to.throw(TypeError, "BiquadFilterNode#getFrequencyResponse(frequencyHz, magResponse, phaseResponse)");
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
-      expect(node.toJSON()).to.eql({
+  describe("#getFrequencyResponse", function() {
+    it("(frequencyHz: Float32Array, magResponse: Float32Array, phaseResponse: Float32Array): void", function() {
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+      var f32f = new Float32Array(128);
+      var f32m = new Float32Array(128);
+      var f32p = new Float32Array(128);
+
+      node.getFrequencyResponse(f32f, f32p, f32m);
+
+      assert.throws(function() {
+        node.getFrequencyResponse("INVALID", f32p, f32m);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
+
+      assert.throws(function() {
+        node.getFrequencyResponse(f32f, "INVALID", f32m);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
+
+      assert.throws(function() {
+        node.getFrequencyResponse(f32f, f32p, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
+    });
+  });
+
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
         name: "BiquadFilterNode",
         type: "lowpass",
         frequency: {

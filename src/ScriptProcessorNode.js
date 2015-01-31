@@ -1,58 +1,61 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 var AudioBuffer = require("./AudioBuffer");
 var AudioProcessingEvent = require("./AudioProcessingEvent");
 
+var ScriptProcessorNodeConstructor = function ScriptProcessorNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createScriptProcessor(bufferSize: number, [numberOfInputChannels: number], [numberOfOutputChannels: number])");
+};
+_.inherits(ScriptProcessorNodeConstructor, AudioNode);
+
 function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-  if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
-    throw new TypeError(_.format(
-      "#{caption}: invalid bufferSize: #{0}", {
-        caption   : "ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)",
-        bufferSize: _.toS(bufferSize)
-      }
-    ));
-  }
-  _.check("ScriptProcessorNode(bufferSize, numberOfInputChannels, numberOfOutputChannels)", {
-    numberOfInputChannels : { type: "number", given: numberOfInputChannels  },
-    numberOfOutputChannels: { type: "number", given: numberOfOutputChannels },
-  });
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "ScriptProcessorNode",
-    jsonAttrs: [],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : numberOfInputChannels,
     channelCountMode: "max",
     channelInterpretation: "speakers"
   });
-  _.$read(this, "numberOfInputChannels", numberOfInputChannels);
-  _.$read(this, "numberOfOutputChannels", numberOfOutputChannels);
-  _.$read(this, "bufferSize", bufferSize);
-  _.$type(this, "onaudioprocess", "function", null);
+
+  var onaudioprocess = null;
+
+  _.defineAttribute(this, "numberOfInputChannels", "readonly", numberOfInputChannels, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "numberOfOutputChannels", "readonly", numberOfOutputChannels, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "bufferSize", "readonly", bufferSize, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "onaudioprocess", "function|null", onaudioprocess, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   this._numSamples = 0;
 }
-_.inherits(ScriptProcessorNode, global.ScriptProcessorNode);
+_.inherits(ScriptProcessorNode, ScriptProcessorNodeConstructor);
 
-ScriptProcessorNode.prototype._process = function(currentTime, nextCurrentTime) {
-  var numSamples = ((nextCurrentTime - currentTime) / _.CURRENT_TIME_INCR) * _.BUFFER_SIZE;
+ScriptProcessorNode.exports = ScriptProcessorNodeConstructor;
 
-  this._numSamples -= numSamples;
+ScriptProcessorNode.prototype._process = function(inNumSamples) {
+  this._numSamples -= inNumSamples;
 
-  if (this._numSamples <= 0 && this.onaudioprocess) {
+  if (this._numSamples <= 0) {
     this._numSamples += this.bufferSize;
 
-    var e = new AudioProcessingEvent(this);
+    var event = new AudioProcessingEvent(this);
 
-    e.playbackTime = this.context.currentTime;
-    e.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
-    e.outputBuffer = new AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
+    event.playbackTime = this.context.currentTime + this.bufferSize / this.context.sampleRate;
+    event.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
+    event.outputBuffer = new AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
 
-    this.onaudioprocess(e);
+    this.dispatchEvent(event);
   }
 };
 
-module.exports = ScriptProcessorNode;
+module.exports = WebAudioTestAPI.ScriptProcessorNode = ScriptProcessorNode;

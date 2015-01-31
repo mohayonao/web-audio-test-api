@@ -1,0 +1,51 @@
+"use strict";
+
+describe("AudioDestinationNode", function() {
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
+
+  beforeEach(function() {
+    audioContext = new WebAudioTestAPI.AudioContext();
+  });
+
+  describe("constructor", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.AudioDestinationNode(audioContext);
+
+      assert(node instanceof global.AudioDestinationNode);
+      assert(node instanceof global.AudioNode);
+
+      assert.throws(function() {
+        global.AudioDestinationNode();
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
+    });
+  });
+
+  describe("#maxChannelCount", function() {
+    it("get: number", function() {
+      var node = new WebAudioTestAPI.AudioDestinationNode(audioContext);
+
+      assert(typeof node.maxChannelCount === "number");
+
+      assert.throws(function() {
+        node.maxChannelCount = 256;
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
+    });
+  });
+
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.AudioDestinationNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
+        name: "AudioDestinationNode",
+        inputs: []
+      });
+    });
+  });
+
+});

@@ -2,34 +2,26 @@
 
 var _ = {};
 
-_.VERSION = "0.1.16";
-_.SAMPLERATE  = 44100;
-_.BUFFER_SIZE = 128;
-_.CURRENT_TIME_INCR = _.BUFFER_SIZE / _.SAMPLERATE;
 _.NOP = /* istanbul ignore next */ function() {};
 
 _.inherits = require("./inherits");
-
-_.format = require("./format");
 
 _.defaults = require("./defaults");
 
 _.article = require("./article");
 
-_.check = require("./check");
+_.name = require("./name");
 
-_.toS = require("./toS");
+_.toJSON = require("./toJSON");
 
-_.id = require("./id");
+_.toMicroseconds = require("./toMicroseconds");
 
-_.caption = require("./caption");
+_.toSeconds = require("./toSeconds");
 
-_.jsonCircularCheck = require("./jsonCircularCheck");
+_.typeCheck = require("./typeCheck");
 
-_.$read = require("./read");
+_.formatter = require("./formatter");
 
-_.$type = require("./type");
-
-_.$enum = require("./enum");
+_.defineAttribute = require("./defineAttribute");
 
 module.exports = _;

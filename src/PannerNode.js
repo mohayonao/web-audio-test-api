@@ -1,55 +1,104 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
+var PanningModelType = "enum { equalpower, HRTF }";
+var DistanceModelType = "enum { linear, inverse, exponential }";
+
+var PannerNodeConstructor = function PannerNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createPanner()");
+};
+_.inherits(PannerNodeConstructor, AudioNode);
+
 function PannerNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "PannerNode",
-    jsonAttrs: [
-      "panningModel", "distanceModel", "refDistance", "maxDistance",
-      "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
-    ],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : 2,
     channelCountMode: "clamped-max",
     channelInterpretation: "speakers"
   });
-  _.$enum(this, "panningModel", [ "equalpower", "HRTF" ], "HRTF");
-  _.$enum(this, "distanceModel", [ "linear", "inverse", "exponential" ], "inverse");
-  _.$type(this, "refDistance", "number", 1);
-  _.$type(this, "maxDistance", "number", 10000);
-  _.$type(this, "rolloffFactor", "number", 1);
-  _.$type(this, "coneInnerAngle", "number", 360);
-  _.$type(this, "coneOuterAngle", "number", 360);
-  _.$type(this, "coneOuterGain", "number", 0);
+
+  var panningModel = "HRTF";
+  var distanceModel = "inverse";
+  var refDistance = 1;
+  var maxDistance = 10000;
+  var rolloffFactor = 1;
+  var coneInnerAngle = 360;
+  var coneOuterAngle = 360;
+  var coneOuterGain = 0;
+
+  _.defineAttribute(this, "panningModel", PanningModelType, panningModel, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "distanceModel", DistanceModelType, distanceModel, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "refDistance", "number", refDistance, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "maxDistance", "number", maxDistance, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "rolloffFactor", "number", rolloffFactor, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "coneInnerAngle", "number", coneInnerAngle, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "coneOuterAngle", "number", coneOuterAngle, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "coneOuterGain", "number", coneOuterGain, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 }
-_.inherits(PannerNode, global.PannerNode);
+_.inherits(PannerNode, PannerNodeConstructor);
 
-PannerNode.prototype.setPosition = function(x, y, z) {
-  _.check(_.caption(this, "setPosition(x, y, z)"), {
-    x: { type: "number", given: x },
-    y: { type: "number", given: y },
-    z: { type: "number", given: z },
+PannerNode.exports = PannerNodeConstructor;
+PannerNode.jsonAttrs = [
+  "panningModel", "distanceModel", "refDistance", "maxDistance",
+  "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
+];
+
+PannerNode.prototype.setPosition = function() {
+  var inspector = new Inspector(this, "setPosition", [
+    { name: "x", type: "number" },
+    { name: "y", type: "number" },
+    { name: "z", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-PannerNode.prototype.setOrientation = function(x, y, z) {
-  _.check(_.caption(this, "setOrientation(x, y, z)"), {
-    x: { type: "number", given: x },
-    y: { type: "number", given: y },
-    z: { type: "number", given: z },
+PannerNode.prototype.setOrientation = function() {
+  var inspector = new Inspector(this, "setOrientation", [
+    { name: "x", type: "number" },
+    { name: "y", type: "number" },
+    { name: "z", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-PannerNode.prototype.setVelocity = function(x, y, z) {
-  _.check(_.caption(this, "setVelocity(x, y, z)"), {
-    x: { type: "number", given: x },
-    y: { type: "number", given: y },
-    z: { type: "number", given: z },
+PannerNode.prototype.setVelocity = function() {
+  var inspector = new Inspector(this, "setVelocity", [
+    { name: "x", type: "number" },
+    { name: "y", type: "number" },
+    { name: "z", type: "number" },
+  ]);
+
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-module.exports = PannerNode;
+module.exports = WebAudioTestAPI.PannerNode = PannerNode;

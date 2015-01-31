@@ -1,263 +1,511 @@
 "use strict";
 
 describe("AudioContext", function() {
-  var ctx = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new AudioContext();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("()", function() {
-    it("should return an instance of AudioContext", function() {
-      expect(ctx).to.be.instanceOf(AudioContext);
-    });
-    it("should have been inherited from EventTarget", function() {
-      expect(ctx).to.be.instanceOf(EventTarget);
+  describe("constructor", function() {
+    it("()", function() {
+      assert(audioContext instanceof global.AudioContext);
+      assert(audioContext instanceof global.EventTarget);
+
+      assert.throws(function() {
+        global.AudioContext();
+      }, function(e) {
+        return e instanceof TypeError && /Failed to construct/.test(e.message);
+      });
     });
   });
 
   describe(".WEB_AUDIO_TEST_API_VERSION", function() {
     it("check", function() {
-      if (typeof WEB_AUDIO_TEST_API_VERSION === "string") {
-        expect(AudioContext.WEB_AUDIO_TEST_API_VERSION).to.equal(global.WEB_AUDIO_TEST_API_VERSION);
+      if (typeof global.WEB_AUDIO_TEST_API_VERSION === "string") {
+        assert(WebAudioTestAPI.AudioContext.WEB_AUDIO_TEST_API_VERSION === global.WEB_AUDIO_TEST_API_VERSION);
       }
     });
   });
 
-  describe("new", function() {
-    it("should return AudioContext", function() {
-      expect(ctx).to.be.instanceOf(AudioContext);
-    });
-  });
-
   describe("#destination", function() {
-    it("should be an instance of AudioDestinationNode", function() {
-      expect(ctx.destination).to.be.instanceOf(AudioDestinationNode);
-    });
-    it("should be readonly", function() {
-      expect(function() {
-        ctx.destination = null;
-      }).throw(Error, "readonly");
+    it("get: AudioDestinationNode", function() {
+      assert(audioContext.destination instanceof WebAudioTestAPI.AudioDestinationNode);
+
+      assert.throws(function() {
+        audioContext.destination = null;
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#sampleRate", function() {
-    it("should be a number", function() {
-      expect(ctx.sampleRate).to.be.a("number");
-    });
-    it("should be readonly", function() {
-      expect(function() {
-        ctx.sampleRate = 0;
-      }).throw(Error, "readonly");
+    it("get: number", function() {
+      assert(typeof audioContext.sampleRate === "number");
+
+      assert.throws(function() {
+        audioContext.sampleRate = 0;
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#currentTime", function() {
-    it("should be a number", function() {
-      expect(ctx.currentTime).to.be.a("number");
-    });
-    it("should be readonly", function() {
-      expect(function() {
-        ctx.currentTime = 0;
-      }).throw(Error, "readonly");
+    it("get: number", function() {
+      assert(typeof audioContext.currentTime === "number");
+
+      assert.throws(function() {
+        audioContext.currentTime = 0;
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#listener", function() {
-    it("should be an instance of AudioListener", function() {
-      expect(ctx.listener).to.be.instanceOf(AudioListener);
-    });
-    it("should be readonly", function() {
-      expect(function() {
-        ctx.listener = null;
-      }).throw(Error, "readonly");
-    });
-  });
+    it("get: AudioListener", function() {
+      assert(audioContext.listener instanceof WebAudioTestAPI.AudioListener);
 
-  describe("#$process()", function() {
-    it("should work", function() {
-      ctx.$process(0.5);
-      ctx.$process(0.5);
-      ctx.$process(0.5);
-    });
-  });
-
-  describe("#$processTo()", function() {
-    it("should work", function() {
-      ctx.$processTo(0.5);
-      ctx.$processTo("00:00.005");
-      ctx.$processTo("00:00.010");
-      ctx.$processTo("00:00.005");
-    });
-  });
-
-  describe("#$reset()", function() {
-    it("should work", function() {
-      ctx.createGain().connect(ctx.destination);
-
-      ctx.$process(0.5);
-      ctx.$process(0.5);
-      ctx.$process(0.5);
-      ctx.$reset();
-
-      expect(ctx.currentTime).to.equal(0);
-      expect(ctx.toJSON()).to.eql({
-        name: "AudioDestinationNode",
-        inputs: []
+      assert.throws(function() {
+        audioContext.listener = null;
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
       });
     });
   });
 
-  describe("#createBuffer(numberOfChannels, length, sampleRate)", function() {
-    it("should return an instance of AudioBuffer", function() {
-      expect(ctx.createBuffer(2, 128, 44100)).to.be.instanceOf(AudioBuffer);
+  describe("#createBuffer", function() {
+    it("(numberOfChannels: number, length: number, sampleRate: number): AudioBuffer", function() {
+      var buf = audioContext.createBuffer(2, 128, 44100);
+
+      assert(buf instanceof WebAudioTestAPI.AudioBuffer);
+
+      assert.throws(function() {
+        audioContext.createBuffer("INVALID", 128, 44100);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createBuffer(2, "INVALID", 44100);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createBuffer(2, 128, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
-  describe("#decodeAudioData(audioData, successCallback, errorCallback)", function() {
-    it("should work", function(done) {
-      ctx.decodeAudioData(new Uint8Array(128).buffer, function(buffer) {
-        expect(buffer).to.be.instanceOf(AudioBuffer);
+  describe("#decodeAudioData", function() {
+    it("(audioData: ArrayBuffer, successCallback: function, errorCallback: function): void", function(done) {
+      var audioData = new Uint8Array(128).buffer;
+
+      assert.throws(function() {
+        audioContext.decodeAudioData("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be an ArrayBuffer/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.decodeAudioData(audioData, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a function/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.decodeAudioData(audioData, function() {}, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a function/.test(e.message);
+      });
+
+      audioContext.decodeAudioData(audioData, function(buffer) {
+        assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
         done();
       }, function() {
         throw new Error("NOT REACHED");
       });
     });
-    it("should failed", function(done) {
-      ctx.DECODE_AUDIO_DATA_FAILED = true;
-      ctx.decodeAudioData(new Uint8Array(128).buffer, function() {
+    it(".DECODE_AUDIO_DATA_FAILED", function(done) {
+      var audioData = new Uint8Array(128).buffer;
+
+      audioContext.DECODE_AUDIO_DATA_FAILED = true;
+
+      audioContext.decodeAudioData(audioData, function() {
         throw new Error("NOT REACHED");
       }, function() {
         done();
       });
     });
-    it("return custom result", function(done) {
-      var result = ctx.createBuffer(2, 256, 44100);
-      ctx.DECODE_AUDIO_DATA_RESULT = result;
-      ctx.decodeAudioData(new Uint8Array(128).buffer, function(buffer) {
-        expect(buffer).to.equal(result);
+    it(".DECODE_AUDIO_DATA_RESULT", function(done) {
+      var audioData = new Uint8Array(128).buffer;
+      var result = audioContext.createBuffer(2, 256, 44100);
+
+      audioContext.DECODE_AUDIO_DATA_RESULT = result;
+      audioContext.decodeAudioData(audioData, function(buffer) {
+        assert(buffer === result);
         done();
       }, function() {
         throw new Error("NOT REACHED");
       });
     });
-    it("throw error", function() {
-      expect(function() {
-        ctx.decodeAudioData("INVALID");
-      }).to.throw(TypeError, "AudioContext#decodeAudioData(audioData, successCallback, errorCallback)");
+  });
+
+  describe("#createBufferSource", function() {
+    it("(): AudioBufferSourceNode", function() {
+      var node = audioContext.createBufferSource();
+
+      assert(node instanceof WebAudioTestAPI.AudioBufferSourceNode);
     });
   });
 
-  describe("#createBufferSource()", function() {
-    it("should return an instance of AudioBufferSourceNode", function() {
-      expect(ctx.createBufferSource()).to.be.instanceOf(AudioBufferSourceNode);
+  describe("#createMediaElementSource", function() {
+    it("(mediaElement: HTMLMediaElement): MediaElementAudioSourceNode", function() {
+      var element = new WebAudioTestAPI.HTMLMediaElement();
+      var node = audioContext.createMediaElementSource(element);
+
+      assert(node instanceof WebAudioTestAPI.MediaElementAudioSourceNode);
+
+      assert.throws(function() {
+        audioContext.createMediaElementSource("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a HTMLMediaElement/.test(e.message);
+      });
     });
   });
 
-  describe("#createMediaElementSource()", function() {
-    it("should return an instance of MediaElementAudioSourceNode", function() {
-      expect(ctx.createMediaElementSource()).to.be.instanceOf(MediaElementAudioSourceNode);
+  describe("#createMediaStreamSource", function() {
+    it("(mediaStream: MediaStream): MediaStreamAudioSourceNode", function() {
+      var stream = new WebAudioTestAPI.MediaStream();
+      var node = audioContext.createMediaStreamSource(stream);
+
+      assert(node instanceof WebAudioTestAPI.MediaStreamAudioSourceNode);
+
+      assert.throws(function() {
+        audioContext.createMediaStreamSource("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a MediaStream/.test(e.message);
+      });
     });
   });
 
-  describe("#createMediaStreamSource()", function() {
-    it("should return an instance of MediaStreamAudioSourceNode", function() {
-      expect(ctx.createMediaStreamSource()).to.be.instanceOf(MediaStreamAudioSourceNode);
+  describe("#createMediaStreamDestination", function() {
+    it("(): MediaStreamAudioDestinationNode", function() {
+      var node = audioContext.createMediaStreamDestination();
+
+      assert(node instanceof WebAudioTestAPI.MediaStreamAudioDestinationNode);
     });
   });
 
-  describe("#createMediaStreamDestination()", function() {
-    it("should return an instance of MediaStreamAudioDestinationNode", function() {
-      expect(ctx.createMediaStreamDestination()).to.be.instanceOf(MediaStreamAudioDestinationNode);
+  describe("#createScriptProcessor", function() {
+    it("(bufferSize: number, numberOfInputChannels: number, numberOfOutputChannels: number): ScriptProcessorNode", function() {
+      var node = audioContext.createScriptProcessor(1024, 1, 1);
+
+      assert(node instanceof WebAudioTestAPI.ScriptProcessorNode);
+
+      assert.throws(function() {
+        audioContext.createScriptProcessor(0, 1, 1);
+      }, function(e) {
+        return e instanceof TypeError && /should be an enum/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createScriptProcessor(1024, "INVALID", 1);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createScriptProcessor(1024, 1, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
-  describe("#createScriptProcessor()", function() {
-    it("should return an instance of ScriptProcessorNode", function() {
-      expect(ctx.createScriptProcessor(1024, 1, 1)).to.be.instanceOf(ScriptProcessorNode);
+  describe("#createAnalyser", function() {
+    it("(): AnalyserNode", function() {
+      var node = audioContext.createAnalyser();
+
+      assert(node instanceof WebAudioTestAPI.AnalyserNode);
     });
   });
 
-  describe("#createAnalyser()", function() {
-    it("should return an instance of AnalyserNode", function() {
-      expect(ctx.createAnalyser()).to.be.instanceOf(AnalyserNode);
+  describe("#createGain", function() {
+    it("(): GainNode", function() {
+      var node = audioContext.createGain();
+
+      assert(node instanceof WebAudioTestAPI.GainNode);
     });
   });
 
-  describe("#createGain()", function() {
-    it("should return an instance of GainNode", function() {
-      expect(ctx.createGain()).to.be.instanceOf(GainNode);
+  describe("#createDelay", function() {
+    it("(): DelayNode", function() {
+      var node = audioContext.createDelay();
+
+      assert(node instanceof WebAudioTestAPI.DelayNode);
+
+      assert.throws(function() {
+        audioContext.createDelay("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
-  describe("#createDelay()", function() {
-    it("should return an instance of DelayNode", function() {
-      expect(ctx.createDelay()).to.be.instanceOf(DelayNode);
+  describe("#createBiquadFilter", function() {
+    it("(): BiquadFilterNode", function() {
+      var node = audioContext.createBiquadFilter();
+
+      assert(node instanceof WebAudioTestAPI.BiquadFilterNode);
     });
   });
 
-  describe("#createBiquadFilter()", function() {
-    it("should return an instance of BiquadFilterNode", function() {
-      expect(ctx.createBiquadFilter()).to.be.instanceOf(BiquadFilterNode);
+  describe("#createWaveShaper", function() {
+    it("(): WaveShaperNode", function() {
+      var node = audioContext.createWaveShaper();
+
+      assert(node instanceof WebAudioTestAPI.WaveShaperNode);
     });
   });
 
-  describe("#createWaveShaper()", function() {
-    it("should return an instance of WaveShaperNode", function() {
-      expect(ctx.createWaveShaper()).to.be.instanceOf(WaveShaperNode);
+  describe("#createPanner", function() {
+    it("(): PannerNode", function() {
+      var node = audioContext.createPanner();
+
+      assert(node instanceof WebAudioTestAPI.PannerNode);
     });
   });
 
-  describe("#createPanner()", function() {
-    it("should return an instance of PannerNode", function() {
-      expect(ctx.createPanner()).to.be.instanceOf(PannerNode);
+  describe("#createConvolver", function() {
+    it("(): ConvolverNode", function() {
+      var node = audioContext.createConvolver();
+
+      assert(node instanceof WebAudioTestAPI.ConvolverNode);
     });
   });
 
-  describe("#createConvolver()", function() {
-    it("should return an instance of ConvolverNode", function() {
-      expect(ctx.createConvolver()).to.be.instanceOf(ConvolverNode);
+  describe("#createChannelSplitter", function() {
+    it("(): ChannelSplitterNode", function() {
+      var node = audioContext.createChannelSplitter();
+
+      assert(node instanceof WebAudioTestAPI.ChannelSplitterNode);
+
+      assert.throws(function() {
+        audioContext.createChannelSplitter("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
-  describe("#createChannelSplitter()", function() {
-    it("should return an instance of ChannelSplitterNode", function() {
-      expect(ctx.createChannelSplitter()).to.be.instanceOf(ChannelSplitterNode);
+  describe("#createChannelMerger", function() {
+    it("(): ChannelMergerNode", function() {
+      var node = audioContext.createChannelMerger();
+
+      assert(node instanceof WebAudioTestAPI.ChannelMergerNode);
+
+      assert.throws(function() {
+        audioContext.createChannelMerger("INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
-  describe("#createChannelMerger()", function() {
-    it("should return an instance of ChannelMergerNode", function() {
-      expect(ctx.createChannelMerger()).to.be.instanceOf(ChannelMergerNode);
+  describe("#createDynamicsCompressor", function() {
+    it("(): DynamicsCompressorNode", function() {
+      var node = audioContext.createDynamicsCompressor();
+
+      assert(node instanceof WebAudioTestAPI.DynamicsCompressorNode);
     });
   });
 
-  describe("#createDynamicsCompressor()", function() {
-    it("should return an instance of DynamicsCompressorNode", function() {
-      expect(ctx.createDynamicsCompressor()).to.be.instanceOf(DynamicsCompressorNode);
+  describe("#createOscillator", function() {
+    it("(): OscillatorNode", function() {
+      var node = audioContext.createOscillator();
+
+      assert(node instanceof WebAudioTestAPI.OscillatorNode);
     });
   });
 
-  describe("#createOscillator()", function() {
-    it("should return an instance of OscillatorNode", function() {
-      expect(ctx.createOscillator()).to.be.instanceOf(OscillatorNode);
-    });
-  });
-
-  describe("#createPeriodicWave(real, imag)", function() {
-    it("should return an instance of PeriodicWave", function() {
+  describe("#createPeriodicWave", function() {
+    it("(real: Float32Array, imag: Float32Array): PeriodicWave", function() {
       var real = new Float32Array(128);
       var imag = new Float32Array(128);
-      expect(ctx.createPeriodicWave(real, imag)).to.be.instanceOf(PeriodicWave);
+      var f128 = new Float32Array(128);
+      var f256 = new Float32Array(256);
+      var f8192 = new Float32Array(8192);
+      var wave = audioContext.createPeriodicWave(real, imag);
+
+      assert(wave instanceof WebAudioTestAPI.PeriodicWave);
+
+      assert.throws(function() {
+        audioContext.createPeriodicWave("INVALID", imag);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createPeriodicWave(real, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createPeriodicWave(f128, f256);
+      }, function(e) {
+        return e instanceof TypeError && /must match/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createPeriodicWave(f8192, f8192);
+      }, function(e) {
+        return e instanceof TypeError && /exceeds allow maximum of 4096/.test(e.message);
+      });
     });
   });
 
   describe("#toJSON", function() {
-    it("return json", function() {
-      expect(ctx.toJSON()).to.eql({
+    it("(): object", function() {
+      assert.deepEqual(audioContext.toJSON(), {
         name: "AudioDestinationNode",
         inputs: []
       });
+    });
+  });
+
+  describe("$process", function() {
+    it("(time: number|string): void", function() {
+      audioContext.$process(0.125);
+      assert(audioContext.currentTime === 0.125, "00:00.125");
+
+      audioContext.$process(0.125);
+      assert(audioContext.currentTime === 0.250, "00:00.250");
+
+      audioContext.$process(0.250);
+      assert(audioContext.currentTime === 0.500, "00:00.500");
+
+      audioContext.$process("00:00.500");
+      assert(audioContext.currentTime === 1.000, "00:01.000");
+    });
+  });
+
+  describe("$processTo", function() {
+    it("(time: number|string): void", function() {
+      audioContext.$processTo(0.125);
+      assert(audioContext.currentTime === 0.125, "00:00.125");
+
+      audioContext.$processTo(0.125);
+      assert(audioContext.currentTime === 0.125, "00:00.125");
+
+      audioContext.$processTo(0.250);
+      assert(audioContext.currentTime === 0.250, "00:00.250");
+
+      audioContext.$processTo("00:00.500");
+      assert(audioContext.currentTime === 0.500, "00:00.500");
+    });
+  });
+
+  describe("$reset", function() {
+    it("(): void", function() {
+      var gain = audioContext.createGain();
+
+      gain.connect(audioContext.destination);
+
+      assert.deepEqual(audioContext.toJSON(), {
+        name: "AudioDestinationNode",
+        inputs: [
+          {
+            name: "GainNode",
+            gain: {
+              value: 1,
+              inputs: []
+            },
+            inputs: []
+          }
+        ]
+      });
+
+      audioContext.$processTo(0.125);
+
+      assert(audioContext.currentTime === 0.125);
+
+      audioContext.$reset();
+
+      assert(audioContext.currentTime === 0);
+      assert.deepEqual(audioContext.toJSON(), {
+        name: "AudioDestinationNode",
+        inputs: []
+      });
+    });
+  });
+
+  describe("works", function() {
+    it("$processTo", function() {
+      var amp = audioContext.createGain();
+      var osc = audioContext.createOscillator();
+      var bufSrc = audioContext.createBufferSource();
+      var buf = audioContext.createBuffer(1, 44100 * 0.025, 44100);
+      var onended = sinon.spy();
+      var event;
+
+      bufSrc.buffer = buf;
+      bufSrc.onended = onended;
+
+      bufSrc.connect(osc.frequency);
+      osc.connect(amp);
+      amp.connect(audioContext.destination);
+
+      assert(audioContext.toJSON(), {
+        name: "AudioDestinationNode",
+        inputs: [
+          {
+            name: "GainNode",
+            gain: {
+              value: 1,
+              inputs: []
+            },
+            inputs: [
+              {
+                name: "OscillatorNode",
+                type: "sine",
+                frequency: {
+                  value: 440,
+                  inputs: [ bufSrc.toJSON() ]
+                },
+                detune: {
+                  value: 0,
+                  inputs: []
+                },
+                inputs: []
+              }
+            ]
+          }
+        ]
+      });
+
+      assert(bufSrc.$state === "UNSCHEDULED");
+
+      bufSrc.start(0.100);
+
+      audioContext.$processTo("00:00.124");
+      assert(onended.callCount === 0, "00:00.124");
+
+      audioContext.$processTo("00:00.125");
+      assert(onended.callCount === 1, "00:00.125");
+
+      event = onended.args[0][0];
+
+      assert(event instanceof WebAudioTestAPI.Event);
+      assert(event.type === "ended");
+      assert(event.target === bufSrc);
     });
   });
 

@@ -1,120 +1,161 @@
 "use strict";
 
 describe("OfflineAudioContext", function() {
-  var ctx = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new OfflineAudioContext(1, 44100, 44100);
+    audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441, 44100);
   });
 
-  describe("(numberOfChannels, length, sampleRate)", function() {
-    it("should return an instance of OfflineAudioContext", function() {
-      expect(ctx).to.be.instanceOf(OfflineAudioContext);
-    });
-    it("should have been inherited from AudioContext", function() {
-      expect(ctx).to.be.instanceOf(AudioContext);
-    });
-    it("throw error", function() {
-      expect(function() {
-        ctx = new OfflineAudioContext("INVALID", 44100, 44100);
-      }).to.throw(TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
-    });
-    it("throw error", function() {
-      expect(function() {
-        ctx = new OfflineAudioContext(1, "INVALID", 44100);
-      }).to.throw(TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
-    });
-    it("throw error", function() {
-      expect(function() {
-        ctx = new OfflineAudioContext(1, 44100, "INVALID");
-      }).to.throw(TypeError, "OfflineAudioContext(numberOfChannels, length, sampleRate)");
+  describe("constructor", function() {
+    it("(numberOfChannels: number, length: number, sampleRate: number)", function() {
+      assert(audioContext instanceof global.OfflineAudioContext);
+      assert(audioContext instanceof global.AudioContext);
+
+      assert.throws(function() {
+        WebAudioTestAPI.OfflineAudioContext();
+      }, function(e) {
+        return e instanceof TypeError && /Failed to construct/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext = new WebAudioTestAPI.OfflineAudioContext("INVALID", 441, 44100);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext = new WebAudioTestAPI.OfflineAudioContext(2, "INVALID", 44100);
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a number/.test(e.message);
+      });
     });
   });
 
   describe("#destination", function() {
-    it("should be an instance of AudioDestinationNode", function() {
-      expect(ctx.destination).to.be.instanceOf(AudioDestinationNode);
-    });
-    it("should be readonly", function() {
-      expect(function() {
-        ctx.destination = null;
-      }).throw(Error, "readonly");
+    it("get: AudioDestinationNode", function() {
+
+      assert(audioContext.destination instanceof WebAudioTestAPI.AudioDestinationNode);
+
+      assert.throws(function() {
+        audioContext.destination = null;
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#sampleRate", function() {
-    it("should be a number", function() {
-      expect(ctx.sampleRate).to.be.a("number");
-    });
-    it("should be readonly", function() {
-      expect(function() {
-        ctx.sampleRate = 0;
-      }).throw(Error, "readonly");
+    it("get: number", function() {
+      assert(typeof audioContext.sampleRate === "number");
+
+      assert.throws(function() {
+        audioContext.sampleRate = 0;
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#currentTime", function() {
-    it("should be a number", function() {
-      expect(ctx.currentTime).to.be.a("number");
-    });
-    it("should be readonly", function() {
-      expect(function() {
-        ctx.currentTime = 0;
-      }).throw(Error, "readonly");
+    it("get: number", function() {
+      assert(typeof audioContext.currentTime === "number");
+
+      assert.throws(function() {
+        audioContext.currentTime = 0;
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#listener", function() {
-    it("should be an instance of AudioListener", function() {
-      expect(ctx.listener).to.be.instanceOf(AudioListener);
-    });
-    it("should be readonly", function() {
-      expect(function() {
-        ctx.listener = null;
-      }).throw(Error, "readonly");
+    it("get: AudioListener", function() {
+      assert(audioContext.listener instanceof WebAudioTestAPI.AudioListener);
+
+      assert.throws(function() {
+        audioContext.listener = null;
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
-  describe("#startRendering()", function() {
-    it("throw error if called more than once", function() {
-      ctx.startRendering();
-      expect(function() {
-        ctx.startRendering();
-      }).to.throw(Error);
+  describe("#startRendering", function() {
+    it("(): void", function() {
+      audioContext.startRendering();
+
+      assert.throws(function() {
+        audioContext.startRendering();
+      }, Error);
     });
   });
 
-  describe("#process", function() {
-    it("should work", function(done) {
-      ctx.oncomplete = function(e) {
-        expect(e).to.be.instanceOf(Event);
-        expect(e).to.be.instanceOf(OfflineAudioCompletionEvent);
-        expect(e.renderedBuffer).to.be.instanceOf(AudioBuffer);
-        done();
-      };
-      ctx.startRendering();
-      ctx.$processTo("00:00.500");
-      ctx.$processTo("00:01.000");
-      ctx.$processTo("00:01.500");
-    });
-    it("should not work", function() {
-      ctx.oncomplete = function() {
-        throw new Error("NOT REACHED");
-      };
-      ctx.$processTo("00:00.500");
-      ctx.$processTo("00:01.000");
-      ctx.$processTo("00:01.500");
+  describe("#oncomplete", function() {
+    it("get/set: function", function() {
+      var fn1 = function() {};
+      var fn2 = function() {};
+
+      assert(audioContext.oncomplete === null);
+
+      audioContext.oncomplete = fn1;
+      assert(audioContext.oncomplete === fn1);
+
+      audioContext.oncomplete = fn2;
+      assert(audioContext.oncomplete === fn2);
+
+      audioContext.oncomplete = null;
+      assert(audioContext.oncomplete === null);
+
+      assert.throws(function() {
+        audioContext.oncomplete = "INVALID";
+      }, function(e) {
+        return e instanceof TypeError && /should be a function/.test(e.message);
+      });
     });
   });
 
-});
+  describe("works", function() {
+    it("oncomplete", function() {
+      var oncomplete = sinon.spy();
 
-describe("OfflineAudioCompletionEvent", function() {
-  describe("()", function() {
-    it("throw illegal constructor", function() {
-      expect(function() {
-        return new OfflineAudioCompletionEvent();
-      }).to.throw(TypeError, "Illegal constructor");
+      audioContext.oncomplete = oncomplete;
+
+      audioContext.startRendering();
+
+      audioContext.$processTo("00:00.009");
+      assert(oncomplete.callCount === 0, "00:00.009");
+
+      audioContext.$processTo("00:00.010");
+      assert(oncomplete.callCount === 1, "00:00.010");
+      assert(oncomplete.calledOn(audioContext), "00:00.010");
+
+      audioContext.$processTo("00:00.100");
+      assert(oncomplete.callCount === 1, "00:00.100");
+
+      var event = oncomplete.args[0][0];
+
+      assert(event instanceof WebAudioTestAPI.OfflineAudioCompletionEvent);
+      assert(event.renderedBuffer instanceof WebAudioTestAPI.AudioBuffer);
+      assert(event.type === "complete");
+      assert(event.target = audioContext);
+    });
+    it("oncomplete (without startRendering)", function() {
+      var oncomplete = sinon.spy();
+
+      audioContext.oncomplete = oncomplete;
+
+      audioContext.$processTo("00:00.100");
+
+      assert(oncomplete.callCount === 0, "00:00.100");
     });
   });
+
 });

@@ -1,42 +1,47 @@
 "use strict";
 
 describe("DelayNode", function() {
-  var ctx = null;
-  var node = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new AudioContext();
-    node = ctx.createDelay();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
-      expect(function() {
-        return new DelayNode();
-      }).to.throw(TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+  describe("constructor", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.DelayNode(audioContext);
+
+      assert(node instanceof global.DelayNode);
+      assert(node instanceof global.AudioNode);
+
+      assert.throws(function() {
+        global.DelayNode();
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#delayTime", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("delayTime");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.DelayNode(audioContext, 0);
+
+      assert(node.delayTime instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.delayTime = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.delayTime).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
-      expect(node.toJSON()).to.eql({
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.DelayNode(audioContext, 0);
+
+      assert.deepEqual(node.toJSON(), {
         name: "DelayNode",
         delayTime: {
           value: 0,
@@ -44,6 +49,15 @@ describe("DelayNode", function() {
         },
         inputs: []
       });
+    });
+  });
+
+  describe("$maxDelayTime", function() {
+    it("get: number", function() {
+      var node = new WebAudioTestAPI.DelayNode(audioContext, 10);
+
+      assert(typeof node.$maxDelayTime === "number");
+      assert(node.$maxDelayTime === 10);
     });
   });
 

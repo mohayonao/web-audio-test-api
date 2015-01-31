@@ -1,112 +1,117 @@
 "use strict";
 
 describe("DynamicsCompressorNode", function() {
-  var ctx = null;
-  var node = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new AudioContext();
-    node = ctx.createDynamicsCompressor();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
-      expect(function() {
-        return new DynamicsCompressorNode();
-      }).to.throw(TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+  describe("constructor", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
+
+      assert(node instanceof global.DynamicsCompressorNode);
+      assert(node instanceof global.AudioNode);
+
+      assert.throws(function() {
+        global.DynamicsCompressorNode();
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#threshold", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("threshold");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
+
+      assert(node.threshold instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.threshold = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.threshold).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#knee", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("knee");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
+
+      assert(node.knee instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.knee = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.knee).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#ratio", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("ratio");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
+
+      assert(node.ratio instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.ratio = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.ratio).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#reduction", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("reduction");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
+
+      assert(node.reduction instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.reduction = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.reduction).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#attack", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("attack");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
+
+      assert(node.attack instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.attack = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.attack).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
   describe("#release", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("release");
-    });
-    it("should be readonly", function() {
-      expect(function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
+
+      assert(node.release instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
         node.release = 0;
-      }).to.throw(Error, "readonly");
-    });
-    it("should be an instance of AudioParam", function() {
-      expect(node.release).to.be.instanceOf(AudioParam);
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
-      expect(node.toJSON()).to.eql({
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.DynamicsCompressorNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
         name: "DynamicsCompressorNode",
         threshold: {
           value: -24,

@@ -1,22 +1,37 @@
 "use strict";
 
 var _ = require("./utils");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
 var AudioNode = require("./AudioNode");
 
+var ConvolverNodeConstructor = function ConvolverNode() {
+  throw new TypeError("Illegal constructor: use audioContext.createConvolver()");
+};
+_.inherits(ConvolverNodeConstructor, AudioNode);
+
 function ConvolverNode(context) {
-  AudioNode.call(this, {
-    context: context,
+  AudioNode.call(this, context, {
     name: "ConvolverNode",
-    jsonAttrs: [ "normalize" ],
     numberOfInputs  : 1,
     numberOfOutputs : 1,
     channelCount    : 2,
     channelCountMode: "clamped-max",
     channelInterpretation: "speakers"
   });
-  _.$type(this, "buffer", AudioBuffer, null);
-  _.$type(this, "normalize", "boolean", true);
-}
-_.inherits(ConvolverNode, global.ConvolverNode);
 
-module.exports = ConvolverNode;
+  var buffer = null;
+  var normalize = true;
+
+  _.defineAttribute(this, "buffer", "AudioBuffer|null", buffer, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "normalize", "boolean", normalize, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+}
+_.inherits(ConvolverNode, ConvolverNodeConstructor);
+
+ConvolverNode.exports = ConvolverNodeConstructor;
+ConvolverNode.jsonAttrs = [ "normalize" ];
+
+module.exports = WebAudioTestAPI.ConvolverNode = ConvolverNode;

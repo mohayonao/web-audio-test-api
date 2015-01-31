@@ -1,17 +1,26 @@
 "use strict";
 
 var _ = require("./utils");
+var Inspector = require("./utils/Inspector");
+var WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var AudioBufferConstructor = function AudioBuffer() {
+  throw new TypeError("Illegal constructor: use audioContext.createBuffer(numberOfChannels: number, length: number, sampleRate: number)");
+};
 
 function AudioBuffer(context, numberOfChannels, length, sampleRate) {
-  _.check("AudioBuffer(numerOfChannels, length, sampleRate)", {
-    numberOfChannels: { type: "number", given: numberOfChannels },
-    length          : { type: "number", given: length           },
-    sampleRate      : { type: "number", given: sampleRate       },
+  _.defineAttribute(this, "sampleRate", "readonly", sampleRate, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
   });
-  _.$read(this, "sampleRate", sampleRate);
-  _.$read(this, "length", length);
-  _.$read(this, "duration", length / sampleRate);
-  _.$read(this, "numberOfChannels", numberOfChannels);
+  _.defineAttribute(this, "length", "readonly", length, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "duration", "readonly", length / sampleRate, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
+  _.defineAttribute(this, "numberOfChannels", "readonly", numberOfChannels, function(msg) {
+    throw new TypeError(_.formatter.concat(this, msg));
+  });
 
   Object.defineProperties(this, {
     $name   : { value: "AudioBuffer" },
@@ -23,15 +32,24 @@ function AudioBuffer(context, numberOfChannels, length, sampleRate) {
     this._data[i] = new Float32Array(length);
   }
 }
-_.inherits(AudioBuffer, global.AudioBuffer);
+_.inherits(AudioBuffer, AudioBufferConstructor);
 
-function f32ToArray(f32) {
-  var a = new Array(f32.length);
-  for (var i = 0, imax = a.length; i < imax; ++i) {
-    a[i] = f32[i];
-  }
-  return a;
-}
+AudioBuffer.exports = AudioBufferConstructor;
+
+AudioBuffer.prototype.getChannelData = function(channel) {
+  var inspector = new Inspector(this, "getChannelData", [
+    { name: "channel", type: "number" }
+  ]);
+  inspector.validateArguments(arguments, function(msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+  inspector.assert(0 <= channel && channel < this._data.length, function() {
+    throw new TypeError(
+      inspector.form + "; channel index (" + channel + ") exceeds number of channels (#{" + this._data.length + "})"
+    );
+  });
+  return this._data[channel];
+};
 
 AudioBuffer.prototype.toJSON = function() {
   var json = {
@@ -43,23 +61,12 @@ AudioBuffer.prototype.toJSON = function() {
   };
 
   if (this.$context.VERBOSE_JSON) {
-    json.data = this._data.map(f32ToArray);
+    json.data = this._data.map(function(data) {
+      return Array.prototype.slice.call(data);
+    });
   }
 
   return json;
 };
 
-AudioBuffer.prototype.getChannelData = function(channel) {
-  if (0 <= channel && channel < this._data.length) {
-    return this._data[channel];
-  }
-  throw new Error(_.format(
-    "#{caption}: channel index (#{index}) exceeds number of channels (#{length})", {
-      caption: _.caption(this, "getChannelData(channel)"),
-      index  : channel,
-      length : this._data.length
-    }
-  ));
-};
-
-module.exports = AudioBuffer;
+module.exports = WebAudioTestAPI.AudioBuffer = AudioBuffer;

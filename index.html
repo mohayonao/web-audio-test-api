@@ -2,42 +2,76 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>web-audio-test-api.js - online test suites</title>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/chai/1.9.1/chai.js"></script>
+  <title>web-audio-test-api.js - online test suite</title>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.min.css">
+  <style>
+  * { font-family: "Monaco", "Consolas", monospace }
+  .title { font-size: 3em !important }
+  .link { color: #3498db }
+  </style>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/sinon.js/1.7.3/sinon-min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+  <script src="test/bootstrap/assert.js"></script>
   <script src="build/web-audio-test-api.js"></script>
   <script>
     mocha.setup("bdd");
     window.onload = function() {
       mocha.run();
     };
-    window.expect = chai.expect;
+    window.global = window;
+    window.closeTo = function(actual, expected, delta) {
+      return Math.abs(actual - expected) <= delta;
+    };
   </script>
   <script src="./test/AnalyserNode.js"></script>
   <script src="./test/AudioBuffer.js"></script>
   <script src="./test/AudioBufferSourceNode.js"></script>
   <script src="./test/AudioContext.js"></script>
+  <script src="./test/AudioDestinationNode.js"></script>
   <script src="./test/AudioListener.js"></script>
   <script src="./test/AudioNode.js"></script>
   <script src="./test/AudioParam.js"></script>
+  <script src="./test/AudioProcessingEvent.js"></script>
   <script src="./test/BiquadFilter.js"></script>
+  <script src="./test/ChannelMergerNode.js"></script>
+  <script src="./test/ChannelSplitterNode.js"></script>
   <script src="./test/ConvolverNode.js"></script>
   <script src="./test/DelayNode.js"></script>
   <script src="./test/DynamicsCompressorNode.js"></script>
-  <script src="./test/ErrorMessage.js"></script>
+  <script src="./test/Element.js"></script>
+  <script src="./test/Event.js"></script>
+  <script src="./test/EventTarget.js"></script>
   <script src="./test/GainNode.js"></script>
-  <script src="./test/ModularRouting.js"></script>
+  <script src="./test/HTMLElement.js"></script>
+  <script src="./test/HTMLMediaElement.js"></script>
+  <script src="./test/MediaElementAudioSourceNode.js"></script>
+  <script src="./test/MediaStream.js"></script>
+  <script src="./test/MediaStreamAudioDestinationNode.js"></script>
+  <script src="./test/MediaStreamAudioSourceNode.js"></script>
+  <script src="./test/OfflineAudioCompletionEvent.js"></script>
   <script src="./test/OfflineAudioContext.js"></script>
   <script src="./test/OscillatorNode.js"></script>
   <script src="./test/PannerNode.js"></script>
   <script src="./test/PeriodicWave.js"></script>
   <script src="./test/ScriptProcessorNode.js"></script>
   <script src="./test/WaveShaperNode.js"></script>
+  <script src="./test/WebAudioTestAPI.js"></script>
+
 </head>
 <body>
   <div id="mocha">
-    <h1>web-audio-test-api.js - online test suites</h1>
+    <div>
+      <a href="https://travis-ci.org/mohayonao/web-audio-test-api"><img src="http://img.shields.io/travis/mohayonao/web-audio-test-api.svg?style=flat-square"></a>
+      <a href="https://www.npmjs.org/package/web-audio-test-api"><img src="http://img.shields.io/npm/v/web-audio-test-api.svg?style=flat-square"></a>
+      <a href="https://github.com/mohayonao/web-audio-test-api"><img src="http://img.shields.io/bower/v/web-audio-test-api.svg?style=flat-square"></a>
+      <a href="https://coveralls.io/r/mohayonao/web-audio-test-api?branch=master"><img src="http://img.shields.io/coveralls/mohayonao/web-audio-test-api.svg?style=flat-square"></a>
+      <a href="http://mohayonao.mit-license.org/"><img src="http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>
+    </li>
+    <h1 class="title">web-audio-test-api.js</h1>
+    <div>
+      <span>Web Audio API test library for CI | <a href="https://github.com/mohayonao/web-audio-test-api" class="link">GitHub</a> | <a href="https://github.com/mohayonao/web-audio-test-api/wiki" class="link">Documents</a></span>
+    </div>
   </div>
 </body>
 </html>

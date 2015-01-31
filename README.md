@@ -1,7 +1,7 @@
 # web-audio-test-api
 [![Build Status](http://img.shields.io/travis/mohayonao/web-audio-test-api.svg?style=flat-square)](https://travis-ci.org/mohayonao/web-audio-test-api)
 [![NPM Version](http://img.shields.io/npm/v/web-audio-test-api.svg?style=flat-square)](https://www.npmjs.org/package/web-audio-test-api)
-[![Bower](https://img.shields.io/bower/v/web-audio-test-api.svg?style=flat-square)](https://github.com/mohayonao/web-audio-test-api)
+[![Bower](http://img.shields.io/bower/v/web-audio-test-api.svg?style=flat-square)](https://github.com/mohayonao/web-audio-test-api)
 [![Coverage Status](http://img.shields.io/coveralls/mohayonao/web-audio-test-api.svg?style=flat-square)](https://coveralls.io/r/mohayonao/web-audio-test-api?branch=master)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://mohayonao.mit-license.org/)
 
@@ -9,9 +9,9 @@
 
 ## Installation
 
-  - [web-audio-test-api.js](http://mohayonao.github.io/web-audio-test-api/build/web-audio-test-api.js)
+### browser
 
-#### browser
+  - [web-audio-test-api.js](http://mohayonao.github.io/web-audio-test-api/build/web-audio-test-api.js)
 
 replace existing Web Audio API with web-audio-test-api
 
@@ -19,16 +19,16 @@ replace existing Web Audio API with web-audio-test-api
 <script src="/path/to/web-audio-test-api.js"></script>
 ```
 
-set `WEB_AUDIO_TEST_API_IGNORE` flag if you won't use web-audio-test-api
-```html
-WEB_AUDIO_TEST_API_IGNORE = true;
-<script src="/path/to/web-audio-test-api.js"></script>
+if you won't use web-audio-test-api
+
+```javascript
+WebAudioTestAPI.unuse();
 ```
 
-#### node.js
+### node.js
 
-```sh
-% npm install web-audio-test-api
+```
+npm install web-audio-test-api
 ```
 
 install Web Audio API interfaces as global variables
@@ -37,250 +37,213 @@ install Web Audio API interfaces as global variables
 require("web-audio-test-api");
 ```
 
-## Online Test Suites
+## Online Test Suite
 
-  - [web-audio-test-api.js - online test suites](http://mohayonao.github.io/web-audio-test-api/)
+  - [web-audio-test-api.js - online test suite](http://mohayonao.github.io/web-audio-test-api/)
 
-## Reference
+## Documents
 
-  - [API Reference](https://github.com/mohayonao/web-audio-test-api/wiki)
+  - [Web Audio API Specification](http://www.w3.org/TR/webaudio/)
+  - [Test API Reference](https://github.com/mohayonao/web-audio-test-api/wiki)
 
 ## Features
 
-#### Strict type check more than original Web Audio API
+- Strict type check more than original Web Audio API
 
 ```javascript
-describe("Strict Type Check", function() {
-  var ctx = new AudioContext();
-  var osc = ctx.createOsillator();
+var audioContext = new AudioContext();
+var osc = audioContext.createOsillator();
 
-  it("throw error if uses wrong", function() {
-    expect(function() {
-      osc.frequency = 880;
-    }, "uses wrong").to.throw(Error, "OscillatorNode#frequency is readonly");
-    expect(function() {
-      osc.frequency.value = 880;
-    }, "uses correctly").to.not.throw();
-  });
+// correct
+osc.frequency.value = 880;
 
-  it("throw error if receives an invalid value", function() {
-    expect(function() {
-      osc.type = 2;
-    }).to.throw(Error,
-      "OscillatorNode#type should be any [ sine, square, sawtooth, triangle, custom ], but got 2"
-    );
-  });
+// wrong
+assert.throws(function() {
+  osc.frequency = 880;
+}, function(e) {
+  return e instanceof TypeError &&
+    e.message === "OscillatorNode#frequency is readonly";
+});
 
+assert.throws(function() {
+  osc.type = 2;
+}, function(e) {
+  return e instanceof TypeError &&
+    e.message === "OscillatorNode#type should be an enum { sine, square, sawtooth, triangle }, but got: 2";
+});
 });
 ```
 
-#### Convert to JSON from modular routing
+- Convert to JSON from audio graph
 
 ```javascript
-describe("Modular Routine", function() {
-  it("should generate audio graph", function() {
-    var ctx = new AudioContext();
-    var osc = ctx.createOscillator();
-    var lfo = ctx.createOscillator();
-    var amp = ctx.createGain();
+var audioContext = new AudioContext();
+var osc = audioContext.createOscillator();
+var lfo = audioContext.createOscillator();
+var amp = audioContext.createGain();
 
-    lfo.$id = "LFO"; // name for debugging
+lfo.$id = "LFO"; // name for debugging
 
-    osc.type = "sawtooth";
-    osc.frequency.value = 880;
+osc.type = "sawtooth";
+osc.frequency.value = 880;
 
-    lfo.frequency.value = 2;
+lfo.frequency.value = 2;
 
-    lfo.connect(amp.gain);
-    osc.connect(amp);
-    amp.connect(ctx.destination);
+lfo.connect(amp.gain);
+osc.connect(amp);
+amp.connect(audioContext.destination);
 
-    // ctx.VERBOSE_JSON = true; // set this flag if you need more detailed data
-
-    expect(ctx.toJSON()).to.eql({
-      name: "AudioDestinationNode"          // +------------------+
-      inputs: [                             // | OscillatorNode   |
-        {                                   // | - type: sawtooth |
-          name: "GainNode",                 // | - frequency: 220 |
-          gain: {                           // | - detune: 0      |
-            value: 1,                       // +------------------+
-            inputs: [                       //   |
-              {                             // +-----------+  +--------------------+
-                name: "OscillatorNode#LFO", // | GainNode  |  | OscillatorNode#LFO |
-                type: "sine",               // | - gain: 1 |--| - frequency: 2     |
-                frequency: {                // +-----------+  | - detune: 0        |
-                  value: 2,                 //   |            +--------------------+
-                  inputs: []                //   |
-                },                          // +----------------------+
-                detune: {                   // | AudioDestinationNode |
-                  value: 0,                 // +----------------------+
-                  inputs: []
-                },
-                inputs: []
-              }
-            ]
-          },
-          inputs: [
-            {
-              name: "OscillatorNode",
-              type: "sawtooth",
-              frequency: {
-                value: 880,
-                inputs: []
-              },
-              detune: {
-                value: 0,
-                inputs: []
-              },
+assert.deelEqual(audioContext.toJSON(), {
+  name: "AudioDestinationNode"            // +------------------+
+  inputs: [                               // | OscillatorNode   |
+    {                                     // | - type: sawtooth |
+      name: "GainNode",                   // | - frequency: 220 |
+      gain: {                             // | - detune: 0      |
+        value: 1,                         // +------------------+
+        inputs: [                         //   |
+          {                               // +-----------+  +--------------------+
+            name: "OscillatorNode#LFO",   // | GainNode  |  | OscillatorNode#LFO |
+            type: "sine",                 // | - gain: 1 |--| - frequency: 2     |
+            frequency: {                  // +-----------+  | - detune: 0        |
+              value: 2,                   //   |            +--------------------+
+              inputs: []                  //   |
+            },                            // +----------------------+
+            detune: {                     // | AudioDestinationNode |
+              value: 0,                   // +----------------------+
               inputs: []
-            }
-          ]
+            },
+            inputs: []
+          }
+        ]
+      },
+      inputs: [
+        {
+          name: "OscillatorNode",
+          type: "sawtooth",
+          frequency: {
+            value: 880,
+            inputs: []
+          },
+          detune: {
+            value: 0,
+            inputs: []
+          },
+          inputs: []
         }
       ]
-    });
-  });
+    }
+  ]
 });
 ```
 
-#### OscillatorNode/BufferSourceNode state
+- OscillatorNode/BufferSourceNode state
 
 ```javascript
-describe("OscillatorNode#$stateAtTime(t)", function() {
-  it("works", function() {
-    var ctx = new AudioContext();
-    var osc = ctx.createOscillator();
+var audioContext = new AudioContext();
+var node = audioContext.createOscillator();
 
-    expect(osc.$state).to.equal("UNSCHEDULED");
+assert(node.$state === "UNSCHEDULED");
 
-    osc.start(1);
-    osc.stop(2);
+node.start(0.100);
+node.stop(0.150);
+node.connect(audioContext.destination);
 
-    expect(osc.$stateAtTime(0.5)).to.equal("SCHEDULED");
-    expect(osc.$stateAtTime(1.5)).to.equal("PLAYING");
-    expect(osc.$stateAtTime(2.5)).to.equal("FINISHED");
-  });
-  it("with audioContext.$process()", function() {
-    var ctx = new AudioContext();
-    var osc = ctx.createOscillator();
+audioContext.$processTo("00:00.000");
+assert(node.$state === "SCHEDULED", "00:00.000");
 
-    expect(osc.$state).to.equal("UNSCHEDULED");
+audioContext.$processTo("00:00.099");
+assert(node.$state === "SCHEDULED", "00:00.099");
 
-    osc.start(1);
-    osc.stop(2);
+audioContext.$processTo("00:00.100");
+assert(node.$state === "PLAYING", "00:00.100");
 
-    expect(osc.$state, "00:00.000").to.equal("SCHEDULED");
+audioContext.$processTo("00:00.149");
+assert(node.$state === "PLAYING", "00:00.149");
 
-    ctx.$processTo("00:00.500");
-    expect(osc.$state, "00:00.500").to.equal("SCHEDULED");
+audioContext.$processTo("00:00.150");
+assert(node.$state === "FINISHED", "00:00.150");
 
-    ctx.$processTo("00:01.000");
-    expect(osc.$state, "00:01.000").to.equal("PLAYING");
-
-    ctx.$processTo("00:01.500");
-    expect(osc.$state, "00:01.500").to.equal("PLAYING");
-
-    ctx.$processTo("00:02.000");
-    expect(osc.$state, "00:02.000").to.equal("FINISHED");
-
-    ctx.$processTo("00:02.500");
-    expect(osc.$state, "00:02.500").to.equal("FINISHED");
-  });
-});
+// other way
+assert(node.$stateAtTime("00:00.000") === "SCHEDULED");
+assert(node.$stateAtTime("00:00.099") === "SCHEDULED");
+assert(node.$stateAtTime("00:00.100") === "PLAYING");
+assert(node.$stateAtTime("00:00.149") === "PLAYING");
+assert(node.$stateAtTime("00:00.150") === "FINISHED");
 ```
 
-#### AudioParam simulation
+- AudioParam simulation
 
 ```javascript
-describe("AudioParam", function() {
-  it("works", function() {
-    var ctx = new AudioContext();
-    var osc = ctx.createOscillator();
+var audioContext = new AudioContext();
+var node = audioContext.createOscillator();
 
-    osc.frequency.setValueAtTime(880, 0.5);
-    osc.frequency.linearRampToValueAtTime(440, 1.5);
+node.frequency.setValueAtTime(880, 0.500);
+node.frequency.linearRampToValueAtTime(440, 1.500);
+node.connect(audioContext.destination);
 
-    expect(osc.frequency.$valueAtTime(0.000), "00:00.000").to.equal(440);
-    expect(osc.frequency.$valueAtTime(0.250), "00:00.250").to.equal(440);
-    expect(osc.frequency.$valueAtTime(0.500), "00:00.500").to.equal(880); // <- setValueAtTime
-    expect(osc.frequency.$valueAtTime(0.750), "00:00.750").to.equal(770); //  ^
-    expect(osc.frequency.$valueAtTime(1.000), "00:01.000").to.equal(660); //  | linearRampToValueAtTime
-    expect(osc.frequency.$valueAtTime(1.250), "00:01.250").to.equal(550); //  v
-    expect(osc.frequency.$valueAtTime(1.500), "00:01.500").to.equal(440); //
-    expect(osc.frequency.$valueAtTime(1.750), "00:01.750").to.equal(440);
-  });
-  it("with audioContext$process()", function() {
-    var ctx = new AudioContext();
-    var osc = ctx.createOscillator();
+audioContext.$processTo("00:00.000");
+assert(node.frequency.value === 440, "00:00.000");
 
-    osc.frequency.setValueAtTime(880, 0.5);
-    osc.frequency.linearRampToValueAtTime(440, 1.5);
+audioContext.$processTo("00:00.250");
+assert(node.frequency.value === 440, "00:00.250");
 
-    expect(osc.frequency.value, "00:00.000").to.equal(440);
+audioContext.$processTo("00:00.500");
+assert(node.frequency.value === 880, "00:00.500"); // <- setValueAtTime
+                                                   //  ^
+audioContext.$processTo("00:00.750");              //  |
+assert(node.frequency.value === 770, "00:00.750"); //  |
+                                                   //  |
+audioContext.$processTo("00:01.000");              //  |
+assert(node.frequency.value === 660, "00:01.000"); //  | linearRampToValueAtTime
+                                                   //  |
+audioContext.$processTo("00:01.250");              //  |
+assert(node.frequency.value === 550, "00:01.250"); //  |
+                                                   //  |
+audioContext.$processTo("00:01.500");              //  v
+assert(node.frequency.value === 440, "00:01.500"); //
 
-    ctx.$processTo("00:00.250");
-    expect(osc.frequency.value, "00:00.250").to.equal(440);
+audioContext.$processTo("00:01.750");
+assert(node.frequency.value === 440, "00:01.750");
 
-    ctx.$processTo("00:00.500");
-    expect(osc.frequency.value, "00:00.500").to.equal(880); // <- setValueAtTime
-                                                            //  ^
-    ctx.$processTo("00:00.750");                            //  |
-    expect(osc.frequency.value, "00:00.750").to.equal(770); //  |
-                                                            //  |
-    ctx.$processTo("00:01.000");                            //  |
-    expect(osc.frequency.value, "00:01.000").to.equal(660); //  | linearRampToValueAtTime
-                                                            //  |
-    ctx.$processTo("00:01.250");                            //  |
-    expect(osc.frequency.value, "00:01.250").to.equal(550); //  |
-                                                            //  |
-    ctx.$processTo("00:01.500");                            //  v
-    expect(osc.frequency.value, "00:01.500").to.equal(440); //
-
-    ctx.$processTo("00:01.750");
-    expect(osc.frequency.value, "00:01.750").to.equal(440);
-  });
-});
+// other way
+assert(node.frequency.$valueAtTime("00:00.000" === 440);
+assert(node.frequency.$valueAtTime("00:00.250" === 440);
+assert(node.frequency.$valueAtTime("00:00.500" === 880); // <- setValueAtTime
+assert(node.frequency.$valueAtTime("00:00.750" === 770); //  ^
+assert(node.frequency.$valueAtTime("00:01.000" === 660); //  | linearRampToValueAtTime
+assert(node.frequency.$valueAtTime("00:01.250" === 550); //  v
+assert(node.frequency.$valueAtTime("00:01.500" === 440); //
+assert(node.frequency.$valueAtTime("00:01.750" === 440);
 ```
 
-#### ScriptProcessing simulation
+- ScriptProcessing simulation
 
 ```javascript
+var audioContext = new AudioContext();
+var node = audioContext.createScriptProcessor(1024, 2, 2);
 
-describe("ScriptProcessorNode#onaudioprocess(e)", function() {
-  it("works", function() {
-    var ctx = new AudioContext();
-    var scp = ctx.createScriptProcessor(1024, 2, 2);
+node.onaudioprocess = sinon.spy();
+node.connect(audioContext.destination);
 
-    var count = 0;
-
-    scp.onaudioprocess = function(e) {
-      count += 1;
-    };
-
-    ctx.$process(0.5);           // advance 0.5 sec
-    expect(count).to.equal(22); // 22times call (0.5 / (1024 / 44100) = 21.5332)
-  });
-});
+audioContext.$processTo("00:00.500");
+assert(node.onaudioprocess.callCount === 22);
+// 22times call (0.5 / (1024 / 44100) = 21.5332)
 ```
 
-#### DecodeAudioData simulation
+- DecodeAudioData simulation
 
 ```javascript
-describe("AudioContext#decodeAudioData()", function() {
-  it("should return decoded buffer in async", function(done) {
-    var ctx = new AudioContext();
+var audioContext = new AudioContext();
 
-    // ctx.DECODE_AUDIO_DATA_RESULT = customResult;
-    // ctx.DECODE_AUDIO_DATA_FAILED = true;
+// audioContext.DECODE_AUDIO_DATA_RESULT = customResult;
+// audioContext.DECODE_AUDIO_DATA_FAILED = true;
 
-    ctx.decodeAudioData(audioData, function(result) {
-      // successCallback
-      expect(result).to.be.instanceOf(AudioBuffer);
-      done();
-    }, function() {
-      // errorCallback
-      throw new ERROR("NOT REACHED");
-    });
-  });
+audioContext.decodeAudioData(audioData, function(result) {
+  // successCallback
+  assert(result instanceof AudioBuffer);
+}, function() {
+  // errorCallback
+  throw new ERROR("NOT REACHED");
 });
 ```
 

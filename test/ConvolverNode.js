@@ -1,56 +1,74 @@
 "use strict";
 
 describe("ConvolverNode", function() {
-  var ctx = null;
-  var node = null;
+  var WebAudioTestAPI = global.WebAudioTestAPI;
+  var audioContext;
 
   beforeEach(function() {
-    ctx = new AudioContext();
-    node = ctx.createConvolver();
+    audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("()", function() {
-    it("throw illegal constructor", function() {
-      expect(function() {
-        return new ConvolverNode();
-      }).to.throw(TypeError, "Illegal constructor");
-    });
-    it("should have been inherited from AudioNode", function() {
-      expect(node).to.be.instanceOf(AudioNode);
+  describe("constructor", function() {
+    it("()", function() {
+      var node = new WebAudioTestAPI.ConvolverNode(audioContext);
+
+      assert(node instanceof global.ConvolverNode);
+      assert(node instanceof global.AudioNode);
+
+      assert.throws(function() {
+        global.ConvolverNode();
+      }, function(e) {
+        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
     });
   });
 
   describe("#buffer", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("buffer");
-    });
-    it("should be an AudioBuffer", function() {
-      expect(function() {
-        node.buffer = ctx.createBuffer(1, 128, 44100);
-      }).to.not.throw();
-      expect(function() {
+    it("get/set: AudioBuffer", function() {
+      var node = new WebAudioTestAPI.ConvolverNode(audioContext);
+      var buf1 = new WebAudioTestAPI.AudioBuffer(audioContext, 1, 16, 44100);
+      var buf2 = new WebAudioTestAPI.AudioBuffer(audioContext, 2, 32, 44100);
+
+      assert(node.buffer === null);
+
+      node.buffer = buf1;
+      assert(node.buffer === buf1);
+
+      node.buffer = buf2;
+      assert(node.buffer === buf2);
+
+      node.buffer = null;
+      assert(node.buffer === null);
+
+      assert.throws(function() {
         node.buffer = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
   describe("#normalize", function() {
-    it("should be exist", function() {
-      expect(node).to.have.property("normalize");
-    });
-    it("should be a boolean", function() {
-      expect(function() {
-        node.normalize = false;
-      }).to.not.throw();
-      expect(function() {
+    it("get/set: boolean", function() {
+      var node = new WebAudioTestAPI.ConvolverNode(audioContext);
+
+      assert(typeof node.normalize === "boolean");
+
+      node.normalize = true;
+      assert(node.normalize === true);
+
+      node.normalize = false;
+      assert(node.normalize === false);
+
+      assert.throws(function() {
         node.normalize = "INVALID";
-      }).to.throw(TypeError);
+      }, TypeError);
     });
   });
 
-  describe("#toJSON()", function() {
-    it("return json", function() {
-      expect(node.toJSON()).to.eql({
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.ConvolverNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
         name: "ConvolverNode",
         normalize: true,
         inputs: []
