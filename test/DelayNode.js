@@ -32,15 +32,6 @@ describe("DelayNode", function() {
     });
   });
 
-  describe("$maxDelayTime", function() {
-    it("get: AudioParam", function() {
-      var node = new WebAudioTestAPI.DelayNode(audioContext, 10);
-
-      assert(typeof node.$maxDelayTime === "number");
-      assert(node.$maxDelayTime === 10);
-    });
-  });
-
   describe("#toJSON", function() {
     it("(): object", function() {
       var node = new WebAudioTestAPI.DelayNode(audioContext, 0);
@@ -53,6 +44,15 @@ describe("DelayNode", function() {
         },
         inputs: []
       });
+    });
+  });
+
+  describe("$maxDelayTime", function() {
+    it("get: AudioParam", function() {
+      var node = new WebAudioTestAPI.DelayNode(audioContext, 10);
+
+      assert(typeof node.$maxDelayTime === "number");
+      assert(node.$maxDelayTime === 10);
     });
   });
 

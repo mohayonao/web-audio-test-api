@@ -18,7 +18,7 @@ describe("ChannelMergerNode", function() {
     });
   });
 
-  describe("#toJSON()", function() {
+  describe("#toJSON", function() {
     it("(): object", function() {
       var node = new WebAudioTestAPI.ChannelMergerNode(audioContext);
 

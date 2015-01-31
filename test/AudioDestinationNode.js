@@ -32,4 +32,15 @@ describe("AudioDestinationNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.AudioDestinationNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
+        name: "AudioDestinationNode",
+        inputs: []
+      });
+    });
+  });
+
 });

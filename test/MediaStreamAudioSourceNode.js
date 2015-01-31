@@ -10,4 +10,16 @@ describe("MediaStreamAudioSourceNode", function() {
       });
     });
   });
+
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.MediaStreamAudioSourceNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
+        name: "MediaStreamAudioSourceNode",
+        inputs: []
+      });
+    });
+  });
+
 });

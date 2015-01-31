@@ -228,6 +228,18 @@ describe("AudioParam", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.AudioNode(audioContext);
+      var param = new WebAudioTestAPI.AudioParam(node, "name", 0, 0, 0);
+
+      assert.deepEqual(param.toJSON(), {
+        value: 0,
+        inputs: []
+      });
+    });
+  });
+
   describe("$valueAtTime", function() {
     it("(time: number|string): number", function() {
       var node = new WebAudioTestAPI.AudioNode(audioContext);

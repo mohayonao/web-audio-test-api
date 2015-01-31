@@ -313,43 +313,6 @@ describe("AudioBufferSourceNode", function() {
     });
   });
 
-  describe("$state", function() {
-    it("get: string", function() {
-      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
-
-      assert(node.$state === "UNSCHEDULED");
-
-      node.start(0.1);
-      assert(node.$state === "SCHEDULED");
-
-      audioContext.$process(0.1);
-      assert(node.$state === "PLAYING");
-
-      node.stop(0.2);
-      assert(node.$state === "PLAYING");
-
-      audioContext.$process(0.1);
-      assert(node.$state === "FINISHED");
-    });
-  });
-
-  describe("$stateAtTime", function() {
-    it("(time: number|string): string", function() {
-      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
-
-      assert(node.$stateAtTime("00:00.050") === "UNSCHEDULED");
-      assert(node.$stateAtTime("00:00.150") === "UNSCHEDULED");
-      assert(node.$stateAtTime("00:00.250") === "UNSCHEDULED");
-
-      node.start(0.1);
-      node.stop(0.2);
-
-      assert(node.$stateAtTime("00:00.050") === "SCHEDULED");
-      assert(node.$stateAtTime("00:00.150") === "PLAYING");
-      assert(node.$stateAtTime("00:00.250") === "FINISHED");
-    });
-  });
-
   describe("#toJSON", function() {
     it("(): object", function() {
       var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
@@ -385,6 +348,43 @@ describe("AudioBufferSourceNode", function() {
         loopEnd: 2,
         inputs: []
       });
+    });
+  });
+
+  describe("$state", function() {
+    it("get: string", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert(node.$state === "UNSCHEDULED");
+
+      node.start(0.1);
+      assert(node.$state === "SCHEDULED");
+
+      audioContext.$processTo("00:00.100");
+      assert(node.$state === "PLAYING");
+
+      node.stop(0.2);
+      assert(node.$state === "PLAYING");
+
+      audioContext.$processTo("00:00.200");
+      assert(node.$state === "FINISHED");
+    });
+  });
+
+  describe("$stateAtTime", function() {
+    it("(time: number|string): string", function() {
+      var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
+
+      assert(node.$stateAtTime("00:00.050") === "UNSCHEDULED");
+      assert(node.$stateAtTime("00:00.150") === "UNSCHEDULED");
+      assert(node.$stateAtTime("00:00.250") === "UNSCHEDULED");
+
+      node.start(0.1);
+      node.stop(0.2);
+
+      assert(node.$stateAtTime("00:00.050") === "SCHEDULED");
+      assert(node.$stateAtTime("00:00.150") === "PLAYING");
+      assert(node.$stateAtTime("00:00.250") === "FINISHED");
     });
   });
 

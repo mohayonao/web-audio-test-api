@@ -2,17 +2,21 @@
 
 var name = require("./name");
 
-function jsonCircularCheck(node, func, memo) {
+function toJSON(node, func, memo) {
+  var result;
+
+  memo = memo || [];
+
   if (memo.indexOf(node) !== -1) {
     return "<circular:" + name(node) + ">";
   }
   memo.push(node);
 
-  var result = func.call(node, memo);
+  result = func(node, memo);
 
   memo.pop();
 
   return result;
 }
 
-module.exports = jsonCircularCheck;
+module.exports = toJSON;

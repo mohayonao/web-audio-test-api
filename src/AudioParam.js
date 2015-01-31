@@ -166,17 +166,17 @@ AudioParam.prototype.cancelScheduledValues = function(startTime) {
 };
 
 AudioParam.prototype.toJSON = function(memo) {
-  return _.jsonCircularCheck(this, function(memo) {
+  return _.toJSON(this, function(node, memo) {
     var json = {};
 
-    json.value = this.value;
+    json.value = node.value;
 
-    json.inputs = this.$inputs.map(function(node) {
+    json.inputs = node.$inputs.map(function(node) {
       return node.toJSON(memo);
     });
 
     return json;
-  }, memo || /* istanbul ignore next */ []);
+  }, memo);
 };
 
 AudioParam.prototype.$valueAtTime = function(time) {

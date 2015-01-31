@@ -371,6 +371,15 @@ describe("AudioContext", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      assert.deepEqual(audioContext.toJSON(), {
+        name: "AudioDestinationNode",
+        inputs: []
+      });
+    });
+  });
+
   describe("$process", function() {
     it("(time: number|string): void", function() {
       audioContext.$process(0.125);
@@ -428,15 +437,6 @@ describe("AudioContext", function() {
       audioContext.$reset();
 
       assert(audioContext.currentTime === 0);
-      assert.deepEqual(audioContext.toJSON(), {
-        name: "AudioDestinationNode",
-        inputs: []
-      });
-    });
-  });
-
-  describe("#toJSON", function() {
-    it("(): object", function() {
       assert.deepEqual(audioContext.toJSON(), {
         name: "AudioDestinationNode",
         inputs: []

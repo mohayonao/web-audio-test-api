@@ -118,33 +118,33 @@ AudioNode.prototype.disconnect = function() {
 };
 
 AudioNode.prototype.toJSON = function(memo) {
-  return _.jsonCircularCheck(this, function(memo) {
+  return _.toJSON(this, function(node, memo) {
     var json = {};
 
-    json.name = _.name(this);
+    json.name = _.name(node);
 
-    (this.constructor.jsonAttrs || []).forEach(function(key) {
-      if (this[key] && this[key].toJSON) {
-        json[key] = this[key].toJSON(memo);
+    (node.constructor.jsonAttrs || []).forEach(function(key) {
+      if (node[key] && node[key].toJSON) {
+        json[key] = node[key].toJSON(memo);
       } else {
-        json[key] = this[key];
+        json[key] = node[key];
       }
-    }, this);
+    });
 
-    if (this.$context.VERBOSE_JSON) {
-      json.numberOfInputs = this.numberOfInputs;
-      json.numberOfOutputs = this.numberOfOutputs;
-      json.channelCount = this.channelCount;
-      json.channelCountMode = this.channelCountMode;
-      json.channelInterpretation = this.channelInterpretation;
+    if (node.$context.VERBOSE_JSON) {
+      json.numberOfInputs = node.numberOfInputs;
+      json.numberOfOutputs = node.numberOfOutputs;
+      json.channelCount = node.channelCount;
+      json.channelCountMode = node.channelCountMode;
+      json.channelInterpretation = node.channelInterpretation;
     }
 
-    json.inputs = this.$inputs.map(function(node) {
+    json.inputs = node.$inputs.map(function(node) {
       return node.toJSON(memo);
     });
 
     return json;
-  }, memo || /* istanbul ignore next */ []);
+  }, memo);
 };
 
 AudioNode.prototype.$process = function(inNumSamples, tick) {

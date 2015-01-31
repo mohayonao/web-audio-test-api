@@ -226,6 +226,26 @@ describe("OscillatorNode", function() {
     });
   });
 
+  describe("#toJSON", function() {
+    it("(): object", function() {
+      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
+
+      assert.deepEqual(node.toJSON(), {
+        name: "OscillatorNode",
+        type: "sine",
+        frequency: {
+          value: 440,
+          inputs: []
+        },
+        detune: {
+          value: 0,
+          inputs: []
+        },
+        inputs: []
+      });
+    });
+  });
+
   describe("$state", function() {
     it("get: string", function() {
       var node = new WebAudioTestAPI.OscillatorNode(audioContext);
@@ -264,26 +284,6 @@ describe("OscillatorNode", function() {
       assert(node.$stateAtTime("00:00.050") === "SCHEDULED");
       assert(node.$stateAtTime("00:00.150") === "PLAYING");
       assert(node.$stateAtTime("00:00.250") === "FINISHED");
-    });
-  });
-
-  describe("#toJSON", function() {
-    it("(): object", function() {
-      var node = new WebAudioTestAPI.OscillatorNode(audioContext);
-
-      assert.deepEqual(node.toJSON(), {
-        name: "OscillatorNode",
-        type: "sine",
-        frequency: {
-          value: 440,
-          inputs: []
-        },
-        detune: {
-          value: 0,
-          inputs: []
-        },
-        inputs: []
-      });
     });
   });
 

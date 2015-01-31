@@ -12,7 +12,7 @@ _.article = require("./article");
 
 _.name = require("./name");
 
-_.jsonCircularCheck = require("./jsonCircularCheck");
+_.toJSON = require("./toJSON");
 
 _.toMicroseconds = require("./toMicroseconds");
 
