@@ -120,6 +120,8 @@ describe("AudioParam", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(param.setValueAtTime === global.AudioParam.prototype.setValueAtTime);
     });
   });
 
@@ -141,6 +143,8 @@ describe("AudioParam", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(param.linearRampToValueAtTime === global.AudioParam.prototype.linearRampToValueAtTime);
     });
   });
 
@@ -162,6 +166,8 @@ describe("AudioParam", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(param.exponentialRampToValueAtTime === global.AudioParam.prototype.exponentialRampToValueAtTime);
     });
   });
 
@@ -189,6 +195,8 @@ describe("AudioParam", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(param.setTargetAtTime === global.AudioParam.prototype.setTargetAtTime);
     });
   });
 
@@ -217,6 +225,8 @@ describe("AudioParam", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(param.setValueCurveAtTime === global.AudioParam.prototype.setValueCurveAtTime);
     });
   });
 
@@ -232,6 +242,8 @@ describe("AudioParam", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(param.cancelScheduledValues === global.AudioParam.prototype.cancelScheduledValues);
     });
   });
 

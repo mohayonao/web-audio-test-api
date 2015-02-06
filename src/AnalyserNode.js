@@ -49,7 +49,7 @@ _.inherits(AnalyserNode, AnalyserNodeConstructor);
 AnalyserNode.exports = AnalyserNodeConstructor;
 AnalyserNode.jsonAttrs = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
 
-AnalyserNode.prototype.getFloatFrequencyData = function() {
+AnalyserNodeConstructor.prototype.getFloatFrequencyData = function() {
   var inspector = new Inspector(this, "getFloatFrequencyData", [
     { name: "array", type: "Float32Array" },
   ]);
@@ -59,7 +59,7 @@ AnalyserNode.prototype.getFloatFrequencyData = function() {
   });
 };
 
-AnalyserNode.prototype.getByteFrequencyData = function() {
+AnalyserNodeConstructor.prototype.getByteFrequencyData = function() {
   var inspector = new Inspector(this, "getByteFrequencyData", [
     { name: "array", type: "Uint8Array" },
   ]);
@@ -69,7 +69,7 @@ AnalyserNode.prototype.getByteFrequencyData = function() {
   });
 };
 
-AnalyserNode.prototype.getByteTimeDomainData = function() {
+AnalyserNodeConstructor.prototype.getByteTimeDomainData = function() {
   var inspector = new Inspector(this, "getByteTimeDomainData", [
     { name: "array", type: "Uint8Array" },
   ]);

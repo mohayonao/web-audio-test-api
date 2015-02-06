@@ -209,6 +209,8 @@ describe("PannerNode", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(node.setPosition === global.PannerNode.prototype.setPosition);
     });
   });
 
@@ -235,6 +237,8 @@ describe("PannerNode", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(node.setOrientation === global.PannerNode.prototype.setOrientation);
     });
   });
 
@@ -261,6 +265,8 @@ describe("PannerNode", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(node.setVelocity === global.PannerNode.prototype.setVelocity);
     });
   });
 

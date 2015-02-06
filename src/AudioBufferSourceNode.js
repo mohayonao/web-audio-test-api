@@ -65,7 +65,7 @@ _.inherits(AudioBufferSourceNode, AudioBufferSourceNodeConstructor);
 AudioBufferSourceNode.exports = AudioBufferSourceNodeConstructor;
 AudioBufferSourceNode.jsonAttrs = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
 
-AudioBufferSourceNode.prototype.start = function(when) {
+AudioBufferSourceNodeConstructor.prototype.start = function(when) {
   var inspector = new Inspector(this, "start", [
     { name: "when", type: "optional number" },
     { name: "offset", type: "optional number" },
@@ -82,7 +82,7 @@ AudioBufferSourceNode.prototype.start = function(when) {
   this._startTime = _.defaults(when, 0);
 };
 
-AudioBufferSourceNode.prototype.stop = function(when) {
+AudioBufferSourceNodeConstructor.prototype.stop = function(when) {
   var inspector = new Inspector(this, "stop", [
     { name: "when", type: "optional number" }
   ]);

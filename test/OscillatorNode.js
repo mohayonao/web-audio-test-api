@@ -111,6 +111,8 @@ describe("OscillatorNode", function() {
       assert.throws(function() {
         node.start();
       }, Error, "call twice");
+
+      assert(node.start === global.OscillatorNode.prototype.start);
     });
     it("(when: number): void", function() {
       var node = new WebAudioTestAPI.OscillatorNode(audioContext);
@@ -154,6 +156,8 @@ describe("OscillatorNode", function() {
       assert.throws(function() {
         node.start();
       }, Error);
+
+      assert(node.stop === global.OscillatorNode.prototype.stop);
     });
     it("(when: number): void", function() {
       var node = new WebAudioTestAPI.OscillatorNode(audioContext);
@@ -199,6 +203,8 @@ describe("OscillatorNode", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a PeriodicWave/.test(e.message);
       });
+
+      assert(node.setPeriodicWave === global.OscillatorNode.prototype.setPeriodicWave);
     });
   });
 

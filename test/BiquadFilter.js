@@ -142,6 +142,8 @@ describe("BiquadFilterNode", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a Float32Array/.test(e.message);
       });
+
+      assert(node.getFrequencyResponse === global.BiquadFilterNode.prototype.getFrequencyResponse);
     });
   });
 

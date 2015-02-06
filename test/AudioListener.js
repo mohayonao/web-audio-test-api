@@ -85,6 +85,8 @@ describe("AudioListener", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(listener.setPosition === global.AudioListener.prototype.setPosition);
     });
   });
 
@@ -129,6 +131,8 @@ describe("AudioListener", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(listener.setOrientation === global.AudioListener.prototype.setOrientation);
     });
   });
 
@@ -155,6 +159,8 @@ describe("AudioListener", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(listener.setVelocity === global.AudioListener.prototype.setVelocity);
     });
   });
 
