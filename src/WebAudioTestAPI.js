@@ -4,7 +4,7 @@ var WebAudioAPI = require("./WebAudioAPI");
 
 var WebAudioTestAPI = {};
 
-WebAudioTestAPI.VERSION = "0.2.0";
+WebAudioTestAPI.VERSION = "0.2.1";
 WebAudioTestAPI.sampleRate = 44100;
 
 WebAudioTestAPI.use = function() {
