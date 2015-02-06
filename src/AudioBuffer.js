@@ -36,7 +36,7 @@ _.inherits(AudioBuffer, AudioBufferConstructor);
 
 AudioBuffer.exports = AudioBufferConstructor;
 
-AudioBuffer.prototype.getChannelData = function(channel) {
+AudioBufferConstructor.prototype.getChannelData = function(channel) {
   var inspector = new Inspector(this, "getChannelData", [
     { name: "channel", type: "number" }
   ]);

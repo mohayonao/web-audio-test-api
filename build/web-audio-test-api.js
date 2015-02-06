@@ -50,7 +50,7 @@ _.inherits(AnalyserNode, AnalyserNodeConstructor);
 AnalyserNode.exports = AnalyserNodeConstructor;
 AnalyserNode.jsonAttrs = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
 
-AnalyserNode.prototype.getFloatFrequencyData = function() {
+AnalyserNodeConstructor.prototype.getFloatFrequencyData = function() {
   var inspector = new Inspector(this, "getFloatFrequencyData", [
     { name: "array", type: "Float32Array" },
   ]);
@@ -60,7 +60,7 @@ AnalyserNode.prototype.getFloatFrequencyData = function() {
   });
 };
 
-AnalyserNode.prototype.getByteFrequencyData = function() {
+AnalyserNodeConstructor.prototype.getByteFrequencyData = function() {
   var inspector = new Inspector(this, "getByteFrequencyData", [
     { name: "array", type: "Uint8Array" },
   ]);
@@ -70,7 +70,7 @@ AnalyserNode.prototype.getByteFrequencyData = function() {
   });
 };
 
-AnalyserNode.prototype.getByteTimeDomainData = function() {
+AnalyserNodeConstructor.prototype.getByteTimeDomainData = function() {
   var inspector = new Inspector(this, "getByteTimeDomainData", [
     { name: "array", type: "Uint8Array" },
   ]);
@@ -121,7 +121,7 @@ _.inherits(AudioBuffer, AudioBufferConstructor);
 
 AudioBuffer.exports = AudioBufferConstructor;
 
-AudioBuffer.prototype.getChannelData = function(channel) {
+AudioBufferConstructor.prototype.getChannelData = function(channel) {
   var inspector = new Inspector(this, "getChannelData", [
     { name: "channel", type: "number" }
   ]);
@@ -224,7 +224,7 @@ _.inherits(AudioBufferSourceNode, AudioBufferSourceNodeConstructor);
 AudioBufferSourceNode.exports = AudioBufferSourceNodeConstructor;
 AudioBufferSourceNode.jsonAttrs = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
 
-AudioBufferSourceNode.prototype.start = function(when) {
+AudioBufferSourceNodeConstructor.prototype.start = function(when) {
   var inspector = new Inspector(this, "start", [
     { name: "when", type: "optional number" },
     { name: "offset", type: "optional number" },
@@ -241,7 +241,7 @@ AudioBufferSourceNode.prototype.start = function(when) {
   this._startTime = _.defaults(when, 0);
 };
 
-AudioBufferSourceNode.prototype.stop = function(when) {
+AudioBufferSourceNodeConstructor.prototype.stop = function(when) {
   var inspector = new Inspector(this, "stop", [
     { name: "when", type: "optional number" }
   ]);
@@ -650,7 +650,7 @@ _.inherits(AudioListener, AudioListenerConstructor);
 
 AudioListener.exports = AudioListenerConstructor;
 
-AudioListener.prototype.setPosition = function() {
+AudioListenerConstructor.prototype.setPosition = function() {
   var inspector = new Inspector(this, "setPosition", [
     { name: "x", type: "number" },
     { name: "y", type: "number" },
@@ -662,7 +662,7 @@ AudioListener.prototype.setPosition = function() {
   });
 };
 
-AudioListener.prototype.setOrientation = function() {
+AudioListenerConstructor.prototype.setOrientation = function() {
   var inspector = new Inspector(this, "setOrientation", [
     { name: "x"  , type: "number" },
     { name: "y"  , type: "number" },
@@ -677,7 +677,7 @@ AudioListener.prototype.setOrientation = function() {
   });
 };
 
-AudioListener.prototype.setVelocity = function() {
+AudioListenerConstructor.prototype.setVelocity = function() {
   var inspector = new Inspector(this, "setVelocity", [
     { name: "x", type: "number" },
     { name: "y", type: "number" },
@@ -750,7 +750,7 @@ _.inherits(AudioNode, AudioNodeConstructor);
 
 AudioNode.exports = AudioNodeConstructor;
 
-AudioNode.prototype.connect = function(destination) {
+AudioNodeConstructor.prototype.connect = function(destination) {
   var inspector = new Inspector(this, "connect", [
     { name: "destination", type: "AudioNode | AudioParam", validate: sameContext },
     { name: "output"     , type: "optional number", validate: checkNumberOfOutput },
@@ -787,7 +787,7 @@ AudioNode.prototype.connect = function(destination) {
   }
 };
 
-AudioNode.prototype.disconnect = function() {
+AudioNodeConstructor.prototype.disconnect = function() {
   var inspector = new Inspector(this, "connect", [
     { name: "output", type: "optional number", validate: checkNumberOfOutput },
   ]);
@@ -922,7 +922,7 @@ _.inherits(AudioParam, AudioParamConstructor);
 
 AudioParam.exports = AudioParamConstructor;
 
-AudioParam.prototype.setValueAtTime = function(value, startTime) {
+AudioParamConstructor.prototype.setValueAtTime = function(value, startTime) {
   var inspector = new Inspector(this, "setValueTime", [
     { name: "value"    , type: "number" },
     { name: "startTime", type: "number" },
@@ -939,7 +939,7 @@ AudioParam.prototype.setValueAtTime = function(value, startTime) {
   });
 };
 
-AudioParam.prototype.linearRampToValueAtTime = function(value, endTime) {
+AudioParamConstructor.prototype.linearRampToValueAtTime = function(value, endTime) {
   var inspector = new Inspector(this, "linearRampToValueAtTime", [
     { name: "value"  , type: "number" },
     { name: "endTime", type: "number" },
@@ -956,7 +956,7 @@ AudioParam.prototype.linearRampToValueAtTime = function(value, endTime) {
   });
 };
 
-AudioParam.prototype.exponentialRampToValueAtTime = function(value, endTime) {
+AudioParamConstructor.prototype.exponentialRampToValueAtTime = function(value, endTime) {
   var inspector = new Inspector(this, "exponentialRampToValueAtTime", [
     { name: "value"  , type: "number" },
     { name: "endTime", type: "number" },
@@ -973,7 +973,7 @@ AudioParam.prototype.exponentialRampToValueAtTime = function(value, endTime) {
   });
 };
 
-AudioParam.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
+AudioParamConstructor.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
   var inspector = new Inspector(this, "setTargetAtTime", [
     { name: "target"      , type: "number" },
     { name: "startTime"   , type: "number" },
@@ -992,7 +992,7 @@ AudioParam.prototype.setTargetAtTime = function(target, startTime, timeConstant)
   });
 };
 
-AudioParam.prototype.setValueCurveAtTime = function(values, startTime, duration) {
+AudioParamConstructor.prototype.setValueCurveAtTime = function(values, startTime, duration) {
   var inspector = new Inspector(this, "setValueCurveAtTime", [
     { name: "values"   , type: "Float32Array" },
     { name: "startTime", type: "number" },
@@ -1011,7 +1011,7 @@ AudioParam.prototype.setValueCurveAtTime = function(values, startTime, duration)
   });
 };
 
-AudioParam.prototype.cancelScheduledValues = function(startTime) {
+AudioParamConstructor.prototype.cancelScheduledValues = function(startTime) {
   var inspector = new Inspector(this, "cancelScheduledValues", [
     { name: "startTime", type: "number" },
   ]);
@@ -1221,7 +1221,7 @@ _.inherits(BiquadFilterNode, BiquadFilterNodeConstructor);
 BiquadFilterNode.exports = BiquadFilterNodeConstructor;
 BiquadFilterNode.jsonAttrs = [ "type", "frequency", "detune", "Q", "gain" ];
 
-BiquadFilterNode.prototype.getFrequencyResponse = function() {
+BiquadFilterNodeConstructor.prototype.getFrequencyResponse = function() {
   var inspector = new Inspector(this, "getFrequencyResponse", [
     { name: "frequencyHz"  , type: "Float32Array" },
     { name: "magResponse"  , type: "Float32Array" },
@@ -1959,7 +1959,7 @@ _.inherits(OscillatorNode, OscillatorNodeConstructor);
 OscillatorNode.exports = OscillatorNodeConstructor;
 OscillatorNode.jsonAttrs = [ "type", "frequency", "detune" ];
 
-OscillatorNode.prototype.start = function(when) {
+OscillatorNodeConstructor.prototype.start = function(when) {
   var inspector = new Inspector(this, "start", [
     { name: "when", type: "optional number" },
   ]);
@@ -1974,7 +1974,7 @@ OscillatorNode.prototype.start = function(when) {
   this._startTime = _.defaults(when, 0);
 };
 
-OscillatorNode.prototype.stop = function(when) {
+OscillatorNodeConstructor.prototype.stop = function(when) {
   var inspector = new Inspector(this, "stop", [
     { name: "when", type: "optional number" },
   ]);
@@ -1992,7 +1992,7 @@ OscillatorNode.prototype.stop = function(when) {
   this._stopTime = _.defaults(when, 0);
 };
 
-OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
+OscillatorNodeConstructor.prototype.setPeriodicWave = function(periodicWave) {
   var inspector = new Inspector(this, "setPeriodicWave", [
     { name: "periodicWave", type: "PeriodicWave" },
   ]);
@@ -2098,7 +2098,7 @@ PannerNode.jsonAttrs = [
   "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
 ];
 
-PannerNode.prototype.setPosition = function() {
+PannerNodeConstructor.prototype.setPosition = function() {
   var inspector = new Inspector(this, "setPosition", [
     { name: "x", type: "number" },
     { name: "y", type: "number" },
@@ -2110,7 +2110,7 @@ PannerNode.prototype.setPosition = function() {
   });
 };
 
-PannerNode.prototype.setOrientation = function() {
+PannerNodeConstructor.prototype.setOrientation = function() {
   var inspector = new Inspector(this, "setOrientation", [
     { name: "x", type: "number" },
     { name: "y", type: "number" },
@@ -2122,7 +2122,7 @@ PannerNode.prototype.setOrientation = function() {
   });
 };
 
-PannerNode.prototype.setVelocity = function() {
+PannerNodeConstructor.prototype.setVelocity = function() {
   var inspector = new Inspector(this, "setVelocity", [
     { name: "x", type: "number" },
     { name: "y", type: "number" },
@@ -2307,7 +2307,7 @@ var WebAudioAPI = require("./WebAudioAPI");
 
 var WebAudioTestAPI = {};
 
-WebAudioTestAPI.VERSION = "0.2.0";
+WebAudioTestAPI.VERSION = "0.2.1";
 WebAudioTestAPI.sampleRate = 44100;
 
 WebAudioTestAPI.use = function() {

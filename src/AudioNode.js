@@ -56,7 +56,7 @@ _.inherits(AudioNode, AudioNodeConstructor);
 
 AudioNode.exports = AudioNodeConstructor;
 
-AudioNode.prototype.connect = function(destination) {
+AudioNodeConstructor.prototype.connect = function(destination) {
   var inspector = new Inspector(this, "connect", [
     { name: "destination", type: "AudioNode | AudioParam", validate: sameContext },
     { name: "output"     , type: "optional number", validate: checkNumberOfOutput },
@@ -93,7 +93,7 @@ AudioNode.prototype.connect = function(destination) {
   }
 };
 
-AudioNode.prototype.disconnect = function() {
+AudioNodeConstructor.prototype.disconnect = function() {
   var inspector = new Inspector(this, "connect", [
     { name: "output", type: "optional number", validate: checkNumberOfOutput },
   ]);

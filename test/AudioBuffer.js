@@ -126,6 +126,8 @@ describe("AudioBuffer", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a number/.test(e.message);
       });
+
+      assert(buf1.getChannelData === global.AudioBuffer.prototype.getChannelData);
     });
   });
 

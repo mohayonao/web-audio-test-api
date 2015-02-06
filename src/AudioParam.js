@@ -58,7 +58,7 @@ _.inherits(AudioParam, AudioParamConstructor);
 
 AudioParam.exports = AudioParamConstructor;
 
-AudioParam.prototype.setValueAtTime = function(value, startTime) {
+AudioParamConstructor.prototype.setValueAtTime = function(value, startTime) {
   var inspector = new Inspector(this, "setValueTime", [
     { name: "value"    , type: "number" },
     { name: "startTime", type: "number" },
@@ -75,7 +75,7 @@ AudioParam.prototype.setValueAtTime = function(value, startTime) {
   });
 };
 
-AudioParam.prototype.linearRampToValueAtTime = function(value, endTime) {
+AudioParamConstructor.prototype.linearRampToValueAtTime = function(value, endTime) {
   var inspector = new Inspector(this, "linearRampToValueAtTime", [
     { name: "value"  , type: "number" },
     { name: "endTime", type: "number" },
@@ -92,7 +92,7 @@ AudioParam.prototype.linearRampToValueAtTime = function(value, endTime) {
   });
 };
 
-AudioParam.prototype.exponentialRampToValueAtTime = function(value, endTime) {
+AudioParamConstructor.prototype.exponentialRampToValueAtTime = function(value, endTime) {
   var inspector = new Inspector(this, "exponentialRampToValueAtTime", [
     { name: "value"  , type: "number" },
     { name: "endTime", type: "number" },
@@ -109,7 +109,7 @@ AudioParam.prototype.exponentialRampToValueAtTime = function(value, endTime) {
   });
 };
 
-AudioParam.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
+AudioParamConstructor.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
   var inspector = new Inspector(this, "setTargetAtTime", [
     { name: "target"      , type: "number" },
     { name: "startTime"   , type: "number" },
@@ -128,7 +128,7 @@ AudioParam.prototype.setTargetAtTime = function(target, startTime, timeConstant)
   });
 };
 
-AudioParam.prototype.setValueCurveAtTime = function(values, startTime, duration) {
+AudioParamConstructor.prototype.setValueCurveAtTime = function(values, startTime, duration) {
   var inspector = new Inspector(this, "setValueCurveAtTime", [
     { name: "values"   , type: "Float32Array" },
     { name: "startTime", type: "number" },
@@ -147,7 +147,7 @@ AudioParam.prototype.setValueCurveAtTime = function(values, startTime, duration)
   });
 };
 
-AudioParam.prototype.cancelScheduledValues = function(startTime) {
+AudioParamConstructor.prototype.cancelScheduledValues = function(startTime) {
   var inspector = new Inspector(this, "cancelScheduledValues", [
     { name: "startTime", type: "number" },
   ]);

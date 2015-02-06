@@ -154,6 +154,8 @@ describe("AnalyserNode", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a Float32Array/.test(e.message);
       });
+
+      assert(node.getFloatFrequencyData === global.AnalyserNode.prototype.getFloatFrequencyData);
     });
   });
 
@@ -170,6 +172,8 @@ describe("AnalyserNode", function() {
       }, function(e) {
         return e instanceof TypeError && /should be an Uint8Array/.test(e.message);
       });
+
+      assert(node.getByteFrequencyData === global.AnalyserNode.prototype.getByteFrequencyData);
     });
   });
 
@@ -186,6 +190,8 @@ describe("AnalyserNode", function() {
       }, function(e) {
         return e instanceof TypeError && /should be an Uint8Array/.test(e.message);
       });
+
+      assert(node.getByteTimeDomainData === global.AnalyserNode.prototype.getByteTimeDomainData);
     });
   });
 

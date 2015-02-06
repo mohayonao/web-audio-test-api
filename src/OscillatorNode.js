@@ -81,7 +81,7 @@ _.inherits(OscillatorNode, OscillatorNodeConstructor);
 OscillatorNode.exports = OscillatorNodeConstructor;
 OscillatorNode.jsonAttrs = [ "type", "frequency", "detune" ];
 
-OscillatorNode.prototype.start = function(when) {
+OscillatorNodeConstructor.prototype.start = function(when) {
   var inspector = new Inspector(this, "start", [
     { name: "when", type: "optional number" },
   ]);
@@ -96,7 +96,7 @@ OscillatorNode.prototype.start = function(when) {
   this._startTime = _.defaults(when, 0);
 };
 
-OscillatorNode.prototype.stop = function(when) {
+OscillatorNodeConstructor.prototype.stop = function(when) {
   var inspector = new Inspector(this, "stop", [
     { name: "when", type: "optional number" },
   ]);
@@ -114,7 +114,7 @@ OscillatorNode.prototype.stop = function(when) {
   this._stopTime = _.defaults(when, 0);
 };
 
-OscillatorNode.prototype.setPeriodicWave = function(periodicWave) {
+OscillatorNodeConstructor.prototype.setPeriodicWave = function(periodicWave) {
   var inspector = new Inspector(this, "setPeriodicWave", [
     { name: "periodicWave", type: "PeriodicWave" },
   ]);

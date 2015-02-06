@@ -65,7 +65,7 @@ PannerNode.jsonAttrs = [
   "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
 ];
 
-PannerNode.prototype.setPosition = function() {
+PannerNodeConstructor.prototype.setPosition = function() {
   var inspector = new Inspector(this, "setPosition", [
     { name: "x", type: "number" },
     { name: "y", type: "number" },
@@ -77,7 +77,7 @@ PannerNode.prototype.setPosition = function() {
   });
 };
 
-PannerNode.prototype.setOrientation = function() {
+PannerNodeConstructor.prototype.setOrientation = function() {
   var inspector = new Inspector(this, "setOrientation", [
     { name: "x", type: "number" },
     { name: "y", type: "number" },
@@ -89,7 +89,7 @@ PannerNode.prototype.setOrientation = function() {
   });
 };
 
-PannerNode.prototype.setVelocity = function() {
+PannerNodeConstructor.prototype.setVelocity = function() {
   var inspector = new Inspector(this, "setVelocity", [
     { name: "x", type: "number" },
     { name: "y", type: "number" },

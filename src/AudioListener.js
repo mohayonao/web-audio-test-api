@@ -28,7 +28,7 @@ _.inherits(AudioListener, AudioListenerConstructor);
 
 AudioListener.exports = AudioListenerConstructor;
 
-AudioListener.prototype.setPosition = function() {
+AudioListenerConstructor.prototype.setPosition = function() {
   var inspector = new Inspector(this, "setPosition", [
     { name: "x", type: "number" },
     { name: "y", type: "number" },
@@ -40,7 +40,7 @@ AudioListener.prototype.setPosition = function() {
   });
 };
 
-AudioListener.prototype.setOrientation = function() {
+AudioListenerConstructor.prototype.setOrientation = function() {
   var inspector = new Inspector(this, "setOrientation", [
     { name: "x"  , type: "number" },
     { name: "y"  , type: "number" },
@@ -55,7 +55,7 @@ AudioListener.prototype.setOrientation = function() {
   });
 };
 
-AudioListener.prototype.setVelocity = function() {
+AudioListenerConstructor.prototype.setVelocity = function() {
   var inspector = new Inspector(this, "setVelocity", [
     { name: "x", type: "number" },
     { name: "y", type: "number" },

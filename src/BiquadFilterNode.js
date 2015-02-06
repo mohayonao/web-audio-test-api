@@ -50,7 +50,7 @@ _.inherits(BiquadFilterNode, BiquadFilterNodeConstructor);
 BiquadFilterNode.exports = BiquadFilterNodeConstructor;
 BiquadFilterNode.jsonAttrs = [ "type", "frequency", "detune", "Q", "gain" ];
 
-BiquadFilterNode.prototype.getFrequencyResponse = function() {
+BiquadFilterNodeConstructor.prototype.getFrequencyResponse = function() {
   var inspector = new Inspector(this, "getFrequencyResponse", [
     { name: "frequencyHz"  , type: "Float32Array" },
     { name: "magResponse"  , type: "Float32Array" },

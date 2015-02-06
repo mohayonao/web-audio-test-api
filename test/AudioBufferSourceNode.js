@@ -156,6 +156,8 @@ describe("AudioBufferSourceNode", function() {
       assert.throws(function() {
         node.start();
       }, Error, "call twice");
+
+      assert(node.start === global.AudioBufferSourceNode.prototype.start);
     });
     it("(when: number): void", function() {
       var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);
@@ -229,6 +231,8 @@ describe("AudioBufferSourceNode", function() {
       assert.throws(function() {
         node.start();
       }, Error);
+
+      assert(node.stop === global.AudioBufferSourceNode.prototype.stop);
     });
     it("(when: number): void", function() {
       var node = new WebAudioTestAPI.AudioBufferSourceNode(audioContext);

@@ -1,13 +1,13 @@
 {
   "name": "web-audio-test-api",
   "description": "Web Audio API test library for CI",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Nao Yonamine <mohayonao@gmail.com>",
   "bugs": {
     "url": "https://github.com/mohayonao/web-audio-test-api/issues"
   },
   "devDependencies": {
-    "browserify": "^8.1.1",
+    "browserify": "^8.1.3",
     "coveralls": "^2.11.2",
     "espower-loader": "^0.10.0",
     "istanbul": "^0.3.5",
