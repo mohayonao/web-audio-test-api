@@ -93,7 +93,7 @@ lfo.connect(amp.gain);
 osc.connect(amp);
 amp.connect(audioContext.destination);
 
-assert.deelEqual(audioContext.toJSON(), {
+assert.deepEqual(audioContext.toJSON(), {
   name: "AudioDestinationNode"            // +------------------+
   inputs: [                               // | OscillatorNode   |
     {                                     // | - type: sawtooth |
