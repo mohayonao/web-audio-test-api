@@ -1,5 +1,3 @@
-"use strict";
-
 describe("MediaStreamAudioDestinationNode", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
@@ -10,13 +8,13 @@ describe("MediaStreamAudioDestinationNode", function() {
 
   describe("constructor", function() {
     it("()", function() {
-      var node = new WebAudioTestAPI.MediaStreamAudioDestinationNode(audioContext);
+      var node = audioContext.createMediaStreamDestination();
 
       assert(node instanceof global.MediaStreamAudioDestinationNode);
       assert(node instanceof global.AudioNode);
 
       assert.throws(function() {
-        global.MediaStreamAudioDestinationNode();
+        return new global.MediaStreamAudioDestinationNode();
       }, function(e) {
         return e instanceof TypeError && /Illegal constructor/.test(e.message);
       });
@@ -25,12 +23,28 @@ describe("MediaStreamAudioDestinationNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = new WebAudioTestAPI.MediaStreamAudioDestinationNode(audioContext);
+      var node = audioContext.createMediaStreamDestination();
 
       assert.deepEqual(node.toJSON(), {
         name: "MediaStreamAudioDestinationNode",
-        inputs: []
+        inputs: [],
       });
+    });
+  });
+
+  describe("#$name", function() {
+    it("get: string", function() {
+      var node = audioContext.createMediaStreamDestination();
+
+      assert(node.$name === "MediaStreamAudioDestinationNode");
+    });
+  });
+
+  describe("#$context", function() {
+    it("get: AudioContext", function() {
+      var node = audioContext.createMediaStreamDestination();
+
+      assert(node.$context === audioContext);
     });
   });
 

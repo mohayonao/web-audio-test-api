@@ -1,168 +1,252 @@
-"use strict";
+import * as util from "./util";
+import Enumerator from "./util/Enumerator";
+import EventTarget from "./EventTarget";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioParam = require("./AudioParam");
-var EventTarget = require("./EventTarget");
+export default class AudioNode extends EventTarget {
+  constructor(admission, spec) {
+    super();
 
-var ChannelCountMode = "enum { max, clamped-max, explicit }";
-var ChannelInterpretation = "enum { speakers, discrete }";
+    util.immigration.check(admission, () => {
+      throw new TypeError("Illegal constructor");
+    });
 
-var AudioNodeConstructor = function AudioNode() {
-  throw new TypeError("Illegal constructor");
-};
-_.inherits(AudioNodeConstructor, EventTarget);
+    this._.context = spec.context;
+    this._.name = util.defaults(spec.name, "AudioNode");
+    this._.numberOfInputs = util.defaults(spec.numberOfInputs, 1);
+    this._.numberOfOutputs = util.defaults(spec.numberOfOutputs, 1);
+    this._.channelCount = util.defaults(spec.channelCount, 2);
+    this._.channelCountMode = util.defaults(spec.channelCountMode, "max");
+    this._.channelInterpretation = util.defaults(spec.channelInterpretation, "speakers");
+    this._.JSONKeys = [];
+    this._.inputs = [];
+    this._.outputs = [];
+    this._.tick = -1;
+  }
 
-function AudioNode(context, spec) {
-  spec = spec || {};
+  get context() {
+    return this._.context;
+  }
 
-  EventTarget.call(this);
+  set context(value) {
+    this._.inspector.describe("context", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
 
-  var numberOfInputs = _.defaults(spec.numberOfInputs, 1);
-  var numberOfOutputs = _.defaults(spec.numberOfOutputs, 1);
-  var channelCount = _.defaults(spec.channelCount, 2);
-  var channelCountMode = _.defaults(spec.channelCountMode, "max");
-  var channelInterpretation = _.defaults(spec.channelInterpretation, "speakers");
+  get numberOfInputs() {
+    return this._.numberOfInputs;
+  }
 
-  _.defineAttribute(this, "context", "readonly", context, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "numberOfInputs", "readonly", numberOfInputs, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "numberOfOutputs", "readonly", numberOfOutputs, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "channelCount", "number", channelCount, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "channelCountMode", ChannelCountMode, channelCountMode, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "channelInterpretation", ChannelInterpretation, channelInterpretation, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+  set numberOfInputs(value) {
+    this._.inspector.describe("numberOfInputs", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
 
-  Object.defineProperties(this, {
-    $name   : { value: _.defaults(spec.name, "AudioNode") },
-    $context: { value: context },
-    $inputs : { value: [] },
-  });
-  this._outputs = [];
-  this._tick = -1;
+  get numberOfOutputs() {
+    return this._.numberOfOutputs;
+  }
+
+  set numberOfOutputs(value) {
+    this._.inspector.describe("numberOfOutputs", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get channelCount() {
+    return this._.channelCount;
+  }
+
+  set channelCount(value) {
+    this._.inspector.describe("channelCount", (assert) => {
+      assert(util.isPositiveInteger(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "channelCount", "positive integer")}
+        `);
+      });
+    });
+
+    this._.channelCount = value;
+  }
+
+  get channelCountMode() {
+    return this._.channelCountMode;
+  }
+
+  set channelCountMode(value) {
+    this._.inspector.describe("channelCountMode", (assert) => {
+      let enumChannelCountMode = new Enumerator([
+        "max", "clamped-max", "explicit",
+      ]);
+
+      assert(enumChannelCountMode.contains(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "channelCountMode", enumChannelCountMode.toString())}
+        `);
+      });
+    });
+
+    this._.channelCountMode = value;
+  }
+
+  get channelInterpretation() {
+    return this._.channelInterpretation;
+  }
+
+  set channelInterpretation(value) {
+    this._.inspector.describe("channelInterpretation", (assert) => {
+      let enumChannelInterpretation = new Enumerator([
+        "speakers", "discrete",
+      ]);
+
+      assert(enumChannelInterpretation.contains(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "channelInterpretation", enumChannelInterpretation.toString())}
+        `);
+      });
+    });
+
+    this._.channelInterpretation = value;
+  }
+
+  get $name() {
+    return this._.name;
+  }
+
+  get $context() {
+    return this._.context;
+  }
+
+  get $inputs() {
+    return this._.inputs;
+  }
+
+  connect(destination, output = 0, input = 0) {
+    this._.inspector.describe("connect", (assert) => {
+      assert(util.isInstanceOf(destination, global.AudioNode) || util.isInstanceOf(destination, global.AudioParam), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(destination, "destination", "AudioNode or an AudioParam")}
+        `);
+      });
+
+      assert(this.$context === destination.$context, (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          cannot connect to a destination belonging to a different audio context
+        `);
+      });
+
+      assert(util.isPositiveInteger(output), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(output, "output", "positive integer")}
+        `);
+      });
+
+      assert(util.isPositiveInteger(input), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(input, "input", "positive integer")}
+        `);
+      });
+
+      assert(output < this.numberOfOutputs, (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          output index (${output}) exceeds number of outputs (${this.numberOfOutputs})
+        `);
+      });
+
+      assert(input < (destination.numberOfInputs || 1), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          input index (${input}) exceeds number of inputs (${destination.numberOfInputs || 1})
+        `);
+      });
+    });
+
+    let index = this._.outputs.indexOf(destination);
+
+    if (index === -1) {
+      this._.outputs.push(destination);
+      destination.$inputs.push(this);
+    }
+  }
+
+  disconnect(output = 0) {
+    this._.inspector.describe("disconnect", (assert) => {
+      assert(util.isPositiveInteger(output), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(output, "output", "positive integer")}
+        `);
+      });
+
+      assert(output < this.numberOfOutputs, (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          output index (${output}) exceeds number of outputs (${this.numberOfOutputs})
+        `);
+      });
+    });
+
+    this._.outputs.splice(0).forEach((dst) => {
+      let index = dst.$inputs.indexOf(this);
+      if (index !== -1) {
+        dst.$inputs.splice(index, 1);
+      }
+    });
+  }
+
+  toJSON(memo) {
+    function toJSON(obj, memo) {
+      if (obj && typeof obj.toJSON === "function") {
+        return obj.toJSON(memo);
+      }
+      return obj;
+    }
+
+    return util.toJSON(this, (node, memo) => {
+      let json = {};
+
+      json.name = util.name(node);
+
+      node._.JSONKeys.forEach((key) => {
+        json[key] = toJSON(node[key], memo);
+      });
+
+      if (node.$context.VERBOSE_JSON) {
+        json.numberOfInputs = node.numberOfInputs;
+        json.numberOfOutputs = node.numberOfOutputs;
+        json.channelCount = node.channelCount;
+        json.channelCountMode = node.channelCountMode;
+        json.channelInterpretation = node.channelInterpretation;
+      }
+
+      json.inputs = node.$inputs.map(node => node.toJSON(memo));
+
+      return json;
+    }, memo);
+  }
+
+  $process(inNumSamples, tick) {
+    if (this._.tick !== tick) {
+      this._.tick = tick;
+      this.$inputs.forEach((src) => {
+        src.$process(inNumSamples, tick);
+      });
+      Object.keys(this._).forEach((key) => {
+        if (this[key] instanceof global.AudioParam) {
+          this[key].$process(inNumSamples, tick);
+        }
+      });
+      if (this._process) {
+        this._process(inNumSamples);
+      }
+    }
+  }
 }
-_.inherits(AudioNode, AudioNodeConstructor);
-
-AudioNode.exports = AudioNodeConstructor;
-
-AudioNodeConstructor.prototype.connect = function(destination) {
-  var inspector = new Inspector(this, "connect", [
-    { name: "destination", type: "AudioNode | AudioParam", validate: sameContext },
-    { name: "output"     , type: "optional number", validate: checkNumberOfOutput },
-    { name: "input"      , type: "optional number", validate: checkNumberOfInput },
-  ]);
-
-  function sameContext(value) {
-    if (this.$context !== value.$context) {
-      return "cannot connect to a destination belonging to a different audio context";
-    }
-  }
-
-  function checkNumberOfOutput(value, name) {
-    if (value < 0 || this.numberOfOutputs <= value) {
-      return name + " index (" + value + ") exceeds number of outputs (" + this.numberOfOutputs + ")";
-    }
-  }
-
-  function checkNumberOfInput(value, name) {
-    if (value < 0 || destination.numberOfInputs <= value) {
-      return name + " index (" + value + ") exceeds number of inputs (" + destination.numberOfInputs + ")";
-    }
-  }
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  var index = this._outputs.indexOf(destination);
-  /* istanbul ignore else */
-  if (index === -1) {
-    this._outputs.push(destination);
-    destination.$inputs.push(this);
-  }
-};
-
-AudioNodeConstructor.prototype.disconnect = function() {
-  var inspector = new Inspector(this, "connect", [
-    { name: "output", type: "optional number", validate: checkNumberOfOutput },
-  ]);
-
-  function checkNumberOfOutput(value, name) {
-    if (value < 0 || this.numberOfOutputs <= value) {
-      return name + " index (" + value + ") exceeds number of outputs (" + this.numberOfOutputs + ")";
-    }
-  }
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  this._outputs.splice(0).forEach(function(dst) {
-    var index = dst.$inputs.indexOf(this);
-    /* istanbul ignore else */
-    if (index !== -1) {
-      dst.$inputs.splice(index, 1);
-    }
-  }, this);
-};
-
-AudioNode.prototype.toJSON = function(memo) {
-  return _.toJSON(this, function(node, memo) {
-    var json = {};
-
-    json.name = _.name(node);
-
-    (node.constructor.jsonAttrs || []).forEach(function(key) {
-      if (node[key] && node[key].toJSON) {
-        json[key] = node[key].toJSON(memo);
-      } else {
-        json[key] = node[key];
-      }
-    });
-
-    if (node.$context.VERBOSE_JSON) {
-      json.numberOfInputs = node.numberOfInputs;
-      json.numberOfOutputs = node.numberOfOutputs;
-      json.channelCount = node.channelCount;
-      json.channelCountMode = node.channelCountMode;
-      json.channelInterpretation = node.channelInterpretation;
-    }
-
-    json.inputs = node.$inputs.map(function(node) {
-      return node.toJSON(memo);
-    });
-
-    return json;
-  }, memo);
-};
-
-AudioNode.prototype.$process = function(inNumSamples, tick) {
-  /* istanbul ignore else */
-  if (this._tick !== tick) {
-    this._tick = tick;
-    this.$inputs.forEach(function(src) {
-      src.$process(inNumSamples, tick);
-    });
-    Object.keys(this).forEach(function(key) {
-      if (this[key] instanceof AudioParam) {
-        this[key].$process(inNumSamples, tick);
-      }
-    }, this);
-    if (this._process) {
-      this._process(inNumSamples);
-    }
-  }
-};
-
-module.exports = WebAudioTestAPI.AudioNode = AudioNode;

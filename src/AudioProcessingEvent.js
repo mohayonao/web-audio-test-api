@@ -1,23 +1,22 @@
-"use strict";
+import * as util from "./util";
+import Event from "./Event";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var Event = require("./Event");
+export default class AudioProcessingEvent extends Event {
+  constructor(admission, node) {
+    super("audioprocess", node);
 
-var AudioProcessingEventConstructor = function AudioProcessingEvent() {
-  throw new TypeError("Illegal constructor");
-};
-_.inherits(AudioProcessingEventConstructor, Event);
+    util.immigration.check(admission, () => {
+      throw new TypeError("Illegal constructor");
+    });
 
-function AudioProcessingEvent(node) {
-  Event.call(this, "audioprocess", node);
-  Object.defineProperties(this, {
-    $name: { value: "AudioProcessingEvent" },
-    $node: { value: node }
-  });
+    this._.node = node;
+  }
+
+  get $name() {
+    return "AudioProcessingEvent";
+  }
+
+  get $node() {
+    return this._.node;
+  }
 }
-_.inherits(AudioProcessingEvent, AudioProcessingEventConstructor);
-
-AudioProcessingEvent.exports = AudioProcessingEventConstructor;
-
-module.exports = WebAudioTestAPI.AudioProcessingEvent = AudioProcessingEvent;

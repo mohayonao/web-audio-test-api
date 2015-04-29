@@ -1,37 +1,58 @@
-"use strict";
+import * as util from "./util";
+import AudioNode from "./AudioNode";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+export default class ConvolverNode extends AudioNode {
+  constructor(admission, context) {
+    super(admission, {
+      name: "ConvolverNode",
+      context: context,
+      numberOfInputs: 1,
+      numberOfOutputs: 1,
+      channelCount: 2,
+      channelCountMode: "clamped-max",
+      channelInterpretation: "speakers",
+    });
 
-var ConvolverNodeConstructor = function ConvolverNode() {
-  throw new TypeError("Illegal constructor: use audioContext.createConvolver()");
-};
-_.inherits(ConvolverNodeConstructor, AudioNode);
+    this._.buffer = null;
+    this._.normalize = true;
+    this._.JSONKeys = ConvolverNode.$JSONKeys.slice();
+  }
 
-function ConvolverNode(context) {
-  AudioNode.call(this, context, {
-    name: "ConvolverNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
-    channelCountMode: "clamped-max",
-    channelInterpretation: "speakers"
-  });
+  get buffer() {
+    return this._.buffer;
+  }
 
-  var buffer = null;
-  var normalize = true;
+  set buffer(value) {
+    this._.inspector.describe("buffer", (assert) => {
+      assert(util.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "buffer", "AudioBuffer")}
+        `);
+      });
+    });
 
-  _.defineAttribute(this, "buffer", "AudioBuffer|null", buffer, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "normalize", "boolean", normalize, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+    this._.buffer = value;
+  }
+
+  get normalize() {
+    return this._.normalize;
+  }
+
+  set normalize(value) {
+    this._.inspector.describe("normalize", (assert) => {
+      assert(util.isBoolean(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "normalize", "boolean")}
+        `);
+      });
+    });
+
+    this._.normalize = value;
+  }
 }
-_.inherits(ConvolverNode, ConvolverNodeConstructor);
 
-ConvolverNode.exports = ConvolverNodeConstructor;
-ConvolverNode.jsonAttrs = [ "normalize" ];
-
-module.exports = WebAudioTestAPI.ConvolverNode = ConvolverNode;
+ConvolverNode.$JSONKeys = [
+  "normalize",
+];

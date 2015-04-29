@@ -1,239 +1,11 @@
-"use strict";
-
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-
-var AudioParamConstructor = function AudioParam() {
-  throw new TypeError("Illegal constructor");
-};
-
-function AudioParam(node, name, defaultValue, minValue, maxValue) {
-  var context = node.context;
-
-  _.defineAttribute(this, "name", "readonly", name, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "defaultValue", "readonly", defaultValue, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "minValue", "readonly", minValue, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "maxValue", "readonly", maxValue, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  Object.defineProperty(this, "value", {
-    get: function() {
-      this._value = this.$valueAtTime(context.currentTime);
-      return this._value;
-    },
-    set: function(newValue) {
-      if (_.typeCheck(newValue, "number")) {
-        this._value = newValue;
-      } else {
-        var msg = "";
-
-        msg += "type ";
-        msg += _.formatter.shouldBeButGot("number", newValue);
-
-        throw new TypeError(_.formatter.concat(this, msg));
-      }
-    },
-    enumerable: true
-  });
-
-  Object.defineProperties(this, {
-    $name   : { value: "AudioParam" },
-    $context: { value: context },
-    $node   : { value: node },
-    $inputs : { value: [] },
-    $events : { value: [] },
-  });
-
-  this._value = this.defaultValue;
-  this._tick = -1;
-}
-_.inherits(AudioParam, AudioParamConstructor);
-
-AudioParam.exports = AudioParamConstructor;
-
-AudioParamConstructor.prototype.setValueAtTime = function(value, startTime) {
-  var inspector = new Inspector(this, "setValueTime", [
-    { name: "value"    , type: "number" },
-    { name: "startTime", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  insertEvent(this, {
-    type : "SetValue",
-    value: value,
-    time : startTime,
-  });
-};
-
-AudioParamConstructor.prototype.linearRampToValueAtTime = function(value, endTime) {
-  var inspector = new Inspector(this, "linearRampToValueAtTime", [
-    { name: "value"  , type: "number" },
-    { name: "endTime", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  insertEvent(this, {
-    type : "LinearRampToValue",
-    value: value,
-    time : endTime,
-  });
-};
-
-AudioParamConstructor.prototype.exponentialRampToValueAtTime = function(value, endTime) {
-  var inspector = new Inspector(this, "exponentialRampToValueAtTime", [
-    { name: "value"  , type: "number" },
-    { name: "endTime", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  insertEvent(this, {
-    type : "ExponentialRampToValue",
-    value: value,
-    time : endTime,
-  });
-};
-
-AudioParamConstructor.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
-  var inspector = new Inspector(this, "setTargetAtTime", [
-    { name: "target"      , type: "number" },
-    { name: "startTime"   , type: "number" },
-    { name: "timeConstant", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  insertEvent(this, {
-    type : "SetTarget",
-    value: target,
-    time : startTime,
-    timeConstant: timeConstant
-  });
-};
-
-AudioParamConstructor.prototype.setValueCurveAtTime = function(values, startTime, duration) {
-  var inspector = new Inspector(this, "setValueCurveAtTime", [
-    { name: "values"   , type: "Float32Array" },
-    { name: "startTime", type: "number" },
-    { name: "duration" , type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  insertEvent(this, {
-    type : "SetValueCurve",
-    time : startTime,
-    duration: duration,
-    curve: values
-  });
-};
-
-AudioParamConstructor.prototype.cancelScheduledValues = function(startTime) {
-  var inspector = new Inspector(this, "cancelScheduledValues", [
-    { name: "startTime", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  var events = this.$events;
-
-  for (var i = 0, imax = events.length; i < imax; ++i) {
-    if (events[i].time >= startTime) {
-      return events.splice(i);
-    }
-  }
-};
-
-AudioParam.prototype.toJSON = function(memo) {
-  return _.toJSON(this, function(node, memo) {
-    var json = {};
-
-    json.value = node.value;
-
-    json.inputs = node.$inputs.map(function(node) {
-      return node.toJSON(memo);
-    });
-
-    return json;
-  }, memo);
-};
-
-AudioParam.prototype.$valueAtTime = function(time) {
-  time = _.toSeconds(time);
-
-  var value  = this._value;
-  var events = this.$events;
-  var t0;
-
-  for (var i = 0; i < events.length; i++) {
-    var e0 = events[i];
-    var e1 = events[i + 1];
-
-    if (time < e0.time) {
-      break;
-    }
-    t0 = Math.min(time, e1 ? e1.time : time);
-
-    if (e1 && e1.type === "LinearRampToValue") {
-      value = linTo(value, e0.value, e1.value, t0, e0.time, e1.time);
-    } else if (e1 && e1.type === "ExponentialRampToValue") {
-      value = expTo(value, e0.value, e1.value, t0, e0.time, e1.time);
-    } else {
-      switch (e0.type) {
-      case "SetValue":
-      case "LinearRampToValue":
-      case "ExponentialRampToValue":
-        value = e0.value;
-        break;
-      case "SetTarget":
-        value = setTarget(value, e0.value, t0, e0.time, e0.timeConstant);
-        break;
-      case "SetValueCurve":
-        value = setCurveValue(value, t0, e0.time, e0.time + e0.duration, e0.curve);
-        break;
-      }
-    }
-  }
-
-  return value;
-};
-
-AudioParam.prototype.$process = function(inNumSamples, tick) {
-  /* istanbul ignore else */
-  if (this._tick !== tick) {
-    this._tick = tick;
-    this.$inputs.forEach(function(src) {
-      src.$process(inNumSamples, tick);
-    });
-  }
-};
+import * as util from "./util";
+import Inspector from "./util/Inspector";
 
 function insertEvent(_this, event) {
-  var time = event.time;
-  var events = _this.$events;
-  var replace = 0;
-  var i, imax = events.length;
+  let time = event.time;
+  let events = _this.$events;
+  let replace = 0;
+  let i, imax = events.length;
 
   for (i = 0; i < imax; ++i) {
     if (events[i].time === time && events[i].type === event.type) {
@@ -250,13 +22,13 @@ function insertEvent(_this, event) {
 }
 
 function linTo(v, v0, v1, t, t0, t1) {
-  var dt = (t - t0) / (t1 - t0);
+  let dt = (t - t0) / (t1 - t0);
   return (1 - dt) * v0 + dt * v1;
 }
 
 function expTo(v, v0, v1, t, t0, t1) {
-  var dt = (t - t0) / (t1 - t0);
-  return 0 < v0 && 0 < v1 ? v0 * Math.pow(v1 / v0, dt) : /* istanbul ignore next */ v;
+  let dt = (t - t0) / (t1 - t0);
+  return 0 < v0 && 0 < v1 ? v0 * Math.pow(v1 / v0, dt) : v;
 }
 
 function setTarget(v0, v1, t, t0, timeConstant) {
@@ -264,17 +36,314 @@ function setTarget(v0, v1, t, t0, timeConstant) {
 }
 
 function setCurveValue(v, t, t0, t1, curve) {
-  var dt = (t - t0) / (t1 - t0);
+  let dt = (t - t0) / (t1 - t0);
 
   if (dt <= 0) {
-    return _.defaults(curve[0], v);
+    return util.defaults(curve[0], v);
   }
 
   if (1 <= dt) {
-    return _.defaults(curve[curve.length - 1], v);
+    return util.defaults(curve[curve.length - 1], v);
   }
 
-  return _.defaults(curve[(curve.length * dt)|0], v);
+  return util.defaults(curve[(curve.length * dt)|0], v);
 }
 
-module.exports = WebAudioTestAPI.AudioParam = AudioParam;
+export default class AudioParam {
+  constructor(admission, node, name, defaultValue, minValue, maxValue) {
+    util.immigration.check(admission, () => {
+      throw new TypeError("Illegal constructor");
+    });
+
+    Object.defineProperty(this, "_", {
+      value: {
+        inspector: new Inspector(this),
+      },
+    });
+
+    this._.value = defaultValue;
+    this._.name = name;
+    this._.defaultValue = defaultValue;
+    this._.minValue = minValue;
+    this._.maxValue = maxValue;
+    this._.context = node.context;
+    this._.node = node;
+    this._.inputs = [];
+    this._.events = [];
+    this._.tick = -1;
+  }
+
+  get value() {
+    this._.value = this.$valueAtTime(this.$context.currentTime);
+    return this._.value;
+  }
+
+  set value(value) {
+    this._.inspector.describe("value", (assert) => {
+      assert(util.isNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "value", "number")}
+        `);
+      });
+    });
+
+    this._.value = value;
+  }
+
+  get name() {
+    return this._.name;
+  }
+
+  set name(value) {
+    this._.inspector.describe("name", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get defaultValue() {
+    return this._.defaultValue;
+  }
+
+  set defaultValue(value) {
+    this._.inspector.describe("defaultValue", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get $name() {
+    return "AudioParam";
+  }
+
+  get $context() {
+    return this._.context;
+  }
+
+  get $node() {
+    return this._.node;
+  }
+
+  get $inputs() {
+    return this._.inputs;
+  }
+
+  get $events() {
+    return this._.events;
+  }
+
+  setValueAtTime(value, startTime) {
+    this._.inspector.describe("setValueAtTime", (assert) => {
+      assert(util.isNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "value", "number")}
+        `);
+      });
+
+      assert(util.isNumber(startTime), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(startTime, "startTime", "number")}
+        `);
+      });
+    });
+
+    insertEvent(this, {
+      type: "SetValue",
+      value: value,
+      time: startTime,
+    });
+  }
+
+  linearRampToValueAtTime(value, endTime) {
+    this._.inspector.describe("linearRampToValueAtTime", (assert) => {
+      assert(util.isNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "value", "number")}
+        `);
+      });
+
+      assert(util.isNumber(endTime), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(endTime, "endTime", "number")}
+        `);
+      });
+    });
+
+    insertEvent(this, {
+      type: "LinearRampToValue",
+      value: value,
+      time: endTime,
+    });
+  }
+
+  exponentialRampToValueAtTime(value, endTime) {
+    this._.inspector.describe("exponentialRampToValueAtTime", (assert) => {
+      assert(util.isNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "value", "number")}
+        `);
+      });
+
+      assert(util.isNumber(endTime), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(endTime, "endTime", "number")}
+        `);
+      });
+    });
+
+    insertEvent(this, {
+      type: "ExponentialRampToValue",
+      value: value,
+      time: endTime,
+    });
+  }
+
+  setTargetAtTime(target, startTime, timeConstant) {
+    this._.inspector.describe("setTargetAtTime", (assert) => {
+      assert(util.isNumber(target), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(target, "target", "number")}
+        `);
+      });
+
+      assert(util.isNumber(startTime), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(startTime, "startTime", "number")}
+        `);
+      });
+
+      assert(util.isNumber(timeConstant), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(timeConstant, "timeConstant", "number")}
+        `);
+      });
+    });
+
+    insertEvent(this, {
+      type: "SetTarget",
+      value: target,
+      time: startTime,
+      timeConstant: timeConstant,
+    });
+  }
+
+  setValueCurveAtTime(values, startTime, duration) {
+    this._.inspector.describe("setValueCurveAtTime", (assert) => {
+      assert(util.isInstanceOf(values, Float32Array), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(values, "values", "Float32Array")}
+        `);
+      });
+
+      assert(util.isNumber(startTime), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(startTime, "startTime", "number")}
+        `);
+      });
+
+      assert(util.isNumber(duration), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(duration, "duration", "number")}
+        `);
+      });
+    });
+
+    insertEvent(this, {
+      type: "SetValueCurve",
+      time: startTime,
+      duration: duration,
+      curve: values,
+    });
+  }
+
+  cancelScheduledValues(startTime) {
+    this._.inspector.describe("cancelScheduledValues", (assert) => {
+      assert(util.isNumber(startTime), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(startTime, "startTime", "number")}
+        `);
+      });
+    });
+
+    let events = this.$events;
+
+    for (let i = 0, imax = events.length; i < imax; ++i) {
+      if (events[i].time >= startTime) {
+        return events.splice(i);
+      }
+    }
+  }
+
+  toJSON(memo) {
+    return util.toJSON(this, (node, memo) => {
+      let json = {};
+
+      json.value = node.value;
+
+      json.inputs = node.$inputs.map(node => node.toJSON(memo));
+
+      return json;
+    }, memo);
+  }
+
+  $valueAtTime(time) {
+    time = util.toSeconds(time);
+
+    let value  = this._.value;
+    let events = this.$events;
+    let t0;
+
+    for (let i = 0; i < events.length; i++) {
+      let e0 = events[i];
+      let e1 = events[i + 1];
+
+      if (time < e0.time) {
+        break;
+      }
+      t0 = Math.min(time, e1 ? e1.time : time);
+
+      if (e1 && e1.type === "LinearRampToValue") {
+        value = linTo(value, e0.value, e1.value, t0, e0.time, e1.time);
+      } else if (e1 && e1.type === "ExponentialRampToValue") {
+        value = expTo(value, e0.value, e1.value, t0, e0.time, e1.time);
+      } else {
+        switch (e0.type) {
+        case "SetValue":
+        case "LinearRampToValue":
+        case "ExponentialRampToValue":
+          value = e0.value;
+          break;
+        case "SetTarget":
+          value = setTarget(value, e0.value, t0, e0.time, e0.timeConstant);
+          break;
+        case "SetValueCurve":
+          value = setCurveValue(value, t0, e0.time, e0.time + e0.duration, e0.curve);
+          break;
+        }
+      }
+    }
+
+    return value;
+  }
+
+  $process(inNumSamples, tick) {
+    if (this._.tick !== tick) {
+      this._.tick = tick;
+      this.$inputs.forEach((src) => {
+        src.$process(inNumSamples, tick);
+      });
+    }
+  }
+}

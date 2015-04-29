@@ -1,32 +1,27 @@
-"use strict";
+import AudioNode from "./AudioNode";
 
-var _ = require("./utils");
-var AudioNode = require("./AudioNode");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+export default class AudioDestinationNode extends AudioNode {
+  constructor(admission, context) {
+    super(admission, {
+      name: "AudioDestinationNode",
+      context: context,
+      numberOfInputs: 1,
+      numberOfOutputs: 0,
+      channelCount: 2,
+      channelCountMode: "explicit",
+      channelInterpretation: "speakers",
+    });
 
-var AudioDestinationNodeConstructor = function AudioDestinationNode() {
-  throw new TypeError("Illegal constructor");
-};
-_.inherits(AudioDestinationNodeConstructor, AudioNode);
+    this._.maxChannelCount = 2;
+  }
 
-function AudioDestinationNode(context) {
-  AudioNode.call(this, context, {
-    name: "AudioDestinationNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 0,
-    channelCount    : 2,
-    channelCountMode: "explicit",
-    channelInterpretation: "speakers"
-  });
+  get maxChannelCount() {
+    return this._.maxChannelCount;
+  }
 
-  var maxChannelCount = 2;
-
-  _.defineAttribute(this, "maxChannelCount", "readonly", maxChannelCount, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+  set maxChannelCount(value) {
+    this._.inspector.describe("maxChannelCount", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
 }
-_.inherits(AudioDestinationNode, AudioDestinationNodeConstructor);
-
-AudioDestinationNode.exports = AudioDestinationNodeConstructor;
-
-module.exports = WebAudioTestAPI.AudioDestinationNode = AudioDestinationNode;

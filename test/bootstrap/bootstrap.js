@@ -1,15 +1,7 @@
-"use strict";
-
 global.assert = require("power-assert");
 global.sinon = require("sinon");
+global.closeTo = (actual, expected, delta) => Math.abs(actual - expected) <= delta;
 global.window = global;
+global._ = require("lodash");
 
-global.closeTo = function(actual, expected, delta) {
-  return Math.abs(actual - expected) <= delta;
-};
-
-global.WEB_AUDIO_TEST_API_VERSION = require("../../package").version;
-
-global._  = require("lodash");
-
-require("../../");
+require("../../src");

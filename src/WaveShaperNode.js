@@ -1,39 +1,63 @@
-"use strict";
+import * as util from "./util";
+import Enumerator from "./util/Enumerator";
+import AudioNode from "./AudioNode";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+export default class WaveShaperNode extends AudioNode {
+  constructor(admission, context) {
+    super(admission, {
+      name: "WaveShaperNode",
+      context: context,
+      numberOfInputs: 1,
+      numberOfOutputs: 1,
+      channelCount: 2,
+      channelCountMode: "max",
+      channelInterpretation: "speakers",
+    });
 
-var OverSampleType = "enum { none, 2x, 4x }";
+    this._.curve = null;
+    this._.oversample = "none";
+    this._.JSONKeys = WaveShaperNode.$JSONKeys.slice();
+  }
 
-var WaveShaperNodeConstructor = function WaveShaperNode() {
-  throw new TypeError("Illegal constructor: use audioContext.createWaveShaper()");
-};
-_.inherits(WaveShaperNodeConstructor, AudioNode);
+  get curve() {
+    return this._.curve;
+  }
 
-function WaveShaperNode(context) {
-  AudioNode.call(this, context, {
-    name: "WaveShaperNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
-    channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+  set curve(value) {
+    this._.inspector.describe("curve", (assert) => {
+      assert(util.isNullOrInstanceOf(value, Float32Array), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "curve", "Float32Array")}
+        `);
+      });
+    });
 
-  var curve = null;
-  var oversample = "none";
+    this._.curve = value;
+  }
 
-  _.defineAttribute(this, "curve", "Float32Array|null", curve, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "oversample", OverSampleType, oversample, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+  get oversample() {
+    return this._.oversample;
+  }
+
+  set oversample(value) {
+    this._.inspector.describe("oversample", (assert) => {
+      let enumOverSampleType = new Enumerator([
+        "none", "2x", "4x",
+      ]);
+
+      assert(enumOverSampleType.contains(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "oversample", enumOverSampleType.toString())}
+        `);
+      });
+    });
+
+    this._.oversample = value;
+  }
 }
-_.inherits(WaveShaperNode, WaveShaperNodeConstructor);
 
-WaveShaperNode.exports = WaveShaperNodeConstructor;
-WaveShaperNode.jsonAttrs = [ "oversample" ];
-
-module.exports = WebAudioTestAPI.WaveShaperNode = WaveShaperNode;
+WaveShaperNode.$JSONKeys = [
+  "oversample",
+];

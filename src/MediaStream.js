@@ -1,19 +1,12 @@
-"use strict";
+import * as util from "./util";
+import EventTarget from "./EventTarget";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var EventTarget = require("./EventTarget");
-
-/* istanbul ignore else */
-if (typeof global.MediaStream === "undefined") {
-  global.MediaStream = function MediaStream() {
+global.MediaStream = global.MediaStream || class MediaStream extends EventTarget {
+  constructor() {
+    super();
     throw new TypeError("Illegal constructor");
-  };
-  _.inherits(global.MediaStream, EventTarget);
-}
+  }
+};
 
-function MediaStream() {
+export default class MediaStream extends util.preventSuperCall(global.MediaStream) {
 }
-_.inherits(MediaStream, global.MediaStream);
-
-module.exports = WebAudioTestAPI.MediaStream = MediaStream;

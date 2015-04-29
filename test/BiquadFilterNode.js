@@ -1,5 +1,3 @@
-"use strict";
-
 describe("BiquadFilterNode", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
@@ -10,13 +8,13 @@ describe("BiquadFilterNode", function() {
 
   describe("constructor", function() {
     it("()", function() {
-      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+      var node = audioContext.createBiquadFilter();
 
       assert(node instanceof global.BiquadFilterNode);
       assert(node instanceof global.AudioNode);
 
       assert.throws(function() {
-        global.BiquadFilterNode();
+        return new global.BiquadFilterNode();
       }, function(e) {
         return e instanceof TypeError && /Illegal constructor/.test(e.message);
       });
@@ -25,7 +23,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#type", function() {
     it("get/set: BiquadFilterType", function() {
-      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+      var node = audioContext.createBiquadFilter();
 
       assert(typeof node.type === "string");
 
@@ -63,7 +61,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#frequency", function() {
     it("get: AudioParam", function() {
-      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+      var node = audioContext.createBiquadFilter();
 
       assert(node.frequency instanceof WebAudioTestAPI.AudioParam);
 
@@ -77,7 +75,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#detune", function() {
     it("get: AudioParam", function() {
-      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+      var node = audioContext.createBiquadFilter();
 
       assert(node.detune instanceof WebAudioTestAPI.AudioParam);
 
@@ -91,7 +89,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#Q", function() {
     it("get: AudioParam", function() {
-      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+      var node = audioContext.createBiquadFilter();
 
       assert(node.Q instanceof WebAudioTestAPI.AudioParam);
 
@@ -105,7 +103,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#gain", function() {
     it("get: AudioParam", function() {
-      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+      var node = audioContext.createBiquadFilter();
 
       assert(node.gain instanceof WebAudioTestAPI.AudioParam);
       assert.throws(function() {
@@ -118,7 +116,7 @@ describe("BiquadFilterNode", function() {
 
   describe("#getFrequencyResponse", function() {
     it("(frequencyHz: Float32Array, magResponse: Float32Array, phaseResponse: Float32Array): void", function() {
-      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+      var node = audioContext.createBiquadFilter();
       var f32f = new Float32Array(128);
       var f32m = new Float32Array(128);
       var f32p = new Float32Array(128);
@@ -149,29 +147,45 @@ describe("BiquadFilterNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = new WebAudioTestAPI.BiquadFilterNode(audioContext);
+      var node = audioContext.createBiquadFilter();
 
       assert.deepEqual(node.toJSON(), {
         name: "BiquadFilterNode",
         type: "lowpass",
         frequency: {
           value: 350,
-          inputs: []
+          inputs: [],
         },
         detune: {
           value: 0,
-          inputs: []
+          inputs: [],
         },
         Q: {
           value: 1,
-          inputs: []
+          inputs: [],
         },
         gain: {
           value: 0,
-          inputs: []
+          inputs: [],
         },
-        inputs: []
+        inputs: [],
       });
+    });
+  });
+
+  describe("#$name", function() {
+    it("get: string", function() {
+      var node = audioContext.createBiquadFilter();
+
+      assert(node.$name === "BiquadFilterNode");
+    });
+  });
+
+  describe("#$context", function() {
+    it("get: AudioContext", function() {
+      var node = audioContext.createBiquadFilter();
+
+      assert(node.$context === audioContext);
     });
   });
 

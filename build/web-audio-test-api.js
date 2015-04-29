@@ -1,152 +1,163 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
 
 var FFTSize = "enum { 32, 64, 128, 256, 512, 1024, 2048 }";
 
 var AnalyserNodeConstructor = function AnalyserNode() {
   throw new TypeError("Illegal constructor: use audioContext.createAnalyser()");
 };
-_.inherits(AnalyserNodeConstructor, AudioNode);
+_import2["default"].inherits(AnalyserNodeConstructor, _AudioNode2["default"]);
 
 function AnalyserNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "AnalyserNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 1,
+    numberOfInputs: 1,
+    numberOfOutputs: 1,
+    channelCount: 1,
     channelCountMode: "explicit",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
   var fftSize = 2048;
-  var frequencyBinCount = function() { return this.fftSize >> 1; };
+  var frequencyBinCount = function frequencyBinCount() {
+    return this.fftSize >> 1;
+  };
   var minDecibels = -100;
   var maxDecibels = 30;
   var smoothingTimeConstant = 0.8;
 
-  _.defineAttribute(this, "fftSize", FFTSize, fftSize, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "fftSize", FFTSize, fftSize, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "frequencyBinCount", "readonly", frequencyBinCount, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "frequencyBinCount", "readonly", frequencyBinCount, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "minDecibels", "number", minDecibels, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "minDecibels", "number", minDecibels, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "maxDecibels", "number", maxDecibels, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "maxDecibels", "number", maxDecibels, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "smoothingTimeConstant", "number", smoothingTimeConstant, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "smoothingTimeConstant", "number", smoothingTimeConstant, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 }
-_.inherits(AnalyserNode, AnalyserNodeConstructor);
+_import2["default"].inherits(AnalyserNode, AnalyserNodeConstructor);
 
 AnalyserNode.exports = AnalyserNodeConstructor;
-AnalyserNode.jsonAttrs = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
+AnalyserNode.jsonAttrs = ["fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant"];
 
-AnalyserNodeConstructor.prototype.getFloatFrequencyData = function() {
-  var inspector = new Inspector(this, "getFloatFrequencyData", [
-    { name: "array", type: "Float32Array" },
-  ]);
+AnalyserNodeConstructor.prototype.getFloatFrequencyData = function () {
+  var inspector = new _Inspector2["default"](this, "getFloatFrequencyData", [{ name: "array", type: "Float32Array" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-AnalyserNodeConstructor.prototype.getByteFrequencyData = function() {
-  var inspector = new Inspector(this, "getByteFrequencyData", [
-    { name: "array", type: "Uint8Array" },
-  ]);
+AnalyserNodeConstructor.prototype.getByteFrequencyData = function () {
+  var inspector = new _Inspector2["default"](this, "getByteFrequencyData", [{ name: "array", type: "Uint8Array" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-AnalyserNodeConstructor.prototype.getByteTimeDomainData = function() {
-  var inspector = new Inspector(this, "getByteTimeDomainData", [
-    { name: "array", type: "Uint8Array" },
-  ]);
+AnalyserNodeConstructor.prototype.getByteTimeDomainData = function () {
+  var inspector = new _Inspector2["default"](this, "getByteTimeDomainData", [{ name: "array", type: "Uint8Array" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-module.exports = WebAudioTestAPI.AnalyserNode = AnalyserNode;
-
+module.exports = _WebAudioTestAPI2["default"].AnalyserNode = AnalyserNode;
 },{"./AudioNode":7,"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],2:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
 
 var AudioBufferConstructor = function AudioBuffer() {
   throw new TypeError("Illegal constructor: use audioContext.createBuffer(numberOfChannels: number, length: number, sampleRate: number)");
 };
 
 function AudioBuffer(context, numberOfChannels, length, sampleRate) {
-  _.defineAttribute(this, "sampleRate", "readonly", sampleRate, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "sampleRate", "readonly", sampleRate, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "length", "readonly", length, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "length", "readonly", length, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "duration", "readonly", length / sampleRate, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "duration", "readonly", length / sampleRate, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "numberOfChannels", "readonly", numberOfChannels, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "numberOfChannels", "readonly", numberOfChannels, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 
   Object.defineProperties(this, {
-    $name   : { value: "AudioBuffer" },
-    $context: { value: context }
-  });
+    $name: { value: "AudioBuffer" },
+    $context: { value: context } });
 
   this._data = new Array(numberOfChannels);
   for (var i = 0; i < numberOfChannels; i++) {
     this._data[i] = new Float32Array(length);
   }
 }
-_.inherits(AudioBuffer, AudioBufferConstructor);
+_import2["default"].inherits(AudioBuffer, AudioBufferConstructor);
 
 AudioBuffer.exports = AudioBufferConstructor;
 
-AudioBufferConstructor.prototype.getChannelData = function(channel) {
-  var inspector = new Inspector(this, "getChannelData", [
-    { name: "channel", type: "number" }
-  ]);
-  inspector.validateArguments(arguments, function(msg) {
+AudioBufferConstructor.prototype.getChannelData = function (channel) {
+  var inspector = new _Inspector2["default"](this, "getChannelData", [{ name: "channel", type: "number" }]);
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
-  inspector.assert(0 <= channel && channel < this._data.length, function() {
-    throw new TypeError(
-      inspector.form + "; channel index (" + channel + ") exceeds number of channels (#{" + this._data.length + "})"
-    );
+  inspector.assert(0 <= channel && channel < this._data.length, function () {
+    throw new TypeError(inspector.form + "; channel index (" + channel + ") exceeds number of channels (#{" + this._data.length + "})");
   });
   return this._data[channel];
 };
 
-AudioBuffer.prototype.toJSON = function() {
+AudioBuffer.prototype.toJSON = function () {
   var json = {
     name: this.$name,
     sampleRate: this.sampleRate,
     length: this.length,
     duration: this.duration,
-    numberOfChannels: this.numberOfChannels
-  };
+    numberOfChannels: this.numberOfChannels };
 
   if (this.$context.VERBOSE_JSON) {
-    json.data = this._data.map(function(data) {
+    json.data = this._data.map(function (data) {
       return Array.prototype.slice.call(data);
     });
   }
@@ -154,113 +165,122 @@ AudioBuffer.prototype.toJSON = function() {
   return json;
 };
 
-module.exports = WebAudioTestAPI.AudioBuffer = AudioBuffer;
-
+module.exports = _WebAudioTestAPI2["default"].AudioBuffer = AudioBuffer;
 },{"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],3:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioParam = require("./AudioParam");
-var Event = require("./Event");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
+
+var _AudioParam = require("./AudioParam");
+
+var _AudioParam2 = _interopRequireDefault(_AudioParam);
+
+var _Event = require("./Event");
+
+var _Event2 = _interopRequireDefault(_Event);
 
 var AudioBufferSourceNodeConstructor = function AudioBufferSourceNode() {
   throw new TypeError("Illegal constructor: use audioContext.createBufferSource()");
 };
-_.inherits(AudioBufferSourceNodeConstructor, AudioNode);
+_import2["default"].inherits(AudioBufferSourceNodeConstructor, _AudioNode2["default"]);
 
 function AudioBufferSourceNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "AudioBufferSourceNode",
-    numberOfInputs  : 0,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 0,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
   var buffer = null;
-  var playbackRate = new AudioParam(this, "playbackRate", 1, 0, 1024);
+  var playbackRate = new _AudioParam2["default"](this, "playbackRate", 1, 0, 1024);
   var loop = false;
   var loopStart = 0;
   var loopEnd = 0;
   var onended = null;
 
-  _.defineAttribute(this, "buffer", "AudioBuffer|null", buffer, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "buffer", "AudioBuffer|null", buffer, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "playbackRate", "readonly", playbackRate, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "playbackRate", "readonly", playbackRate, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "loop", "boolean", loop, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "loop", "boolean", loop, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "loopStart", "number", loopStart, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "loopStart", "number", loopStart, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "loopEnd", "number", loopEnd, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "loopEnd", "number", loopEnd, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "onended", "function|null", onended, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "onended", "function|null", onended, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 
   Object.defineProperties(this, {
     $state: {
-      get: function() {
+      get: function get() {
         return this.$stateAtTime(this.context.currentTime);
-      }
-    }
-  });
+      } } });
 
   this._startTime = Infinity;
-  this._stopTime  = Infinity;
+  this._stopTime = Infinity;
   this._firedOnEnded = false;
 }
-_.inherits(AudioBufferSourceNode, AudioBufferSourceNodeConstructor);
+_import2["default"].inherits(AudioBufferSourceNode, AudioBufferSourceNodeConstructor);
 
 AudioBufferSourceNode.exports = AudioBufferSourceNodeConstructor;
-AudioBufferSourceNode.jsonAttrs = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
+AudioBufferSourceNode.jsonAttrs = ["buffer", "playbackRate", "loop", "loopStart", "loopEnd"];
 
-AudioBufferSourceNodeConstructor.prototype.start = function(when) {
-  var inspector = new Inspector(this, "start", [
-    { name: "when", type: "optional number" },
-    { name: "offset", type: "optional number" },
-    { name: "duration", type: "optional number" },
-  ]);
+AudioBufferSourceNodeConstructor.prototype.start = function (when) {
+  var inspector = new _Inspector2["default"](this, "start", [{ name: "when", type: "optional number" }, { name: "offset", type: "optional number" }, { name: "duration", type: "optional number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
-  inspector.assert(this._startTime === Infinity, function() {
+  inspector.assert(this._startTime === Infinity, function () {
     throw new Error(inspector.form + "; cannot start more than once");
   });
 
-  this._startTime = _.defaults(when, 0);
+  this._startTime = _import2["default"].defaults(when, 0);
 };
 
-AudioBufferSourceNodeConstructor.prototype.stop = function(when) {
-  var inspector = new Inspector(this, "stop", [
-    { name: "when", type: "optional number" }
-  ]);
+AudioBufferSourceNodeConstructor.prototype.stop = function (when) {
+  var inspector = new _Inspector2["default"](this, "stop", [{ name: "when", type: "optional number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
-  inspector.assert(this._startTime !== Infinity, function() {
+  inspector.assert(this._startTime !== Infinity, function () {
     throw new Error(inspector.form + "; cannot call stop without calling start first");
   });
-  inspector.assert(this._stopTime === Infinity, function() {
+  inspector.assert(this._stopTime === Infinity, function () {
     throw new Error(inspector.form + "; cannot stop more than once");
   });
 
   this._stopTime = when;
 };
 
-AudioBufferSourceNode.prototype.$stateAtTime = function(time) {
-  time = _.toSeconds(time);
+AudioBufferSourceNode.prototype.$stateAtTime = function (time) {
+  time = _import2["default"].toSeconds(time);
 
   if (this._startTime === Infinity) {
     return "UNSCHEDULED";
@@ -281,42 +301,114 @@ AudioBufferSourceNode.prototype.$stateAtTime = function(time) {
   return "FINISHED";
 };
 
-AudioBufferSourceNode.prototype._process = function() {
+AudioBufferSourceNode.prototype._process = function () {
   if (!this._firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
-    this.dispatchEvent(new Event("ended", this));
+    this.dispatchEvent(new _Event2["default"]("ended", this));
     this._firedOnEnded = true;
   }
 };
 
-module.exports = WebAudioTestAPI.AudioBufferSourceNode = AudioBufferSourceNode;
-
+module.exports = _WebAudioTestAPI2["default"].AudioBufferSourceNode = AudioBufferSourceNode;
 },{"./AudioNode":7,"./AudioParam":8,"./Event":17,"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],4:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioDestinationNode = require("./AudioDestinationNode");
-var AudioListener = require("./AudioListener");
-var AudioBuffer = require("./AudioBuffer");
-var AudioBufferSourceNode = require("./AudioBufferSourceNode");
-var MediaElementAudioSourceNode = require("./MediaElementAudioSourceNode");
-var MediaStreamAudioSourceNode = require("./MediaStreamAudioSourceNode");
-var MediaStreamAudioDestinationNode = require("./MediaStreamAudioDestinationNode");
-var ScriptProcessorNode = require("./ScriptProcessorNode");
-var AnalyserNode = require("./AnalyserNode");
-var GainNode = require("./GainNode");
-var DelayNode = require("./DelayNode");
-var BiquadFilterNode = require("./BiquadFilterNode");
-var WaveShaperNode = require("./WaveShaperNode");
-var PannerNode = require("./PannerNode");
-var ConvolverNode = require("./ConvolverNode");
-var ChannelSplitterNode = require("./ChannelSplitterNode");
-var ChannelMergerNode = require("./ChannelMergerNode");
-var DynamicsCompressorNode = require("./DynamicsCompressorNode");
-var OscillatorNode = require("./OscillatorNode");
-var PeriodicWave = require("./PeriodicWave");
-var EventTarget = require("./EventTarget");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioDestinationNode = require("./AudioDestinationNode");
+
+var _AudioDestinationNode2 = _interopRequireDefault(_AudioDestinationNode);
+
+var _AudioListener = require("./AudioListener");
+
+var _AudioListener2 = _interopRequireDefault(_AudioListener);
+
+var _AudioBuffer = require("./AudioBuffer");
+
+var _AudioBuffer2 = _interopRequireDefault(_AudioBuffer);
+
+var _AudioBufferSourceNode = require("./AudioBufferSourceNode");
+
+var _AudioBufferSourceNode2 = _interopRequireDefault(_AudioBufferSourceNode);
+
+var _MediaElementAudioSourceNode = require("./MediaElementAudioSourceNode");
+
+var _MediaElementAudioSourceNode2 = _interopRequireDefault(_MediaElementAudioSourceNode);
+
+var _MediaStreamAudioSourceNode = require("./MediaStreamAudioSourceNode");
+
+var _MediaStreamAudioSourceNode2 = _interopRequireDefault(_MediaStreamAudioSourceNode);
+
+var _MediaStreamAudioDestinationNode = require("./MediaStreamAudioDestinationNode");
+
+var _MediaStreamAudioDestinationNode2 = _interopRequireDefault(_MediaStreamAudioDestinationNode);
+
+var _ScriptProcessorNode = require("./ScriptProcessorNode");
+
+var _ScriptProcessorNode2 = _interopRequireDefault(_ScriptProcessorNode);
+
+var _AnalyserNode = require("./AnalyserNode");
+
+var _AnalyserNode2 = _interopRequireDefault(_AnalyserNode);
+
+var _GainNode = require("./GainNode");
+
+var _GainNode2 = _interopRequireDefault(_GainNode);
+
+var _DelayNode = require("./DelayNode");
+
+var _DelayNode2 = _interopRequireDefault(_DelayNode);
+
+var _BiquadFilterNode = require("./BiquadFilterNode");
+
+var _BiquadFilterNode2 = _interopRequireDefault(_BiquadFilterNode);
+
+var _WaveShaperNode = require("./WaveShaperNode");
+
+var _WaveShaperNode2 = _interopRequireDefault(_WaveShaperNode);
+
+var _PannerNode = require("./PannerNode");
+
+var _PannerNode2 = _interopRequireDefault(_PannerNode);
+
+var _ConvolverNode = require("./ConvolverNode");
+
+var _ConvolverNode2 = _interopRequireDefault(_ConvolverNode);
+
+var _ChannelSplitterNode = require("./ChannelSplitterNode");
+
+var _ChannelSplitterNode2 = _interopRequireDefault(_ChannelSplitterNode);
+
+var _ChannelMergerNode = require("./ChannelMergerNode");
+
+var _ChannelMergerNode2 = _interopRequireDefault(_ChannelMergerNode);
+
+var _DynamicsCompressorNode = require("./DynamicsCompressorNode");
+
+var _DynamicsCompressorNode2 = _interopRequireDefault(_DynamicsCompressorNode);
+
+var _OscillatorNode = require("./OscillatorNode");
+
+var _OscillatorNode2 = _interopRequireDefault(_OscillatorNode);
+
+var _PeriodicWave = require("./PeriodicWave");
+
+var _PeriodicWave2 = _interopRequireDefault(_PeriodicWave);
+
+var _EventTarget = require("./EventTarget");
+
+var _EventTarget2 = _interopRequireDefault(_EventTarget);
 
 require("./MediaStream");
 require("./HTMLMediaElement");
@@ -326,249 +418,223 @@ function AudioContext() {
     throw new TypeError("Failed to construct 'AudioContext': Please use the 'new' operator");
   }
 
-  EventTarget.call(this);
+  _EventTarget2["default"].call(this);
 
-  var destination = new AudioDestinationNode(this);
-  var sampleRate = WebAudioTestAPI.sampleRate;
-  var currentTime = function() { return this._microCurrentTime / (1000 * 1000); };
-  var listener = new AudioListener(this);
+  var destination = new _AudioDestinationNode2["default"](this);
+  var sampleRate = _WebAudioTestAPI2["default"].sampleRate;
+  var currentTime = function currentTime() {
+    return this._microCurrentTime / (1000 * 1000);
+  };
+  var listener = new _AudioListener2["default"](this);
 
-  _.defineAttribute(this, "destination", "readonly", destination, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "destination", "readonly", destination, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "sampleRate", "readonly", sampleRate, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "sampleRate", "readonly", sampleRate, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "currentTime", "readonly", currentTime, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "currentTime", "readonly", currentTime, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "listener", "readonly", listener, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "listener", "readonly", listener, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 
   Object.defineProperties(this, {
-    $name   : { value : "AudioContext" },
-    $context: { value: this },
-  });
+    $name: { value: "AudioContext" },
+    $context: { value: this } });
 
   this._microCurrentTime = 0;
   this._processedSamples = 0;
   this._tick = 0;
 }
-_.inherits(AudioContext, EventTarget);
+_import2["default"].inherits(AudioContext, _EventTarget2["default"]);
 
-AudioContext.WEB_AUDIO_TEST_API_VERSION = WebAudioTestAPI.VERSION;
+AudioContext.WEB_AUDIO_TEST_API_VERSION = _WebAudioTestAPI2["default"].VERSION;
 
-AudioContext.prototype.createBuffer = function(numberOfChannels, length, sampleRate) {
-  var inspector = new Inspector(this, null, [
-    { name: "numberOfChannels", type: "number" },
-    { name: "length"          , type: "number" },
-    { name: "sampleRate"      , type: "number" },
-  ]);
+AudioContext.prototype.createBuffer = function (numberOfChannels, length, sampleRate) {
+  var inspector = new _Inspector2["default"](this, null, [{ name: "numberOfChannels", type: "number" }, { name: "length", type: "number" }, { name: "sampleRate", type: "number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  return new AudioBuffer(this, numberOfChannels, length, sampleRate);
+  return new _AudioBuffer2["default"](this, numberOfChannels, length, sampleRate);
 };
 
-AudioContext.prototype.decodeAudioData = function(audioData, successCallback, errorCallback) {
-  var inspector = new Inspector(this, "decodeAudioData", [
-    { name: "audioData"      , type: "ArrayBuffer" },
-    { name: "successCallback", type: "function" },
-    { name: "errorCallback"  , type: "optional function" },
-  ]);
+AudioContext.prototype.decodeAudioData = function (audioData, successCallback, errorCallback) {
+  var inspector = new _Inspector2["default"](this, "decodeAudioData", [{ name: "audioData", type: "ArrayBuffer" }, { name: "successCallback", type: "function" }, { name: "errorCallback", type: "optional function" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  successCallback = _.defaults(successCallback, _.NOP);
-  errorCallback   = _.defaults(errorCallback  , _.NOP);
+  successCallback = _import2["default"].defaults(successCallback, _import2["default"].NOP);
+  errorCallback = _import2["default"].defaults(errorCallback, _import2["default"].NOP);
 
   var _this = this;
-  setTimeout(function() {
+  setTimeout(function () {
     if (_this.DECODE_AUDIO_DATA_FAILED) {
       errorCallback();
     } else {
-      successCallback(_this.DECODE_AUDIO_DATA_RESULT || new AudioBuffer(_this, 2, 1024, _this.sampleRate));
+      successCallback(_this.DECODE_AUDIO_DATA_RESULT || new _AudioBuffer2["default"](_this, 2, 1024, _this.sampleRate));
     }
   }, 0);
 };
 
-AudioContext.prototype.createBufferSource = function() {
-  return new AudioBufferSourceNode(this);
+AudioContext.prototype.createBufferSource = function () {
+  return new _AudioBufferSourceNode2["default"](this);
 };
 
-AudioContext.prototype.createMediaElementSource = function(mediaElement) {
-  var inspector = new Inspector(this, "createMediaElementSource", [
-    { name: "mediaElement", type: "HTMLMediaElement" },
-  ]);
+AudioContext.prototype.createMediaElementSource = function (mediaElement) {
+  var inspector = new _Inspector2["default"](this, "createMediaElementSource", [{ name: "mediaElement", type: "HTMLMediaElement" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  return new MediaElementAudioSourceNode(this, mediaElement);
+  return new _MediaElementAudioSourceNode2["default"](this, mediaElement);
 };
 
-AudioContext.prototype.createMediaStreamSource = function(mediaStream) {
-  var inspector = new Inspector(this, "createMediaStreamSource", [
-    { name: "mediaStream", type: "MediaStream" },
-  ]);
+AudioContext.prototype.createMediaStreamSource = function (mediaStream) {
+  var inspector = new _Inspector2["default"](this, "createMediaStreamSource", [{ name: "mediaStream", type: "MediaStream" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  return new MediaStreamAudioSourceNode(this, mediaStream);
+  return new _MediaStreamAudioSourceNode2["default"](this, mediaStream);
 };
 
-AudioContext.prototype.createMediaStreamDestination = function() {
-  return new MediaStreamAudioDestinationNode(this);
+AudioContext.prototype.createMediaStreamDestination = function () {
+  return new _MediaStreamAudioDestinationNode2["default"](this);
 };
 
-AudioContext.prototype.createScriptProcessor = function(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-  var inspector = new Inspector(this, "createScriptProcessor", [
-    { name: "bufferSize"            , type: /* optional */ "enum { 256, 512, 1024, 2048, 4096, 8192, 16384 }" },
-    { name: "numberOfInputChannels" , type: "optional number" },
-    { name: "numberOfOutputChannels", type: "optional number" },
-  ]);
+AudioContext.prototype.createScriptProcessor = function (bufferSize, numberOfInputChannels, numberOfOutputChannels) {
+  var inspector = new _Inspector2["default"](this, "createScriptProcessor", [{ name: "bufferSize", type: /* optional */"enum { 256, 512, 1024, 2048, 4096, 8192, 16384 }" }, { name: "numberOfInputChannels", type: "optional number" }, { name: "numberOfOutputChannels", type: "optional number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  bufferSize = _.defaults(bufferSize, 0);
-  numberOfInputChannels  = _.defaults(numberOfInputChannels , 2);
-  numberOfOutputChannels = _.defaults(numberOfOutputChannels, 2);
+  bufferSize = _import2["default"].defaults(bufferSize, 0);
+  numberOfInputChannels = _import2["default"].defaults(numberOfInputChannels, 2);
+  numberOfOutputChannels = _import2["default"].defaults(numberOfOutputChannels, 2);
 
-  return new ScriptProcessorNode(this, bufferSize, numberOfInputChannels, numberOfOutputChannels);
+  return new _ScriptProcessorNode2["default"](this, bufferSize, numberOfInputChannels, numberOfOutputChannels);
 };
 
-AudioContext.prototype.createAnalyser = function() {
-  return new AnalyserNode(this);
+AudioContext.prototype.createAnalyser = function () {
+  return new _AnalyserNode2["default"](this);
 };
 
-AudioContext.prototype.createGain = function() {
-  return new GainNode(this);
+AudioContext.prototype.createGain = function () {
+  return new _GainNode2["default"](this);
 };
 
-AudioContext.prototype.createDelay = function(maxDelayTime) {
-  var inspector = new Inspector(this, "createDelay", [
-    { name: "maxDelayTime", type: "optional number" },
-  ]);
+AudioContext.prototype.createDelay = function (maxDelayTime) {
+  var inspector = new _Inspector2["default"](this, "createDelay", [{ name: "maxDelayTime", type: "optional number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  maxDelayTime = _.defaults(maxDelayTime, 1.0);
+  maxDelayTime = _import2["default"].defaults(maxDelayTime, 1);
 
-  return new DelayNode(this, maxDelayTime);
+  return new _DelayNode2["default"](this, maxDelayTime);
 };
 
-AudioContext.prototype.createBiquadFilter = function() {
-  return new BiquadFilterNode(this);
+AudioContext.prototype.createBiquadFilter = function () {
+  return new _BiquadFilterNode2["default"](this);
 };
 
-AudioContext.prototype.createWaveShaper = function() {
-  return new WaveShaperNode(this);
+AudioContext.prototype.createWaveShaper = function () {
+  return new _WaveShaperNode2["default"](this);
 };
 
-AudioContext.prototype.createPanner = function() {
-  return new PannerNode(this);
+AudioContext.prototype.createPanner = function () {
+  return new _PannerNode2["default"](this);
 };
 
-AudioContext.prototype.createConvolver = function() {
-  return new ConvolverNode(this);
+AudioContext.prototype.createConvolver = function () {
+  return new _ConvolverNode2["default"](this);
 };
 
-AudioContext.prototype.createChannelSplitter = function(numberOfOutputs) {
-  var inspector = new Inspector(this, "createChannelSplitter", [
-    { name: "numberOfOutputs", type: "optional number" },
-  ]);
+AudioContext.prototype.createChannelSplitter = function (numberOfOutputs) {
+  var inspector = new _Inspector2["default"](this, "createChannelSplitter", [{ name: "numberOfOutputs", type: "optional number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  numberOfOutputs = _.defaults(numberOfOutputs, 6);
+  numberOfOutputs = _import2["default"].defaults(numberOfOutputs, 6);
 
-  return new ChannelSplitterNode(this, numberOfOutputs);
+  return new _ChannelSplitterNode2["default"](this, numberOfOutputs);
 };
 
-AudioContext.prototype.createChannelMerger = function(numberOfInputs) {
-  var inspector = new Inspector(this, "createChannelMerger", [
-    { name: "numberOfInputs", type: "optional number" },
-  ]);
+AudioContext.prototype.createChannelMerger = function (numberOfInputs) {
+  var inspector = new _Inspector2["default"](this, "createChannelMerger", [{ name: "numberOfInputs", type: "optional number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  numberOfInputs = _.defaults(numberOfInputs, 6);
+  numberOfInputs = _import2["default"].defaults(numberOfInputs, 6);
 
-  return new ChannelMergerNode(this, numberOfInputs);
+  return new _ChannelMergerNode2["default"](this, numberOfInputs);
 };
 
-AudioContext.prototype.createDynamicsCompressor = function() {
-  return new DynamicsCompressorNode(this);
+AudioContext.prototype.createDynamicsCompressor = function () {
+  return new _DynamicsCompressorNode2["default"](this);
 };
 
-AudioContext.prototype.createOscillator = function() {
-  return new OscillatorNode(this);
+AudioContext.prototype.createOscillator = function () {
+  return new _OscillatorNode2["default"](this);
 };
 
-AudioContext.prototype.createPeriodicWave = function(real, imag) {
-  var inspector = new Inspector(this, "createPeriodicWave", [
-    { name: "real", type: "Float32Array", validate: over4096 },
-    { name: "imag", type: "Float32Array", validate: over4096 },
-  ]);
-
+AudioContext.prototype.createPeriodicWave = function (real, imag) {
   function over4096(value, name) {
     if (4096 < value.length) {
       return "length of " + name + " array (" + value.length + ") exceeds allow maximum of 4096";
     }
   }
 
-  inspector.validateArguments(arguments, function(msg) {
+  var inspector = new _Inspector2["default"](this, "createPeriodicWave", [{ name: "real", type: "Float32Array", validate: over4096 }, { name: "imag", type: "Float32Array", validate: over4096 }]);
+
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
-  inspector.assert(real.length === imag.length, function() {
-    throw new TypeError(
-      inspector.form + "; length of real array (" + real.length + ") and length of imaginary array (" + imag.length + ") must match"
-    );
+  inspector.assert(real.length === imag.length, function () {
+    throw new TypeError(inspector.form + "; length of real array (" + real.length + ") and length of imaginary array (" + imag.length + ") must match");
   });
 
-  return new PeriodicWave(real, imag);
+  return new _PeriodicWave2["default"](real, imag);
 };
 
-AudioContext.prototype.toJSON = function() {
+AudioContext.prototype.toJSON = function () {
   return this.destination.toJSON([]);
 };
 
-AudioContext.prototype.$process = function(time) {
-  this._process(_.toMicroseconds(time));
+AudioContext.prototype.$process = function (time) {
+  this._process(_import2["default"].toMicroseconds(time));
 };
 
-AudioContext.prototype.$processTo = function(time) {
-  time = _.toMicroseconds(time);
+AudioContext.prototype.$processTo = function (time) {
+  time = _import2["default"].toMicroseconds(time);
   if (this._microCurrentTime < time) {
     this._process(time - this._microCurrentTime);
   }
 };
 
-AudioContext.prototype.$reset = function() {
+AudioContext.prototype.$reset = function () {
   this._microCurrentTime = 0;
   this._processedSamples = 0;
-  this.destination.$inputs.forEach(function(node) {
+  this.destination.$inputs.forEach(function (node) {
     node.disconnect();
   });
 };
 
-AudioContext.prototype._process = function(microseconds) {
+AudioContext.prototype._process = function (microseconds) {
   var nextMicroCurrentTime = this._microCurrentTime + microseconds;
 
   while (this._microCurrentTime < nextMicroCurrentTime) {
@@ -583,48 +649,65 @@ AudioContext.prototype._process = function(microseconds) {
   }
 };
 
-module.exports = WebAudioTestAPI.AudioContext = AudioContext;
-
+module.exports = _WebAudioTestAPI2["default"].AudioContext = AudioContext;
 },{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioBufferSourceNode":3,"./AudioDestinationNode":5,"./AudioListener":6,"./BiquadFilterNode":10,"./ChannelMergerNode":11,"./ChannelSplitterNode":12,"./ConvolverNode":13,"./DelayNode":14,"./DynamicsCompressorNode":15,"./EventTarget":18,"./GainNode":19,"./HTMLMediaElement":21,"./MediaElementAudioSourceNode":22,"./MediaStream":23,"./MediaStreamAudioDestinationNode":24,"./MediaStreamAudioSourceNode":25,"./OscillatorNode":28,"./PannerNode":29,"./PeriodicWave":30,"./ScriptProcessorNode":31,"./WaveShaperNode":32,"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],5:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var AudioNode = require("./AudioNode");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
 
 var AudioDestinationNodeConstructor = function AudioDestinationNode() {
   throw new TypeError("Illegal constructor");
 };
-_.inherits(AudioDestinationNodeConstructor, AudioNode);
+_import2["default"].inherits(AudioDestinationNodeConstructor, _AudioNode2["default"]);
 
 function AudioDestinationNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "AudioDestinationNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 0,
-    channelCount    : 2,
+    numberOfInputs: 1,
+    numberOfOutputs: 0,
+    channelCount: 2,
     channelCountMode: "explicit",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
   var maxChannelCount = 2;
 
-  _.defineAttribute(this, "maxChannelCount", "readonly", maxChannelCount, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "maxChannelCount", "readonly", maxChannelCount, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 }
-_.inherits(AudioDestinationNode, AudioDestinationNodeConstructor);
+_import2["default"].inherits(AudioDestinationNode, AudioDestinationNodeConstructor);
 
 AudioDestinationNode.exports = AudioDestinationNodeConstructor;
 
-module.exports = WebAudioTestAPI.AudioDestinationNode = AudioDestinationNode;
-
+module.exports = _WebAudioTestAPI2["default"].AudioDestinationNode = AudioDestinationNode;
 },{"./AudioNode":7,"./WebAudioTestAPI":34,"./utils":41}],6:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
 
 var AudioListenerConstructor = function AudioListener() {
   throw new TypeError("Illegal constructor");
@@ -634,71 +717,70 @@ function AudioListener(context) {
   var dopplerFactor = 1;
   var speedOfSound = 343.3;
 
-  _.defineAttribute(this, "dopplerFactor", "number", dopplerFactor, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "dopplerFactor", "number", dopplerFactor, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "speedOfSound", "number", speedOfSound, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "speedOfSound", "number", speedOfSound, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 
   Object.defineProperties(this, {
-    $name   : { value: "AudioListener" },
-    $context: { value: context }
-  });
+    $name: { value: "AudioListener" },
+    $context: { value: context } });
 }
-_.inherits(AudioListener, AudioListenerConstructor);
+_import2["default"].inherits(AudioListener, AudioListenerConstructor);
 
 AudioListener.exports = AudioListenerConstructor;
 
-AudioListenerConstructor.prototype.setPosition = function() {
-  var inspector = new Inspector(this, "setPosition", [
-    { name: "x", type: "number" },
-    { name: "y", type: "number" },
-    { name: "z", type: "number" },
-  ]);
+AudioListenerConstructor.prototype.setPosition = function () {
+  var inspector = new _Inspector2["default"](this, "setPosition", [{ name: "x", type: "number" }, { name: "y", type: "number" }, { name: "z", type: "number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-AudioListenerConstructor.prototype.setOrientation = function() {
-  var inspector = new Inspector(this, "setOrientation", [
-    { name: "x"  , type: "number" },
-    { name: "y"  , type: "number" },
-    { name: "z"  , type: "number" },
-    { name: "xUp", type: "number" },
-    { name: "yUp", type: "number" },
-    { name: "zUp", type: "number" },
-  ]);
+AudioListenerConstructor.prototype.setOrientation = function () {
+  var inspector = new _Inspector2["default"](this, "setOrientation", [{ name: "x", type: "number" }, { name: "y", type: "number" }, { name: "z", type: "number" }, { name: "xUp", type: "number" }, { name: "yUp", type: "number" }, { name: "zUp", type: "number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-AudioListenerConstructor.prototype.setVelocity = function() {
-  var inspector = new Inspector(this, "setVelocity", [
-    { name: "x", type: "number" },
-    { name: "y", type: "number" },
-    { name: "z", type: "number" },
-  ]);
+AudioListenerConstructor.prototype.setVelocity = function () {
+  var inspector = new _Inspector2["default"](this, "setVelocity", [{ name: "x", type: "number" }, { name: "y", type: "number" }, { name: "z", type: "number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-module.exports = WebAudioTestAPI.AudioListener = AudioListener;
-
+module.exports = _WebAudioTestAPI2["default"].AudioListener = AudioListener;
 },{"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],7:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioParam = require("./AudioParam");
-var EventTarget = require("./EventTarget");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioParam = require("./AudioParam");
+
+var _AudioParam2 = _interopRequireDefault(_AudioParam);
+
+var _EventTarget = require("./EventTarget");
+
+var _EventTarget2 = _interopRequireDefault(_EventTarget);
 
 var ChannelCountMode = "enum { max, clamped-max, explicit }";
 var ChannelInterpretation = "enum { speakers, discrete }";
@@ -706,57 +788,50 @@ var ChannelInterpretation = "enum { speakers, discrete }";
 var AudioNodeConstructor = function AudioNode() {
   throw new TypeError("Illegal constructor");
 };
-_.inherits(AudioNodeConstructor, EventTarget);
+_import2["default"].inherits(AudioNodeConstructor, _EventTarget2["default"]);
 
 function AudioNode(context, spec) {
   spec = spec || {};
 
-  EventTarget.call(this);
+  _EventTarget2["default"].call(this);
 
-  var numberOfInputs = _.defaults(spec.numberOfInputs, 1);
-  var numberOfOutputs = _.defaults(spec.numberOfOutputs, 1);
-  var channelCount = _.defaults(spec.channelCount, 2);
-  var channelCountMode = _.defaults(spec.channelCountMode, "max");
-  var channelInterpretation = _.defaults(spec.channelInterpretation, "speakers");
+  var numberOfInputs = _import2["default"].defaults(spec.numberOfInputs, 1);
+  var numberOfOutputs = _import2["default"].defaults(spec.numberOfOutputs, 1);
+  var channelCount = _import2["default"].defaults(spec.channelCount, 2);
+  var channelCountMode = _import2["default"].defaults(spec.channelCountMode, "max");
+  var channelInterpretation = _import2["default"].defaults(spec.channelInterpretation, "speakers");
 
-  _.defineAttribute(this, "context", "readonly", context, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "context", "readonly", context, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "numberOfInputs", "readonly", numberOfInputs, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "numberOfInputs", "readonly", numberOfInputs, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "numberOfOutputs", "readonly", numberOfOutputs, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "numberOfOutputs", "readonly", numberOfOutputs, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "channelCount", "number", channelCount, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "channelCount", "number", channelCount, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "channelCountMode", ChannelCountMode, channelCountMode, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "channelCountMode", ChannelCountMode, channelCountMode, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "channelInterpretation", ChannelInterpretation, channelInterpretation, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "channelInterpretation", ChannelInterpretation, channelInterpretation, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 
   Object.defineProperties(this, {
-    $name   : { value: _.defaults(spec.name, "AudioNode") },
+    $name: { value: _import2["default"].defaults(spec.name, "AudioNode") },
     $context: { value: context },
-    $inputs : { value: [] },
-  });
+    $inputs: { value: [] } });
   this._outputs = [];
   this._tick = -1;
 }
-_.inherits(AudioNode, AudioNodeConstructor);
+_import2["default"].inherits(AudioNode, AudioNodeConstructor);
 
 AudioNode.exports = AudioNodeConstructor;
 
-AudioNodeConstructor.prototype.connect = function(destination) {
-  var inspector = new Inspector(this, "connect", [
-    { name: "destination", type: "AudioNode | AudioParam", validate: sameContext },
-    { name: "output"     , type: "optional number", validate: checkNumberOfOutput },
-    { name: "input"      , type: "optional number", validate: checkNumberOfInput },
-  ]);
-
+AudioNodeConstructor.prototype.connect = function (destination) {
   function sameContext(value) {
     if (this.$context !== value.$context) {
       return "cannot connect to a destination belonging to a different audio context";
@@ -775,7 +850,9 @@ AudioNodeConstructor.prototype.connect = function(destination) {
     }
   }
 
-  inspector.validateArguments(arguments, function(msg) {
+  var inspector = new _Inspector2["default"](this, "connect", [{ name: "destination", type: "AudioNode | AudioParam", validate: sameContext }, { name: "output", type: "optional number", validate: checkNumberOfOutput }, { name: "input", type: "optional number", validate: checkNumberOfInput }]);
+
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
@@ -787,22 +864,20 @@ AudioNodeConstructor.prototype.connect = function(destination) {
   }
 };
 
-AudioNodeConstructor.prototype.disconnect = function() {
-  var inspector = new Inspector(this, "connect", [
-    { name: "output", type: "optional number", validate: checkNumberOfOutput },
-  ]);
-
+AudioNodeConstructor.prototype.disconnect = function () {
   function checkNumberOfOutput(value, name) {
     if (value < 0 || this.numberOfOutputs <= value) {
       return name + " index (" + value + ") exceeds number of outputs (" + this.numberOfOutputs + ")";
     }
   }
 
-  inspector.validateArguments(arguments, function(msg) {
+  var inspector = new _Inspector2["default"](this, "connect", [{ name: "output", type: "optional number", validate: checkNumberOfOutput }]);
+
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  this._outputs.splice(0).forEach(function(dst) {
+  this._outputs.splice(0).forEach(function (dst) {
     var index = dst.$inputs.indexOf(this);
     /* istanbul ignore else */
     if (index !== -1) {
@@ -811,13 +886,13 @@ AudioNodeConstructor.prototype.disconnect = function() {
   }, this);
 };
 
-AudioNode.prototype.toJSON = function(memo) {
-  return _.toJSON(this, function(node, memo) {
+AudioNode.prototype.toJSON = function (memo) {
+  return _import2["default"].toJSON(this, function (node, memo) {
     var json = {};
 
-    json.name = _.name(node);
+    json.name = _import2["default"].name(node);
 
-    (node.constructor.jsonAttrs || []).forEach(function(key) {
+    (node.constructor.jsonAttrs || []).forEach(function (key) {
       if (node[key] && node[key].toJSON) {
         json[key] = node[key].toJSON(memo);
       } else {
@@ -833,7 +908,7 @@ AudioNode.prototype.toJSON = function(memo) {
       json.channelInterpretation = node.channelInterpretation;
     }
 
-    json.inputs = node.$inputs.map(function(node) {
+    json.inputs = node.$inputs.map(function (node) {
       return node.toJSON(memo);
     });
 
@@ -841,15 +916,15 @@ AudioNode.prototype.toJSON = function(memo) {
   }, memo);
 };
 
-AudioNode.prototype.$process = function(inNumSamples, tick) {
+AudioNode.prototype.$process = function (inNumSamples, tick) {
   /* istanbul ignore else */
   if (this._tick !== tick) {
     this._tick = tick;
-    this.$inputs.forEach(function(src) {
+    this.$inputs.forEach(function (src) {
       src.$process(inNumSamples, tick);
     });
-    Object.keys(this).forEach(function(key) {
-      if (this[key] instanceof AudioParam) {
+    Object.keys(this).forEach(function (key) {
+      if (this[key] instanceof _AudioParam2["default"]) {
         this[key].$process(inNumSamples, tick);
       }
     }, this);
@@ -859,245 +934,30 @@ AudioNode.prototype.$process = function(inNumSamples, tick) {
   }
 };
 
-module.exports = WebAudioTestAPI.AudioNode = AudioNode;
-
+module.exports = _WebAudioTestAPI2["default"].AudioNode = AudioNode;
 },{"./AudioParam":8,"./EventTarget":18,"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],8:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var AudioParamConstructor = function AudioParam() {
-  throw new TypeError("Illegal constructor");
-};
+var _import = require("./utils");
 
-function AudioParam(node, name, defaultValue, minValue, maxValue) {
-  var context = node.context;
+var _import2 = _interopRequireDefault(_import);
 
-  _.defineAttribute(this, "name", "readonly", name, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "defaultValue", "readonly", defaultValue, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "minValue", "readonly", minValue, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "maxValue", "readonly", maxValue, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  Object.defineProperty(this, "value", {
-    get: function() {
-      this._value = this.$valueAtTime(context.currentTime);
-      return this._value;
-    },
-    set: function(newValue) {
-      if (_.typeCheck(newValue, "number")) {
-        this._value = newValue;
-      } else {
-        var msg = "";
+var _Inspector = require("./utils/Inspector");
 
-        msg += "type ";
-        msg += _.formatter.shouldBeButGot("number", newValue);
+var _Inspector2 = _interopRequireDefault(_Inspector);
 
-        throw new TypeError(_.formatter.concat(this, msg));
-      }
-    },
-    enumerable: true
-  });
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
 
-  Object.defineProperties(this, {
-    $name   : { value: "AudioParam" },
-    $context: { value: context },
-    $node   : { value: node },
-    $inputs : { value: [] },
-    $events : { value: [] },
-  });
-
-  this._value = this.defaultValue;
-  this._tick = -1;
-}
-_.inherits(AudioParam, AudioParamConstructor);
-
-AudioParam.exports = AudioParamConstructor;
-
-AudioParamConstructor.prototype.setValueAtTime = function(value, startTime) {
-  var inspector = new Inspector(this, "setValueTime", [
-    { name: "value"    , type: "number" },
-    { name: "startTime", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  insertEvent(this, {
-    type : "SetValue",
-    value: value,
-    time : startTime,
-  });
-};
-
-AudioParamConstructor.prototype.linearRampToValueAtTime = function(value, endTime) {
-  var inspector = new Inspector(this, "linearRampToValueAtTime", [
-    { name: "value"  , type: "number" },
-    { name: "endTime", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  insertEvent(this, {
-    type : "LinearRampToValue",
-    value: value,
-    time : endTime,
-  });
-};
-
-AudioParamConstructor.prototype.exponentialRampToValueAtTime = function(value, endTime) {
-  var inspector = new Inspector(this, "exponentialRampToValueAtTime", [
-    { name: "value"  , type: "number" },
-    { name: "endTime", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  insertEvent(this, {
-    type : "ExponentialRampToValue",
-    value: value,
-    time : endTime,
-  });
-};
-
-AudioParamConstructor.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
-  var inspector = new Inspector(this, "setTargetAtTime", [
-    { name: "target"      , type: "number" },
-    { name: "startTime"   , type: "number" },
-    { name: "timeConstant", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  insertEvent(this, {
-    type : "SetTarget",
-    value: target,
-    time : startTime,
-    timeConstant: timeConstant
-  });
-};
-
-AudioParamConstructor.prototype.setValueCurveAtTime = function(values, startTime, duration) {
-  var inspector = new Inspector(this, "setValueCurveAtTime", [
-    { name: "values"   , type: "Float32Array" },
-    { name: "startTime", type: "number" },
-    { name: "duration" , type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  insertEvent(this, {
-    type : "SetValueCurve",
-    time : startTime,
-    duration: duration,
-    curve: values
-  });
-};
-
-AudioParamConstructor.prototype.cancelScheduledValues = function(startTime) {
-  var inspector = new Inspector(this, "cancelScheduledValues", [
-    { name: "startTime", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  var events = this.$events;
-
-  for (var i = 0, imax = events.length; i < imax; ++i) {
-    if (events[i].time >= startTime) {
-      return events.splice(i);
-    }
-  }
-};
-
-AudioParam.prototype.toJSON = function(memo) {
-  return _.toJSON(this, function(node, memo) {
-    var json = {};
-
-    json.value = node.value;
-
-    json.inputs = node.$inputs.map(function(node) {
-      return node.toJSON(memo);
-    });
-
-    return json;
-  }, memo);
-};
-
-AudioParam.prototype.$valueAtTime = function(time) {
-  time = _.toSeconds(time);
-
-  var value  = this._value;
-  var events = this.$events;
-  var t0;
-
-  for (var i = 0; i < events.length; i++) {
-    var e0 = events[i];
-    var e1 = events[i + 1];
-
-    if (time < e0.time) {
-      break;
-    }
-    t0 = Math.min(time, e1 ? e1.time : time);
-
-    if (e1 && e1.type === "LinearRampToValue") {
-      value = linTo(value, e0.value, e1.value, t0, e0.time, e1.time);
-    } else if (e1 && e1.type === "ExponentialRampToValue") {
-      value = expTo(value, e0.value, e1.value, t0, e0.time, e1.time);
-    } else {
-      switch (e0.type) {
-      case "SetValue":
-      case "LinearRampToValue":
-      case "ExponentialRampToValue":
-        value = e0.value;
-        break;
-      case "SetTarget":
-        value = setTarget(value, e0.value, t0, e0.time, e0.timeConstant);
-        break;
-      case "SetValueCurve":
-        value = setCurveValue(value, t0, e0.time, e0.time + e0.duration, e0.curve);
-        break;
-      }
-    }
-  }
-
-  return value;
-};
-
-AudioParam.prototype.$process = function(inNumSamples, tick) {
-  /* istanbul ignore else */
-  if (this._tick !== tick) {
-    this._tick = tick;
-    this.$inputs.forEach(function(src) {
-      src.$process(inNumSamples, tick);
-    });
-  }
-};
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
 
 function insertEvent(_this, event) {
   var time = event.time;
   var events = _this.$events;
   var replace = 0;
-  var i, imax = events.length;
+  var i,
+      imax = events.length;
 
   for (i = 0; i < imax; ++i) {
     if (events[i].time === time && events[i].type === event.type) {
@@ -1120,7 +980,7 @@ function linTo(v, v0, v1, t, t0, t1) {
 
 function expTo(v, v0, v1, t, t0, t1) {
   var dt = (t - t0) / (t1 - t0);
-  return 0 < v0 && 0 < v1 ? v0 * Math.pow(v1 / v0, dt) : /* istanbul ignore next */ v;
+  return 0 < v0 && 0 < v1 ? v0 * Math.pow(v1 / v0, dt) : /* istanbul ignore next */v;
 }
 
 function setTarget(v0, v1, t, t0, timeConstant) {
@@ -1131,696 +991,1246 @@ function setCurveValue(v, t, t0, t1, curve) {
   var dt = (t - t0) / (t1 - t0);
 
   if (dt <= 0) {
-    return _.defaults(curve[0], v);
+    return _import2["default"].defaults(curve[0], v);
   }
 
   if (1 <= dt) {
-    return _.defaults(curve[curve.length - 1], v);
+    return _import2["default"].defaults(curve[curve.length - 1], v);
   }
 
-  return _.defaults(curve[(curve.length * dt)|0], v);
+  return _import2["default"].defaults(curve[curve.length * dt | 0], v);
 }
 
-module.exports = WebAudioTestAPI.AudioParam = AudioParam;
+var AudioParamConstructor = function AudioParam() {
+  throw new TypeError("Illegal constructor");
+};
 
+function AudioParam(node, name, defaultValue, minValue, maxValue) {
+  var context = node.context;
+
+  _import2["default"].defineAttribute(this, "name", "readonly", name, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
+  });
+  _import2["default"].defineAttribute(this, "defaultValue", "readonly", defaultValue, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
+  });
+  _import2["default"].defineAttribute(this, "minValue", "readonly", minValue, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
+  });
+  _import2["default"].defineAttribute(this, "maxValue", "readonly", maxValue, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
+  });
+  Object.defineProperty(this, "value", {
+    get: function get() {
+      this._value = this.$valueAtTime(context.currentTime);
+      return this._value;
+    },
+    set: function set(newValue) {
+      if (_import2["default"].typeCheck(newValue, "number")) {
+        this._value = newValue;
+      } else {
+        var msg = "";
+
+        msg += "type ";
+        msg += _import2["default"].formatter.shouldBeButGot("number", newValue);
+
+        throw new TypeError(_import2["default"].formatter.concat(this, msg));
+      }
+    },
+    enumerable: true });
+
+  Object.defineProperties(this, {
+    $name: { value: "AudioParam" },
+    $context: { value: context },
+    $node: { value: node },
+    $inputs: { value: [] },
+    $events: { value: [] } });
+
+  this._value = this.defaultValue;
+  this._tick = -1;
+}
+_import2["default"].inherits(AudioParam, AudioParamConstructor);
+
+AudioParam.exports = AudioParamConstructor;
+
+AudioParamConstructor.prototype.setValueAtTime = function (value, startTime) {
+  var inspector = new _Inspector2["default"](this, "setValueTime", [{ name: "value", type: "number" }, { name: "startTime", type: "number" }]);
+
+  inspector.validateArguments(arguments, function (msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  insertEvent(this, {
+    type: "SetValue",
+    value: value,
+    time: startTime });
+};
+
+AudioParamConstructor.prototype.linearRampToValueAtTime = function (value, endTime) {
+  var inspector = new _Inspector2["default"](this, "linearRampToValueAtTime", [{ name: "value", type: "number" }, { name: "endTime", type: "number" }]);
+
+  inspector.validateArguments(arguments, function (msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  insertEvent(this, {
+    type: "LinearRampToValue",
+    value: value,
+    time: endTime });
+};
+
+AudioParamConstructor.prototype.exponentialRampToValueAtTime = function (value, endTime) {
+  var inspector = new _Inspector2["default"](this, "exponentialRampToValueAtTime", [{ name: "value", type: "number" }, { name: "endTime", type: "number" }]);
+
+  inspector.validateArguments(arguments, function (msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  insertEvent(this, {
+    type: "ExponentialRampToValue",
+    value: value,
+    time: endTime });
+};
+
+AudioParamConstructor.prototype.setTargetAtTime = function (target, startTime, timeConstant) {
+  var inspector = new _Inspector2["default"](this, "setTargetAtTime", [{ name: "target", type: "number" }, { name: "startTime", type: "number" }, { name: "timeConstant", type: "number" }]);
+
+  inspector.validateArguments(arguments, function (msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  insertEvent(this, {
+    type: "SetTarget",
+    value: target,
+    time: startTime,
+    timeConstant: timeConstant });
+};
+
+AudioParamConstructor.prototype.setValueCurveAtTime = function (values, startTime, duration) {
+  var inspector = new _Inspector2["default"](this, "setValueCurveAtTime", [{ name: "values", type: "Float32Array" }, { name: "startTime", type: "number" }, { name: "duration", type: "number" }]);
+
+  inspector.validateArguments(arguments, function (msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  insertEvent(this, {
+    type: "SetValueCurve",
+    time: startTime,
+    duration: duration,
+    curve: values });
+};
+
+AudioParamConstructor.prototype.cancelScheduledValues = function (startTime) {
+  var inspector = new _Inspector2["default"](this, "cancelScheduledValues", [{ name: "startTime", type: "number" }]);
+
+  inspector.validateArguments(arguments, function (msg) {
+    throw new TypeError(inspector.form + "; " + msg);
+  });
+
+  var events = this.$events;
+
+  for (var i = 0, imax = events.length; i < imax; ++i) {
+    if (events[i].time >= startTime) {
+      return events.splice(i);
+    }
+  }
+};
+
+AudioParam.prototype.toJSON = function (memo) {
+  return _import2["default"].toJSON(this, function (node, memo) {
+    var json = {};
+
+    json.value = node.value;
+
+    json.inputs = node.$inputs.map(function (node) {
+      return node.toJSON(memo);
+    });
+
+    return json;
+  }, memo);
+};
+
+AudioParam.prototype.$valueAtTime = function (time) {
+  time = _import2["default"].toSeconds(time);
+
+  var value = this._value;
+  var events = this.$events;
+  var t0;
+
+  for (var i = 0; i < events.length; i++) {
+    var e0 = events[i];
+    var e1 = events[i + 1];
+
+    if (time < e0.time) {
+      break;
+    }
+    t0 = Math.min(time, e1 ? e1.time : time);
+
+    if (e1 && e1.type === "LinearRampToValue") {
+      value = linTo(value, e0.value, e1.value, t0, e0.time, e1.time);
+    } else if (e1 && e1.type === "ExponentialRampToValue") {
+      value = expTo(value, e0.value, e1.value, t0, e0.time, e1.time);
+    } else {
+      switch (e0.type) {
+        case "SetValue":
+        case "LinearRampToValue":
+        case "ExponentialRampToValue":
+          value = e0.value;
+          break;
+        case "SetTarget":
+          value = setTarget(value, e0.value, t0, e0.time, e0.timeConstant);
+          break;
+        case "SetValueCurve":
+          value = setCurveValue(value, t0, e0.time, e0.time + e0.duration, e0.curve);
+          break;
+      }
+    }
+  }
+
+  return value;
+};
+
+AudioParam.prototype.$process = function (inNumSamples, tick) {
+  /* istanbul ignore else */
+  if (this._tick !== tick) {
+    this._tick = tick;
+    this.$inputs.forEach(function (src) {
+      src.$process(inNumSamples, tick);
+    });
+  }
+};
+
+module.exports = _WebAudioTestAPI2["default"].AudioParam = AudioParam;
 },{"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],9:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var Event = require("./Event");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _Event = require("./Event");
+
+var _Event2 = _interopRequireDefault(_Event);
 
 var AudioProcessingEventConstructor = function AudioProcessingEvent() {
   throw new TypeError("Illegal constructor");
 };
-_.inherits(AudioProcessingEventConstructor, Event);
+_import2["default"].inherits(AudioProcessingEventConstructor, _Event2["default"]);
 
 function AudioProcessingEvent(node) {
-  Event.call(this, "audioprocess", node);
+  _Event2["default"].call(this, "audioprocess", node);
   Object.defineProperties(this, {
     $name: { value: "AudioProcessingEvent" },
-    $node: { value: node }
-  });
+    $node: { value: node } });
 }
-_.inherits(AudioProcessingEvent, AudioProcessingEventConstructor);
+_import2["default"].inherits(AudioProcessingEvent, AudioProcessingEventConstructor);
 
 AudioProcessingEvent.exports = AudioProcessingEventConstructor;
 
-module.exports = WebAudioTestAPI.AudioProcessingEvent = AudioProcessingEvent;
-
+module.exports = _WebAudioTestAPI2["default"].AudioProcessingEvent = AudioProcessingEvent;
 },{"./Event":17,"./WebAudioTestAPI":34,"./utils":41}],10:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioParam = require("./AudioParam");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
+
+var _AudioParam = require("./AudioParam");
+
+var _AudioParam2 = _interopRequireDefault(_AudioParam);
 
 var BiquadFilterType = "enum { lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass }";
 
 var BiquadFilterNodeConstructor = function BiquadFilterNode() {
   throw new TypeError("Illegal constructor: use audioContext.createBiquadFilter()");
 };
-_.inherits(BiquadFilterNodeConstructor, AudioNode);
+_import2["default"].inherits(BiquadFilterNodeConstructor, _AudioNode2["default"]);
 
 function BiquadFilterNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "BiquadFilterNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 1,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
   var type = "lowpass";
-  var frequency = new AudioParam(this, "frequency", 350, 10, context.sampleRate / 2);
-  var detune = new AudioParam(this, "detune", 0, -4800, 4800);
-  var Q = new AudioParam(this, "Q", 1, 0.0001, 1000);
-  var gain = new AudioParam(this, "gain", 0, -40, 40);
+  var frequency = new _AudioParam2["default"](this, "frequency", 350, 10, context.sampleRate / 2);
+  var detune = new _AudioParam2["default"](this, "detune", 0, -4800, 4800);
+  var Q = new _AudioParam2["default"](this, "Q", 1, 0.0001, 1000);
+  var gain = new _AudioParam2["default"](this, "gain", 0, -40, 40);
 
-  _.defineAttribute(this, "type", BiquadFilterType, type, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "type", BiquadFilterType, type, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "frequency", "readonly", frequency, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "frequency", "readonly", frequency, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "detune", "readonly", detune, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "detune", "readonly", detune, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "Q", "readonly", Q, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "Q", "readonly", Q, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "gain", "readonly", gain, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "gain", "readonly", gain, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 }
-_.inherits(BiquadFilterNode, BiquadFilterNodeConstructor);
+_import2["default"].inherits(BiquadFilterNode, BiquadFilterNodeConstructor);
 
 BiquadFilterNode.exports = BiquadFilterNodeConstructor;
-BiquadFilterNode.jsonAttrs = [ "type", "frequency", "detune", "Q", "gain" ];
+BiquadFilterNode.jsonAttrs = ["type", "frequency", "detune", "Q", "gain"];
 
-BiquadFilterNodeConstructor.prototype.getFrequencyResponse = function() {
-  var inspector = new Inspector(this, "getFrequencyResponse", [
-    { name: "frequencyHz"  , type: "Float32Array" },
-    { name: "magResponse"  , type: "Float32Array" },
-    { name: "phaseResponse", type: "Float32Array" },
-  ]);
+BiquadFilterNodeConstructor.prototype.getFrequencyResponse = function () {
+  var inspector = new _Inspector2["default"](this, "getFrequencyResponse", [{ name: "frequencyHz", type: "Float32Array" }, { name: "magResponse", type: "Float32Array" }, { name: "phaseResponse", type: "Float32Array" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-module.exports = WebAudioTestAPI.BiquadFilterNode = BiquadFilterNode;
-
+module.exports = _WebAudioTestAPI2["default"].BiquadFilterNode = BiquadFilterNode;
 },{"./AudioNode":7,"./AudioParam":8,"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],11:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
 
 var ChannelMergerNodeConstructor = function ChannelMergerNode() {
   throw new TypeError("Illegal constructor: use audioContext.createChannelMerger([numberOfInputs: number])");
 };
-_.inherits(ChannelMergerNodeConstructor, AudioNode);
+_import2["default"].inherits(ChannelMergerNodeConstructor, _AudioNode2["default"]);
 
 function ChannelMergerNode(context, numberOfInputs) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "ChannelMergerNode",
-    numberOfInputs  : numberOfInputs,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: numberOfInputs,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 }
-_.inherits(ChannelMergerNode, ChannelMergerNodeConstructor);
+_import2["default"].inherits(ChannelMergerNode, ChannelMergerNodeConstructor);
 
 ChannelMergerNode.exports = ChannelMergerNodeConstructor;
 
-module.exports = WebAudioTestAPI.ChannelMergerNode = ChannelMergerNode;
-
+module.exports = _WebAudioTestAPI2["default"].ChannelMergerNode = ChannelMergerNode;
 },{"./AudioNode":7,"./WebAudioTestAPI":34,"./utils":41}],12:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
 
 var ChannelSplitterNodeConstructor = function ChannelSplitterNode() {
   throw new TypeError("Illegal constructor: use audioContext.createChannelSplitter([numberOfOutputs: number])");
 };
-_.inherits(ChannelSplitterNodeConstructor, AudioNode);
+_import2["default"].inherits(ChannelSplitterNodeConstructor, _AudioNode2["default"]);
 
 function ChannelSplitterNode(context, numberOfOutputs) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "ChannelSplitterNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : numberOfOutputs,
-    channelCount    : 2,
+    numberOfInputs: 1,
+    numberOfOutputs: numberOfOutputs,
+    channelCount: 2,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 }
-_.inherits(ChannelSplitterNode, ChannelSplitterNodeConstructor);
+_import2["default"].inherits(ChannelSplitterNode, ChannelSplitterNodeConstructor);
 
 ChannelSplitterNode.exports = ChannelSplitterNodeConstructor;
 
-module.exports = WebAudioTestAPI.ChannelSplitterNode = ChannelSplitterNode;
-
+module.exports = _WebAudioTestAPI2["default"].ChannelSplitterNode = ChannelSplitterNode;
 },{"./AudioNode":7,"./WebAudioTestAPI":34,"./utils":41}],13:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
 
 var ConvolverNodeConstructor = function ConvolverNode() {
   throw new TypeError("Illegal constructor: use audioContext.createConvolver()");
 };
-_.inherits(ConvolverNodeConstructor, AudioNode);
+_import2["default"].inherits(ConvolverNodeConstructor, _AudioNode2["default"]);
 
 function ConvolverNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "ConvolverNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 1,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "clamped-max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
   var buffer = null;
   var normalize = true;
 
-  _.defineAttribute(this, "buffer", "AudioBuffer|null", buffer, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "buffer", "AudioBuffer|null", buffer, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "normalize", "boolean", normalize, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "normalize", "boolean", normalize, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 }
-_.inherits(ConvolverNode, ConvolverNodeConstructor);
+_import2["default"].inherits(ConvolverNode, ConvolverNodeConstructor);
 
 ConvolverNode.exports = ConvolverNodeConstructor;
-ConvolverNode.jsonAttrs = [ "normalize" ];
+ConvolverNode.jsonAttrs = ["normalize"];
 
-module.exports = WebAudioTestAPI.ConvolverNode = ConvolverNode;
-
+module.exports = _WebAudioTestAPI2["default"].ConvolverNode = ConvolverNode;
 },{"./AudioNode":7,"./WebAudioTestAPI":34,"./utils":41}],14:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioParam = require("./AudioParam");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
+
+var _AudioParam = require("./AudioParam");
+
+var _AudioParam2 = _interopRequireDefault(_AudioParam);
 
 var DelayNodeConstructor = function DelayNode() {
   throw new TypeError("Illegal constructor: use audioContext.createDelay([maxDelayTime: number])");
 };
-_.inherits(DelayNodeConstructor, AudioNode);
+_import2["default"].inherits(DelayNodeConstructor, _AudioNode2["default"]);
 
 function DelayNode(context, maxDelayTime) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "DelayNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 1,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
-  var delayTime = new AudioParam(this, "delayTime", 0, 0, maxDelayTime);
+  var delayTime = new _AudioParam2["default"](this, "delayTime", 0, 0, maxDelayTime);
 
-  _.defineAttribute(this, "delayTime", "readonly", delayTime, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "delayTime", "readonly", delayTime, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 
   Object.defineProperties(this, {
-    $maxDelayTime: { value: maxDelayTime }
-  });
+    $maxDelayTime: { value: maxDelayTime } });
 }
-_.inherits(DelayNode, DelayNodeConstructor);
+_import2["default"].inherits(DelayNode, DelayNodeConstructor);
 
 DelayNode.exports = DelayNodeConstructor;
-DelayNode.jsonAttrs = [ "delayTime"　];
+DelayNode.jsonAttrs = ["delayTime"];
 
-module.exports = WebAudioTestAPI.DelayNode = DelayNode;
-
+module.exports = _WebAudioTestAPI2["default"].DelayNode = DelayNode;
 },{"./AudioNode":7,"./AudioParam":8,"./WebAudioTestAPI":34,"./utils":41}],15:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioParam = require("./AudioParam");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
+
+var _AudioParam = require("./AudioParam");
+
+var _AudioParam2 = _interopRequireDefault(_AudioParam);
 
 var DynamicsCompressorNodeConstructor = function DynamicsCompressorNode() {
   throw new TypeError("Illegal constructor: use audioContext.createDynamicsCompressor()");
 };
-_.inherits(DynamicsCompressorNodeConstructor, AudioNode);
+_import2["default"].inherits(DynamicsCompressorNodeConstructor, _AudioNode2["default"]);
 
 function DynamicsCompressorNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "DynamicsCompressorNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 1,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "explicit",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
-  var threshold = new AudioParam(this, "threshold", -24, -100, 0);
-  var knee = new AudioParam(this, "knee", 30, 0, 40);
-  var ratio = new AudioParam(this, "ratio", 12, 1, 20);
-  var reduction = new AudioParam(this, "reduction", 0, -20, 0);
-  var attack = new AudioParam(this, "attack", 0.003, 0, 1.0);
-  var release = new AudioParam(this, "release", 0.250, 0, 1.0);
+  var threshold = new _AudioParam2["default"](this, "threshold", -24, -100, 0);
+  var knee = new _AudioParam2["default"](this, "knee", 30, 0, 40);
+  var ratio = new _AudioParam2["default"](this, "ratio", 12, 1, 20);
+  var reduction = new _AudioParam2["default"](this, "reduction", 0, -20, 0);
+  var attack = new _AudioParam2["default"](this, "attack", 0.003, 0, 1);
+  var release = new _AudioParam2["default"](this, "release", 0.25, 0, 1);
 
-  _.defineAttribute(this, "threshold", "readonly", threshold, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "threshold", "readonly", threshold, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "knee", "readonly", knee, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "knee", "readonly", knee, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "ratio", "readonly", ratio, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "ratio", "readonly", ratio, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "reduction", "readonly", reduction, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "reduction", "readonly", reduction, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "attack", "readonly", attack, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "attack", "readonly", attack, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "release", "readonly", release, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "release", "readonly", release, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 }
-_.inherits(DynamicsCompressorNode, DynamicsCompressorNodeConstructor);
+_import2["default"].inherits(DynamicsCompressorNode, DynamicsCompressorNodeConstructor);
 
 DynamicsCompressorNode.exports = DynamicsCompressorNodeConstructor;
-DynamicsCompressorNode.jsonAttrs = [ "threshold", "knee", "ratio", "reduction", "attack", "release" ];
+DynamicsCompressorNode.jsonAttrs = ["threshold", "knee", "ratio", "reduction", "attack", "release"];
 
-module.exports = WebAudioTestAPI.DynamicsCompressorNode = DynamicsCompressorNode;
-
+module.exports = _WebAudioTestAPI2["default"].DynamicsCompressorNode = DynamicsCompressorNode;
 },{"./AudioNode":7,"./AudioParam":8,"./WebAudioTestAPI":34,"./utils":41}],16:[function(require,module,exports){
 (function (global){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var EventTarget = require("./EventTarget");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-/* istanbul ignore else */
-if (typeof global.Element === "undefined") {
-  global.Element = function Element() {
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _EventTarget2 = require("./EventTarget");
+
+var _EventTarget3 = _interopRequireDefault(_EventTarget2);
+
+global.Element = global.Element || (function (_EventTarget) {
+  function Element() {
+    _classCallCheck(this, Element);
+
+    _get(Object.getPrototypeOf(Element.prototype), "constructor", this).call(this);
     throw new TypeError("Illegal constructor");
-  };
-  _.inherits(global.Element, EventTarget);
-}
+  }
 
-function Element() {
-}
-_.inherits(Element, global.Element);
+  _inherits(Element, _EventTarget);
 
-module.exports = WebAudioTestAPI.Element = Element;
+  return Element;
+})(_EventTarget3["default"]);
 
+var Element = (function (_$preventSuper) {
+  function Element() {
+    _classCallCheck(this, Element);
+
+    if (_$preventSuper != null) {
+      _$preventSuper.apply(this, arguments);
+    }
+  }
+
+  _inherits(Element, _$preventSuper);
+
+  return Element;
+})(_import2["default"].preventSuper(global.Element));
+
+exports["default"] = Element;
+
+_WebAudioTestAPI2["default"].Element = Element;
+module.exports = exports["default"];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./EventTarget":18,"./WebAudioTestAPI":34,"./utils":41}],17:[function(require,module,exports){
 (function (global){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-function Event(name, target) {
-  this.type = name;
-  this.target = _.defaults(target, null);
-  this.timeStamp = Date.now();
-}
-_.inherits(Event, global.Event);
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-/* istanbul ignore else */
-if (typeof global.Event === "undefined") {
-  global.Event = Event;
-}
+var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
-module.exports = WebAudioTestAPI.Event = Event;
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+global.Event = global.Event || function Event() {
+  _classCallCheck(this, Event);
+
+  throw new TypeError("Illegal constructor");
+};
+
+var Event = (function (_$preventSuper) {
+  function Event(name, target) {
+    _classCallCheck(this, Event);
+
+    _get(Object.getPrototypeOf(Event.prototype), "constructor", this).call(this);
+
+    this.type = name;
+    this.target = _import2["default"].defaults(target, null);
+    this.timeStamp = Date.now();
+  }
+
+  _inherits(Event, _$preventSuper);
+
+  return Event;
+})(_import2["default"].preventSuper(global.Event));
+
+exports["default"] = Event;
+
+// export default class Event extends _.preventSuper(global.Event) {
+//   constructor(name, target) {
+//     super();
+//
+//     this.type = name;
+//     this.target = _.defaults(target, null);
+//     this.timeStamp = Date.now();
+//   }
+// }
+//
+// /* istanbul ignore else */
+// if (typeof global.Event === "undefined") {
+//   global.Event = Event;
+// }
+
+_WebAudioTestAPI2["default"].Event = Event;
+module.exports = exports["default"];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebAudioTestAPI":34,"./utils":41}],18:[function(require,module,exports){
 (function (global){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-/* istanbul ignore else */
-if (typeof global.EventTarget === "undefined") {
-  global.EventTarget = function EventTarget() {
-    throw new TypeError("Illegal constructor");
-  };
-}
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function EventTarget() {
-  this._listeners = {};
-}
-_.inherits(EventTarget, global.EventTarget);
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-EventTarget.prototype.addEventListener = function(type, listener) {
-  var inspector = new Inspector(this, "addEventListener", [
-    { name: "type", type: "string" },
-    { name: "listener", type: "function" },
-  ]);
+var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
-  this._listeners[type] = this._listeners[type] || /* istanbul ignore next */ [];
-  this._listeners[type].push(listener);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+global.EventTarget = global.EventTarget || function EventTarget() {
+  _classCallCheck(this, EventTarget);
+
+  throw new TypeError("Illegal constructor");
 };
 
-EventTarget.prototype.removeEventListener = function(type, listener) {
-  var inspector = new Inspector(this, "addEventListener", [
-    { name: "type", type: "string" },
-    { name: "listener", type: "function" },
-  ]);
+var EventTarget = (function (_$preventSuper) {
+  function EventTarget() {
+    _classCallCheck(this, EventTarget);
 
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  this._listeners[type] = this._listeners[type] || /* istanbul ignore next */ [];
-  var index = this._listeners[type].indexOf(listener);
-  if (index !== -1) {
-    this._listeners[type].splice(index, 1);
-  }
-};
-
-EventTarget.prototype.dispatchEvent = function(event) {
-  var inspector = new Inspector(this, "addEventListener", [
-    { name: "event", type: "Event" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-
-  var type = event.type;
-
-  /* istanbul ignore else */
-  if (typeof this["on" + type] === "function") {
-    this["on" + type].call(this, event);
+    _get(Object.getPrototypeOf(EventTarget.prototype), "constructor", this).call(this);
+    this._listeners = {};
   }
 
-  this.$listeners(type).forEach(function(listener) {
-    listener.call(this, event);
-  }, this);
+  _inherits(EventTarget, _$preventSuper);
 
-  return true;
-};
+  _createClass(EventTarget, [{
+    key: "addEventListener",
+    value: function addEventListener(type, listener) {
+      var inspector = new _Inspector2["default"](this, "addEventListener", [{ name: "type", type: "string" }, { name: "listener", type: "function" }]);
 
-EventTarget.prototype.$listeners = function(type) {
-  return (this._listeners[type] || /* istanbul ignore next */ []).slice();
-};
+      inspector.validateArguments(arguments, function (msg) {
+        throw new TypeError(inspector.form + "; " + msg);
+      });
 
-module.exports = WebAudioTestAPI.EventTarget = EventTarget;
+      this._listeners[type] = this._listeners[type] || /* istanbul ignore next */[];
+      this._listeners[type].push(listener);
+    }
+  }, {
+    key: "removeEventListener",
+    value: function removeEventListener(type, listener) {
+      var inspector = new _Inspector2["default"](this, "addEventListener", [{ name: "type", type: "string" }, { name: "listener", type: "function" }]);
 
+      inspector.validateArguments(arguments, function (msg) {
+        throw new TypeError(inspector.form + "; " + msg);
+      });
+
+      this._listeners[type] = this._listeners[type] || /* istanbul ignore next */[];
+      var index = this._listeners[type].indexOf(listener);
+      if (index !== -1) {
+        this._listeners[type].splice(index, 1);
+      }
+    }
+  }, {
+    key: "dispatchEvent",
+    value: function dispatchEvent(event) {
+      var inspector = new _Inspector2["default"](this, "addEventListener", [{ name: "event", type: "Event" }]);
+
+      inspector.validateArguments(arguments, function (msg) {
+        throw new TypeError(inspector.form + "; " + msg);
+      });
+
+      var type = event.type;
+
+      /* istanbul ignore else */
+      if (typeof this["on" + type] === "function") {
+        this["on" + type].call(this, event);
+      }
+
+      this.$listeners(type).forEach(function (listener) {
+        listener.call(this, event);
+      }, this);
+
+      return true;
+    }
+  }, {
+    key: "$listeners",
+    value: function $listeners(type) {
+      return (this._listeners[type] || /* istanbul ignore next */[]).slice();
+    }
+  }]);
+
+  return EventTarget;
+})(_import2["default"].preventSuper(global.EventTarget));
+
+exports["default"] = EventTarget;
+
+_WebAudioTestAPI2["default"].EventTarget = EventTarget;
+module.exports = exports["default"];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],19:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioParam = require("./AudioParam");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
+
+var _AudioParam = require("./AudioParam");
+
+var _AudioParam2 = _interopRequireDefault(_AudioParam);
 
 var GainNodeConstructor = function GainNode() {
   throw new TypeError("Illegal constructor: use audioContext.createGain()");
 };
-_.inherits(GainNodeConstructor, AudioNode);
+_import2["default"].inherits(GainNodeConstructor, _AudioNode2["default"]);
 
 function GainNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "GainNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 1,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
-  var gain = new AudioParam(this, "gain", 1.0, 0.0, 1.0);
+  var gain = new _AudioParam2["default"](this, "gain", 1, 0, 1);
 
-  _.defineAttribute(this, "gain", "readonly", gain, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "gain", "readonly", gain, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 }
-_.inherits(GainNode, GainNodeConstructor);
+_import2["default"].inherits(GainNode, GainNodeConstructor);
 
 GainNode.exports = GainNodeConstructor;
-GainNode.jsonAttrs = [ "gain"　];
+GainNode.jsonAttrs = ["gain"];
 
-module.exports = WebAudioTestAPI.GainNode = GainNode;
-
+module.exports = _WebAudioTestAPI2["default"].GainNode = GainNode;
 },{"./AudioNode":7,"./AudioParam":8,"./WebAudioTestAPI":34,"./utils":41}],20:[function(require,module,exports){
 (function (global){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var Element = require("./Element");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-/* istanbul ignore else */
-if (typeof global.HTMLElement === "undefined") {
-  global.HTMLElement = function HTMLElement() {
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _Element2 = require("./Element");
+
+var _Element3 = _interopRequireDefault(_Element2);
+
+global.HTMLElement = global.HTMLElement || (function (_Element) {
+  function HTMLElement() {
+    _classCallCheck(this, HTMLElement);
+
+    _get(Object.getPrototypeOf(HTMLElement.prototype), "constructor", this).call(this);
     throw new TypeError("Illegal constructor");
-  };
-  _.inherits(global.HTMLElement, Element);
-}
+  }
 
-function HTMLElement() {
-}
-_.inherits(HTMLElement, global.HTMLElement);
+  _inherits(HTMLElement, _Element);
 
-module.exports = WebAudioTestAPI.HTMLElement = HTMLElement;
+  return HTMLElement;
+})(_Element3["default"]);
 
+var HTMLElement = (function (_$preventSuper) {
+  function HTMLElement() {
+    _classCallCheck(this, HTMLElement);
+
+    if (_$preventSuper != null) {
+      _$preventSuper.apply(this, arguments);
+    }
+  }
+
+  _inherits(HTMLElement, _$preventSuper);
+
+  return HTMLElement;
+})(_import2["default"].preventSuper(global.HTMLElement));
+
+exports["default"] = HTMLElement;
+
+_WebAudioTestAPI2["default"].HTMLElement = HTMLElement;
+module.exports = exports["default"];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./Element":16,"./WebAudioTestAPI":34,"./utils":41}],21:[function(require,module,exports){
 (function (global){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var HTMLElement = require("./HTMLElement");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-/* istanbul ignore else */
-if (typeof global.HTMLMediaElement === "undefined") {
-  global.HTMLMediaElement = function HTMLMediaElement() {
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _HTMLElement2 = require("./HTMLElement");
+
+var _HTMLElement3 = _interopRequireDefault(_HTMLElement2);
+
+global.HTMLMediaElement = global.HTMLMediaElement || (function (_HTMLElement) {
+  function HTMLMediaElement() {
+    _classCallCheck(this, HTMLMediaElement);
+
+    _get(Object.getPrototypeOf(HTMLMediaElement.prototype), "constructor", this).call(this);
     throw new TypeError("Illegal constructor");
-  };
-  _.inherits(global.HTMLMediaElement, HTMLElement);
-}
+  }
 
-function HTMLMediaElement() {
-}
-_.inherits(HTMLMediaElement, global.HTMLMediaElement);
+  _inherits(HTMLMediaElement, _HTMLElement);
 
-module.exports = WebAudioTestAPI.HTMLMediaElement = HTMLMediaElement;
+  return HTMLMediaElement;
+})(_HTMLElement3["default"]);
 
+var HTMLMediaElement = (function (_$preventSuper) {
+  function HTMLMediaElement() {
+    _classCallCheck(this, HTMLMediaElement);
+
+    if (_$preventSuper != null) {
+      _$preventSuper.apply(this, arguments);
+    }
+  }
+
+  _inherits(HTMLMediaElement, _$preventSuper);
+
+  return HTMLMediaElement;
+})(_import2["default"].preventSuper(global.HTMLMediaElement));
+
+exports["default"] = HTMLMediaElement;
+
+_WebAudioTestAPI2["default"].HTMLMediaElement = HTMLMediaElement;
+module.exports = exports["default"];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./HTMLElement":20,"./WebAudioTestAPI":34,"./utils":41}],22:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
 
 var MediaElementAudioSourceNodeConstructor = function MediaElementAudioSourceNode() {
   throw new TypeError("Illegal constructor: use audioContext.createMediaElementSource(mediaElement: HTMLMediaElement)");
 };
-_.inherits(MediaElementAudioSourceNodeConstructor, AudioNode);
+_import2["default"].inherits(MediaElementAudioSourceNodeConstructor, _AudioNode2["default"]);
 
 function MediaElementAudioSourceNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "MediaElementAudioSourceNode",
-    numberOfInputs  : 0,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 0,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 }
-_.inherits(MediaElementAudioSourceNode, MediaElementAudioSourceNodeConstructor);
+_import2["default"].inherits(MediaElementAudioSourceNode, MediaElementAudioSourceNodeConstructor);
 
 MediaElementAudioSourceNode.exports = MediaElementAudioSourceNodeConstructor;
 
-module.exports = WebAudioTestAPI.MediaElementAudioSourceNode = MediaElementAudioSourceNode;
-
+module.exports = _WebAudioTestAPI2["default"].MediaElementAudioSourceNode = MediaElementAudioSourceNode;
 },{"./AudioNode":7,"./WebAudioTestAPI":34,"./utils":41}],23:[function(require,module,exports){
 (function (global){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var EventTarget = require("./EventTarget");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-/* istanbul ignore else */
-if (typeof global.MediaStream === "undefined") {
-  global.MediaStream = function MediaStream() {
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _EventTarget2 = require("./EventTarget");
+
+var _EventTarget3 = _interopRequireDefault(_EventTarget2);
+
+global.MediaStream = global.MediaStream || (function (_EventTarget) {
+  function MediaStream() {
+    _classCallCheck(this, MediaStream);
+
+    _get(Object.getPrototypeOf(MediaStream.prototype), "constructor", this).call(this);
     throw new TypeError("Illegal constructor");
-  };
-  _.inherits(global.MediaStream, EventTarget);
-}
+  }
 
-function MediaStream() {
-}
-_.inherits(MediaStream, global.MediaStream);
+  _inherits(MediaStream, _EventTarget);
 
-module.exports = WebAudioTestAPI.MediaStream = MediaStream;
+  return MediaStream;
+})(_EventTarget3["default"]);
 
+var MediaStream = (function (_$preventSuper) {
+  function MediaStream() {
+    _classCallCheck(this, MediaStream);
+
+    if (_$preventSuper != null) {
+      _$preventSuper.apply(this, arguments);
+    }
+  }
+
+  _inherits(MediaStream, _$preventSuper);
+
+  return MediaStream;
+})(_import2["default"].preventSuper(global.MediaStream));
+
+exports["default"] = MediaStream;
+
+_WebAudioTestAPI2["default"].MediaStream = MediaStream;
+module.exports = exports["default"];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./EventTarget":18,"./WebAudioTestAPI":34,"./utils":41}],24:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
 
 var MediaStreamAudioDestinationNodeConstructor = function MediaStreamAudioDestinationNode() {
   throw new TypeError("Illegal constructor: use audioContext.createMediaStreamDestination()");
 };
-_.inherits(MediaStreamAudioDestinationNodeConstructor, AudioNode);
+_import2["default"].inherits(MediaStreamAudioDestinationNodeConstructor, _AudioNode2["default"]);
 
 function MediaStreamAudioDestinationNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "MediaStreamAudioDestinationNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 0,
-    channelCount    : 2,
+    numberOfInputs: 1,
+    numberOfOutputs: 0,
+    channelCount: 2,
     channelCountMode: "explicit",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 }
-_.inherits(MediaStreamAudioDestinationNode, MediaStreamAudioDestinationNodeConstructor);
+_import2["default"].inherits(MediaStreamAudioDestinationNode, MediaStreamAudioDestinationNodeConstructor);
 
 MediaStreamAudioDestinationNode.exports = MediaStreamAudioDestinationNodeConstructor;
 
-module.exports = WebAudioTestAPI.MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode;
-
+module.exports = _WebAudioTestAPI2["default"].MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode;
 },{"./AudioNode":7,"./WebAudioTestAPI":34,"./utils":41}],25:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
 
 var MediaStreamAudioSourceNodeConstructor = function MediaStreamAudioSourceNode() {
   throw new TypeError("Illegal constructor: use audioContext.createMediaStreamSource(mediaStream: MediaStream)");
 };
-_.inherits(MediaStreamAudioSourceNodeConstructor, AudioNode);
+_import2["default"].inherits(MediaStreamAudioSourceNodeConstructor, _AudioNode2["default"]);
 
-function　MediaStreamAudioSourceNode(context) {
-  AudioNode.call(this, context, {
+function MediaStreamAudioSourceNode(context) {
+  _AudioNode2["default"].call(this, context, {
     name: "MediaStreamAudioSourceNode",
-    numberOfInputs  : 0,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 0,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 }
-_.inherits(MediaStreamAudioSourceNode, MediaStreamAudioSourceNodeConstructor);
+_import2["default"].inherits(MediaStreamAudioSourceNode, MediaStreamAudioSourceNodeConstructor);
 
 MediaStreamAudioSourceNode.exports = MediaStreamAudioSourceNodeConstructor;
 
-module.exports = WebAudioTestAPI.MediaStreamAudioSourceNode = MediaStreamAudioSourceNode;
-
+module.exports = _WebAudioTestAPI2["default"].MediaStreamAudioSourceNode = MediaStreamAudioSourceNode;
 },{"./AudioNode":7,"./WebAudioTestAPI":34,"./utils":41}],26:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var Event = require("./Event");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _Event = require("./Event");
+
+var _Event2 = _interopRequireDefault(_Event);
 
 var OfflineAudioCompletionEventConstructor = function OfflineAudioCompletionEvent() {
   throw new TypeError("Illegal constructor");
 };
-_.inherits(OfflineAudioCompletionEventConstructor, Event);
+_import2["default"].inherits(OfflineAudioCompletionEventConstructor, _Event2["default"]);
 
 function OfflineAudioCompletionEvent(node) {
-  Event.call(this, "complete", node);
+  _Event2["default"].call(this, "complete", node);
   Object.defineProperties(this, {
     $name: { value: "OfflineAudioCompletionEvent" },
-    $node: { value: node }
-  });
+    $node: { value: node } });
 }
-_.inherits(OfflineAudioCompletionEvent, OfflineAudioCompletionEventConstructor);
+_import2["default"].inherits(OfflineAudioCompletionEvent, OfflineAudioCompletionEventConstructor);
 
 OfflineAudioCompletionEvent.exports = OfflineAudioCompletionEventConstructor;
 
-module.exports = WebAudioTestAPI.OfflineAudioCompletionEvent = OfflineAudioCompletionEvent;
-
+module.exports = _WebAudioTestAPI2["default"].OfflineAudioCompletionEvent = OfflineAudioCompletionEvent;
 },{"./Event":17,"./WebAudioTestAPI":34,"./utils":41}],27:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioContext = require("./AudioContext");
-var AudioBuffer = require("./AudioBuffer");
-var AudioDestinationNode = require("./AudioDestinationNode");
-var AudioListener = require("./AudioListener");
-var EventTarget = require("./EventTarget");
-var OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioContext = require("./AudioContext");
+
+var _AudioContext2 = _interopRequireDefault(_AudioContext);
+
+var _AudioBuffer = require("./AudioBuffer");
+
+var _AudioBuffer2 = _interopRequireDefault(_AudioBuffer);
+
+var _AudioDestinationNode = require("./AudioDestinationNode");
+
+var _AudioDestinationNode2 = _interopRequireDefault(_AudioDestinationNode);
+
+var _AudioListener = require("./AudioListener");
+
+var _AudioListener2 = _interopRequireDefault(_AudioListener);
+
+var _EventTarget = require("./EventTarget");
+
+var _EventTarget2 = _interopRequireDefault(_EventTarget);
+
+var _OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
+
+var _OfflineAudioCompletionEvent2 = _interopRequireDefault(_OfflineAudioCompletionEvent);
 
 function OfflineAudioContext(numberOfChannels, length, sampleRate) {
   if (!(this instanceof OfflineAudioContext)) {
     throw new TypeError("Failed to construct 'AudioContext': Please use the 'new' operator");
   }
 
-  EventTarget.call(this);
+  _EventTarget2["default"].call(this);
 
-  var inspector = new Inspector(this, null, [
-    { name: "numberOfChannels", type: "number" },
-    { name: "length"          , type: "number" },
-    { name: "sampleRate"      , type: "number" },
-  ]);
+  var inspector = new _Inspector2["default"](this, null, [{ name: "numberOfChannels", type: "number" }, { name: "length", type: "number" }, { name: "sampleRate", type: "number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
-  var destination = new AudioDestinationNode(this);
-  var currentTime = function() { return this._microCurrentTime / (1000 * 1000); };
-  var listener = new AudioListener(this);
+  var destination = new _AudioDestinationNode2["default"](this);
+  var currentTime = function currentTime() {
+    return this._microCurrentTime / (1000 * 1000);
+  };
+  var listener = new _AudioListener2["default"](this);
   var oncomplete = null;
 
-  _.defineAttribute(this, "destination", "readonly", destination, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "destination", "readonly", destination, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "sampleRate", "readonly", sampleRate, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "sampleRate", "readonly", sampleRate, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "currentTime", "readonly", currentTime, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "currentTime", "readonly", currentTime, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "listener", "readonly", listener, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "listener", "readonly", listener, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "oncomplete", "function|null", oncomplete, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "oncomplete", "function|null", oncomplete, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 
   Object.defineProperties(this, {
-    $name   : { value: "OfflineAudioContext" },
-    $context: { value: this }
-  });
+    $name: { value: "OfflineAudioContext" },
+    $context: { value: this } });
 
   this._microCurrentTime = 0;
   this._processedSamples = 0;
@@ -1830,19 +2240,19 @@ function OfflineAudioContext(numberOfChannels, length, sampleRate) {
   this._length = length;
   this._rendering = false;
 }
-_.inherits(OfflineAudioContext, AudioContext);
+_import2["default"].inherits(OfflineAudioContext, _AudioContext2["default"]);
 
-OfflineAudioContext.prototype.startRendering = function() {
-  var inspector = new Inspector(this, "startRendering", []);
+OfflineAudioContext.prototype.startRendering = function () {
+  var inspector = new _Inspector2["default"](this, "startRendering", []);
 
-  inspector.assert(!this._rendering, function() {
+  inspector.assert(!this._rendering, function () {
     throw Error(inspector.form + "; must only be called one time");
   });
 
   this._rendering = true;
 };
 
-OfflineAudioContext.prototype._process = function(microseconds) {
+OfflineAudioContext.prototype._process = function (microseconds) {
   if (!this._rendering || this._length <= this._processedSamples) {
     return;
   }
@@ -1865,139 +2275,146 @@ OfflineAudioContext.prototype._process = function(microseconds) {
   }
 
   if (this._length <= this._processedSamples) {
-    var event = new OfflineAudioCompletionEvent(this);
+    var event = new _OfflineAudioCompletionEvent2["default"](this);
 
-    event.renderedBuffer = new AudioBuffer(this, this._numberOfChannels, this._length, this.sampleRate);
+    event.renderedBuffer = new _AudioBuffer2["default"](this, this._numberOfChannels, this._length, this.sampleRate);
 
     this.dispatchEvent(event);
   }
 };
 
-module.exports = WebAudioTestAPI.OfflineAudioContext = OfflineAudioContext;
-
+module.exports = _WebAudioTestAPI2["default"].OfflineAudioContext = OfflineAudioContext;
 },{"./AudioBuffer":2,"./AudioContext":4,"./AudioDestinationNode":5,"./AudioListener":6,"./EventTarget":18,"./OfflineAudioCompletionEvent":26,"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],28:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioParam = require("./AudioParam");
-var Event = require("./Event");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
+
+var _AudioParam = require("./AudioParam");
+
+var _AudioParam2 = _interopRequireDefault(_AudioParam);
+
+var _Event = require("./Event");
+
+var _Event2 = _interopRequireDefault(_Event);
 
 var OscillatorType = "enum { sine, square, sawtooth, triangle }";
 
 var OscillatorNodeConstructor = function OscillatorNode() {
   throw new TypeError("Illegal constructor: use audioContext.createOscillator()");
 };
-_.inherits(OscillatorNodeConstructor, AudioNode);
+_import2["default"].inherits(OscillatorNodeConstructor, _AudioNode2["default"]);
 
 function OscillatorNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "OscillatorNode",
-    numberOfInputs  : 0,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 0,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
   var type = "sine";
-  var frequency = new AudioParam(this, "frequency", 440, 0, 100000);
-  var detune = new AudioParam(this, "detune", 0, -4800, 4800);
+  var frequency = new _AudioParam2["default"](this, "frequency", 440, 0, 100000);
+  var detune = new _AudioParam2["default"](this, "detune", 0, -4800, 4800);
   var onended = null;
 
   Object.defineProperty(this, "type", {
-    get: function() {
+    get: function get() {
       return this._custom ? "custom" : this._type;
     },
-    set: function(newValue) {
-      if (_.typeCheck(newValue, OscillatorType )) {
+    set: function set(newValue) {
+      if (_import2["default"].typeCheck(newValue, OscillatorType)) {
         this._type = newValue;
       } else {
         var msg = "";
 
         msg += "type ";
-        msg += _.formatter.shouldBeButGot(OscillatorType, newValue);
+        msg += _import2["default"].formatter.shouldBeButGot(OscillatorType, newValue);
 
-        throw new TypeError(_.formatter.concat(this, msg));
+        throw new TypeError(_import2["default"].formatter.concat(this, msg));
       }
     },
-    enumerable: true
+    enumerable: true });
+  _import2["default"].defineAttribute(this, "frequency", "readonly", frequency, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "frequency", "readonly", frequency, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "detune", "readonly", detune, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "detune", "readonly", detune, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "onended", "function|null", onended, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "onended", "function|null", onended, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 
   Object.defineProperties(this, {
     $state: {
-      get: function() {
+      get: function get() {
         return this.$stateAtTime(this.context.currentTime);
-      }
-    },
+      } },
     $custom: {
-      get: function() {
+      get: function get() {
         return this._custom;
-      }
-    }
-  });
+      } } });
 
   this._type = type;
   this._custom = null;
   this._startTime = Infinity;
-  this._stopTime  = Infinity;
+  this._stopTime = Infinity;
   this._firedOnEnded = false;
 }
-_.inherits(OscillatorNode, OscillatorNodeConstructor);
+_import2["default"].inherits(OscillatorNode, OscillatorNodeConstructor);
 
 OscillatorNode.exports = OscillatorNodeConstructor;
-OscillatorNode.jsonAttrs = [ "type", "frequency", "detune" ];
+OscillatorNode.jsonAttrs = ["type", "frequency", "detune"];
 
-OscillatorNodeConstructor.prototype.start = function(when) {
-  var inspector = new Inspector(this, "start", [
-    { name: "when", type: "optional number" },
-  ]);
+OscillatorNodeConstructor.prototype.start = function (when) {
+  var inspector = new _Inspector2["default"](this, "start", [{ name: "when", type: "optional number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
-  inspector.assert(this._startTime === Infinity, function() {
+  inspector.assert(this._startTime === Infinity, function () {
     throw new Error(inspector.form + "; cannot start more than once");
   });
 
-  this._startTime = _.defaults(when, 0);
+  this._startTime = _import2["default"].defaults(when, 0);
 };
 
-OscillatorNodeConstructor.prototype.stop = function(when) {
-  var inspector = new Inspector(this, "stop", [
-    { name: "when", type: "optional number" },
-  ]);
+OscillatorNodeConstructor.prototype.stop = function (when) {
+  var inspector = new _Inspector2["default"](this, "stop", [{ name: "when", type: "optional number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
-  inspector.assert(this._startTime !== Infinity, function() {
+  inspector.assert(this._startTime !== Infinity, function () {
     throw new Error(inspector.form + "; cannot call stop without calling start first");
   });
-  inspector.assert(this._stopTime === Infinity, function() {
+  inspector.assert(this._stopTime === Infinity, function () {
     throw new Error(inspector.form + "; cannot stop more than once");
   });
 
-  this._stopTime = _.defaults(when, 0);
+  this._stopTime = _import2["default"].defaults(when, 0);
 };
 
-OscillatorNodeConstructor.prototype.setPeriodicWave = function(periodicWave) {
-  var inspector = new Inspector(this, "setPeriodicWave", [
-    { name: "periodicWave", type: "PeriodicWave" },
-  ]);
+OscillatorNodeConstructor.prototype.setPeriodicWave = function (periodicWave) {
+  var inspector = new _Inspector2["default"](this, "setPeriodicWave", [{ name: "periodicWave", type: "PeriodicWave" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 
@@ -2005,8 +2422,8 @@ OscillatorNodeConstructor.prototype.setPeriodicWave = function(periodicWave) {
   this._custom = periodicWave;
 };
 
-OscillatorNode.prototype.$stateAtTime = function(time) {
-  time = _.toSeconds(time);
+OscillatorNode.prototype.$stateAtTime = function (time) {
+  time = _import2["default"].toSeconds(time);
 
   if (this._startTime === Infinity) {
     return "UNSCHEDULED";
@@ -2021,22 +2438,34 @@ OscillatorNode.prototype.$stateAtTime = function(time) {
   return "FINISHED";
 };
 
-OscillatorNode.prototype._process = function() {
+OscillatorNode.prototype._process = function () {
   if (!this._firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
-    this.dispatchEvent(new Event("ended", this));
+    this.dispatchEvent(new _Event2["default"]("ended", this));
     this._firedOnEnded = true;
   }
 };
 
-module.exports = WebAudioTestAPI.OscillatorNode = OscillatorNode;
-
+module.exports = _WebAudioTestAPI2["default"].OscillatorNode = OscillatorNode;
 },{"./AudioNode":7,"./AudioParam":8,"./Event":17,"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],29:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _Inspector = require("./utils/Inspector");
+
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
 
 var PanningModelType = "enum { equalpower, HRTF }";
 var DistanceModelType = "enum { linear, inverse, exponential }";
@@ -2044,17 +2473,16 @@ var DistanceModelType = "enum { linear, inverse, exponential }";
 var PannerNodeConstructor = function PannerNode() {
   throw new TypeError("Illegal constructor: use audioContext.createPanner()");
 };
-_.inherits(PannerNodeConstructor, AudioNode);
+_import2["default"].inherits(PannerNodeConstructor, _AudioNode2["default"]);
 
 function PannerNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "PannerNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 1,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "clamped-max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
   var panningModel = "HRTF";
   var distanceModel = "inverse";
@@ -2065,82 +2493,73 @@ function PannerNode(context) {
   var coneOuterAngle = 360;
   var coneOuterGain = 0;
 
-  _.defineAttribute(this, "panningModel", PanningModelType, panningModel, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "panningModel", PanningModelType, panningModel, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "distanceModel", DistanceModelType, distanceModel, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "distanceModel", DistanceModelType, distanceModel, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "refDistance", "number", refDistance, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "refDistance", "number", refDistance, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "maxDistance", "number", maxDistance, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "maxDistance", "number", maxDistance, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "rolloffFactor", "number", rolloffFactor, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "rolloffFactor", "number", rolloffFactor, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "coneInnerAngle", "number", coneInnerAngle, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "coneInnerAngle", "number", coneInnerAngle, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "coneOuterAngle", "number", coneOuterAngle, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "coneOuterAngle", "number", coneOuterAngle, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "coneOuterGain", "number", coneOuterGain, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "coneOuterGain", "number", coneOuterGain, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 }
-_.inherits(PannerNode, PannerNodeConstructor);
+_import2["default"].inherits(PannerNode, PannerNodeConstructor);
 
 PannerNode.exports = PannerNodeConstructor;
-PannerNode.jsonAttrs = [
-  "panningModel", "distanceModel", "refDistance", "maxDistance",
-  "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
-];
+PannerNode.jsonAttrs = ["panningModel", "distanceModel", "refDistance", "maxDistance", "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"];
 
-PannerNodeConstructor.prototype.setPosition = function() {
-  var inspector = new Inspector(this, "setPosition", [
-    { name: "x", type: "number" },
-    { name: "y", type: "number" },
-    { name: "z", type: "number" },
-  ]);
+PannerNodeConstructor.prototype.setPosition = function () {
+  var inspector = new _Inspector2["default"](this, "setPosition", [{ name: "x", type: "number" }, { name: "y", type: "number" }, { name: "z", type: "number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-PannerNodeConstructor.prototype.setOrientation = function() {
-  var inspector = new Inspector(this, "setOrientation", [
-    { name: "x", type: "number" },
-    { name: "y", type: "number" },
-    { name: "z", type: "number" },
-  ]);
+PannerNodeConstructor.prototype.setOrientation = function () {
+  var inspector = new _Inspector2["default"](this, "setOrientation", [{ name: "x", type: "number" }, { name: "y", type: "number" }, { name: "z", type: "number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-PannerNodeConstructor.prototype.setVelocity = function() {
-  var inspector = new Inspector(this, "setVelocity", [
-    { name: "x", type: "number" },
-    { name: "y", type: "number" },
-    { name: "z", type: "number" },
-  ]);
+PannerNodeConstructor.prototype.setVelocity = function () {
+  var inspector = new _Inspector2["default"](this, "setVelocity", [{ name: "x", type: "number" }, { name: "y", type: "number" }, { name: "z", type: "number" }]);
 
-  inspector.validateArguments(arguments, function(msg) {
+  inspector.validateArguments(arguments, function (msg) {
     throw new TypeError(inspector.form + "; " + msg);
   });
 };
 
-module.exports = WebAudioTestAPI.PannerNode = PannerNode;
-
+module.exports = _WebAudioTestAPI2["default"].PannerNode = PannerNode;
 },{"./AudioNode":7,"./WebAudioTestAPI":34,"./utils":41,"./utils/Inspector":35}],30:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
 
 var PeriodicWaveConstructor = function PeriodicWave() {
   throw new TypeError("Illegal constructor");
@@ -2150,119 +2569,139 @@ function PeriodicWave(real, imag) {
   Object.defineProperties(this, {
     $name: { value: "PeriodicWave" },
     $real: { value: real },
-    $imag: { value: imag },
-  });
+    $imag: { value: imag } });
 }
-_.inherits(PeriodicWave, PeriodicWaveConstructor);
+_import2["default"].inherits(PeriodicWave, PeriodicWaveConstructor);
 
 PeriodicWave.exports = PeriodicWaveConstructor;
 
-module.exports = WebAudioTestAPI.PeriodicWave = PeriodicWave;
-
+module.exports = _WebAudioTestAPI2["default"].PeriodicWave = PeriodicWave;
 },{"./WebAudioTestAPI":34,"./utils":41}],31:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioBuffer = require("./AudioBuffer");
-var AudioProcessingEvent = require("./AudioProcessingEvent");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
+
+var _AudioBuffer = require("./AudioBuffer");
+
+var _AudioBuffer2 = _interopRequireDefault(_AudioBuffer);
+
+var _AudioProcessingEvent = require("./AudioProcessingEvent");
+
+var _AudioProcessingEvent2 = _interopRequireDefault(_AudioProcessingEvent);
 
 var ScriptProcessorNodeConstructor = function ScriptProcessorNode() {
   throw new TypeError("Illegal constructor: use audioContext.createScriptProcessor(bufferSize: number, [numberOfInputChannels: number], [numberOfOutputChannels: number])");
 };
-_.inherits(ScriptProcessorNodeConstructor, AudioNode);
+_import2["default"].inherits(ScriptProcessorNodeConstructor, _AudioNode2["default"]);
 
 function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "ScriptProcessorNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : numberOfInputChannels,
+    numberOfInputs: 1,
+    numberOfOutputs: 1,
+    channelCount: numberOfInputChannels,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
   var onaudioprocess = null;
 
-  _.defineAttribute(this, "numberOfInputChannels", "readonly", numberOfInputChannels, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "numberOfInputChannels", "readonly", numberOfInputChannels, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "numberOfOutputChannels", "readonly", numberOfOutputChannels, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "numberOfOutputChannels", "readonly", numberOfOutputChannels, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "bufferSize", "readonly", bufferSize, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "bufferSize", "readonly", bufferSize, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "onaudioprocess", "function|null", onaudioprocess, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "onaudioprocess", "function|null", onaudioprocess, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 
   this._numSamples = 0;
 }
-_.inherits(ScriptProcessorNode, ScriptProcessorNodeConstructor);
+_import2["default"].inherits(ScriptProcessorNode, ScriptProcessorNodeConstructor);
 
 ScriptProcessorNode.exports = ScriptProcessorNodeConstructor;
 
-ScriptProcessorNode.prototype._process = function(inNumSamples) {
+ScriptProcessorNode.prototype._process = function (inNumSamples) {
   this._numSamples -= inNumSamples;
 
   if (this._numSamples <= 0) {
     this._numSamples += this.bufferSize;
 
-    var event = new AudioProcessingEvent(this);
+    var event = new _AudioProcessingEvent2["default"](this);
 
     event.playbackTime = this.context.currentTime + this.bufferSize / this.context.sampleRate;
-    event.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
-    event.outputBuffer = new AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
+    event.inputBuffer = new _AudioBuffer2["default"](this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
+    event.outputBuffer = new _AudioBuffer2["default"](this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
 
     this.dispatchEvent(event);
   }
 };
 
-module.exports = WebAudioTestAPI.ScriptProcessorNode = ScriptProcessorNode;
-
+module.exports = _WebAudioTestAPI2["default"].ScriptProcessorNode = ScriptProcessorNode;
 },{"./AudioBuffer":2,"./AudioNode":7,"./AudioProcessingEvent":9,"./WebAudioTestAPI":34,"./utils":41}],32:[function(require,module,exports){
 "use strict";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _import = require("./utils");
+
+var _import2 = _interopRequireDefault(_import);
+
+var _WebAudioTestAPI = require("./WebAudioTestAPI");
+
+var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
+
+var _AudioNode = require("./AudioNode");
+
+var _AudioNode2 = _interopRequireDefault(_AudioNode);
 
 var OverSampleType = "enum { none, 2x, 4x }";
 
 var WaveShaperNodeConstructor = function WaveShaperNode() {
   throw new TypeError("Illegal constructor: use audioContext.createWaveShaper()");
 };
-_.inherits(WaveShaperNodeConstructor, AudioNode);
+_import2["default"].inherits(WaveShaperNodeConstructor, _AudioNode2["default"]);
 
 function WaveShaperNode(context) {
-  AudioNode.call(this, context, {
+  _AudioNode2["default"].call(this, context, {
     name: "WaveShaperNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
+    numberOfInputs: 1,
+    numberOfOutputs: 1,
+    channelCount: 2,
     channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    channelInterpretation: "speakers" });
 
   var curve = null;
   var oversample = "none";
 
-  _.defineAttribute(this, "curve", "Float32Array|null", curve, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "curve", "Float32Array|null", curve, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
-  _.defineAttribute(this, "oversample", OverSampleType, oversample, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
+  _import2["default"].defineAttribute(this, "oversample", OverSampleType, oversample, function (msg) {
+    throw new TypeError(_import2["default"].formatter.concat(this, msg));
   });
 }
-_.inherits(WaveShaperNode, WaveShaperNodeConstructor);
+_import2["default"].inherits(WaveShaperNode, WaveShaperNodeConstructor);
 
 WaveShaperNode.exports = WaveShaperNodeConstructor;
-WaveShaperNode.jsonAttrs = [ "oversample" ];
+WaveShaperNode.jsonAttrs = ["oversample"];
 
-module.exports = WebAudioTestAPI.WaveShaperNode = WaveShaperNode;
-
+module.exports = _WebAudioTestAPI2["default"].WaveShaperNode = WaveShaperNode;
 },{"./AudioNode":7,"./WebAudioTestAPI":34,"./utils":41}],33:[function(require,module,exports){
 (function (global){
 "use strict";
@@ -2297,20 +2736,23 @@ WebAudioAPI.ScriptProcessorNode = global.ScriptProcessorNode;
 WebAudioAPI.WaveShaperNode = global.WaveShaperNode;
 
 module.exports = WebAudioAPI;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],34:[function(require,module,exports){
 (function (global){
 "use strict";
 
-var WebAudioAPI = require("./WebAudioAPI");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _WebAudioAPI = require("./WebAudioAPI");
+
+var _WebAudioAPI2 = _interopRequireDefault(_WebAudioAPI);
 
 var WebAudioTestAPI = {};
 
 WebAudioTestAPI.VERSION = "0.2.1";
 WebAudioTestAPI.sampleRate = 44100;
 
-WebAudioTestAPI.use = function() {
+WebAudioTestAPI.use = function () {
   global.AnalyserNode = WebAudioTestAPI.AnalyserNode.exports;
   global.AudioBuffer = WebAudioTestAPI.AudioBuffer.exports;
   global.AudioBufferSourceNode = WebAudioTestAPI.AudioBufferSourceNode.exports;
@@ -2339,93 +2781,131 @@ WebAudioTestAPI.use = function() {
   global.WaveShaperNode = WebAudioTestAPI.WaveShaperNode.exports;
 };
 
-WebAudioTestAPI.unuse = function() {
-  global.AnalyserNode = WebAudioAPI.AnalyserNode;
-  global.AudioBuffer = WebAudioAPI.AudioBuffer;
-  global.AudioBufferSourceNode = WebAudioAPI.AudioBufferSourceNode;
-  global.AudioContext = WebAudioAPI.AudioContext;
-  global.AudioDestinationNode = WebAudioAPI.AudioDestinationNode;
-  global.AudioListener = WebAudioAPI.AudioListener;
-  global.AudioNode = WebAudioAPI.AudioNode;
-  global.AudioParam = WebAudioAPI.AudioParam;
-  global.AudioProcessingEvent = WebAudioAPI.AudioProcessingEvent;
-  global.BiquadFilterNode = WebAudioAPI.BiquadFilterNode;
-  global.ChannelMergerNode = WebAudioAPI.ChannelMergerNode;
-  global.ChannelSplitterNode = WebAudioAPI.ChannelSplitterNode;
-  global.ConvolverNode = WebAudioAPI.ConvolverNode;
-  global.DelayNode = WebAudioAPI.DelayNode;
-  global.DynamicsCompressorNode = WebAudioAPI.DynamicsCompressorNode;
-  global.GainNode = WebAudioAPI.GainNode;
-  global.MediaElementAudioSourceNode = WebAudioAPI.MediaElementAudioSourceNode;
-  global.MediaStreamAudioDestinationNode = WebAudioAPI.MediaStreamAudioDestinationNode;
-  global.MediaStreamAudioSourceNode = WebAudioAPI.MediaStreamAudioSourceNode;
-  global.OfflineAudioCompletionEvent = WebAudioAPI.OfflineAudioCompletionEvent;
-  global.OfflineAudioContext = WebAudioAPI.OfflineAudioContext;
-  global.OscillatorNode = WebAudioAPI.OscillatorNode;
-  global.PannerNode = WebAudioAPI.PannerNode;
-  global.PeriodicWave = WebAudioAPI.PeriodicWave;
-  global.ScriptProcessorNode = WebAudioAPI.ScriptProcessorNode;
-  global.WaveShaperNode = WebAudioAPI.WaveShaperNode;
+WebAudioTestAPI.unuse = function () {
+  global.AnalyserNode = _WebAudioAPI2["default"].AnalyserNode;
+  global.AudioBuffer = _WebAudioAPI2["default"].AudioBuffer;
+  global.AudioBufferSourceNode = _WebAudioAPI2["default"].AudioBufferSourceNode;
+  global.AudioContext = _WebAudioAPI2["default"].AudioContext;
+  global.AudioDestinationNode = _WebAudioAPI2["default"].AudioDestinationNode;
+  global.AudioListener = _WebAudioAPI2["default"].AudioListener;
+  global.AudioNode = _WebAudioAPI2["default"].AudioNode;
+  global.AudioParam = _WebAudioAPI2["default"].AudioParam;
+  global.AudioProcessingEvent = _WebAudioAPI2["default"].AudioProcessingEvent;
+  global.BiquadFilterNode = _WebAudioAPI2["default"].BiquadFilterNode;
+  global.ChannelMergerNode = _WebAudioAPI2["default"].ChannelMergerNode;
+  global.ChannelSplitterNode = _WebAudioAPI2["default"].ChannelSplitterNode;
+  global.ConvolverNode = _WebAudioAPI2["default"].ConvolverNode;
+  global.DelayNode = _WebAudioAPI2["default"].DelayNode;
+  global.DynamicsCompressorNode = _WebAudioAPI2["default"].DynamicsCompressorNode;
+  global.GainNode = _WebAudioAPI2["default"].GainNode;
+  global.MediaElementAudioSourceNode = _WebAudioAPI2["default"].MediaElementAudioSourceNode;
+  global.MediaStreamAudioDestinationNode = _WebAudioAPI2["default"].MediaStreamAudioDestinationNode;
+  global.MediaStreamAudioSourceNode = _WebAudioAPI2["default"].MediaStreamAudioSourceNode;
+  global.OfflineAudioCompletionEvent = _WebAudioAPI2["default"].OfflineAudioCompletionEvent;
+  global.OfflineAudioContext = _WebAudioAPI2["default"].OfflineAudioContext;
+  global.OscillatorNode = _WebAudioAPI2["default"].OscillatorNode;
+  global.PannerNode = _WebAudioAPI2["default"].PannerNode;
+  global.PeriodicWave = _WebAudioAPI2["default"].PeriodicWave;
+  global.ScriptProcessorNode = _WebAudioAPI2["default"].ScriptProcessorNode;
+  global.WaveShaperNode = _WebAudioAPI2["default"].WaveShaperNode;
 };
 
 module.exports = WebAudioTestAPI;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebAudioAPI":33}],35:[function(require,module,exports){
 "use strict";
 
-var argsCheck = require("./argsCheck");
-var formatter = require("./formatter");
-var nth = require("./nth");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-function Inspector(instance, methodName, argsInfo) {
-  this.instance = instance;
-  this.argsInfo = argsInfo;
-  this.form = formatter.methodForm(instance, methodName, argsInfo);
-}
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
-Inspector.prototype.validateArguments = function(args, callback) {
-  var errIndex = argsCheck(args, this.argsInfo.map(function(info) {
-    return info.type;
-  }));
-  var msg = "";
-  if (errIndex !== -1) {
-    msg += "the " + nth(errIndex) + " argument ";
-    msg += formatter.shouldBeButGot(this.argsInfo[errIndex].type, args[errIndex]);
-    callback.call(this.instance, msg);
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _argsCheck = require("./argsCheck");
+
+var _argsCheck2 = _interopRequireDefault(_argsCheck);
+
+var _formatter = require("./formatter");
+
+var _formatter2 = _interopRequireDefault(_formatter);
+
+var _nth = require("./nth");
+
+var _nth2 = _interopRequireDefault(_nth);
+
+var Inspector = (function () {
+  function Inspector(instance, methodName, argsInfo) {
+    _classCallCheck(this, Inspector);
+
+    this.instance = instance;
+    this.argsInfo = argsInfo;
+    this.form = _formatter2["default"].methodForm(instance, methodName, argsInfo);
   }
-  this.argsInfo.forEach(function(info, index) {
-    var msg = info.validate && info.validate.call(this.instance, args[index], this.argsInfo[index].name);
-    if (msg) {
-      callback.call(this.instance, msg);
+
+  _createClass(Inspector, [{
+    key: "validateArguments",
+    value: function validateArguments(args, callback) {
+      var _this = this;
+
+      var errIndex = _argsCheck2["default"](args, this.argsInfo.map(function (info) {
+        return info.type;
+      }));
+      var msg = "";
+      if (errIndex !== -1) {
+        msg += "the " + _nth2["default"](errIndex) + " argument ";
+        msg += _formatter2["default"].shouldBeButGot(this.argsInfo[errIndex].type, args[errIndex]);
+        callback.call(this.instance, msg);
+      }
+      this.argsInfo.forEach(function (info, index) {
+        var msg = info.validate && info.validate.call(_this.instance, args[index], _this.argsInfo[index].name);
+        if (msg) {
+          callback.call(_this.instance, msg);
+        }
+      });
     }
-  }, this);
-};
+  }, {
+    key: "assert",
+    value: function assert(test, callback) {
+      if (!test) {
+        callback.call(this.instance);
+      }
+    }
+  }]);
 
-Inspector.prototype.assert = function(test, callback) {
-  if (!test) {
-    callback.call(this.instance);
-  }
-};
+  return Inspector;
+})();
 
-module.exports = Inspector;
-
+exports["default"] = Inspector;
+module.exports = exports["default"];
 },{"./argsCheck":36,"./formatter":40,"./nth":44}],36:[function(require,module,exports){
 "use strict";
 
-var typeCheck = require("./typeCheck");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = argsCheck;
+
+var _typeCheck = require("./typeCheck");
+
+var _typeCheck2 = _interopRequireDefault(_typeCheck);
 
 function argsCheck(args, types) {
-  types = types.filter(function(type, index) {
+  types = types.filter(function (type, index) {
     return !(/^optional/.test(type) && args.length <= index);
   });
 
-  types = types.map(function(type) {
+  types = types.map(function (type) {
     return type.replace(/^optional\s*/, "");
   });
 
   for (var i = 0, imax = types.length; i < imax; i++) {
-    if (!typeCheck(args[i], types[i])) {
+    if (!_typeCheck2["default"](args[i], types[i])) {
       return i;
     }
   }
@@ -2433,31 +2913,50 @@ function argsCheck(args, types) {
   return -1;
 }
 
-module.exports = argsCheck;
-
-},{"./typeCheck":49}],37:[function(require,module,exports){
+module.exports = exports["default"];
+},{"./typeCheck":50}],37:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = article;
 
 function article(str) {
-  return (/[aeiou]/i.test(str.charAt(0)) ? "an" : "a");
+  return /[aeiou]/i.test(str.charAt(0)) ? "an" : "a";
 }
 
-module.exports = article;
-
+module.exports = exports["default"];
 },{}],38:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = defaults;
 
 function defaults(value, defaultValue) {
   return typeof value !== "undefined" ? value : defaultValue;
 }
 
-module.exports = defaults;
-
+module.exports = exports["default"];
 },{}],39:[function(require,module,exports){
 "use strict";
 
-var typeCheck = require("./typeCheck");
-var formatter = require("./formatter");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = defineAttribute;
+
+var _typeCheck = require("./typeCheck");
+
+var _typeCheck2 = _interopRequireDefault(_typeCheck);
+
+var _formatter = require("./formatter");
+
+var _formatter2 = _interopRequireDefault(_formatter);
 
 function defineAttribute(instance, name, type, value, callback) {
   var spec = { enumerable: true };
@@ -2466,19 +2965,19 @@ function defineAttribute(instance, name, type, value, callback) {
     type = "readonly";
     spec.get = value;
   } else {
-    spec.get = function() {
+    spec.get = function () {
       return value;
     };
   }
 
   if (type === "readonly") {
-    spec.set = function() {
+    spec.set = function () {
       callback.call(instance, name + " is readonly");
     };
   } else {
-    spec.set = function(newValue) {
-      if (!typeCheck(newValue, type)) {
-        callback.call(instance, name + " " + formatter.shouldBeButGot(type, newValue));
+    spec.set = function (newValue) {
+      if (!_typeCheck2["default"](newValue, type)) {
+        callback.call(instance, "" + name + " " + _formatter2["default"].shouldBeButGot(type, newValue));
       } else {
         value = newValue;
       }
@@ -2488,13 +2987,23 @@ function defineAttribute(instance, name, type, value, callback) {
   Object.defineProperty(instance, name, spec);
 }
 
-module.exports = defineAttribute;
-
-},{"./formatter":40,"./typeCheck":49}],40:[function(require,module,exports){
+module.exports = exports["default"];
+},{"./formatter":40,"./typeCheck":50}],40:[function(require,module,exports){
 "use strict";
 
-var article = require("../utils/article");
-var pp = require("../utils/pp");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _article = require("../utils/article");
+
+var _article2 = _interopRequireDefault(_article);
+
+var _pp = require("../utils/pp");
+
+var _pp2 = _interopRequireDefault(_pp);
 
 function methodForm(instance, methodName, argsInfo) {
   var msg = "";
@@ -2508,7 +3017,7 @@ function methodForm(instance, methodName, argsInfo) {
     msg += methodName;
   }
   msg += "(";
-  msg += argsInfo.map(function(info) {
+  msg += argsInfo.map(function (info) {
     return info.name + ": " + info.type;
   }).join(", ");
   msg += ")";
@@ -2521,90 +3030,146 @@ function shouldBeButGot(type, value) {
 
   type = type.replace(/^optional\s*/, "").trim();
 
-  msg += "should be " + article(type) + " " + type + ", ";
-  msg += "but got: " + pp(value);
+  msg += "should be " + _article2["default"](type) + " " + type + ", ";
+  msg += "but got: " + _pp2["default"](value);
 
   return msg;
 }
 
 function concat(instance, msg) {
-  return instance.constructor.name + "#" + msg;
+  return "" + instance.constructor.name + "#" + msg;
 }
 
-module.exports = {
+exports["default"] = {
   methodForm: methodForm,
   shouldBeButGot: shouldBeButGot,
-  concat: concat
-};
-
+  concat: concat };
+module.exports = exports["default"];
 },{"../utils/article":37,"../utils/pp":45}],41:[function(require,module,exports){
 "use strict";
 
-var _ = {};
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-_.NOP = /* istanbul ignore next */ function() {};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-_.inherits = require("./inherits");
+var _inherits = require("./inherits");
 
-_.defaults = require("./defaults");
+var _inherits2 = _interopRequireDefault(_inherits);
 
-_.article = require("./article");
+var _defaults = require("./defaults");
 
-_.name = require("./name");
+var _defaults2 = _interopRequireDefault(_defaults);
 
-_.toJSON = require("./toJSON");
+var _article = require("./article");
 
-_.toMicroseconds = require("./toMicroseconds");
+var _article2 = _interopRequireDefault(_article);
 
-_.toSeconds = require("./toSeconds");
+var _name = require("./name");
 
-_.typeCheck = require("./typeCheck");
+var _name2 = _interopRequireDefault(_name);
 
-_.formatter = require("./formatter");
+var _preventSuper = require("./preventSuper");
 
-_.defineAttribute = require("./defineAttribute");
+var _preventSuper2 = _interopRequireDefault(_preventSuper);
 
-module.exports = _;
+var _toJSON = require("./toJSON");
 
-},{"./article":37,"./defaults":38,"./defineAttribute":39,"./formatter":40,"./inherits":42,"./name":43,"./toJSON":46,"./toMicroseconds":47,"./toSeconds":48,"./typeCheck":49}],42:[function(require,module,exports){
+var _toJSON2 = _interopRequireDefault(_toJSON);
+
+var _toMicroseconds = require("./toMicroseconds");
+
+var _toMicroseconds2 = _interopRequireDefault(_toMicroseconds);
+
+var _toSeconds = require("./toSeconds");
+
+var _toSeconds2 = _interopRequireDefault(_toSeconds);
+
+var _typeCheck = require("./typeCheck");
+
+var _typeCheck2 = _interopRequireDefault(_typeCheck);
+
+var _formatter = require("./formatter");
+
+var _formatter2 = _interopRequireDefault(_formatter);
+
+var _defineAttribute = require("./defineAttribute");
+
+var _defineAttribute2 = _interopRequireDefault(_defineAttribute);
+
+exports["default"] = {
+  inherits: _inherits2["default"],
+  defaults: _defaults2["default"],
+  article: _article2["default"],
+  name: _name2["default"],
+  preventSuper: _preventSuper2["default"],
+  toJSON: _toJSON2["default"],
+  toMicroseconds: _toMicroseconds2["default"],
+  toSeconds: _toSeconds2["default"],
+  typeCheck: _typeCheck2["default"],
+  formatter: _formatter2["default"],
+  defineAttribute: _defineAttribute2["default"] };
+module.exports = exports["default"];
+},{"./article":37,"./defaults":38,"./defineAttribute":39,"./formatter":40,"./inherits":42,"./name":43,"./preventSuper":46,"./toJSON":47,"./toMicroseconds":48,"./toSeconds":49,"./typeCheck":50}],42:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = inherits;
 
 function inherits(ctor, superCtor) {
   if (superCtor) {
     ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: { value: ctor, enumerable: false, writable: true, configurable: true }
-    });
+      constructor: { value: ctor, enumerable: false, writable: true, configurable: true } });
   }
 }
 
-module.exports = inherits;
-
+module.exports = exports["default"];
 },{}],43:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = name;
+
 function name(obj) {
   if (obj.hasOwnProperty("$id")) {
-    return obj.$name + "#" + obj.$id;
+    return "" + obj.$name + "#" + obj.$id;
   }
   return obj.$name;
 }
 
-module.exports = name;
-
+module.exports = exports["default"];
 },{}],44:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = nth;
+
 function nth(index) {
   index = index + 1;
-  return { 1: "1st", 2: "2nd", 3: "3rd" }[index] || (index + "th");
+  return ({ 1: "1st", 2: "2nd", 3: "3rd" })[index] || index + "th";
 }
 
-module.exports = nth;
-
+module.exports = exports["default"];
 },{}],45:[function(require,module,exports){
 "use strict";
 
-var article = require("./article");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = pp;
+
+var _article = require("./article");
+
+var _article2 = _interopRequireDefault(_article);
 
 function pp(value) {
   if (!value) {
@@ -2624,23 +3189,50 @@ function pp(value) {
     return "[ " + value.map(pp).join(", ") + " ]";
   }
 
-  if (value.constructor === {}.constructor) {
-    return "{ " + Object.keys(value).map(function(key) {
+  if (value.constructor === ({}).constructor) {
+    return "{ " + Object.keys(value).map(function (key) {
       return key + ": " + pp(value[key]);
     }).join(", ") + "}";
   }
 
   var name = value.constructor.name || Object.prototype.toString.call(value).slice(8, -1);
 
-  return article(name) + " " + name;
+  return "" + _article2["default"](name) + " " + name;
 }
 
-module.exports = pp;
-
+module.exports = exports["default"];
 },{"./article":37}],46:[function(require,module,exports){
 "use strict";
 
-var name = require("./name");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = preventSuper;
+
+function preventSuper(superClass) {
+  if (!superClass) {
+    superClass = function () {};
+  }
+  function ctor() {}
+  ctor.prototype = Object.create(superClass.prototype, {
+    constructor: { value: ctor, enumerable: false, writable: true, configurable: true } });
+  return ctor;
+}
+
+module.exports = exports["default"];
+},{}],47:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = toJSON;
+
+var _name = require("./name");
+
+var _name2 = _interopRequireDefault(_name);
 
 function toJSON(node, func, memo) {
   var result;
@@ -2648,7 +3240,7 @@ function toJSON(node, func, memo) {
   memo = memo || [];
 
   if (memo.indexOf(node) !== -1) {
-    return "<circular:" + name(node) + ">";
+    return "<circular:" + _name2["default"](node) + ">";
   }
   memo.push(node);
 
@@ -2659,11 +3251,14 @@ function toJSON(node, func, memo) {
   return result;
 }
 
-module.exports = toJSON;
-
-},{"./name":43}],47:[function(require,module,exports){
+module.exports = exports["default"];
+},{"./name":43}],48:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = toMicroseconds;
 var MIN_VALUE = 0;
 var MAX_VALUE = 24 * 60 * 60 * 1000 * 1000;
 
@@ -2682,7 +3277,7 @@ function toMicroseconds(time) {
     value *= 60;
     value += +matches[2]; // seconds
     value *= 1000;
-    value += +matches[3];  // milliseconds
+    value += +matches[3]; // milliseconds
     value *= 1000;
     return Math.max(MIN_VALUE, Math.min(value, MAX_VALUE));
   }
@@ -2690,35 +3285,46 @@ function toMicroseconds(time) {
   return value;
 }
 
-module.exports = toMicroseconds;
-
-},{}],48:[function(require,module,exports){
+module.exports = exports["default"];
+},{}],49:[function(require,module,exports){
 "use strict";
 
-var toMicroseconds = require("./toMicroseconds");
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = toSeconds;
+
+var _toMicroseconds = require("./toMicroseconds");
+
+var _toMicroseconds2 = _interopRequireDefault(_toMicroseconds);
 
 function toSeconds(time) {
-  return toMicroseconds(time) / (1000 * 1000);
+  return _toMicroseconds2["default"](time) / (1000 * 1000);
 }
 
-module.exports = toSeconds;
-
-},{"./toMicroseconds":47}],49:[function(require,module,exports){
+module.exports = exports["default"];
+},{"./toMicroseconds":48}],50:[function(require,module,exports){
 (function (global){
 "use strict";
 
-function typeCheck(value, type) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = typeCheck;
+function _typeCheck(value, type) {
   switch (type) {
-  case "boolean":
-    return typeof value === "boolean";
-  case "function":
-    return typeof value === "function";
-  case "number":
-    return typeof value === "number" && !isNaN(value);
-  case "string":
-    return typeof value === "string";
-  case "null":
-    return value === null;
+    case "boolean":
+      return typeof value === "boolean";
+    case "function":
+      return typeof value === "function";
+    case "number":
+      return typeof value === "number" && !isNaN(value);
+    case "string":
+      return typeof value === "string";
+    case "null":
+      return value === null;
   }
 
   if (/[A-Z]/.test(type.charAt(0)) && typeof global[type] === "function") {
@@ -2727,7 +3333,7 @@ function typeCheck(value, type) {
 
   var matches = /^enum\s*{(.*?)}$/.exec(type);
   if (matches) {
-    return enumCheck(value, matches[1].split(",").map(function(item) {
+    return enumCheck(value, matches[1].split(",").map(function (item) {
       return item.trim();
     }));
   }
@@ -2736,7 +3342,7 @@ function typeCheck(value, type) {
 }
 
 function enumCheck(value, items) {
-  return items.some(function(item) {
+  return items.some(function (item) {
     if (/^\d+$/.test(item)) {
       return value === +item;
     }
@@ -2744,18 +3350,19 @@ function enumCheck(value, items) {
   });
 }
 
-module.exports = function(value, type) {
-  return type.split("|").some(function(type) {
-    return typeCheck(value, type.trim());
+function typeCheck(value, type) {
+  return type.split("|").some(function (type) {
+    return _typeCheck(value, type.trim());
   });
-};
+}
 
+module.exports = exports["default"];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 (function (global){
+/* istanbul ignore else */
 "use strict";
 
-/* istanbul ignore else */
 if (!global.WEB_AUDIO_TEST_API_IGNORE) {
   require("./AudioContext");
   require("./OfflineAudioContext");
@@ -2766,6 +3373,5 @@ if (!global.WEB_AUDIO_TEST_API_IGNORE) {
 
   module.exports = global.WebAudioTestAPI = WebAudioTestAPI;
 }
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioContext":4,"./OfflineAudioContext":27,"./WebAudioTestAPI":34}]},{},[50]);
+},{"./AudioContext":4,"./OfflineAudioContext":27,"./WebAudioTestAPI":34}]},{},[51]);

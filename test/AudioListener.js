@@ -1,5 +1,3 @@
-"use strict";
-
 describe("AudioListener", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
@@ -10,12 +8,12 @@ describe("AudioListener", function() {
 
   describe("constructor", function() {
     it("()", function() {
-      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+      var listener = audioContext.listener;
 
       assert(listener instanceof global.AudioListener);
 
       assert.throws(function() {
-        global.AudioListener();
+        return new global.AudioListener();
       }, function(e) {
         return e instanceof TypeError && /Illegal constructor/.test(e.message);
       });
@@ -24,7 +22,7 @@ describe("AudioListener", function() {
 
   describe("#dopplerFactor", function() {
     it("get/set: number", function() {
-      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+      var listener = audioContext.listener;
 
       assert(typeof listener.dopplerFactor === "number");
 
@@ -44,7 +42,7 @@ describe("AudioListener", function() {
 
   describe("#speedOfSound", function() {
     it("get/set: number", function() {
-      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+      var listener = audioContext.listener;
 
       assert(typeof listener.speedOfSound === "number");
 
@@ -64,7 +62,7 @@ describe("AudioListener", function() {
 
   describe("#setPosition", function() {
     it("(x: number, y: number, z: number): void", function() {
-      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+      var listener = audioContext.listener;
 
       listener.setPosition(0, 0, 0);
 
@@ -92,7 +90,7 @@ describe("AudioListener", function() {
 
   describe("#setOrientation", function() {
     it("(x: number, y: number, z: number, xUp: number, yUp: number, zUp: number): void", function() {
-      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+      var listener = audioContext.listener;
 
       listener.setOrientation(0, 0, 0, 0, 0, 0);
 
@@ -138,7 +136,7 @@ describe("AudioListener", function() {
 
   describe("#setVelocity", function() {
     it("(x: number, y: number, z: number): void", function() {
-      var listener = new WebAudioTestAPI.AudioListener(audioContext);
+      var listener = audioContext.listener;
 
       listener.setVelocity(0, 0, 0);
 
@@ -161,6 +159,22 @@ describe("AudioListener", function() {
       });
 
       assert(listener.setVelocity === global.AudioListener.prototype.setVelocity);
+    });
+  });
+
+  describe("#$name", function() {
+    it("get: string", function() {
+      var listener = audioContext.listener;
+
+      assert(listener.$name === "AudioListener");
+    });
+  });
+
+  describe("#$context", function() {
+    it("get: AudioContext", function() {
+      var listener = audioContext.listener;
+
+      assert(listener.$context === audioContext);
     });
   });
 

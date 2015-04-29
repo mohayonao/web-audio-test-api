@@ -1,19 +1,12 @@
-"use strict";
+import * as util from "./util";
+import Element from "./Element";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var Element = require("./Element");
-
-/* istanbul ignore else */
-if (typeof global.HTMLElement === "undefined") {
-  global.HTMLElement = function HTMLElement() {
+global.HTMLElement = global.HTMLElement || class HTMLElement extends Element {
+  constructor() {
+    super();
     throw new TypeError("Illegal constructor");
-  };
-  _.inherits(global.HTMLElement, Element);
-}
+  }
+};
 
-function HTMLElement() {
+export default class HTMLElement extends util.preventSuperCall(global.HTMLElement) {
 }
-_.inherits(HTMLElement, global.HTMLElement);
-
-module.exports = WebAudioTestAPI.HTMLElement = HTMLElement;

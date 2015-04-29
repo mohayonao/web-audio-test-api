@@ -1,26 +1,25 @@
-"use strict";
+import * as util from "./util";
+import AudioNode from "./AudioNode";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+export default class ChannelMergerNode extends AudioNode {
+  constructor(admission, context, numberOfInputs) {
+    super(admission, {
+      name: "ChannelMergerNode",
+      context: context,
+      numberOfInputs: numberOfInputs,
+      numberOfOutputs: 1,
+      channelCount: 2,
+      channelCountMode: "max",
+      channelInterpretation: "speakers",
+    });
 
-var ChannelMergerNodeConstructor = function ChannelMergerNode() {
-  throw new TypeError("Illegal constructor: use audioContext.createChannelMerger([numberOfInputs: number])");
-};
-_.inherits(ChannelMergerNodeConstructor, AudioNode);
-
-function ChannelMergerNode(context, numberOfInputs) {
-  AudioNode.call(this, context, {
-    name: "ChannelMergerNode",
-    numberOfInputs  : numberOfInputs,
-    numberOfOutputs : 1,
-    channelCount    : 2,
-    channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    this._.inspector.describe("constructor", (assert) => {
+      assert(util.isPositiveInteger(numberOfInputs), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(numberOfInputs, "numberOfInputs", "positive integer")}
+        `);
+      });
+    });
+  }
 }
-_.inherits(ChannelMergerNode, ChannelMergerNodeConstructor);
-
-ChannelMergerNode.exports = ChannelMergerNodeConstructor;
-
-module.exports = WebAudioTestAPI.ChannelMergerNode = ChannelMergerNode;

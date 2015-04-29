@@ -1,72 +1,135 @@
-"use strict";
+import * as util from "./util";
+import Inspector from "./util/Inspector";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+export default class AudioBuffer {
+  constructor(admission, context, numberOfChannels, length, sampleRate) {
+    util.immigration.check(admission, () => {
+      throw new TypeError("Illegal constructor");
+    });
 
-var AudioBufferConstructor = function AudioBuffer() {
-  throw new TypeError("Illegal constructor: use audioContext.createBuffer(numberOfChannels: number, length: number, sampleRate: number)");
-};
+    Object.defineProperty(this, "_", {
+      value: {
+        inspector: new Inspector(this),
+      },
+    });
 
-function AudioBuffer(context, numberOfChannels, length, sampleRate) {
-  _.defineAttribute(this, "sampleRate", "readonly", sampleRate, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "length", "readonly", length, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "duration", "readonly", length / sampleRate, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "numberOfChannels", "readonly", numberOfChannels, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+    this._.inspector.describe("constructor", (assert) => {
+      assert(util.isPositiveInteger(numberOfChannels), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(numberOfChannels, "numberOfChannels", "positive integer")}
+        `);
+      });
 
-  Object.defineProperties(this, {
-    $name   : { value: "AudioBuffer" },
-    $context: { value: context }
-  });
+      assert(util.isPositiveInteger(length), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(length, "length", "positive integer")}
+        `);
+      });
 
-  this._data = new Array(numberOfChannels);
-  for (var i = 0; i < numberOfChannels; i++) {
-    this._data[i] = new Float32Array(length);
+      assert(util.isPositiveInteger(sampleRate), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(sampleRate, "sampleRate", "positive integer")}
+        `);
+      });
+    });
+
+    this._.context = context;
+    this._.numberOfChannels = numberOfChannels;
+    this._.length = length;
+    this._.sampleRate = sampleRate;
+    this._.data = new Array(numberOfChannels);
+
+    for (let i = 0; i < numberOfChannels; i++) {
+      this._.data[i] = new Float32Array(length);
+    }
   }
-}
-_.inherits(AudioBuffer, AudioBufferConstructor);
 
-AudioBuffer.exports = AudioBufferConstructor;
+  get sampleRate() {
+    return this._.sampleRate;
+  }
 
-AudioBufferConstructor.prototype.getChannelData = function(channel) {
-  var inspector = new Inspector(this, "getChannelData", [
-    { name: "channel", type: "number" }
-  ]);
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-  inspector.assert(0 <= channel && channel < this._data.length, function() {
-    throw new TypeError(
-      inspector.form + "; channel index (" + channel + ") exceeds number of channels (#{" + this._data.length + "})"
-    );
-  });
-  return this._data[channel];
-};
-
-AudioBuffer.prototype.toJSON = function() {
-  var json = {
-    name: this.$name,
-    sampleRate: this.sampleRate,
-    length: this.length,
-    duration: this.duration,
-    numberOfChannels: this.numberOfChannels
-  };
-
-  if (this.$context.VERBOSE_JSON) {
-    json.data = this._data.map(function(data) {
-      return Array.prototype.slice.call(data);
+  set sampleRate(value) {
+    this._.inspector.describe("sampleRate", (assert) => {
+      assert.throwReadOnlyTypeError(value);
     });
   }
 
-  return json;
-};
+  get length() {
+    return this._.length;
+  }
 
-module.exports = WebAudioTestAPI.AudioBuffer = AudioBuffer;
+  set length(value) {
+    this._.inspector.describe("length", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get duration() {
+    return this.length / this.sampleRate;
+  }
+
+  set duration(value) {
+    this._.inspector.describe("duration", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get numberOfChannels() {
+    return this._.numberOfChannels;
+  }
+
+  set numberOfChannels(value) {
+    this._.inspector.describe("numberOfChannels", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get $name() {
+    return "AudioBuffer";
+  }
+
+  get $context() {
+    return this._.context;
+  }
+
+  getChannelData(channel) {
+    this._.inspector.describe("getChannelData", (assert) => {
+      assert(util.isPositiveInteger(channel), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(channel, "channel", "positive integer")}
+        `);
+      });
+
+      assert(channel < this._.data.length, (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          channel index (${channel}) exceeds number of channels (${this._.data.length})
+        `);
+      });
+    });
+
+    return this._.data[channel];
+  };
+
+  toJSON() {
+    let json = {
+      name: this.$name,
+      sampleRate: this.sampleRate,
+      length: this.length,
+      duration: this.duration,
+      numberOfChannels: this.numberOfChannels,
+    };
+
+    if (this.$context.VERBOSE_JSON) {
+      json.data = this._.data.map((data) => {
+        return Array.prototype.slice.call(data);
+      });
+    }
+
+    return json;
+  }
+}
