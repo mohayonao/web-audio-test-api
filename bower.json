@@ -13,6 +13,7 @@
     "src",
     "test",
     "coverage",
+    "package.json",
     "index.html"
   ],
   "keywords": [
@@ -20,5 +21,9 @@
     "test"
   ],
   "license": "MIT",
-  "main": "build/web-audio-test-api.js"
+  "main": "build/web-audio-test-api.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mohayonao/web-audio-test-api.git"
+  }
 }

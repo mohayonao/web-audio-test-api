@@ -1,0 +1,15 @@
+{
+  "globals": {
+    "describe": true,
+    "context": true,
+    "it": true,
+    "before": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "after": true,
+    "assert": true,
+    "sinon": true,
+    "_": true,
+    "closeTo": true
+  }
+}
