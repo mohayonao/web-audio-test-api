@@ -1,7 +1,7 @@
 {
   "name": "web-audio-test-api",
   "description": "Web Audio API test library for CI",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "authors": [
     "Nao Yonamine <mohayonao@gmail.com>"
   ],
@@ -13,6 +13,7 @@
     "src",
     "test",
     "coverage",
+    "package.json",
     "index.html"
   ],
   "keywords": [
@@ -20,5 +21,9 @@
     "test"
   ],
   "license": "MIT",
-  "main": "build/web-audio-test-api.js"
+  "main": "build/web-audio-test-api.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mohayonao/web-audio-test-api.git"
+  }
 }

@@ -1,38 +1,50 @@
-"use strict";
+import * as util from "./util";
+import AudioNode from "./AudioNode";
+import AudioParam from "./AudioParam";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioParam = require("./AudioParam");
+export default class DelayNode extends AudioNode {
+  constructor(admission, context, maxDelayTime) {
+    super(admission, {
+      name: "DelayNode",
+      context: context,
+      numberOfInputs: 1,
+      numberOfOutputs: 1,
+      channelCount: 2,
+      channelCountMode: "max",
+      channelInterpretation: "speakers",
+    });
 
-var DelayNodeConstructor = function DelayNode() {
-  throw new TypeError("Illegal constructor: use audioContext.createDelay([maxDelayTime: number])");
-};
-_.inherits(DelayNodeConstructor, AudioNode);
+    this._.inspector.describe("constructor", (assert) => {
+      assert(util.isPositiveNumber(maxDelayTime), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(maxDelayTime, "maxDelayTime", "positive number")}
+        `);
+      });
+    });
 
-function DelayNode(context, maxDelayTime) {
-  AudioNode.call(this, context, {
-    name: "DelayNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
-    channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+    this._.delayTime = util.immigration.apply(admission =>
+      new AudioParam(admission, this, "delayTime", 0, 0, maxDelayTime)
+    );
+    this._.maxDelayTime = maxDelayTime;
+    this._.JSONKeys = DelayNode.$JSONKeys.slice();
+  }
 
-  var delayTime = new AudioParam(this, "delayTime", 0, 0, maxDelayTime);
+  get delayTime() {
+    return this._.delayTime;
+  }
 
-  _.defineAttribute(this, "delayTime", "readonly", delayTime, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+  set delayTime(value) {
+    this._.inspector.describe("delayTime", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
 
-  Object.defineProperties(this, {
-    $maxDelayTime: { value: maxDelayTime }
-  });
+  get $maxDelayTime() {
+    return this._.maxDelayTime;
+  }
 }
-_.inherits(DelayNode, DelayNodeConstructor);
 
-DelayNode.exports = DelayNodeConstructor;
-DelayNode.jsonAttrs = [ "delayTime"　];
-
-module.exports = WebAudioTestAPI.DelayNode = DelayNode;
+DelayNode.$JSONKeys = [
+  "delayTime",
+];

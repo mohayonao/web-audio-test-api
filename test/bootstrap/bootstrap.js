@@ -1,20 +1,7 @@
-"use strict";
-
 global.assert = require("power-assert");
 global.sinon = require("sinon");
+global.closeTo = (actual, expected, delta) => Math.abs(actual - expected) <= delta;
 global.window = global;
+global._ = require("lodash");
 
-global.closeTo = function(actual, expected, delta) {
-  return Math.abs(actual - expected) <= delta;
-};
-
-global.WEB_AUDIO_TEST_API_VERSION = require("../../package").version;
-
-require("espower-loader")({
-  cwd: process.cwd(),
-  pattern: "test/**/*.js"
-});
-
-global._  = require("underscore");
-
-require("../../");
+require("../../src");

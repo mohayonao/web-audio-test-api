@@ -1,61 +1,101 @@
-"use strict";
+import * as util from "./util";
+import Enumerator from "./util/Enumerator";
+import AudioNode from "./AudioNode";
+import AudioBuffer from "./AudioBuffer";
+import AudioProcessingEvent from "./AudioProcessingEvent";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioBuffer = require("./AudioBuffer");
-var AudioProcessingEvent = require("./AudioProcessingEvent");
+export default class ScriptProcessorNode extends AudioNode {
+  constructor(admission, context, bufferSize, numberOfInputChannels = 2, numberOfOutputChannels = 2) {
+    super(admission, {
+      name: "ScriptProcessorNode",
+      context: context,
+      numberOfInputs: 1,
+      numberOfOutputs: 1,
+      channelCount: numberOfInputChannels,
+      channelCountMode: "max",
+      channelInterpretation: "speakers",
+    });
 
-var ScriptProcessorNodeConstructor = function ScriptProcessorNode() {
-  throw new TypeError("Illegal constructor: use audioContext.createScriptProcessor(bufferSize: number, [numberOfInputChannels: number], [numberOfOutputChannels: number])");
-};
-_.inherits(ScriptProcessorNodeConstructor, AudioNode);
+    this._.inspector.describe("constructor", (assert) => {
+      let enumBufferSize = new Enumerator([
+        256, 512, 1024, 2048, 4096, 8192, 16384,
+      ]);
 
-function ScriptProcessorNode(context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-  AudioNode.call(this, context, {
-    name: "ScriptProcessorNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : numberOfInputChannels,
-    channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+      assert(enumBufferSize.contains(bufferSize), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(bufferSize, "bufferSize", enumBufferSize.toString())}
+        `);
+      });
 
-  var onaudioprocess = null;
+      assert(util.isPositiveInteger(numberOfInputChannels), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(numberOfInputChannels, "numberOfInputChannels", "positive integer")}
+        `);
+      });
 
-  _.defineAttribute(this, "numberOfInputChannels", "readonly", numberOfInputChannels, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "numberOfOutputChannels", "readonly", numberOfOutputChannels, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "bufferSize", "readonly", bufferSize, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "onaudioprocess", "function|null", onaudioprocess, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+      assert(util.isPositiveInteger(numberOfOutputChannels), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(numberOfOutputChannels, "numberOfOutputChannels", "positive integer")}
+        `);
+      });
+    });
 
-  this._numSamples = 0;
-}
-_.inherits(ScriptProcessorNode, ScriptProcessorNodeConstructor);
-
-ScriptProcessorNode.exports = ScriptProcessorNodeConstructor;
-
-ScriptProcessorNode.prototype._process = function(inNumSamples) {
-  this._numSamples -= inNumSamples;
-
-  if (this._numSamples <= 0) {
-    this._numSamples += this.bufferSize;
-
-    var event = new AudioProcessingEvent(this);
-
-    event.playbackTime = this.context.currentTime + this.bufferSize / this.context.sampleRate;
-    event.inputBuffer = new AudioBuffer(this.context, this.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
-    event.outputBuffer = new AudioBuffer(this.context, this.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
-
-    this.dispatchEvent(event);
+    this._.bufferSize = bufferSize;
+    this._.onaudioprocess = null;
+    this._.numberOfInputChannels = numberOfInputChannels;
+    this._.numberOfOutputChannels = numberOfOutputChannels;
+    this._.numSamples = 0;
   }
-};
 
-module.exports = WebAudioTestAPI.ScriptProcessorNode = ScriptProcessorNode;
+  get bufferSize() {
+    return this._.bufferSize;
+  }
+
+  set bufferSize(value) {
+    this._.inspector.describe("bufferSize", (assert) => {
+      assert.throwReadOnlyTypeError(value, "bufferSize");
+    });
+  }
+
+  get onaudioprocess() {
+    return this._.onaudioprocess;
+  }
+
+  set onaudioprocess(value) {
+    this._.inspector.describe("onaudioprocess", (assert) => {
+      assert(util.isNullOrFunction(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "onaudioprocess", "function")}
+        `);
+      });
+    });
+
+    this._.onaudioprocess = value;
+  }
+
+  _process(inNumSamples) {
+    this._.numSamples -= inNumSamples;
+
+    if (this._.numSamples <= 0) {
+      this._.numSamples += this.bufferSize;
+
+      let event = util.immigration.apply(admission =>
+        new AudioProcessingEvent(admission, this)
+      );
+
+      event.playbackTime = this.context.currentTime + this.bufferSize / this.context.sampleRate;
+      event.inputBuffer = util.immigration.apply(admission =>
+        new AudioBuffer(admission, this.context, this._.numberOfInputChannels, this.bufferSize, this.context.sampleRate)
+      );
+      event.outputBuffer = util.immigration.apply(admission =>
+        new AudioBuffer(admission, this.context, this._.numberOfOutputChannels, this.bufferSize, this.context.sampleRate)
+      );
+
+      this.dispatchEvent(event);
+    }
+  }
+}

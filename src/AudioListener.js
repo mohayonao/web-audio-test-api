@@ -1,70 +1,158 @@
-"use strict";
+import * as util from "./util";
+import Inspector from "./util/Inspector";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+export default class AudioListener {
+  constructor(admission, context) {
+    Object.defineProperty(this, "_", {
+      value: {
+        inspector: new Inspector(this),
+      },
+    });
 
-var AudioListenerConstructor = function AudioListener() {
-  throw new TypeError("Illegal constructor");
-};
+    this._.context = context;
+    this._.dopplerFactor = 1;
+    this._.speedOfSound = 343.3;
 
-function AudioListener(context) {
-  var dopplerFactor = 1;
-  var speedOfSound = 343.3;
+    util.immigration.check(admission, () => {
+      throw new TypeError("Illegal constructor");
+    });
+  }
 
-  _.defineAttribute(this, "dopplerFactor", "number", dopplerFactor, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "speedOfSound", "number", speedOfSound, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+  get dopplerFactor() {
+    return this._.dopplerFactor;
+  }
 
-  Object.defineProperties(this, {
-    $name   : { value: "AudioListener" },
-    $context: { value: context }
-  });
+  set dopplerFactor(value) {
+    this._.inspector.describe("dopplerFactor", (assert) => {
+      assert(util.isNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "dopplerFactor", "number")}
+        `);
+      });
+    });
+
+    this._.dopplerFactor = value;
+  }
+
+  get speedOfSound() {
+    return this._.speedOfSound;
+  }
+
+  set speedOfSound(value) {
+    this._.inspector.describe("speedOfSound", (assert) => {
+      assert(util.isNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "speedOfSound", "number")}
+        `);
+      });
+    });
+
+    this._.speedOfSound = value;
+  }
+
+  get $name() {
+    return "AudioListener";
+  }
+
+  get $context() {
+    return this._.context;
+  }
+
+  setPosition(x, y, z) {
+    this._.inspector.describe("setPosition", (assert) => {
+      assert(util.isNumber(x), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(x, "x", "number")}
+        `);
+      });
+
+      assert(util.isNumber(y), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(y, "y", "number")}
+        `);
+      });
+
+      assert(util.isNumber(z), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(z, "z", "number")}
+        `);
+      });
+    });
+  }
+
+  setOrientation(x, y, z, xUp, yUp, zUp) {
+    this._.inspector.describe("setOrientation", (assert) => {
+      assert(util.isNumber(x), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(x, "x", "number")}
+        `);
+      });
+
+      assert(util.isNumber(y), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(y, "y", "number")}
+        `);
+      });
+
+      assert(util.isNumber(z), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(z, "z", "number")}
+        `);
+      });
+
+      assert(util.isNumber(xUp), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(xUp, "xUp", "number")}
+        `);
+      });
+
+      assert(util.isNumber(yUp), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(yUp, "yUp", "number")}
+        `);
+      });
+
+      assert(util.isNumber(zUp), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(zUp, "zUp", "number")}
+        `);
+      });
+    });
+  }
+
+  setVelocity(x, y, z) {
+    this._.inspector.describe("setVelocity", (assert) => {
+      assert(util.isNumber(x), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(x, "x", "number")}
+        `);
+      });
+
+      assert(util.isNumber(y), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(y, "y", "number")}
+        `);
+      });
+
+      assert(util.isNumber(z), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(z, "z", "number")}
+        `);
+      });
+    });
+  }
 }
-_.inherits(AudioListener, AudioListenerConstructor);
-
-AudioListener.exports = AudioListenerConstructor;
-
-AudioListenerConstructor.prototype.setPosition = function() {
-  var inspector = new Inspector(this, "setPosition", [
-    { name: "x", type: "number" },
-    { name: "y", type: "number" },
-    { name: "z", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-};
-
-AudioListenerConstructor.prototype.setOrientation = function() {
-  var inspector = new Inspector(this, "setOrientation", [
-    { name: "x"  , type: "number" },
-    { name: "y"  , type: "number" },
-    { name: "z"  , type: "number" },
-    { name: "xUp", type: "number" },
-    { name: "yUp", type: "number" },
-    { name: "zUp", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-};
-
-AudioListenerConstructor.prototype.setVelocity = function() {
-  var inspector = new Inspector(this, "setVelocity", [
-    { name: "x", type: "number" },
-    { name: "y", type: "number" },
-    { name: "z", type: "number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-};
-
-module.exports = WebAudioTestAPI.AudioListener = AudioListener;

@@ -1,54 +1,106 @@
-"use strict";
+import * as util from "./util";
+import AudioNode from "./AudioNode";
+import AudioParam from "./AudioParam";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioParam = require("./AudioParam");
+export default class DynamicsCompressorNode extends AudioNode {
+  constructor(admission, context) {
+    super(admission, {
+      name: "DynamicsCompressorNode",
+      context: context,
+      numberOfInputs: 1,
+      numberOfOutputs: 1,
+      channelCount: 2,
+      channelCountMode: "explicit",
+      channelInterpretation: "speakers",
+    });
 
-var DynamicsCompressorNodeConstructor = function DynamicsCompressorNode() {
-  throw new TypeError("Illegal constructor: use audioContext.createDynamicsCompressor()");
-};
-_.inherits(DynamicsCompressorNodeConstructor, AudioNode);
+    this._.threshold = util.immigration.apply(admission =>
+      new AudioParam(admission, this, "threshold", -24, -100, 0)
+    );
+    this._.knee = util.immigration.apply(admission =>
+      new AudioParam(admission, this, "knee", 30, 0, 40)
+    );
+    this._.ratio = util.immigration.apply(admission =>
+      new AudioParam(admission, this, "ratio", 12, 1, 20)
+    );
+    this._.reduction = util.immigration.apply(admission =>
+      new AudioParam(admission, this, "reduction", 0, -20, 0)
+    );
+    this._.attack = util.immigration.apply(admission =>
+      new AudioParam(admission, this, "attack", 0.003, 0, 1.0)
+    );
+    this._.release = util.immigration.apply(admission =>
+      new AudioParam(admission, this, "release", 0.250, 0, 1.0)
+    );
+    this._.JSONKeys = DynamicsCompressorNode.$JSONKeys.slice();
+  }
 
-function DynamicsCompressorNode(context) {
-  AudioNode.call(this, context, {
-    name: "DynamicsCompressorNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
-    channelCountMode: "explicit",
-    channelInterpretation: "speakers"
-  });
+  get threshold() {
+    return this._.threshold;
+  }
 
-  var threshold = new AudioParam(this, "threshold", -24, -100, 0);
-  var knee = new AudioParam(this, "knee", 30, 0, 40);
-  var ratio = new AudioParam(this, "ratio", 12, 1, 20);
-  var reduction = new AudioParam(this, "reduction", 0, -20, 0);
-  var attack = new AudioParam(this, "attack", 0.003, 0, 1.0);
-  var release = new AudioParam(this, "release", 0.250, 0, 1.0);
+  set threshold(value) {
+    this._.inspector.describe("threshold", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
 
-  _.defineAttribute(this, "threshold", "readonly", threshold, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "knee", "readonly", knee, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "ratio", "readonly", ratio, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "reduction", "readonly", reduction, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "attack", "readonly", attack, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "release", "readonly", release, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+  get knee() {
+    return this._.knee;
+  }
+
+  set knee(value) {
+    this._.inspector.describe("knee", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get ratio() {
+    return this._.ratio;
+  }
+
+  set ratio(value) {
+    this._.inspector.describe("ratio", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get reduction() {
+    return this._.reduction;
+  }
+
+  set reduction(value) {
+    this._.inspector.describe("reduction", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get attack() {
+    return this._.attack;
+  }
+
+  set attack(value) {
+    this._.inspector.describe("attack", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get release() {
+    return this._.release;
+  }
+
+  set release(value) {
+    this._.inspector.describe("release", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
 }
-_.inherits(DynamicsCompressorNode, DynamicsCompressorNodeConstructor);
 
-DynamicsCompressorNode.exports = DynamicsCompressorNodeConstructor;
-DynamicsCompressorNode.jsonAttrs = [ "threshold", "knee", "ratio", "reduction", "attack", "release" ];
-
-module.exports = WebAudioTestAPI.DynamicsCompressorNode = DynamicsCompressorNode;
+DynamicsCompressorNode.$JSONKeys = [
+  "threshold",
+  "knee",
+  "ratio",
+  "reduction",
+  "attack",
+  "release",
+];

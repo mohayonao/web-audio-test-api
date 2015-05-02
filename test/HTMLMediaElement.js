@@ -1,5 +1,3 @@
-"use strict";
-
 describe("HTMLMediaElement", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
 
@@ -7,13 +5,13 @@ describe("HTMLMediaElement", function() {
     it("()", function() {
       var element = new WebAudioTestAPI.HTMLMediaElement();
 
-      assert(element instanceof global.HTMLMediaElement);
-      assert(element instanceof global.HTMLElement);
+      assert(element instanceof global.window.HTMLMediaElement);
+      assert(element instanceof global.window.HTMLElement);
 
       assert.throws(function() {
-        global.HTMLMediaElement();
+        return new global.HTMLMediaElement();
       }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
+        return e instanceof TypeError;
       });
     });
   });

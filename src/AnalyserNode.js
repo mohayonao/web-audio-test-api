@@ -1,82 +1,146 @@
-"use strict";
+import * as util from "./util";
+import Enumerator from "./util/Enumerator";
+import AudioNode from "./AudioNode";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
+export default class AnalyserNode extends AudioNode {
+  constructor(admission, context) {
+    super(admission, {
+      name: "AnalyserNode",
+      context: context,
+      numberOfInputs: 1,
+      numberOfOutputs: 1,
+      channelCount: 1,
+      channelCountMode: "explicit",
+      channelInterpretation: "speakers",
+    });
 
-var FFTSize = "enum { 32, 64, 128, 256, 512, 1024, 2048 }";
+    this._.fftSize = 2048;
+    this._.minDecibels = -100;
+    this._.maxDecibels = 30;
+    this._.smoothingTimeConstant = 0.8;
+    this._.JSONKeys = AnalyserNode.$JSONKeys.slice();
+  }
 
-var AnalyserNodeConstructor = function AnalyserNode() {
-  throw new TypeError("Illegal constructor: use audioContext.createAnalyser()");
-};
-_.inherits(AnalyserNodeConstructor, AudioNode);
+  get fftSize() {
+    return this._.fftSize;
+  }
 
-function AnalyserNode(context) {
-  AudioNode.call(this, context, {
-    name: "AnalyserNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 1,
-    channelCountMode: "explicit",
-    channelInterpretation: "speakers"
-  });
+  set fftSize(value) {
+    this._.inspector.describe("fftSize", (assert) => {
+      let enumFFTSize = new Enumerator([
+        32, 64, 128, 256, 512, 1024, 2048,
+      ]);
 
-  var fftSize = 2048;
-  var frequencyBinCount = function() { return this.fftSize >> 1; };
-  var minDecibels = -100;
-  var maxDecibels = 30;
-  var smoothingTimeConstant = 0.8;
+      assert(enumFFTSize.contains(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "fftSize", enumFFTSize.toString())}
+        `);
+      });
+    });
 
-  _.defineAttribute(this, "fftSize", FFTSize, fftSize, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "frequencyBinCount", "readonly", frequencyBinCount, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "minDecibels", "number", minDecibels, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "maxDecibels", "number", maxDecibels, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "smoothingTimeConstant", "number", smoothingTimeConstant, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+    this._.fftSize = value;
+  }
+
+  get frequencyBinCount() {
+    return this.fftSize >> 1;
+  }
+
+  set frequencyBinCount(value) {
+    this._.inspector.describe("frequencyBinCount", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get minDecibels() {
+    return this._.minDecibels;
+  }
+
+  set minDecibels(value) {
+    this._.inspector.describe("minDecibels", (assert) => {
+      assert(util.isNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "minDecibels", "number")}
+        `);
+      });
+    });
+
+    this._.minDecibels = value;
+  }
+
+  get maxDecibels() {
+    return this._.maxDecibels;
+  }
+
+  set maxDecibels(value) {
+    this._.inspector.describe("maxDecibels", (assert) => {
+      assert(util.isNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "maxDecibels", "number")}
+        `);
+      });
+    });
+
+    this._.maxDecibels = value;
+  }
+
+  get smoothingTimeConstant() {
+    return this._.smoothingTimeConstant;
+  }
+
+  set smoothingTimeConstant(value) {
+    this._.inspector.describe("smoothingTimeConstant", (assert) => {
+      assert(util.isNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "smoothingTimeConstant", "number")}
+        `);
+      });
+    });
+
+    this._.smoothingTimeConstant = value;
+  }
+
+  getFloatFrequencyData(array) {
+    this._.inspector.describe("getFloatFrequencyData", (assert) => {
+      assert(util.isInstanceOf(array, Float32Array), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(array, "array", "Float32Array")}
+        `);
+      });
+    });
+
+  }
+
+  getByteFrequencyData(array) {
+    this._.inspector.describe("getByteFrequencyData", (assert) => {
+      assert(util.isInstanceOf(array, Uint8Array), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(array, "array", "Uint8Array")}
+        `);
+      });
+    });
+  }
+
+  getByteTimeDomainData(array) {
+    this._.inspector.describe("getByteTimeDomainData", (assert) => {
+      assert(util.isInstanceOf(array, Uint8Array), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(array, "array", "Uint8Array")}
+        `);
+      });
+    });
+  }
 }
-_.inherits(AnalyserNode, AnalyserNodeConstructor);
 
-AnalyserNode.exports = AnalyserNodeConstructor;
-AnalyserNode.jsonAttrs = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
-
-AnalyserNodeConstructor.prototype.getFloatFrequencyData = function() {
-  var inspector = new Inspector(this, "getFloatFrequencyData", [
-    { name: "array", type: "Float32Array" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-};
-
-AnalyserNodeConstructor.prototype.getByteFrequencyData = function() {
-  var inspector = new Inspector(this, "getByteFrequencyData", [
-    { name: "array", type: "Uint8Array" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-};
-
-AnalyserNodeConstructor.prototype.getByteTimeDomainData = function() {
-  var inspector = new Inspector(this, "getByteTimeDomainData", [
-    { name: "array", type: "Uint8Array" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-};
-
-module.exports = WebAudioTestAPI.AnalyserNode = AnalyserNode;
+AnalyserNode.$JSONKeys = [
+  "fftSize",
+  "minDecibels",
+  "maxDecibels",
+  "smoothingTimeConstant",
+];

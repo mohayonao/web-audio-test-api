@@ -1,18 +1,31 @@
-"use strict";
+import * as util from "./util";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
+global.Event = global.Event || class Event {
+  constructor() {
+    throw new TypeError("Illegal constructor");
+  }
+};
 
-function Event(name, target) {
-  this.type = name;
-  this.target = _.defaults(target, null);
-  this.timeStamp = Date.now();
+export default class Event extends util.preventSuperCall(global.Event) {
+  constructor(name, target) {
+    super();
+
+    Object.defineProperty(this, "_", { value: {} });
+
+    this._.type = name;
+    this._.target = util.defaults(target, null);
+    this._.timeStamp = Date.now();
+  }
+
+  get type() {
+    return this._.type;
+  }
+
+  get target() {
+    return this._.target;
+  }
+
+  get timestamp() {
+    return this._.timestamp;
+  }
 }
-_.inherits(Event, global.Event);
-
-/* istanbul ignore else */
-if (typeof global.Event === "undefined") {
-  global.Event = Event;
-}
-
-module.exports = WebAudioTestAPI.Event = Event;

@@ -1,5 +1,3 @@
-"use strict";
-
 describe("WaveShaperNode", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
@@ -10,13 +8,13 @@ describe("WaveShaperNode", function() {
 
   describe("constructor", function() {
     it("()", function() {
-      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
+      var node = audioContext.createWaveShaper();
 
       assert(node instanceof global.WaveShaperNode);
       assert(node instanceof global.AudioNode);
 
       assert.throws(function() {
-        global.WaveShaperNode();
+        return new global.WaveShaperNode();
       }, function(e) {
         return e instanceof TypeError && /Illegal constructor/.test(e.message);
       });
@@ -25,7 +23,7 @@ describe("WaveShaperNode", function() {
 
   describe("#curve", function() {
     it("get/set: Float32Array", function() {
-      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
+      var node = audioContext.createWaveShaper();
       var f32a = new Float32Array(128);
       var f32b = new Float32Array(128);
 
@@ -50,7 +48,7 @@ describe("WaveShaperNode", function() {
 
   describe("#oversample", function() {
     it("get/set: OverSampleType", function() {
-      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
+      var node = audioContext.createWaveShaper();
 
       assert(typeof node.oversample === "string");
 
@@ -73,13 +71,29 @@ describe("WaveShaperNode", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = new WebAudioTestAPI.WaveShaperNode(audioContext);
+      var node = audioContext.createWaveShaper();
 
       assert.deepEqual(node.toJSON(), {
         name: "WaveShaperNode",
         oversample: "none",
-        inputs: []
+        inputs: [],
       });
+    });
+  });
+
+  describe("#$name", function() {
+    it("get: string", function() {
+      var node = audioContext.createWaveShaper();
+
+      assert(node.$name === "WaveShaperNode");
+    });
+  });
+
+  describe("#$context", function() {
+    it("get: AudioContext", function() {
+      var node = audioContext.createWaveShaper();
+
+      assert(node.$context === audioContext);
     });
   });
 

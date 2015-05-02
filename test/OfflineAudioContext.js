@@ -1,5 +1,3 @@
-"use strict";
-
 describe("OfflineAudioContext", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
@@ -14,27 +12,21 @@ describe("OfflineAudioContext", function() {
       assert(audioContext instanceof global.AudioContext);
 
       assert.throws(function() {
-        WebAudioTestAPI.OfflineAudioContext();
+        audioContext = new WebAudioTestAPI.OfflineAudioContext(2.5, 441, 44100);
       }, function(e) {
-        return e instanceof TypeError && /Failed to construct/.test(e.message);
+        return e instanceof TypeError && /should be a positive integer/.test(e.message);
       });
 
       assert.throws(function() {
-        audioContext = new WebAudioTestAPI.OfflineAudioContext("INVALID", 441, 44100);
+        audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441.5, 44100);
       }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
+        return e instanceof TypeError && /should be a positive integer/.test(e.message);
       });
 
       assert.throws(function() {
-        audioContext = new WebAudioTestAPI.OfflineAudioContext(2, "INVALID", 44100);
+        audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441, 44100.5);
       }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
-
-      assert.throws(function() {
-        audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
+        return e instanceof TypeError && /should be a positive integer/.test(e.message);
       });
     });
   });
@@ -122,6 +114,18 @@ describe("OfflineAudioContext", function() {
     });
   });
 
+  describe("#$name", function() {
+    it("get: string", function() {
+      assert(audioContext.$name === "OfflineAudioContext");
+    });
+  });
+
+  describe("#$context", function() {
+    it("get: AudioContext", function() {
+      assert(audioContext.$context === audioContext);
+    });
+  });
+
   describe("works", function() {
     it("oncomplete", function() {
       var oncomplete = sinon.spy();
@@ -145,7 +149,7 @@ describe("OfflineAudioContext", function() {
       assert(event instanceof WebAudioTestAPI.OfflineAudioCompletionEvent);
       assert(event.renderedBuffer instanceof WebAudioTestAPI.AudioBuffer);
       assert(event.type === "complete");
-      assert(event.target = audioContext);
+      assert(event.target === audioContext);
     });
     it("oncomplete (without startRendering)", function() {
       var oncomplete = sinon.spy();

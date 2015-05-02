@@ -1,34 +1,36 @@
-"use strict";
+import * as util from "./util";
+import AudioNode from "./AudioNode";
+import AudioParam from "./AudioParam";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioParam = require("./AudioParam");
+export default class GainNode extends AudioNode {
+  constructor(admission, context) {
+    super(admission, {
+      name: "GainNode",
+      context: context,
+      numberOfInputs: 1,
+      numberOfOutputs: 1,
+      channelCount: 2,
+      channelCountMode: "max",
+      channelInterpretation: "speakers",
+    });
 
-var GainNodeConstructor = function GainNode() {
-  throw new TypeError("Illegal constructor: use audioContext.createGain()");
-};
-_.inherits(GainNodeConstructor, AudioNode);
+    this._.gain = util.immigration.apply(admission =>
+      new AudioParam(admission, this, "gain", 1.0, 0.0, 1.0)
+    );
+    this._.JSONKeys = GainNode.$JSONKeys.slice();
+  }
 
-function GainNode(context) {
-  AudioNode.call(this, context, {
-    name: "GainNode",
-    numberOfInputs  : 1,
-    numberOfOutputs : 1,
-    channelCount    : 2,
-    channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+  get gain() {
+    return this._.gain;
+  }
 
-  var gain = new AudioParam(this, "gain", 1.0, 0.0, 1.0);
-
-  _.defineAttribute(this, "gain", "readonly", gain, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+  set gain(value) {
+    this._.inspector.describe("gain", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
 }
-_.inherits(GainNode, GainNodeConstructor);
 
-GainNode.exports = GainNodeConstructor;
-GainNode.jsonAttrs = [ "gain"　];
-
-module.exports = WebAudioTestAPI.GainNode = GainNode;
+GainNode.$JSONKeys = [
+  "gain",
+];

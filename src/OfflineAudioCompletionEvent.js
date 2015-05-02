@@ -1,23 +1,22 @@
-"use strict";
+import * as util from "./util";
+import Event from "./Event";
 
-var _ = require("./utils");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var Event = require("./Event");
+export default class OfflineAudioCompletionEvent extends Event {
+  constructor(admission, node) {
+    super("complete", node);
 
-var OfflineAudioCompletionEventConstructor = function OfflineAudioCompletionEvent() {
-  throw new TypeError("Illegal constructor");
-};
-_.inherits(OfflineAudioCompletionEventConstructor, Event);
+    util.immigration.check(admission, () => {
+      throw new TypeError("Illegal constructor");
+    });
 
-function OfflineAudioCompletionEvent(node) {
-  Event.call(this, "complete", node);
-  Object.defineProperties(this, {
-    $name: { value: "OfflineAudioCompletionEvent" },
-    $node: { value: node }
-  });
+    this._.node = node;
+  }
+
+  get $name() {
+    return "OfflineAudioCompletionEvent";
+  }
+
+  get $node() {
+    return this._.node;
+  }
 }
-_.inherits(OfflineAudioCompletionEvent, OfflineAudioCompletionEventConstructor);
-
-OfflineAudioCompletionEvent.exports = OfflineAudioCompletionEventConstructor;
-
-module.exports = WebAudioTestAPI.OfflineAudioCompletionEvent = OfflineAudioCompletionEvent;

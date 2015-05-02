@@ -1,132 +1,229 @@
-"use strict";
+import * as util from "./util";
+import AudioNode from "./AudioNode";
+import AudioParam from "./AudioParam";
+import Event from "./Event";
 
-var _ = require("./utils");
-var Inspector = require("./utils/Inspector");
-var WebAudioTestAPI = require("./WebAudioTestAPI");
-var AudioNode = require("./AudioNode");
-var AudioParam = require("./AudioParam");
-var Event = require("./Event");
+export default class AudioBufferSourceNode extends AudioNode {
+  constructor(admission, context) {
+    super(admission, {
+      name: "AudioBufferSourceNode",
+      context: context,
+      numberOfInputs: 0,
+      numberOfOutputs: 1,
+      channelCount: 2,
+      channelCountMode: "max",
+      channelInterpretation: "speakers",
+    });
 
-var AudioBufferSourceNodeConstructor = function AudioBufferSourceNode() {
-  throw new TypeError("Illegal constructor: use audioContext.createBufferSource()");
-};
-_.inherits(AudioBufferSourceNodeConstructor, AudioNode);
+    this._.buffer = null;
+    this._.playbackRate = util.immigration.apply(admission =>
+      new AudioParam(admission, this, "playbackRate", 1, 0, 1024)
+    );
+    this._.loop = false;
+    this._.loopStart = 0;
+    this._.loopEnd = 0;
+    this._.onended = null;
+    this._.startTime = Infinity;
+    this._.stopTime  = Infinity;
+    this._.firedOnEnded = false;
+    this._.JSONKeys = AudioBufferSourceNode.$JSONKeys.slice();
+  }
 
-function AudioBufferSourceNode(context) {
-  AudioNode.call(this, context, {
-    name: "AudioBufferSourceNode",
-    numberOfInputs  : 0,
-    numberOfOutputs : 1,
-    channelCount    : 2,
-    channelCountMode: "max",
-    channelInterpretation: "speakers"
-  });
+  get buffer() {
+    return this._.buffer;
+  }
 
-  var buffer = null;
-  var playbackRate = new AudioParam(this, "playbackRate", 1, 0, 1024);
-  var loop = false;
-  var loopStart = 0;
-  var loopEnd = 0;
-  var onended = null;
+  set buffer(value) {
+    this._.inspector.describe("buffer", (assert) => {
+      assert(util.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "buffer", "AudioBuffer")}
+        `);
+      });
+    });
 
-  _.defineAttribute(this, "buffer", "AudioBuffer|null", buffer, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "playbackRate", "readonly", playbackRate, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "loop", "boolean", loop, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "loopStart", "number", loopStart, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "loopEnd", "number", loopEnd, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
-  _.defineAttribute(this, "onended", "function|null", onended, function(msg) {
-    throw new TypeError(_.formatter.concat(this, msg));
-  });
+    this._.buffer = value;
+  }
 
-  Object.defineProperties(this, {
-    $state: {
-      get: function() {
-        return this.$stateAtTime(this.context.currentTime);
-      }
+  get playbackRate() {
+    return this._.playbackRate;
+  }
+
+  set playbackRate(value) {
+    this._.inspector.describe("playbackRate", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get loop() {
+    return this._.loop;
+  }
+
+  set loop(value) {
+    this._.inspector.describe("loop", (assert) => {
+      assert(util.isBoolean(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "loop", "boolean")}
+        `);
+      });
+    });
+
+    this._.loop = value;
+  }
+
+  get loopStart() {
+    return this._.loopStart;
+  }
+
+  set loopStart(value) {
+    this._.inspector.describe("loopStart", (assert) => {
+      assert(util.isPositiveNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "loopStart", "positive number")}
+        `);
+      });
+    });
+
+    this._.loopStart = value;
+  }
+
+  get loopEnd() {
+    return this._.loopEnd;
+  }
+
+  set loopEnd(value) {
+    this._.inspector.describe("loopEnd", (assert) => {
+      assert(util.isPositiveNumber(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "loopEnd", "positive number")}
+        `);
+      });
+    });
+
+    this._.loopEnd = value;
+  }
+
+  get onended() {
+    return this._.onended;
+  }
+
+  set onended(value) {
+    this._.inspector.describe("onended", (assert) => {
+      assert(util.isNullOrFunction(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "onended", "function")}
+        `);
+      });
+    });
+
+    this._.onended = value;
+  }
+
+  get $state() {
+    return this.$stateAtTime(this.context.currentTime);
+  }
+
+  start(when = 0, offset = 0, duration = 0) {
+    this._.inspector.describe("start", [ "when", "offset", "duration" ], (assert) => {
+      assert(util.isPositiveNumber(when), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(when, "when", "positive number")}
+        `);
+      });
+
+      assert(util.isPositiveNumber(offset), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(offset, "offset", "positive number")}
+        `);
+      });
+
+      assert(util.isPositiveNumber(duration), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(duration, "duration", "positive number")}
+        `);
+      });
+
+      assert(this._.startTime === Infinity, (fmt) => {
+        throw new Error(fmt.plain `
+          ${fmt.form};
+          cannot start more than once
+        `);
+      });
+    });
+
+    this._.startTime = when;
+  }
+
+  stop(when = 0) {
+    this._.inspector.describe("stop", [ "when" ], (assert) => {
+      assert(util.isPositiveNumber(when), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(when, "when", "positive number")}
+        `);
+      });
+
+      assert(this._.startTime !== Infinity, (fmt) => {
+        throw new Error(fmt.plain `
+          ${fmt.form};
+          cannot call stop without calling start first
+        `);
+      });
+
+      assert(this._.stopTime === Infinity, (fmt) => {
+        throw new Error(fmt.plain `
+          ${fmt.form};
+          cannot stop more than once
+        `);
+      });
+    });
+
+    this._.stopTime = when;
+  }
+
+  $stateAtTime(time) {
+    time = util.toSeconds(time);
+
+    if (this._.startTime === Infinity) {
+      return "UNSCHEDULED";
     }
-  });
+    if (time < this._.startTime) {
+      return "SCHEDULED";
+    }
 
-  this._startTime = Infinity;
-  this._stopTime  = Infinity;
-  this._firedOnEnded = false;
+    let stopTime = this._.stopTime;
+
+    if (!this.loop && this.buffer) {
+      stopTime = Math.min(stopTime, this._.startTime + this.buffer.duration);
+    }
+
+    if (time < stopTime) {
+      return "PLAYING";
+    }
+
+    return "FINISHED";
+  }
+
+  _process() {
+    if (!this._.firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
+      this.dispatchEvent(new Event("ended", this));
+      this._.firedOnEnded = true;
+    }
+  }
 }
-_.inherits(AudioBufferSourceNode, AudioBufferSourceNodeConstructor);
 
-AudioBufferSourceNode.exports = AudioBufferSourceNodeConstructor;
-AudioBufferSourceNode.jsonAttrs = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
-
-AudioBufferSourceNodeConstructor.prototype.start = function(when) {
-  var inspector = new Inspector(this, "start", [
-    { name: "when", type: "optional number" },
-    { name: "offset", type: "optional number" },
-    { name: "duration", type: "optional number" },
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-  inspector.assert(this._startTime === Infinity, function() {
-    throw new Error(inspector.form + "; cannot start more than once");
-  });
-
-  this._startTime = _.defaults(when, 0);
-};
-
-AudioBufferSourceNodeConstructor.prototype.stop = function(when) {
-  var inspector = new Inspector(this, "stop", [
-    { name: "when", type: "optional number" }
-  ]);
-
-  inspector.validateArguments(arguments, function(msg) {
-    throw new TypeError(inspector.form + "; " + msg);
-  });
-  inspector.assert(this._startTime !== Infinity, function() {
-    throw new Error(inspector.form + "; cannot call stop without calling start first");
-  });
-  inspector.assert(this._stopTime === Infinity, function() {
-    throw new Error(inspector.form + "; cannot stop more than once");
-  });
-
-  this._stopTime = when;
-};
-
-AudioBufferSourceNode.prototype.$stateAtTime = function(time) {
-  time = _.toSeconds(time);
-
-  if (this._startTime === Infinity) {
-    return "UNSCHEDULED";
-  }
-  if (time < this._startTime) {
-    return "SCHEDULED";
-  }
-
-  var stopTime = this._stopTime;
-  if (!this.loop && this.buffer) {
-    stopTime = Math.min(stopTime, this._startTime + this.buffer.duration);
-  }
-
-  if (time < stopTime) {
-    return "PLAYING";
-  }
-
-  return "FINISHED";
-};
-
-AudioBufferSourceNode.prototype._process = function() {
-  if (!this._firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
-    this.dispatchEvent(new Event("ended", this));
-    this._firedOnEnded = true;
-  }
-};
-
-module.exports = WebAudioTestAPI.AudioBufferSourceNode = AudioBufferSourceNode;
+AudioBufferSourceNode.$JSONKeys = [
+  "buffer",
+  "playbackRate",
+  "loop",
+  "loopStart",
+  "loopEnd",
+];
