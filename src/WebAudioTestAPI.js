@@ -32,6 +32,7 @@ import OscillatorNode from "./OscillatorNode";
 import PannerNode from "./PannerNode";
 import PeriodicWave from "./PeriodicWave";
 import ScriptProcessorNode from "./ScriptProcessorNode";
+import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
 
 let sampleRate = 44100;
@@ -71,6 +72,7 @@ let WebAudioTestAPI = {
   PannerNode,
   PeriodicWave,
   ScriptProcessorNode,
+  StereoPannerNode,
   WaveShaperNode,
   use() {
     global.AnalyserNode = WebAudioTestAPI.AnalyserNode;
@@ -98,6 +100,7 @@ let WebAudioTestAPI = {
     global.PannerNode = WebAudioTestAPI.PannerNode;
     global.PeriodicWave = WebAudioTestAPI.PeriodicWave;
     global.ScriptProcessorNode = WebAudioTestAPI.ScriptProcessorNode;
+    global.StereoPannerNode = WebAudioTestAPI.StereoPannerNode;
     global.WaveShaperNode = WebAudioTestAPI.WaveShaperNode;
     global.WebAudioTestAPI = WebAudioTestAPI;
   },
@@ -127,6 +130,7 @@ let WebAudioTestAPI = {
     global.PannerNode = WebAudioAPI.PannerNode;
     global.PeriodicWave = WebAudioAPI.PeriodicWave;
     global.ScriptProcessorNode = WebAudioAPI.ScriptProcessorNode;
+    global.StereoPannerNode = WebAudioTestAPI.StereoPannerNode;
     global.WaveShaperNode = WebAudioAPI.WaveShaperNode;
   },
 };
