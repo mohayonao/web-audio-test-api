@@ -41,7 +41,7 @@ export function isNumber(value) {
 }
 
 export function isInteger(value) {
-  return isNumber(value) && (value === (value|0));
+  return isNumber(value) && (value === (value | 0));
 }
 
 export function isPositiveNumber(value) {

@@ -46,7 +46,7 @@ function setCurveValue(v, t, t0, t1, curve) {
     return util.defaults(curve[curve.length - 1], v);
   }
 
-  return util.defaults(curve[(curve.length * dt)|0], v);
+  return util.defaults(curve[(curve.length * dt) | 0], v);
 }
 
 export default class AudioParam {
