@@ -340,7 +340,7 @@ describe("AudioBufferSourceNode", function() {
   describe("works", function() {
     it("onended", function() {
       var node = audioContext.createBufferSource();
-      var buf = audioContext.createBuffer(1, (44100 * 0.025)|0, 44100);
+      var buf = audioContext.createBuffer(1, (44100 * 0.025) | 0, 44100);
       var onended = sinon.spy();
       var event;
 
@@ -395,7 +395,7 @@ describe("AudioBufferSourceNode", function() {
     });
     it("onended (auto stop)", function() {
       var node = audioContext.createBufferSource();
-      var buf = audioContext.createBuffer(1, (44100 * 0.025)|0, 44100);
+      var buf = audioContext.createBuffer(1, (44100 * 0.025) | 0, 44100);
       var onended = sinon.spy();
       var event;
 

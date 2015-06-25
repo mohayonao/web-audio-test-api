@@ -362,7 +362,7 @@ describe("AudioContext", function() {
       var amp = audioContext.createGain();
       var osc = audioContext.createOscillator();
       var bufSrc = audioContext.createBufferSource();
-      var buf = audioContext.createBuffer(1, (44100 * 0.025)|0, 44100);
+      var buf = audioContext.createBuffer(1, (44100 * 0.025) | 0, 44100);
       var onended = sinon.spy();
       var event;
 
