@@ -19,6 +19,7 @@ import OscillatorNode from "./OscillatorNode";
 import PannerNode from "./PannerNode";
 import PeriodicWave from "./PeriodicWave";
 import ScriptProcessorNode from "./ScriptProcessorNode";
+import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
 
 export default class AudioContext extends EventTarget {
@@ -193,6 +194,12 @@ export default class AudioContext extends EventTarget {
   createPanner() {
     return util.immigration.apply(admission =>
       new PannerNode(admission, this)
+    );
+  };
+
+  createStereoPanner() {
+    return util.immigration.apply(admission =>
+      new StereoPannerNode(admission, this)
     );
   };
 
