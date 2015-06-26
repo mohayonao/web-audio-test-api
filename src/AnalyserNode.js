@@ -126,6 +126,23 @@ export default class AnalyserNode extends AudioNode {
     });
   }
 
+  getFloatTimeDomainData(array) {
+    this._.inspector.describe("getFloatTimeDomainData", (assert) => {
+      assert(util.configuration.getState("AnalyserNode#getFloatTimeDomainData") === "enabled", (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          not enabled
+        `);
+      });
+      assert(util.isInstanceOf(array, Float32Array), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(array, "array", "Float32Array")}
+        `);
+      });
+    });
+  }
+
   getByteTimeDomainData(array) {
     this._.inspector.describe("getByteTimeDomainData", (assert) => {
       assert(util.isInstanceOf(array, Uint8Array), (fmt) => {

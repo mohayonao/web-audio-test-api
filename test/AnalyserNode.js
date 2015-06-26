@@ -175,6 +175,36 @@ describe("AnalyserNode", function() {
     });
   });
 
+  describe("#getFloatTimeDomainData", function() {
+    it("(array: Float32Array): void", function() {
+      var node = audioContext.createAnalyser();
+      var f32 = new Float32Array(128);
+      var i16 = new Int16Array(128);
+
+      assert.throws(function() {
+        node.getFloatTimeDomainData(f32);
+      }, function(e) {
+        return e instanceof TypeError && /not enabled/.test(e.message);
+      });
+
+      WebAudioTestAPI.setState("AnalyserNode#getFloatTimeDomainData", "enabled");
+
+      assert.doesNotThrow(function() {
+        node.getFloatTimeDomainData(f32);
+      });
+
+      assert.throws(function() {
+        node.getFloatFrequencyData(i16);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
+
+      WebAudioTestAPI.setState("AnalyserNode#getFloatTimeDomainData", "disabled");
+
+      assert(node.getFloatTimeDomainData === global.AnalyserNode.prototype.getFloatTimeDomainData);
+    });
+  });
+
   describe("#getByteTimeDomainData", function() {
     it("(array: Uint8Array): void", function() {
       var node = audioContext.createAnalyser();
