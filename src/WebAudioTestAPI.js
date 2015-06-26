@@ -72,6 +72,12 @@ let WebAudioTestAPI = {
   PeriodicWave,
   ScriptProcessorNode,
   WaveShaperNode,
+  getState(name) {
+    return util.configuration.getState(name);
+  },
+  setState(name, value) {
+    util.configuration.setState(name, value);
+  },
   use() {
     global.AnalyserNode = WebAudioTestAPI.AnalyserNode;
     global.AudioBuffer = WebAudioTestAPI.AudioBuffer;
