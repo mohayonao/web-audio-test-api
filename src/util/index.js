@@ -1,3 +1,4 @@
+import Configuration from "./Configuration";
 import Immigration from "./Immigration";
 import VERSION from "../VERSION";
 
@@ -146,5 +147,7 @@ export function toMicroseconds(time) {
 export function toSeconds(time) {
   return toMicroseconds(time) / (1000 * 1000);
 }
+
+export let configuration = new Configuration();
 
 export let immigration = new Immigration();

@@ -6,8 +6,8 @@
   "rules": {
     // possible errors
     "comma-dangle": [ 2, "always-multiline" ],
-    "no-cond-assign": [ 2, "expect-parens" ],
-    "no-console": 2,
+    "no-cond-assign": 2,
+    "no-console": 0,
     "no-extra-boolean-cast": 0,
 
     // best practice
@@ -28,6 +28,8 @@
     "comma-spacing": 0,
     "key-spacing": 0,
     "no-underscore-dangle": 0,
-    "quotes": [ 2, "double", "avoid-escape" ]
+    "no-use-before-define": 0,
+    "quotes": [ 2, "double", "avoid-escape" ],
+    "space-infix-ops": [ 2, { "int32Hint": true } ]
   }
 }

@@ -247,6 +247,26 @@ audioContext.decodeAudioData(audioData, function(result) {
 });
 ```
 
+- NEW API
+
+```javascript
+WebAudioTestAPI.setState({
+  "AudioContext#createStereoPanner": "enabled",
+});
+
+var audioContext = new AudioContext();
+
+var node = audioContext.createStereoPanner();
+
+console.log(WebAudioTestAPI.getState("AudioContext#createStereoPanner")); // "enabled"
+```
+
+| API                                   | states                      |
+|---------------------------------------|-----------------------------|
+| `AnalyserNode#getFloatTimeDomainData` | "enabled" or **"disabled"** |
+| `AudioContext#createStereoPanner`     | "enabled" or **"disabled"** |
+
+
 ## License
 
 web-audio-test-api.js is available under the The MIT License.
