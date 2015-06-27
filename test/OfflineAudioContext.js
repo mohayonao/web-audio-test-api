@@ -80,12 +80,36 @@ describe("OfflineAudioContext", function() {
   });
 
   describe("#startRendering", function() {
-    it("(): void", function() {
-      audioContext.startRendering();
-
-      assert.throws(function() {
+    describe("promise-based", function() {
+      before(function() {
+        WebAudioTestAPI.setState("OfflineAudioContext#startRendering", "promise");
+      });
+      after(function() {
+        WebAudioTestAPI.setState("OfflineAudioContext#startRendering", "void");
+      });
+      it("(): Promise<AudioBuffer>", function() {
+        return Promise.resolve().then(function() {
+          setTimeout(function() {
+            audioContext.$processTo("00:00.100");
+          }, 0);
+          return audioContext.startRendering();
+        }).then(function(buffer) {
+          assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
+        }).then(function() {
+          return audioContext.startRendering();
+        }).catch(function(e) {
+          return e instanceof Error && /cannot call startRendering more than once/.test(e.message);
+        });
+      });
+    });
+    describe("void-based", function() {
+      it("(): void", function() {
         audioContext.startRendering();
-      }, Error);
+
+        assert.throws(function() {
+          audioContext.startRendering();
+        }, Error);
+      });
     });
   });
 

@@ -35,6 +35,7 @@ export default class OfflineAudioContext extends AudioContext {
     this._.numberOfChannels = numberOfChannels;
     this._.length = length;
     this._.rendering = false;
+    this._.resolve = null;
   }
 
   get oncomplete() {
@@ -59,16 +60,30 @@ export default class OfflineAudioContext extends AudioContext {
   }
 
   startRendering() {
-    this._.inspector.describe("startRendering", (assert) => {
-      assert(!this._.rendering, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          must only be called one time
-        `);
+    let isPromiseBased = util.configuration.getState("OfflineAudioContext#startRendering") === "promise";
+    let rendering = this._.rendering;
+
+    function assertion() {
+      this._.inspector.describe("startRendering", (assert) => {
+        assert(!rendering, (fmt) => {
+          throw new Error(fmt.plain `
+            ${fmt.form};
+            cannot call startRendering more than once
+          `);
+        });
       });
-    });
+    }
 
     this._.rendering = true;
+
+    if (isPromiseBased) {
+      return new Promise((resolve) => {
+        assertion.call(this);
+        this._.resolve = resolve;
+      });
+    }
+
+    assertion.call(this);
   }
 
   _process(microseconds) {
@@ -94,15 +109,20 @@ export default class OfflineAudioContext extends AudioContext {
     }
 
     if (this._.length <= this._.processedSamples) {
+      let renderedBuffer = util.immigration.apply(admission =>
+        new AudioBuffer(admission, this, this._.numberOfChannels, this._.length, this.sampleRate)
+      );
       let event = util.immigration.apply(admission =>
         new OfflineAudioCompletionEvent(admission, this)
       );
 
-      event.renderedBuffer = util.immigration.apply(admission =>
-        new AudioBuffer(admission, this, this._.numberOfChannels, this._.length, this.sampleRate)
-      );
+      event.renderedBuffer = renderedBuffer;
 
       this.dispatchEvent(event);
+      if (this._.resolve !== null) {
+        this._.resolve(renderedBuffer);
+        this._.resolve = null;
+      }
     }
   }
 }
