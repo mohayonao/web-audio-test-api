@@ -1,11 +1,13 @@
-import * as util from "./util";
+import Immigration from "./utils/Immigration";
 import Event from "./Event";
+
+let immigration = Immigration.getInstance();
 
 export default class OfflineAudioCompletionEvent extends Event {
   constructor(admission, node) {
     super("complete", node);
 
-    util.immigration.check(admission, () => {
+    immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
 

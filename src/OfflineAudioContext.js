@@ -1,28 +1,33 @@
-import * as util from "./util";
+import utils from "./utils";
+import Configuration from "./utils/Configuration";
+import Immigration from "./utils/Immigration";
 import AudioContext from "./AudioContext";
 import AudioBuffer from "./AudioBuffer";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
+
+let configuration = Configuration.getInstance();
+let immigration = Immigration.getInstance();
 
 export default class OfflineAudioContext extends AudioContext {
   constructor(numberOfChannels, length, sampleRate) {
     super();
 
     this._.inspector.describe("constructor", (assert) => {
-      assert(util.isPositiveInteger(numberOfChannels), (fmt) => {
+      assert(utils.isPositiveInteger(numberOfChannels), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfChannels, "numberOfChannels", "positive integer")}
         `);
       });
 
-      assert(util.isPositiveInteger(length), (fmt) => {
+      assert(utils.isPositiveInteger(length), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(length, "length", "positive integer")}
         `);
       });
 
-      assert(util.isPositiveInteger(sampleRate), (fmt) => {
+      assert(utils.isPositiveInteger(sampleRate), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(sampleRate, "sampleRate", "positive integer")}
@@ -44,7 +49,7 @@ export default class OfflineAudioContext extends AudioContext {
 
   set oncomplete(value) {
     this._.inspector.describe("oncomplete", (assert) => {
-      assert(util.isNullOrFunction(value), (fmt) => {
+      assert(utils.isNullOrFunction(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "value", "function")}
@@ -60,7 +65,7 @@ export default class OfflineAudioContext extends AudioContext {
   }
 
   startRendering() {
-    let isPromiseBased = util.configuration.getState("OfflineAudioContext#startRendering") === "promise";
+    let isPromiseBased = configuration.getState("OfflineAudioContext#startRendering") === "promise";
     let rendering = this._.rendering;
 
     function assertion() {
@@ -109,10 +114,10 @@ export default class OfflineAudioContext extends AudioContext {
     }
 
     if (this._.length <= this._.processedSamples) {
-      let renderedBuffer = util.immigration.apply(admission =>
+      let renderedBuffer = immigration.apply(admission =>
         new AudioBuffer(admission, this, this._.numberOfChannels, this._.length, this.sampleRate)
       );
-      let event = util.immigration.apply(admission =>
+      let event = immigration.apply(admission =>
         new OfflineAudioCompletionEvent(admission, this)
       );
 

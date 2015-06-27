@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import Configuration from "../../src/util/Configuration";
+import Configuration from "../../src/utils/Configuration";
 
 describe("Configuration", () => {
   describe("constructor", () => {
@@ -7,6 +7,17 @@ describe("Configuration", () => {
       let configuration = new Configuration();
 
       assert(configuration instanceof Configuration);
+    });
+  });
+
+  describe(".getInstance", () => {
+    it("(): Configuration", () => {
+      let configuration1 = Configuration.getInstance();
+      let configuration2 = Configuration.getInstance();
+
+      assert(configuration1 instanceof Configuration);
+      assert(configuration2 instanceof Configuration);
+      assert(configuration1 === configuration2);
     });
   });
 

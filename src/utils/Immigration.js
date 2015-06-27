@@ -1,6 +1,15 @@
+let instance = null;
+
 export default class Immigration {
   constructor() {
     this._admissions = [];
+  }
+
+  static getInstance() {
+    if (instance === null) {
+      instance = new Immigration();
+    }
+    return instance;
   }
 
   apply(fn) {

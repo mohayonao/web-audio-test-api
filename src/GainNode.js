@@ -1,6 +1,8 @@
-import * as util from "./util";
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import AudioParam from "./AudioParam";
+
+let immigration = Immigration.getInstance();
 
 export default class GainNode extends AudioNode {
   constructor(admission, context) {
@@ -14,7 +16,7 @@ export default class GainNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.gain = util.immigration.apply(admission =>
+    this._.gain = immigration.apply(admission =>
       new AudioParam(admission, this, "gain", 1.0, 0.0, 1.0)
     );
     this._.JSONKeys = GainNode.$JSONKeys.slice();

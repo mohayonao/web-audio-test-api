@@ -1,5 +1,5 @@
-import * as util from "./util";
-import Enumerator from "./util/Enumerator";
+import utils from "./utils";
+import Enumerator from "./utils/Enumerator";
 import AudioNode from "./AudioNode";
 
 export default class PannerNode extends AudioNode {
@@ -73,7 +73,7 @@ export default class PannerNode extends AudioNode {
 
   set refDistance(value) {
     this._.inspector.describe("refDistance", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "refDistance", "number")}
@@ -90,7 +90,7 @@ export default class PannerNode extends AudioNode {
 
   set maxDistance(value) {
     this._.inspector.describe("maxDistance", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "maxDistance", "number")}
@@ -107,7 +107,7 @@ export default class PannerNode extends AudioNode {
 
   set rolloffFactor(value) {
     this._.inspector.describe("rolloffFactor", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "rolloffFactor", "number")}
@@ -124,7 +124,7 @@ export default class PannerNode extends AudioNode {
 
   set coneInnerAngle(value) {
     this._.inspector.describe("coneInnerAngle", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "coneInnerAngle", "number")}
@@ -141,7 +141,7 @@ export default class PannerNode extends AudioNode {
 
   set coneOuterAngle(value) {
     this._.inspector.describe("coneOuterAngle", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "coneOuterAngle", "number")}
@@ -158,7 +158,7 @@ export default class PannerNode extends AudioNode {
 
   set coneOuterGain(value) {
     this._.inspector.describe("coneOuterGain", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "coneOuterGain", "number")}
@@ -171,21 +171,21 @@ export default class PannerNode extends AudioNode {
 
   setPosition(x, y, z) {
     this._.inspector.describe("setPosition", (assert) => {
-      assert(util.isNumber(x), (fmt) => {
+      assert(utils.isNumber(x), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(x, "x", "number")}
         `);
       });
 
-      assert(util.isNumber(y), (fmt) => {
+      assert(utils.isNumber(y), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(y, "y", "number")}
         `);
       });
 
-      assert(util.isNumber(z), (fmt) => {
+      assert(utils.isNumber(z), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(z, "z", "number")}
@@ -196,21 +196,21 @@ export default class PannerNode extends AudioNode {
 
   setOrientation(x, y, z) {
     this._.inspector.describe("setOrientation", (assert) => {
-      assert(util.isNumber(x), (fmt) => {
+      assert(utils.isNumber(x), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(x, "x", "number")}
         `);
       });
 
-      assert(util.isNumber(y), (fmt) => {
+      assert(utils.isNumber(y), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(y, "y", "number")}
         `);
       });
 
-      assert(util.isNumber(z), (fmt) => {
+      assert(utils.isNumber(z), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(z, "z", "number")}
@@ -221,21 +221,21 @@ export default class PannerNode extends AudioNode {
 
   setVelocity(x, y, z) {
     this._.inspector.describe("setVelocity", (assert) => {
-      assert(util.isNumber(x), (fmt) => {
+      assert(utils.isNumber(x), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(x, "x", "number")}
         `);
       });
 
-      assert(util.isNumber(y), (fmt) => {
+      assert(utils.isNumber(y), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(y, "y", "number")}
         `);
       });
 
-      assert(util.isNumber(z), (fmt) => {
+      assert(utils.isNumber(z), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(z, "z", "number")}

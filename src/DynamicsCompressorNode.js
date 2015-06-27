@@ -1,6 +1,8 @@
-import * as util from "./util";
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import AudioParam from "./AudioParam";
+
+let immigration = Immigration.getInstance();
 
 export default class DynamicsCompressorNode extends AudioNode {
   constructor(admission, context) {
@@ -14,22 +16,22 @@ export default class DynamicsCompressorNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.threshold = util.immigration.apply(admission =>
+    this._.threshold = immigration.apply(admission =>
       new AudioParam(admission, this, "threshold", -24, -100, 0)
     );
-    this._.knee = util.immigration.apply(admission =>
+    this._.knee = immigration.apply(admission =>
       new AudioParam(admission, this, "knee", 30, 0, 40)
     );
-    this._.ratio = util.immigration.apply(admission =>
+    this._.ratio = immigration.apply(admission =>
       new AudioParam(admission, this, "ratio", 12, 1, 20)
     );
-    this._.reduction = util.immigration.apply(admission =>
+    this._.reduction = immigration.apply(admission =>
       new AudioParam(admission, this, "reduction", 0, -20, 0)
     );
-    this._.attack = util.immigration.apply(admission =>
+    this._.attack = immigration.apply(admission =>
       new AudioParam(admission, this, "attack", 0.003, 0, 1.0)
     );
-    this._.release = util.immigration.apply(admission =>
+    this._.release = immigration.apply(admission =>
       new AudioParam(admission, this, "release", 0.250, 0, 1.0)
     );
     this._.JSONKeys = DynamicsCompressorNode.$JSONKeys.slice();

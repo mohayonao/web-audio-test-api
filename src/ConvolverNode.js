@@ -1,4 +1,4 @@
-import * as util from "./util";
+import utils from "./utils";
 import AudioNode from "./AudioNode";
 
 export default class ConvolverNode extends AudioNode {
@@ -24,7 +24,7 @@ export default class ConvolverNode extends AudioNode {
 
   set buffer(value) {
     this._.inspector.describe("buffer", (assert) => {
-      assert(util.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
+      assert(utils.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "buffer", "AudioBuffer")}
@@ -41,7 +41,7 @@ export default class ConvolverNode extends AudioNode {
 
   set normalize(value) {
     this._.inspector.describe("normalize", (assert) => {
-      assert(util.isBoolean(value), (fmt) => {
+      assert(utils.isBoolean(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "normalize", "boolean")}

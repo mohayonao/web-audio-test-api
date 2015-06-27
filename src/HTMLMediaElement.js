@@ -1,4 +1,4 @@
-import * as util from "./util";
+import utils from "./utils";
 import HTMLElement from "./HTMLElement";
 
 global.HTMLMediaElement = global.HTMLMediaElement || class HTMLMediaElement extends HTMLElement {
@@ -8,5 +8,5 @@ global.HTMLMediaElement = global.HTMLMediaElement || class HTMLMediaElement exte
   }
 };
 
-export default class HTMLMediaElement extends util.preventSuperCall(global.HTMLMediaElement) {
+export default class HTMLMediaElement extends utils.preventSuperCall(global.HTMLMediaElement) {
 }

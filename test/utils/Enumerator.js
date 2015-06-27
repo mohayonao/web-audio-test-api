@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import Enumerator from "../../src/util/Enumerator";
+import Enumerator from "../../src/utils/Enumerator";
 
 describe("Enumerator", () => {
   describe("constructor", () => {

@@ -1,7 +1,10 @@
-import * as util from "./util";
-import Enumerator from "./util/Enumerator";
+import utils from "./utils";
+import Enumerator from "./utils/Enumerator";
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import AudioParam from "./AudioParam";
+
+let immigration = Immigration.getInstance();
 
 export default class BiquadFilterNode extends AudioNode {
   constructor(admission, context) {
@@ -16,16 +19,16 @@ export default class BiquadFilterNode extends AudioNode {
     });
 
     this._.type = "lowpass";
-    this._.frequency = util.immigration.apply(admission =>
+    this._.frequency = immigration.apply(admission =>
       new AudioParam(admission, this, "frequency", 350, 10, context.sampleRate / 2)
     );
-    this._.detune = util.immigration.apply(admission =>
+    this._.detune = immigration.apply(admission =>
       new AudioParam(admission, this, "detune", 0, -4800, 4800)
     );
-    this._.Q = util.immigration.apply(admission =>
+    this._.Q = immigration.apply(admission =>
       new AudioParam(admission, this, "Q", 1, 0.0001, 1000)
     );
-    this._.gain = util.immigration.apply(admission =>
+    this._.gain = immigration.apply(admission =>
       new AudioParam(admission, this, "gain", 0, -40, 40)
     );
     this._.JSONKeys = BiquadFilterNode.$JSONKeys.slice();
@@ -94,21 +97,21 @@ export default class BiquadFilterNode extends AudioNode {
 
   getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
     this._.inspector.describe("getFrequencyResponse", (assert) => {
-      assert(util.isInstanceOf(frequencyHz, Float32Array), (fmt) => {
+      assert(utils.isInstanceOf(frequencyHz, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(frequencyHz, "frequencyHz", "Float32Array")}
         `);
       });
 
-      assert(util.isInstanceOf(magResponse, Float32Array), (fmt) => {
+      assert(utils.isInstanceOf(magResponse, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(magResponse, "magResponse", "Float32Array")}
         `);
       });
 
-      assert(util.isInstanceOf(phaseResponse, Float32Array), (fmt) => {
+      assert(utils.isInstanceOf(phaseResponse, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(phaseResponse, "phaseResponse", "Float32Array")}

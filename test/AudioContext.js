@@ -1,6 +1,6 @@
 describe("AudioContext", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
-  var util = WebAudioTestAPI.util;
+  var utils = WebAudioTestAPI.utils;
   var audioContext;
 
   beforeEach(function() {
@@ -16,7 +16,7 @@ describe("AudioContext", function() {
 
   describe(".WEB_AUDIO_TEST_API_VERSION", function() {
     it("check", function() {
-      assert(WebAudioTestAPI.AudioContext.WEB_AUDIO_TEST_API_VERSION === util.getAPIVersion());
+      assert(WebAudioTestAPI.AudioContext.WEB_AUDIO_TEST_API_VERSION === utils.getAPIVersion());
     });
   });
 

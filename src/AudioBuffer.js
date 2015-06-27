@@ -1,9 +1,14 @@
-import * as util from "./util";
-import Inspector from "./util/Inspector";
+import utils from "./utils";
+import Configuration from "./utils/Configuration";
+import Immigration from "./utils/Immigration";
+import Inspector from "./utils/Inspector";
+
+let configuration = Configuration.getInstance();
+let immigration = Immigration.getInstance();
 
 export default class AudioBuffer {
   constructor(admission, context, numberOfChannels, length, sampleRate) {
-    util.immigration.check(admission, () => {
+    immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
 
@@ -14,21 +19,21 @@ export default class AudioBuffer {
     });
 
     this._.inspector.describe("constructor", (assert) => {
-      assert(util.isPositiveInteger(numberOfChannels), (fmt) => {
+      assert(utils.isPositiveInteger(numberOfChannels), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfChannels, "numberOfChannels", "positive integer")}
         `);
       });
 
-      assert(util.isPositiveInteger(length), (fmt) => {
+      assert(utils.isPositiveInteger(length), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(length, "length", "positive integer")}
         `);
       });
 
-      assert(util.isPositiveInteger(sampleRate), (fmt) => {
+      assert(utils.isPositiveInteger(sampleRate), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(sampleRate, "sampleRate", "positive integer")}
@@ -97,7 +102,7 @@ export default class AudioBuffer {
 
   getChannelData(channel) {
     this._.inspector.describe("getChannelData", (assert) => {
-      assert(util.isPositiveInteger(channel), (fmt) => {
+      assert(utils.isPositiveInteger(channel), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(channel, "channel", "positive integer")}
@@ -117,28 +122,28 @@ export default class AudioBuffer {
 
   copyFromChannel(destination, channelNumber, startInChannel = 0) {
     this._.inspector.describe("copyFromChannel", (assert) => {
-      assert(util.configuration.getState("AudioBuffer#copyFromChannel") === "enabled", (fmt) => {
+      assert(configuration.getState("AudioBuffer#copyFromChannel") === "enabled", (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           not enabled
         `);
       });
 
-      assert(util.isInstanceOf(destination, Float32Array), (fmt) => {
+      assert(utils.isInstanceOf(destination, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(destination, "destination", "Float32Array")}
         `);
       });
 
-      assert(util.isPositiveInteger(channelNumber), (fmt) => {
+      assert(utils.isPositiveInteger(channelNumber), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(channelNumber, "channelNumber", "positive integer")}
         `);
       });
 
-      assert(util.isPositiveInteger(startInChannel), (fmt) => {
+      assert(utils.isPositiveInteger(startInChannel), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(channelNumber, "startInChannel", "positive integer")}
@@ -167,28 +172,28 @@ export default class AudioBuffer {
 
   copyToChannel(source, channelNumber, startInChannel = 0) {
     this._.inspector.describe("copyToChannel", (assert) => {
-      assert(util.configuration.getState("AudioBuffer#copyToChannel") === "enabled", (fmt) => {
+      assert(configuration.getState("AudioBuffer#copyToChannel") === "enabled", (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           not enabled
         `);
       });
 
-      assert(util.isInstanceOf(source, Float32Array), (fmt) => {
+      assert(utils.isInstanceOf(source, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(source, "destination", "Float32Array")}
         `);
       });
 
-      assert(util.isPositiveInteger(channelNumber), (fmt) => {
+      assert(utils.isPositiveInteger(channelNumber), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(channelNumber, "channelNumber", "positive integer")}
         `);
       });
 
-      assert(util.isPositiveInteger(startInChannel), (fmt) => {
+      assert(utils.isPositiveInteger(startInChannel), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(channelNumber, "startInChannel", "positive integer")}

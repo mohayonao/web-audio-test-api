@@ -1,7 +1,10 @@
-import * as util from "./util";
+import utils from "./utils";
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import AudioParam from "./AudioParam";
 import Event from "./Event";
+
+let immigration = Immigration.getInstance();
 
 export default class AudioBufferSourceNode extends AudioNode {
   constructor(admission, context) {
@@ -16,7 +19,7 @@ export default class AudioBufferSourceNode extends AudioNode {
     });
 
     this._.buffer = null;
-    this._.playbackRate = util.immigration.apply(admission =>
+    this._.playbackRate = immigration.apply(admission =>
       new AudioParam(admission, this, "playbackRate", 1, 0, 1024)
     );
     this._.loop = false;
@@ -35,7 +38,7 @@ export default class AudioBufferSourceNode extends AudioNode {
 
   set buffer(value) {
     this._.inspector.describe("buffer", (assert) => {
-      assert(util.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
+      assert(utils.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "buffer", "AudioBuffer")}
@@ -62,7 +65,7 @@ export default class AudioBufferSourceNode extends AudioNode {
 
   set loop(value) {
     this._.inspector.describe("loop", (assert) => {
-      assert(util.isBoolean(value), (fmt) => {
+      assert(utils.isBoolean(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "loop", "boolean")}
@@ -79,7 +82,7 @@ export default class AudioBufferSourceNode extends AudioNode {
 
   set loopStart(value) {
     this._.inspector.describe("loopStart", (assert) => {
-      assert(util.isPositiveNumber(value), (fmt) => {
+      assert(utils.isPositiveNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "loopStart", "positive number")}
@@ -96,7 +99,7 @@ export default class AudioBufferSourceNode extends AudioNode {
 
   set loopEnd(value) {
     this._.inspector.describe("loopEnd", (assert) => {
-      assert(util.isPositiveNumber(value), (fmt) => {
+      assert(utils.isPositiveNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "loopEnd", "positive number")}
@@ -113,7 +116,7 @@ export default class AudioBufferSourceNode extends AudioNode {
 
   set onended(value) {
     this._.inspector.describe("onended", (assert) => {
-      assert(util.isNullOrFunction(value), (fmt) => {
+      assert(utils.isNullOrFunction(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "onended", "function")}
@@ -130,21 +133,21 @@ export default class AudioBufferSourceNode extends AudioNode {
 
   start(when = 0, offset = 0, duration = 0) {
     this._.inspector.describe("start", [ "when", "offset", "duration" ], (assert) => {
-      assert(util.isPositiveNumber(when), (fmt) => {
+      assert(utils.isPositiveNumber(when), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(when, "when", "positive number")}
         `);
       });
 
-      assert(util.isPositiveNumber(offset), (fmt) => {
+      assert(utils.isPositiveNumber(offset), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(offset, "offset", "positive number")}
         `);
       });
 
-      assert(util.isPositiveNumber(duration), (fmt) => {
+      assert(utils.isPositiveNumber(duration), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(duration, "duration", "positive number")}
@@ -164,7 +167,7 @@ export default class AudioBufferSourceNode extends AudioNode {
 
   stop(when = 0) {
     this._.inspector.describe("stop", [ "when" ], (assert) => {
-      assert(util.isPositiveNumber(when), (fmt) => {
+      assert(utils.isPositiveNumber(when), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(when, "when", "positive number")}
@@ -190,7 +193,7 @@ export default class AudioBufferSourceNode extends AudioNode {
   }
 
   $stateAtTime(_time) {
-    let time = util.toSeconds(_time);
+    let time = utils.toSeconds(_time);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";

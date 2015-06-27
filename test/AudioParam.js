@@ -1,6 +1,7 @@
 describe("AudioParam", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
-  var util = WebAudioTestAPI.util;
+  var utils = WebAudioTestAPI.utils;
+  var immigration = utils.Immigration.getInstance();
   var audioContext;
 
   beforeEach(function() {
@@ -9,10 +10,10 @@ describe("AudioParam", function() {
 
   describe("constructor", function() {
     it("()", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -28,10 +29,10 @@ describe("AudioParam", function() {
 
   describe("#name", function() {
     it("get: string", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -47,10 +48,10 @@ describe("AudioParam", function() {
 
   describe("#defaultValue", function() {
     it("get: number", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -66,10 +67,10 @@ describe("AudioParam", function() {
 
   describe("#value", function() {
     it("get/set: number", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -89,10 +90,10 @@ describe("AudioParam", function() {
 
   describe("#setValueAtTime", function() {
     it("(value: number, startTime: number): void", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -116,10 +117,10 @@ describe("AudioParam", function() {
 
   describe("#linearRampToValueAtTime", function() {
     it("(value: number, endTime: number): void", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -143,10 +144,10 @@ describe("AudioParam", function() {
 
   describe("#exponentialRampToValueAtTime", function() {
     it("(value: number, endTime: number): void", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -170,10 +171,10 @@ describe("AudioParam", function() {
 
   describe("#setTargetAtTime", function() {
     it("(target: number, startTime: number, timeConstant: number): void", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -203,10 +204,10 @@ describe("AudioParam", function() {
 
   describe("#setValueCurveAtTime", function() {
     it("(values: Float32Array, startTime: number, duration: number): void", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
       var values = new Float32Array(32);
@@ -237,10 +238,10 @@ describe("AudioParam", function() {
 
   describe("#cancelScheduledValues", function() {
     it("(startTime: number): void", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -258,10 +259,10 @@ describe("AudioParam", function() {
 
   describe("#toJSON", function() {
     it("(): object", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -288,10 +289,10 @@ describe("AudioParam", function() {
 
   describe("#$name", function() {
     it("get: string", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -301,10 +302,10 @@ describe("AudioParam", function() {
 
   describe("#$context", function() {
     it("get: AudioContext", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -314,10 +315,10 @@ describe("AudioParam", function() {
 
   describe("$valueAtTime", function() {
     it("(time: number|string): number", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -327,10 +328,10 @@ describe("AudioParam", function() {
 
   describe("works", function() {
     it("SetValueAtTime", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -355,10 +356,10 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime("00:05.000") === 1000);
     });
     it("LinearRampToValue", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -381,10 +382,10 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime("00:05.000") === 1000.000);
     });
     it("ExponentialRampToValue", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -407,10 +408,10 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime("00:05.000") === 1000);
     });
     it("SetTarget", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 
@@ -432,10 +433,10 @@ describe("AudioParam", function() {
       assert(closeTo(param.$valueAtTime("00:05.000"), 953.765, 1e-3));
     });
     it("SetCurve", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
       var curve1 = new Float32Array([ 220, 330, 440, 330, 220 ]);
@@ -478,10 +479,10 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime("00:08.000") === 4);
     });
     it("Cancel", function() {
-      var node = util.immigration.apply(function(admission) {
+      var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
-      var param = util.immigration.apply(function(admission) {
+      var param = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
       });
 

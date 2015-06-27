@@ -1,10 +1,11 @@
 describe("OfflineAudioCompletionEvent", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
-  var util = WebAudioTestAPI.util;
+  var utils = WebAudioTestAPI.utils;
+  var immigration = utils.Immigration.getInstance();
 
   describe("constructor", function() {
     it("()", function() {
-      var event = util.immigration.apply(function(admission) {
+      var event = immigration.apply(function(admission) {
         return new WebAudioTestAPI.OfflineAudioCompletionEvent(admission);
       });
 

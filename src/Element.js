@@ -1,4 +1,4 @@
-import * as util from "./util";
+import utils from "./utils";
 import EventTarget from "./EventTarget";
 
 global.Element = global.Element || class Element extends EventTarget {
@@ -8,5 +8,5 @@ global.Element = global.Element || class Element extends EventTarget {
   }
 };
 
-export default class Element extends util.preventSuperCall(global.Element) {
+export default class Element extends utils.preventSuperCall(global.Element) {
 }

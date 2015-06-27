@@ -1,4 +1,6 @@
-import * as util from "./util";
+import utils from "./utils";
+import Configuration from "./utils/Configuration";
+import Immigration from "./utils/Immigration";
 import EventTarget from "./EventTarget";
 import AnalyserNode from "./AnalyserNode";
 import AudioBuffer from "./AudioBuffer";
@@ -22,15 +24,18 @@ import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
 
+let configuration = Configuration.getInstance();
+let immigration = Immigration.getInstance();
+
 export default class AudioContext extends EventTarget {
   constructor() {
     super();
 
-    this._.destination = util.immigration.apply(admission =>
+    this._.destination = immigration.apply(admission =>
       new AudioDestinationNode(admission, this)
     );
     this._.sampleRate = global.WebAudioTestAPI.sampleRate;
-    this._.listener = util.immigration.apply(admission =>
+    this._.listener = immigration.apply(admission =>
       new AudioListener(admission, this)
     );
     this._.microCurrentTime = 0;
@@ -39,7 +44,7 @@ export default class AudioContext extends EventTarget {
   }
 
   static get WEB_AUDIO_TEST_API_VERSION() {
-    return util.getAPIVersion();
+    return utils.getAPIVersion();
   }
 
   get destination() {
@@ -91,21 +96,21 @@ export default class AudioContext extends EventTarget {
   }
 
   createBuffer(numberOfChannels, length, sampleRate) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new AudioBuffer(admission, this, numberOfChannels, length, sampleRate)
     );
   }
 
   decodeAudioData(audioData, _successCallback, _errorCallback) {
-    let isPromiseBased = util.configuration.getState("AudioContext#decodeAudioData") === "promise";
+    let isPromiseBased = configuration.getState("AudioContext#decodeAudioData") === "promise";
     let successCallback, errorCallback;
 
     if (isPromiseBased) {
-      successCallback = util.defaults(_successCallback, () => {});
-      errorCallback = util.defaults(_errorCallback, () => {});
+      successCallback = utils.defaults(_successCallback, () => {});
+      errorCallback = utils.defaults(_errorCallback, () => {});
     } else {
       successCallback = _successCallback;
-      errorCallback = util.defaults(_errorCallback, () => {});
+      errorCallback = utils.defaults(_errorCallback, () => {});
     }
 
     function assertion() {
@@ -114,21 +119,21 @@ export default class AudioContext extends EventTarget {
       }
 
       this._.inspector.describe("decodeAudioData", [ "audioData", "successCallback", "errorCallback" ], (assert) => {
-        assert(util.isInstanceOf(audioData, global.ArrayBuffer), (fmt) => {
+        assert(utils.isInstanceOf(audioData, global.ArrayBuffer), (fmt) => {
           throw new TypeError(fmt.plain `
             ${fmt.form};
             ${fmt.butGot(audioData, "audioData", "ArrayBuffer")}
           `);
         });
 
-        assert(util.isFunction(successCallback), (fmt) => {
+        assert(utils.isFunction(successCallback), (fmt) => {
           throw new TypeError(fmt.plain `
             ${fmt.form};
             ${fmt.butGot(successCallback, "successCallback", "function")}
           `);
         });
 
-        assert(util.isFunction(errorCallback), (fmt) => {
+        assert(utils.isFunction(errorCallback), (fmt) => {
           throw new TypeError(fmt.plain `
             ${fmt.form};
             ${fmt.butGot(errorCallback, "errorCallback", "function")}
@@ -145,7 +150,7 @@ export default class AudioContext extends EventTarget {
       if (this.DECODE_AUDIO_DATA_FAILED) {
         reject();
       } else {
-        resolve(this.DECODE_AUDIO_DATA_RESULT || util.immigration.apply(admission =>
+        resolve(this.DECODE_AUDIO_DATA_RESULT || immigration.apply(admission =>
           new AudioBuffer(admission, this, 2, 1024, this.sampleRate)
         ));
       }
@@ -161,25 +166,25 @@ export default class AudioContext extends EventTarget {
   }
 
   createBufferSource() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new AudioBufferSourceNode(admission, this)
     );
   }
 
   createMediaElementSource(mediaElement) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new MediaElementAudioSourceNode(admission, this, mediaElement)
     );
   }
 
   createMediaStreamSource(mediaStream) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new MediaStreamAudioSourceNode(admission, this, mediaStream)
     );
   }
 
   createMediaStreamDestination() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new MediaStreamAudioDestinationNode(admission, this)
     );
   }
@@ -196,50 +201,50 @@ export default class AudioContext extends EventTarget {
   }
 
   createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new ScriptProcessorNode(admission, this, bufferSize, numberOfInputChannels, numberOfOutputChannels)
     );
   }
 
   createAnalyser() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new AnalyserNode(admission, this)
     );
   }
 
   createGain() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new GainNode(admission, this)
     );
   }
 
   createDelay(maxDelayTime = 1) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new DelayNode(admission, this, maxDelayTime)
     );
   }
 
   createBiquadFilter() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new BiquadFilterNode(admission, this)
     );
   }
 
   createWaveShaper() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new WaveShaperNode(admission, this)
     );
   }
 
   createPanner() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new PannerNode(admission, this)
     );
   }
 
   createStereoPanner() {
     this._.inspector.describe("createStereoPanner", (assert) => {
-      assert(util.configuration.getState("AudioContext#createStereoPanner") === "enabled", (fmt) => {
+      assert(configuration.getState("AudioContext#createStereoPanner") === "enabled", (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           not enabled
@@ -247,43 +252,43 @@ export default class AudioContext extends EventTarget {
       });
     });
 
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new StereoPannerNode(admission, this)
     );
   }
 
   createConvolver() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new ConvolverNode(admission, this)
     );
   }
 
   createChannelSplitter(numberOfOutputs = 6) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new ChannelSplitterNode(admission, this, numberOfOutputs)
     );
   }
 
   createChannelMerger(numberOfInputs = 6) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new ChannelMergerNode(admission, this, numberOfInputs)
     );
   }
 
   createDynamicsCompressor() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new DynamicsCompressorNode(admission, this)
     );
   }
 
   createOscillator() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new OscillatorNode(admission, this)
     );
   }
 
   createPeriodicWave(real, imag) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new PeriodicWave(admission, this, real, imag)
     );
   }
@@ -293,11 +298,11 @@ export default class AudioContext extends EventTarget {
   }
 
   $process(time) {
-    this._process(util.toMicroseconds(time));
+    this._process(utils.toMicroseconds(time));
   }
 
   $processTo(_time) {
-    let time = util.toMicroseconds(_time);
+    let time = utils.toMicroseconds(_time);
 
     if (this._.microCurrentTime < time) {
       this._process(time - this._.microCurrentTime);

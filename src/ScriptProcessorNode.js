@@ -1,8 +1,11 @@
-import * as util from "./util";
-import Enumerator from "./util/Enumerator";
+import utils from "./utils";
+import Immigration from "./utils/Immigration";
+import Enumerator from "./utils/Enumerator";
 import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import AudioProcessingEvent from "./AudioProcessingEvent";
+
+let immigration = Immigration.getInstance();
 
 export default class ScriptProcessorNode extends AudioNode {
   constructor(admission, context, bufferSize, numberOfInputChannels = 2, numberOfOutputChannels = 2) {
@@ -28,14 +31,14 @@ export default class ScriptProcessorNode extends AudioNode {
         `);
       });
 
-      assert(util.isPositiveInteger(numberOfInputChannels), (fmt) => {
+      assert(utils.isPositiveInteger(numberOfInputChannels), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfInputChannels, "numberOfInputChannels", "positive integer")}
         `);
       });
 
-      assert(util.isPositiveInteger(numberOfOutputChannels), (fmt) => {
+      assert(utils.isPositiveInteger(numberOfOutputChannels), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfOutputChannels, "numberOfOutputChannels", "positive integer")}
@@ -66,7 +69,7 @@ export default class ScriptProcessorNode extends AudioNode {
 
   set onaudioprocess(value) {
     this._.inspector.describe("onaudioprocess", (assert) => {
-      assert(util.isNullOrFunction(value), (fmt) => {
+      assert(utils.isNullOrFunction(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "onaudioprocess", "function")}
@@ -83,15 +86,15 @@ export default class ScriptProcessorNode extends AudioNode {
     if (this._.numSamples <= 0) {
       this._.numSamples += this.bufferSize;
 
-      let event = util.immigration.apply(admission =>
+      let event = immigration.apply(admission =>
         new AudioProcessingEvent(admission, this)
       );
 
       event.playbackTime = this.context.currentTime + this.bufferSize / this.context.sampleRate;
-      event.inputBuffer = util.immigration.apply(admission =>
+      event.inputBuffer = immigration.apply(admission =>
         new AudioBuffer(admission, this.context, this._.numberOfInputChannels, this.bufferSize, this.context.sampleRate)
       );
-      event.outputBuffer = util.immigration.apply(admission =>
+      event.outputBuffer = immigration.apply(admission =>
         new AudioBuffer(admission, this.context, this._.numberOfOutputChannels, this.bufferSize, this.context.sampleRate)
       );
 

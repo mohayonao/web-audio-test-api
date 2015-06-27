@@ -1,6 +1,6 @@
 import assert from "power-assert";
-import Inspector from "../../src/util/Inspector";
-import Formatter from "../../src/util/Formatter";
+import Inspector from "../../src/utils/Inspector";
+import Formatter from "../../src/utils/Formatter";
 
 class Foo {
   constructor(a, b) {

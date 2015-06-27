@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import Immigration from "../../src/util/Immigration";
+import Immigration from "../../src/utils/Immigration";
 
 describe("Immigration", () => {
   describe("constructor", () => {
@@ -7,6 +7,17 @@ describe("Immigration", () => {
       let immigration = new Immigration();
 
       assert(immigration instanceof Immigration);
+    });
+  });
+
+  describe(".getInstance", () => {
+    it("(): Immigration", () => {
+      let immigration1 = Immigration.getInstance();
+      let immigration2 = Immigration.getInstance();
+
+      assert(immigration1 instanceof Immigration);
+      assert(immigration2 instanceof Immigration);
+      assert(immigration1 === immigration2);
     });
   });
 

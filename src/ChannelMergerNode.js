@@ -1,4 +1,4 @@
-import * as util from "./util";
+import utils from "./utils";
 import AudioNode from "./AudioNode";
 
 export default class ChannelMergerNode extends AudioNode {
@@ -14,7 +14,7 @@ export default class ChannelMergerNode extends AudioNode {
     });
 
     this._.inspector.describe("constructor", (assert) => {
-      assert(util.isPositiveInteger(numberOfInputs), (fmt) => {
+      assert(utils.isPositiveInteger(numberOfInputs), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfInputs, "numberOfInputs", "positive integer")}

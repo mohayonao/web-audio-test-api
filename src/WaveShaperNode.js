@@ -1,5 +1,5 @@
-import * as util from "./util";
-import Enumerator from "./util/Enumerator";
+import utils from "./utils";
+import Enumerator from "./utils/Enumerator";
 import AudioNode from "./AudioNode";
 
 export default class WaveShaperNode extends AudioNode {
@@ -25,7 +25,7 @@ export default class WaveShaperNode extends AudioNode {
 
   set curve(value) {
     this._.inspector.describe("curve", (assert) => {
-      assert(util.isNullOrInstanceOf(value, Float32Array), (fmt) => {
+      assert(utils.isNullOrInstanceOf(value, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "curve", "Float32Array")}

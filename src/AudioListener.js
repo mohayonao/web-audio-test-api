@@ -1,5 +1,8 @@
-import * as util from "./util";
-import Inspector from "./util/Inspector";
+import utils from "./utils";
+import Immigration from "./utils/Immigration";
+import Inspector from "./utils/Inspector";
+
+let immigration = Immigration.getInstance();
 
 export default class AudioListener {
   constructor(admission, context) {
@@ -13,7 +16,7 @@ export default class AudioListener {
     this._.dopplerFactor = 1;
     this._.speedOfSound = 343.3;
 
-    util.immigration.check(admission, () => {
+    immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
   }
@@ -24,7 +27,7 @@ export default class AudioListener {
 
   set dopplerFactor(value) {
     this._.inspector.describe("dopplerFactor", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "dopplerFactor", "number")}
@@ -41,7 +44,7 @@ export default class AudioListener {
 
   set speedOfSound(value) {
     this._.inspector.describe("speedOfSound", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "speedOfSound", "number")}
@@ -62,21 +65,21 @@ export default class AudioListener {
 
   setPosition(x, y, z) {
     this._.inspector.describe("setPosition", (assert) => {
-      assert(util.isNumber(x), (fmt) => {
+      assert(utils.isNumber(x), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(x, "x", "number")}
         `);
       });
 
-      assert(util.isNumber(y), (fmt) => {
+      assert(utils.isNumber(y), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(y, "y", "number")}
         `);
       });
 
-      assert(util.isNumber(z), (fmt) => {
+      assert(utils.isNumber(z), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(z, "z", "number")}
@@ -87,42 +90,42 @@ export default class AudioListener {
 
   setOrientation(x, y, z, xUp, yUp, zUp) {
     this._.inspector.describe("setOrientation", (assert) => {
-      assert(util.isNumber(x), (fmt) => {
+      assert(utils.isNumber(x), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(x, "x", "number")}
         `);
       });
 
-      assert(util.isNumber(y), (fmt) => {
+      assert(utils.isNumber(y), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(y, "y", "number")}
         `);
       });
 
-      assert(util.isNumber(z), (fmt) => {
+      assert(utils.isNumber(z), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(z, "z", "number")}
         `);
       });
 
-      assert(util.isNumber(xUp), (fmt) => {
+      assert(utils.isNumber(xUp), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(xUp, "xUp", "number")}
         `);
       });
 
-      assert(util.isNumber(yUp), (fmt) => {
+      assert(utils.isNumber(yUp), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(yUp, "yUp", "number")}
         `);
       });
 
-      assert(util.isNumber(zUp), (fmt) => {
+      assert(utils.isNumber(zUp), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(zUp, "zUp", "number")}
@@ -133,21 +136,21 @@ export default class AudioListener {
 
   setVelocity(x, y, z) {
     this._.inspector.describe("setVelocity", (assert) => {
-      assert(util.isNumber(x), (fmt) => {
+      assert(utils.isNumber(x), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(x, "x", "number")}
         `);
       });
 
-      assert(util.isNumber(y), (fmt) => {
+      assert(utils.isNumber(y), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(y, "y", "number")}
         `);
       });
 
-      assert(util.isNumber(z), (fmt) => {
+      assert(utils.isNumber(z), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(z, "z", "number")}

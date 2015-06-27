@@ -1,11 +1,20 @@
 import api from "./api.json";
 
+let instance = null;
+
 export default class Configuration {
   constructor() {
     this._states = {};
     Object.keys(api).forEach((key) => {
       this._states[key] = api[key].states[0];
     });
+  }
+
+  static getInstance() {
+    if (instance === null) {
+      instance = new Configuration();
+    }
+    return instance;
   }
 
   getState(name) {

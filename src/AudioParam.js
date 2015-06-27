@@ -1,5 +1,8 @@
-import * as util from "./util";
-import Inspector from "./util/Inspector";
+import utils from "./utils";
+import Immigration from "./utils/Immigration";
+import Inspector from "./utils/Inspector";
+
+let immigration = Immigration.getInstance();
 
 function insertEvent(that, event) {
   let time = event.time;
@@ -41,19 +44,19 @@ function setCurveValue(v, t, t0, t1, curve) {
   let dt = (t - t0) / (t1 - t0);
 
   if (dt <= 0) {
-    return util.defaults(curve[0], v);
+    return utils.defaults(curve[0], v);
   }
 
   if (1 <= dt) {
-    return util.defaults(curve[curve.length - 1], v);
+    return utils.defaults(curve[curve.length - 1], v);
   }
 
-  return util.defaults(curve[(curve.length * dt)|0], v);
+  return utils.defaults(curve[(curve.length * dt)|0], v);
 }
 
 export default class AudioParam {
   constructor(admission, node, name, defaultValue, minValue, maxValue) {
-    util.immigration.check(admission, () => {
+    immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
 
@@ -82,7 +85,7 @@ export default class AudioParam {
 
   set value(value) {
     this._.inspector.describe("value", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "value", "number")}
@@ -135,14 +138,14 @@ export default class AudioParam {
 
   setValueAtTime(value, startTime) {
     this._.inspector.describe("setValueAtTime", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "value", "number")}
         `);
       });
 
-      assert(util.isNumber(startTime), (fmt) => {
+      assert(utils.isNumber(startTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(startTime, "startTime", "number")}
@@ -159,14 +162,14 @@ export default class AudioParam {
 
   linearRampToValueAtTime(value, endTime) {
     this._.inspector.describe("linearRampToValueAtTime", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "value", "number")}
         `);
       });
 
-      assert(util.isNumber(endTime), (fmt) => {
+      assert(utils.isNumber(endTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(endTime, "endTime", "number")}
@@ -183,14 +186,14 @@ export default class AudioParam {
 
   exponentialRampToValueAtTime(value, endTime) {
     this._.inspector.describe("exponentialRampToValueAtTime", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "value", "number")}
         `);
       });
 
-      assert(util.isNumber(endTime), (fmt) => {
+      assert(utils.isNumber(endTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(endTime, "endTime", "number")}
@@ -207,21 +210,21 @@ export default class AudioParam {
 
   setTargetAtTime(target, startTime, timeConstant) {
     this._.inspector.describe("setTargetAtTime", (assert) => {
-      assert(util.isNumber(target), (fmt) => {
+      assert(utils.isNumber(target), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(target, "target", "number")}
         `);
       });
 
-      assert(util.isNumber(startTime), (fmt) => {
+      assert(utils.isNumber(startTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(startTime, "startTime", "number")}
         `);
       });
 
-      assert(util.isNumber(timeConstant), (fmt) => {
+      assert(utils.isNumber(timeConstant), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(timeConstant, "timeConstant", "number")}
@@ -239,21 +242,21 @@ export default class AudioParam {
 
   setValueCurveAtTime(values, startTime, duration) {
     this._.inspector.describe("setValueCurveAtTime", (assert) => {
-      assert(util.isInstanceOf(values, Float32Array), (fmt) => {
+      assert(utils.isInstanceOf(values, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(values, "values", "Float32Array")}
         `);
       });
 
-      assert(util.isNumber(startTime), (fmt) => {
+      assert(utils.isNumber(startTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(startTime, "startTime", "number")}
         `);
       });
 
-      assert(util.isNumber(duration), (fmt) => {
+      assert(utils.isNumber(duration), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(duration, "duration", "number")}
@@ -271,7 +274,7 @@ export default class AudioParam {
 
   cancelScheduledValues(startTime) {
     this._.inspector.describe("cancelScheduledValues", (assert) => {
-      assert(util.isNumber(startTime), (fmt) => {
+      assert(utils.isNumber(startTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(startTime, "startTime", "number")}
@@ -289,7 +292,7 @@ export default class AudioParam {
   }
 
   toJSON(memo) {
-    return util.toJSON(this, (node, memo) => {
+    return utils.toJSON(this, (node, memo) => {
       let json = {};
 
       json.value = node.value;
@@ -301,7 +304,7 @@ export default class AudioParam {
   }
 
   $valueAtTime(_time) {
-    let time = util.toSeconds(_time);
+    let time = utils.toSeconds(_time);
 
     let value = this._.value;
     let events = this.$events;

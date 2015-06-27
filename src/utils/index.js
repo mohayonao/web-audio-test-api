@@ -1,6 +1,9 @@
 import Configuration from "./Configuration";
+import Enumerator from "./Enumerator";
+import Formatter from "./Formatter";
 import Immigration from "./Immigration";
-import VERSION from "../VERSION";
+import Inspector from "./Inspector";
+import version from "../version";
 
 const MIN_MICRO_SECONDS = 0;
 const MAX_MICRO_SECONDS = 24 * 60 * 60 * 1000 * 1000;
@@ -14,7 +17,7 @@ export function defaults(value, defaultValue) {
 }
 
 export function getAPIVersion() {
-  return VERSION;
+  return version;
 }
 
 export function isBoolean(value) {
@@ -57,14 +60,14 @@ export function isString(value) {
   return typeof value === "string";
 }
 
-export function name(obj) {
+export function toNodeName(obj) {
   if (obj.hasOwnProperty("$id")) {
     return `${obj.$name}#${obj.$id}`;
   }
   return obj.$name;
 }
 
-export function pp(value) {
+export function prettyPrint(value) {
   if (value === null || typeof value === "undefined") {
     return String(value);
   }
@@ -79,12 +82,12 @@ export function pp(value) {
   }
 
   if (Array.isArray(value)) {
-    return `[ ${value.map(pp).join(", ")} ]`;
+    return `[ ${value.map(prettyPrint).join(", ")} ]`;
   }
 
   if (value.constructor === {}.constructor) {
     return "{ " + Object.keys(value).map((key) => {
-      return key + ": " + pp(value[key]);
+      return key + ": " + prettyPrint(value[key]);
     }).join(", ") + "}";
   }
 
@@ -105,7 +108,7 @@ export function toJSON(node, func, memo = []) {
   let result;
 
   if (memo.indexOf(node) !== -1) {
-    return `<circular:${name(node)}>`;
+    return `<circular:${toNodeName(node)}>`;
   }
   memo.push(node);
 
@@ -147,6 +150,29 @@ export function toSeconds(time) {
   return toMicroseconds(time) / (1000 * 1000);
 }
 
-export let configuration = new Configuration();
-
-export let immigration = new Immigration();
+export default {
+  Configuration,
+  Enumerator,
+  Formatter,
+  Immigration,
+  Inspector,
+  article,
+  defaults,
+  getAPIVersion,
+  isBoolean,
+  isFunction,
+  isInstanceOf,
+  isNullOrFunction,
+  isNullOrInstanceOf,
+  isNumber,
+  isInteger,
+  isPositiveNumber,
+  isPositiveInteger,
+  isString,
+  toNodeName,
+  prettyPrint,
+  preventSuperCall,
+  toJSON,
+  toMicroseconds,
+  toSeconds,
+};
