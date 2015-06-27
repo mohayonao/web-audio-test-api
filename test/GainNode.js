@@ -65,5 +65,4 @@ describe("GainNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

@@ -340,16 +340,16 @@ describe("AudioParam", function() {
       param.setValueAtTime(100, 1.000);
       param.setValueAtTime(1000, 4.000);
 
-      assert(param.$valueAtTime("00:00.000") ===    0);
-      assert(param.$valueAtTime("00:00.500") ===    0);
-      assert(param.$valueAtTime("00:00.999") ===    0);
-      assert(param.$valueAtTime("00:01.000") ===  100);
-      assert(param.$valueAtTime("00:01.500") ===  100);
-      assert(param.$valueAtTime("00:02.000") ===  100);
-      assert(param.$valueAtTime("00:02.500") ===  100);
-      assert(param.$valueAtTime("00:03.000") ===  100);
-      assert(param.$valueAtTime("00:03.500") ===  100);
-      assert(param.$valueAtTime("00:03.999") ===  100);
+      assert(param.$valueAtTime("00:00.000") === 0);
+      assert(param.$valueAtTime("00:00.500") === 0);
+      assert(param.$valueAtTime("00:00.999") === 0);
+      assert(param.$valueAtTime("00:01.000") === 100);
+      assert(param.$valueAtTime("00:01.500") === 100);
+      assert(param.$valueAtTime("00:02.000") === 100);
+      assert(param.$valueAtTime("00:02.500") === 100);
+      assert(param.$valueAtTime("00:03.000") === 100);
+      assert(param.$valueAtTime("00:03.500") === 100);
+      assert(param.$valueAtTime("00:03.999") === 100);
       assert(param.$valueAtTime("00:04.000") === 1000);
       assert(param.$valueAtTime("00:04.500") === 1000);
       assert(param.$valueAtTime("00:05.000") === 1000);
@@ -366,16 +366,16 @@ describe("AudioParam", function() {
       param.linearRampToValueAtTime(100, 1.000);
       param.linearRampToValueAtTime(1000, 4.000);
 
-      assert(param.$valueAtTime("00:00.000") ===    0.000);
-      assert(param.$valueAtTime("00:00.500") ===   50.000);
-      assert(param.$valueAtTime("00:00.999") ===   99.900);
-      assert(param.$valueAtTime("00:01.000") ===  100.000);
-      assert(param.$valueAtTime("00:01.500") ===  250.000);
-      assert(param.$valueAtTime("00:02.000") ===  400.000);
-      assert(param.$valueAtTime("00:02.500") ===  550.000);
-      assert(param.$valueAtTime("00:03.000") ===  700.000);
-      assert(param.$valueAtTime("00:03.500") ===  850.000);
-      assert(param.$valueAtTime("00:03.999") ===  999.700);
+      assert(param.$valueAtTime("00:00.000") === 0.000);
+      assert(param.$valueAtTime("00:00.500") === 50.000);
+      assert(param.$valueAtTime("00:00.999") === 99.900);
+      assert(param.$valueAtTime("00:01.000") === 100.000);
+      assert(param.$valueAtTime("00:01.500") === 250.000);
+      assert(param.$valueAtTime("00:02.000") === 400.000);
+      assert(param.$valueAtTime("00:02.500") === 550.000);
+      assert(param.$valueAtTime("00:03.000") === 700.000);
+      assert(param.$valueAtTime("00:03.500") === 850.000);
+      assert(param.$valueAtTime("00:03.999") === 999.700);
       assert(param.$valueAtTime("00:04.000") === 1000.000);
       assert(param.$valueAtTime("00:04.500") === 1000.000);
       assert(param.$valueAtTime("00:05.000") === 1000.000);
@@ -392,9 +392,9 @@ describe("AudioParam", function() {
       param.exponentialRampToValueAtTime(100, 1.000);
       param.exponentialRampToValueAtTime(1000, 4.000);
 
-      assert(closeTo(param.$valueAtTime("00:00.000"),   0.000, 1e-3));
-      assert(closeTo(param.$valueAtTime("00:00.500"),   0.100, 1e-3));
-      assert(closeTo(param.$valueAtTime("00:00.999"),  98.627, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:00.000"), 0.000, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:00.500"), 0.100, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:00.999"), 98.627, 1e-3));
       assert(closeTo(param.$valueAtTime("00:01.000"), 100.000, 1e-3));
       assert(closeTo(param.$valueAtTime("00:01.500"), 146.779, 1e-3));
       assert(closeTo(param.$valueAtTime("00:02.000"), 215.443, 1e-3));
@@ -415,18 +415,18 @@ describe("AudioParam", function() {
       });
 
       param.setValueAtTime(0, 0.000);
-      param.setTargetAtTime( 100, 1.000, 2);
+      param.setTargetAtTime(100, 1.000, 2);
       param.setTargetAtTime(1000, 3.500, 0.5);
 
       assert(param.$valueAtTime("00:00.000") === 0);
       assert(param.$valueAtTime("00:00.500") === 0);
       assert(param.$valueAtTime("00:00.999") === 0);
       assert(param.$valueAtTime("00:01.000") === 0);
-      assert(closeTo(param.$valueAtTime("00:01.500"),  22.119, 1e-3));
-      assert(closeTo(param.$valueAtTime("00:02.000"),  39.346, 1e-3));
-      assert(closeTo(param.$valueAtTime("00:02.500"),  52.763, 1e-3));
-      assert(closeTo(param.$valueAtTime("00:03.000"),  63.212, 1e-3));
-      assert(closeTo(param.$valueAtTime("00:03.500"),  71.349, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:01.500"), 22.119, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:02.000"), 39.346, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:02.500"), 52.763, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:03.000"), 63.212, 1e-3));
+      assert(closeTo(param.$valueAtTime("00:03.500"), 71.349, 1e-3));
       assert(closeTo(param.$valueAtTime("00:04.000"), 658.368, 1e-3));
       assert(closeTo(param.$valueAtTime("00:04.500"), 874.320, 1e-3));
       assert(closeTo(param.$valueAtTime("00:05.000"), 953.765, 1e-3));
@@ -445,8 +445,8 @@ describe("AudioParam", function() {
       param.setValueCurveAtTime(curve1, 1.000, 2);
       param.setValueCurveAtTime(curve2, 4.000, 4);
 
-      assert(param.$valueAtTime("00:00.000") ===   0);
-      assert(param.$valueAtTime("00:00.999") ===   0);
+      assert(param.$valueAtTime("00:00.000") === 0);
+      assert(param.$valueAtTime("00:00.999") === 0);
 
       assert(param.$valueAtTime("00:01.000") === 220);
       assert(param.$valueAtTime("00:01.400") === 220);
@@ -486,13 +486,13 @@ describe("AudioParam", function() {
       });
 
       param.setValueAtTime(0, 0.000);
-      param.linearRampToValueAtTime( 100, 1.000);
+      param.linearRampToValueAtTime(100, 1.000);
       param.linearRampToValueAtTime(1000, 4.000);
       param.cancelScheduledValues(3.000);
 
-      assert(param.$valueAtTime("00:00.000") ===   0.000);
-      assert(param.$valueAtTime("00:00.500") ===  50.000);
-      assert(param.$valueAtTime("00:00.999") ===  99.900);
+      assert(param.$valueAtTime("00:00.000") === 0.000);
+      assert(param.$valueAtTime("00:00.500") === 50.000);
+      assert(param.$valueAtTime("00:00.999") === 99.900);
       assert(param.$valueAtTime("00:01.000") === 100.000);
       assert(param.$valueAtTime("00:01.500") === 100.000);
       assert(param.$valueAtTime("00:02.000") === 100.000);
@@ -504,5 +504,4 @@ describe("AudioParam", function() {
       assert(param.$valueAtTime("00:05.000") === 100.000);
     });
   });
-
 });

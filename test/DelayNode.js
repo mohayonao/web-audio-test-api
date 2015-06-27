@@ -80,5 +80,4 @@ describe("DelayNode", function() {
       assert(node.$maxDelayTime === 10);
     });
   });
-
 });

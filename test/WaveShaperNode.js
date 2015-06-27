@@ -96,5 +96,4 @@ describe("WaveShaperNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

@@ -47,5 +47,4 @@ describe("MediaStreamAudioDestinationNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

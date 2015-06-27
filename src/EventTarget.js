@@ -59,7 +59,9 @@ export default class EventTarget extends util.preventSuperCall(global.EventTarge
     });
 
     this._.listeners[type] = this._.listeners[type] || [];
+
     let index = this._.listeners[type].indexOf(listener);
+
     if (index !== -1) {
       this._.listeners[type].splice(index, 1);
     }

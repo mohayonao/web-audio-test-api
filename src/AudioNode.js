@@ -196,6 +196,7 @@ export default class AudioNode extends EventTarget {
 
     this._.outputs.splice(0).forEach((dst) => {
       let index = dst.$inputs.indexOf(this);
+
       if (index !== -1) {
         dst.$inputs.splice(index, 1);
       }

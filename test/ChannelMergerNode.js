@@ -53,5 +53,4 @@ describe("ChannelMergerNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

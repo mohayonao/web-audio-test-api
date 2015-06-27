@@ -135,124 +135,125 @@ export default class AudioContext extends EventTarget {
     return util.immigration.apply(admission =>
       new AudioBufferSourceNode(admission, this)
     );
-  };
+  }
 
   createMediaElementSource(mediaElement) {
     return util.immigration.apply(admission =>
       new MediaElementAudioSourceNode(admission, this, mediaElement)
     );
-  };
+  }
 
   createMediaStreamSource(mediaStream) {
     return util.immigration.apply(admission =>
       new MediaStreamAudioSourceNode(admission, this, mediaStream)
     );
-  };
+  }
 
   createMediaStreamDestination() {
     return util.immigration.apply(admission =>
       new MediaStreamAudioDestinationNode(admission, this)
     );
-  };
+  }
 
   createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
     return util.immigration.apply(admission =>
       new ScriptProcessorNode(admission, this, bufferSize, numberOfInputChannels, numberOfOutputChannels)
     );
-  };
+  }
 
   createAnalyser() {
     return util.immigration.apply(admission =>
       new AnalyserNode(admission, this)
     );
-  };
+  }
 
   createGain() {
     return util.immigration.apply(admission =>
       new GainNode(admission, this)
     );
-  };
+  }
 
   createDelay(maxDelayTime = 1) {
     return util.immigration.apply(admission =>
       new DelayNode(admission, this, maxDelayTime)
     );
-  };
+  }
 
   createBiquadFilter() {
     return util.immigration.apply(admission =>
       new BiquadFilterNode(admission, this)
     );
-  };
+  }
 
   createWaveShaper() {
     return util.immigration.apply(admission =>
       new WaveShaperNode(admission, this)
     );
-  };
+  }
 
   createPanner() {
     return util.immigration.apply(admission =>
       new PannerNode(admission, this)
     );
-  };
+  }
 
   createStereoPanner() {
     return util.immigration.apply(admission =>
       new StereoPannerNode(admission, this)
     );
-  };
+  }
 
   createConvolver() {
     return util.immigration.apply(admission =>
       new ConvolverNode(admission, this)
     );
-  };
+  }
 
   createChannelSplitter(numberOfOutputs = 6) {
     return util.immigration.apply(admission =>
       new ChannelSplitterNode(admission, this, numberOfOutputs)
     );
-  };
+  }
 
   createChannelMerger(numberOfInputs = 6) {
     return util.immigration.apply(admission =>
       new ChannelMergerNode(admission, this, numberOfInputs)
     );
-  };
+  }
 
   createDynamicsCompressor() {
     return util.immigration.apply(admission =>
       new DynamicsCompressorNode(admission, this)
     );
-  };
+  }
 
   createOscillator() {
     return util.immigration.apply(admission =>
       new OscillatorNode(admission, this)
     );
-  };
+  }
 
   createPeriodicWave(real, imag) {
     return util.immigration.apply(admission =>
       new PeriodicWave(admission, this, real, imag)
     );
-  };
+  }
 
   toJSON() {
     return this.destination.toJSON([]);
-  };
+  }
 
   $process(time) {
     this._process(util.toMicroseconds(time));
-  };
+  }
 
-  $processTo(time) {
-    time = util.toMicroseconds(time);
+  $processTo(_time) {
+    let time = util.toMicroseconds(_time);
+
     if (this._.microCurrentTime < time) {
       this._process(time - this._.microCurrentTime);
     }
-  };
+  }
 
   $reset() {
     this._.microCurrentTime = 0;
@@ -260,7 +261,7 @@ export default class AudioContext extends EventTarget {
     this.destination.$inputs.forEach((node) => {
       node.disconnect();
     });
-  };
+  }
 
   _process(microseconds) {
     let nextMicroCurrentTime = this._.microCurrentTime + microseconds;
@@ -275,5 +276,5 @@ export default class AudioContext extends EventTarget {
 
       this.destination.$process(inNumSamples, ++this._.tick);
     }
-  };
+  }
 }

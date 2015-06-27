@@ -418,5 +418,4 @@ describe("AudioContext", function() {
       assert(event.target === bufSrc);
     });
   });
-
 });

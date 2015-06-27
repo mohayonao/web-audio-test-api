@@ -302,5 +302,4 @@ describe("PannerNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

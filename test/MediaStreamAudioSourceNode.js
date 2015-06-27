@@ -54,5 +54,4 @@ describe("MediaStreamAudioSourceNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

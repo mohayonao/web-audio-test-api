@@ -18,6 +18,7 @@ export default class Configuration {
   setState(name, value) {
     if (name && typeof name === "object") {
       let dict = name;
+
       Object.keys(dict).forEach((name) => {
         this.setState(name, dict[name]);
       });

@@ -113,7 +113,7 @@ export default class AudioBuffer {
     });
 
     return this._.data[channel];
-  };
+  }
 
   toJSON() {
     let json = {

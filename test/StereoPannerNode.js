@@ -65,5 +65,4 @@ describe("StereoPannerNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

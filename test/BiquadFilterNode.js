@@ -188,5 +188,4 @@ describe("BiquadFilterNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

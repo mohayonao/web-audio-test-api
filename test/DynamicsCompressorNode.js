@@ -155,5 +155,4 @@ describe("DynamicsCompressorNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

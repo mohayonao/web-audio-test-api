@@ -65,7 +65,7 @@ export function name(obj) {
 }
 
 export function pp(value) {
-  if (value == null) {
+  if (value === null || typeof value === "undefined") {
     return String(value);
   }
   let type = typeof value;
@@ -93,10 +93,7 @@ export function pp(value) {
   return `${article(name)} ${name}`;
 }
 
-export function preventSuperCall(superClass) {
-  if (!superClass) {
-    superClass = () => {};
-  }
+export function preventSuperCall(superClass = () => {}) {
   function ctor() {}
   ctor.prototype = Object.create(superClass.prototype, {
     constructor: { value: ctor, enumerable: false, writable: true, configurable: true },
@@ -104,10 +101,8 @@ export function preventSuperCall(superClass) {
   return ctor;
 }
 
-export function toJSON(node, func, memo) {
+export function toJSON(node, func, memo = []) {
   let result;
-
-  memo = memo || [];
 
   if (memo.indexOf(node) !== -1) {
     return `<circular:${name(node)}>`;
@@ -131,12 +126,16 @@ export function toMicroseconds(time) {
   }
 
   let matches = /^([0-5]\d):([0-5]\d)\.(\d\d\d)$/.exec(time);
+
   if (matches) {
-    value += +matches[1]; // minutes
+    // minutes
+    value += +matches[1];
     value *= 60;
-    value += +matches[2]; // seconds
+    // seconds
+    value += +matches[2];
     value *= 1000;
-    value += +matches[3];  // milliseconds
+    // milliseconds
+    value += +matches[3];
     value *= 1000;
     return Math.max(MIN_MICRO_SECONDS, Math.min(value, MAX_MICRO_SECONDS));
   }

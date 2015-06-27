@@ -1,7 +1,12 @@
+global.window = global;
+global.window.location = global.window.location || {};
+
 global.assert = require("power-assert");
 global.sinon = require("sinon");
-global.closeTo = (actual, expected, delta) => Math.abs(actual - expected) <= delta;
-global.window = global;
 global._ = require("lodash");
+
+global.closeTo = function(actual, expected, delta) {
+  return Math.abs(actual - expected) <= delta;
+};
 
 require("../../src");

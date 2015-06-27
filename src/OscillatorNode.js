@@ -26,7 +26,7 @@ export default class OscillatorNode extends AudioNode {
     this._.onended = null;
     this._.custom = null;
     this._.startTime = Infinity;
-    this._.stopTime  = Infinity;
+    this._.stopTime = Infinity;
     this._.firedOnEnded = false;
     this._.JSONKeys = OscillatorNode.$JSONKeys.slice();
   }
@@ -158,8 +158,8 @@ export default class OscillatorNode extends AudioNode {
     this._.custom = periodicWave;
   }
 
-  $stateAtTime(time) {
-    time = util.toSeconds(time);
+  $stateAtTime(_time) {
+    let time = util.toSeconds(_time);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";

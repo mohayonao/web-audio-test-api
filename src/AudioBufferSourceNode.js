@@ -24,7 +24,7 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.loopEnd = 0;
     this._.onended = null;
     this._.startTime = Infinity;
-    this._.stopTime  = Infinity;
+    this._.stopTime = Infinity;
     this._.firedOnEnded = false;
     this._.JSONKeys = AudioBufferSourceNode.$JSONKeys.slice();
   }
@@ -189,8 +189,8 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.stopTime = when;
   }
 
-  $stateAtTime(time) {
-    time = util.toSeconds(time);
+  $stateAtTime(_time) {
+    let time = util.toSeconds(_time);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";

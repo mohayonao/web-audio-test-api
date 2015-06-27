@@ -53,5 +53,4 @@ describe("ChannelSplitterNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

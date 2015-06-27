@@ -1,9 +1,9 @@
 import * as util from "./util";
 import Inspector from "./util/Inspector";
 
-function insertEvent(_this, event) {
+function insertEvent(that, event) {
   let time = event.time;
-  let events = _this.$events;
+  let events = that.$events;
   let replace = 0;
   let i, imax = events.length;
 
@@ -23,11 +23,13 @@ function insertEvent(_this, event) {
 
 function linTo(v, v0, v1, t, t0, t1) {
   let dt = (t - t0) / (t1 - t0);
+
   return (1 - dt) * v0 + dt * v1;
 }
 
 function expTo(v, v0, v1, t, t0, t1) {
   let dt = (t - t0) / (t1 - t0);
+
   return 0 < v0 && 0 < v1 ? v0 * Math.pow(v1 / v0, dt) : v;
 }
 
@@ -298,10 +300,10 @@ export default class AudioParam {
     }, memo);
   }
 
-  $valueAtTime(time) {
-    time = util.toSeconds(time);
+  $valueAtTime(_time) {
+    let time = util.toSeconds(_time);
 
-    let value  = this._.value;
+    let value = this._.value;
     let events = this.$events;
     let t0;
 
@@ -331,6 +333,8 @@ export default class AudioParam {
         case "SetValueCurve":
           value = setCurveValue(value, t0, e0.time, e0.time + e0.duration, e0.curve);
           break;
+        default:
+        // no default
         }
       }
     }

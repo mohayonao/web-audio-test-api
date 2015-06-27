@@ -1,21 +1,21 @@
+import assert from "power-assert";
 import Immigration from "../../src/util/Immigration";
 
-describe("Immigration", function() {
-  describe("constructor", function() {
-    it("()", function() {
+describe("Immigration", () => {
+  describe("constructor", () => {
+    it("()", () => {
       let immigration = new Immigration();
 
       assert(immigration instanceof Immigration);
     });
   });
 
-  describe("workflow", function() {
-    describe("apply -> check", function() {
-      it("ok", function() {
+  describe("workflow", () => {
+    describe("apply -> check", () => {
+      it("ok", () => {
         let immigration = new Immigration();
 
         let result = immigration.apply((admission) => {
-
           immigration.check(admission);
 
           return 1000;
@@ -24,8 +24,8 @@ describe("Immigration", function() {
         assert(result === 1000);
       });
     });
-    describe("apply1 -> check1 -> apply2 -> check2", function() {
-      it("ok", function() {
+    describe("apply1 -> check1 -> apply2 -> check2", () => {
+      it("ok", () => {
         let immigration = new Immigration();
 
         let result = immigration.apply((admission1) => {
@@ -43,8 +43,8 @@ describe("Immigration", function() {
         assert(result === 1000);
       });
     });
-    describe("apply1 -> apply2 -> check2 -> check1", function() {
-      it("ok", function() {
+    describe("apply1 -> apply2 -> check2 -> check1", () => {
+      it("ok", () => {
         let immigration = new Immigration();
 
         let result = immigration.apply((admission1) => {
@@ -53,6 +53,7 @@ describe("Immigration", function() {
 
             return 1000;
           });
+
           immigration.check(admission1);
 
           return result2;
@@ -61,8 +62,8 @@ describe("Immigration", function() {
         assert(result === 1000);
       });
     });
-    describe("apply -> check with an invalid admission", function() {
-      it("call failed callback", function() {
+    describe("apply -> check with an invalid admission", () => {
+      it("call failed callback", () => {
         let passed = false;
         let immigration = new Immigration();
 
@@ -75,6 +76,7 @@ describe("Immigration", function() {
 
               return 1000;
             });
+
             immigration.check(admission1);
 
             return result2;
@@ -84,8 +86,8 @@ describe("Immigration", function() {
         assert(passed);
       });
     });
-    describe("apply -> NOT check", function() {
-      it("failed", function() {
+    describe("apply -> NOT check", () => {
+      it("failed", () => {
         let immigration = new Immigration();
 
         assert.throws(() => {
@@ -95,8 +97,8 @@ describe("Immigration", function() {
         }, Error);
       });
     });
-    describe("apply -> check -> checl", function() {
-      it("failed", function() {
+    describe("apply -> check -> checl", () => {
+      it("failed", () => {
         let immigration = new Immigration();
 
         assert.throws(() => {

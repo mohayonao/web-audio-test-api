@@ -54,5 +54,4 @@ describe("MediaElementAudioSourceNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

@@ -209,5 +209,4 @@ describe("AudioBuffer", function() {
       assert(buf.$context === audioContext);
     });
   });
-
 });

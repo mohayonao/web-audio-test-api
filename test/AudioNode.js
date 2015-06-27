@@ -146,6 +146,7 @@ describe("AudioNode", function() {
       var node = util.immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
+      var anotherAudioContext = new WebAudioTestAPI.AudioContext();
 
       node.connect(audioContext.destination);
 
@@ -180,8 +181,6 @@ describe("AudioNode", function() {
       }, function(e) {
         return e instanceof TypeError && /should be a positive integer/.test(e.message);
       });
-
-      var anotherAudioContext = new WebAudioTestAPI.AudioContext();
 
       assert.throws(function() {
         node.connect(anotherAudioContext.destination);
@@ -332,5 +331,4 @@ describe("AudioNode", function() {
       });
     });
   });
-
 });

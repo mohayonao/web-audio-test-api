@@ -1,11 +1,14 @@
+import assert from "power-assert";
 import * as util from "../../src/util/";
 
-describe("util", function() {
+/* eslint no-undefined: 0 */
+
+describe("util", () => {
   let pkg = require("../../package.json");
   let bower = require("../../bower.json");
 
-  describe("article", function() {
-    it("(str: string): string", function() {
+  describe("article", () => {
+    it("(str: string): string", () => {
       assert(util.article("Apple") === "an");
       assert(util.article("IceCream") === "an");
       assert(util.article("Ugli") === "an");
@@ -16,8 +19,8 @@ describe("util", function() {
     });
   });
 
-  describe("defaults", function() {
-    it("(value: any, defaultValue: any): any", function() {
+  describe("defaults", () => {
+    it("(value: any, defaultValue: any): any", () => {
       assert(util.defaults(0, 1) === 0);
       assert(util.defaults(1, 2) === 1);
       assert(util.defaults(undefined, 0) === 0);
@@ -25,15 +28,15 @@ describe("util", function() {
     });
   });
 
-  describe("getAPIVersion", function() {
-    it("(): string", function() {
+  describe("getAPIVersion", () => {
+    it("(): string", () => {
       assert(util.getAPIVersion() === pkg.version);
       assert(util.getAPIVersion() === bower.version);
     });
   });
 
-  describe("isBoolean", function() {
-    it("(value: any): boolean", function() {
+  describe("isBoolean", () => {
+    it("(value: any): boolean", () => {
       assert(util.isBoolean(-1.5) === false);
       assert(util.isBoolean(-1) === false);
       assert(util.isBoolean(0) === false);
@@ -49,8 +52,8 @@ describe("util", function() {
     });
   });
 
-  describe("isFunction", function() {
-    it("(value: any): boolean", function() {
+  describe("isFunction", () => {
+    it("(value: any): boolean", () => {
       assert(util.isFunction(-1.5) === false);
       assert(util.isFunction(-1) === false);
       assert(util.isFunction(0) === false);
@@ -66,8 +69,8 @@ describe("util", function() {
     });
   });
 
-  describe("isInstanceOf", function() {
-    it("(value: any, klass: function): boolean", function() {
+  describe("isInstanceOf", () => {
+    it("(value: any, klass: function): boolean", () => {
       function A() {}
       function B() {}
 
@@ -77,8 +80,8 @@ describe("util", function() {
     });
   });
 
-  describe("isInteger", function() {
-    it("(value: any): boolean", function() {
+  describe("isInteger", () => {
+    it("(value: any): boolean", () => {
       assert(util.isInteger(-1.5) === false);
       assert(util.isInteger(-1) === true);
       assert(util.isInteger(0) === true);
@@ -94,8 +97,8 @@ describe("util", function() {
     });
   });
 
-  describe("isNullOrFunction", function() {
-    it("(value: any): boolean", function() {
+  describe("isNullOrFunction", () => {
+    it("(value: any): boolean", () => {
       assert(util.isNullOrFunction(-1.5) === false);
       assert(util.isNullOrFunction(-1) === false);
       assert(util.isNullOrFunction(0) === false);
@@ -111,8 +114,8 @@ describe("util", function() {
     });
   });
 
-  describe("isNullOrInstanceOf", function() {
-    it("(value: any, klass: function): boolean", function() {
+  describe("isNullOrInstanceOf", () => {
+    it("(value: any, klass: function): boolean", () => {
       function A() {}
       function B() {}
 
@@ -122,8 +125,8 @@ describe("util", function() {
     });
   });
 
-  describe("isNumber", function() {
-    it("(value: any): boolean", function() {
+  describe("isNumber", () => {
+    it("(value: any): boolean", () => {
       assert(util.isNumber(-1.5) === true);
       assert(util.isNumber(-1) === true);
       assert(util.isNumber(0) === true);
@@ -139,8 +142,8 @@ describe("util", function() {
     });
   });
 
-  describe("isPositiveInteger", function() {
-    it("(value: any): boolean", function() {
+  describe("isPositiveInteger", () => {
+    it("(value: any): boolean", () => {
       assert(util.isPositiveInteger(-1.5) === false);
       assert(util.isPositiveInteger(-1) === false);
       assert(util.isPositiveInteger(0) === true);
@@ -156,8 +159,8 @@ describe("util", function() {
     });
   });
 
-  describe("isPositiveNumber", function() {
-    it("(value: any): boolean", function() {
+  describe("isPositiveNumber", () => {
+    it("(value: any): boolean", () => {
       assert(util.isPositiveNumber(-1.5) === false);
       assert(util.isPositiveNumber(-1) === false);
       assert(util.isPositiveNumber(0) === true);
@@ -173,8 +176,8 @@ describe("util", function() {
     });
   });
 
-  describe("isString", function() {
-    it("(value: any): boolean", function() {
+  describe("isString", () => {
+    it("(value: any): boolean", () => {
       assert(util.isString(-1.5) === false);
       assert(util.isString(-1) === false);
       assert(util.isString(0) === false);
@@ -190,15 +193,15 @@ describe("util", function() {
     });
   });
 
-  describe("name", function() {
-    it("(obj: object): string", function() {
+  describe("name", () => {
+    it("(obj: object): string", () => {
       assert(util.name({ $name: "name" }) === "name");
       assert(util.name({ $name: "name", $id: "id" }) === "name#id");
     });
   });
 
-  describe("pp", function() {
-    it("(value: any): string", function() {
+  describe("pp", () => {
+    it("(value: any): string", () => {
       var f32 = new Float32Array(100);
       var i16 = new Int16Array(100);
 
@@ -216,8 +219,8 @@ describe("util", function() {
     });
   });
 
-  describe("toMicroseconds", function() {
-    it("(time: number|string): number", function() {
+  describe("toMicroseconds", () => {
+    it("(time: number|string): number", () => {
       assert(util.toMicroseconds(1.5) === 1500000);
       assert(util.toMicroseconds(NaN) === 0);
       assert(util.toMicroseconds("00:00.250") === 250000);
@@ -227,8 +230,8 @@ describe("util", function() {
     });
   });
 
-  describe("toSeconds", function() {
-    it("(time: number|string): number", function() {
+  describe("toSeconds", () => {
+    it("(time: number|string): number", () => {
       assert(util.toSeconds(1.500) === 1.500);
       assert(util.toSeconds(NaN) === 0);
       assert(util.toSeconds("00:00.250") === 0.250);

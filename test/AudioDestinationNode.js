@@ -61,5 +61,4 @@ describe("AudioDestinationNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

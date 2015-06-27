@@ -26,6 +26,7 @@ export default class Formatter {
       } else {
         let descriptor = Object.getOwnPropertyDescriptor(this.instance, this.methodName)
           || Object.getOwnPropertyDescriptor(Object.getPrototypeOf(this.instance), this.methodName);
+
         if (descriptor && typeof descriptor.value === "function") {
           result += "#" + getFunctionDeclaration(descriptor.value);
         }

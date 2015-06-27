@@ -33,7 +33,6 @@ describe("OfflineAudioContext", function() {
 
   describe("#destination", function() {
     it("get: AudioDestinationNode", function() {
-
       assert(audioContext.destination instanceof WebAudioTestAPI.AudioDestinationNode);
 
       assert.throws(function() {
@@ -92,8 +91,8 @@ describe("OfflineAudioContext", function() {
 
   describe("#oncomplete", function() {
     it("get/set: function", function() {
-      var fn1 = function() {};
-      var fn2 = function() {};
+      function fn1() {}
+      function fn2() {}
 
       assert(audioContext.oncomplete === null);
 
@@ -129,6 +128,7 @@ describe("OfflineAudioContext", function() {
   describe("works", function() {
     it("oncomplete", function() {
       var oncomplete = sinon.spy();
+      var event;
 
       audioContext.oncomplete = oncomplete;
 
@@ -144,7 +144,7 @@ describe("OfflineAudioContext", function() {
       audioContext.$processTo("00:00.100");
       assert(oncomplete.callCount === 1, "00:00.100");
 
-      var event = oncomplete.args[0][0];
+      event = oncomplete.args[0][0];
 
       assert(event instanceof WebAudioTestAPI.OfflineAudioCompletionEvent);
       assert(event.renderedBuffer instanceof WebAudioTestAPI.AudioBuffer);
@@ -161,5 +161,4 @@ describe("OfflineAudioContext", function() {
       assert(oncomplete.callCount === 0, "00:00.100");
     });
   });
-
 });
