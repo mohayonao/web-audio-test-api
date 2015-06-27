@@ -77,55 +77,90 @@ describe("AudioContext", function() {
   });
 
   describe("#decodeAudioData", function() {
-    it("(audioData: ArrayBuffer, successCallback: function, errorCallback: function): void", function(done) {
-      var audioData = new Uint8Array(128).buffer;
+    beforeEach(function() {
+      audioContext.DECODE_AUDIO_DATA_RESULT = null;
+      audioContext.DECODE_AUDIO_DATA_FAILED = false;
+    });
+    afterEach(function() {
+      audioContext.DECODE_AUDIO_DATA_RESULT = null;
+      audioContext.DECODE_AUDIO_DATA_FAILED = false;
+    });
 
-      assert.throws(function() {
-        audioContext.decodeAudioData("INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be an ArrayBuffer/.test(e.message);
+    describe("promise-based", function() {
+      before(function() {
+        WebAudioTestAPI.setState("AudioContext#decodeAudioData", "promise");
       });
-
-      assert.throws(function() {
-        audioContext.decodeAudioData(audioData, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a function/.test(e.message);
+      after(function() {
+        WebAudioTestAPI.setState("AudioContext#decodeAudioData", "void");
       });
+      it("(audioData: ArrayBuffer): Promise<AudioBuffer>", function() {
+        var audioData = new Uint8Array(128).buffer;
 
-      assert.throws(function() {
-        audioContext.decodeAudioData(audioData, function() {}, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a function/.test(e.message);
+        return Promise.resolve().then(function() {
+          return audioContext.decodeAudioData("INVALID");
+        }).catch(function(e) {
+          return e instanceof TypeError && /should be an ArrayBuffer/.test(e.message);
+        }).then(function() {
+          return audioContext.decodeAudioData(audioData, "INVALID");
+        }).catch(function(e) {
+          return e instanceof TypeError && /should be a function/.test(e.message);
+        }).then(function() {
+          return audioContext.decodeAudioData(audioData, function() {}, "INVALID");
+        }).catch(function(e) {
+          return e instanceof TypeError && /should be a function/.test(e.message);
+        }).then(function() {
+          return audioContext.decodeAudioData(audioData);
+        }).then(function(buffer) {
+          assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
+        });
       });
+      it(".DECODE_AUDIO_DATA_FAILED", function() {
+        var audioData = new Uint8Array(128).buffer;
 
-      audioContext.decodeAudioData(audioData, function(buffer) {
-        assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
-        done();
-      }, function() {
-        throw new Error("NOT REACHED");
+        audioContext.DECODE_AUDIO_DATA_FAILED = true;
+
+        return audioContext.decodeAudioData(audioData).catch(function() {
+        });
+      });
+      it(".DECODE_AUDIO_DATA_RESULT", function() {
+        var audioData = new Uint8Array(128).buffer;
+        var result = audioContext.createBuffer(2, 256, 44100);
+
+        audioContext.DECODE_AUDIO_DATA_RESULT = result;
+
+        audioContext.decodeAudioData(audioData).then(function(buffer) {
+          assert(buffer === result);
+        });
       });
     });
-    it(".DECODE_AUDIO_DATA_FAILED", function(done) {
-      var audioData = new Uint8Array(128).buffer;
+    describe("void-based", function() {
+      it("(audioData: ArrayBuffer, successCallback: function, errorCallback: function): void", function(done) {
+        var audioData = new Uint8Array(128).buffer;
 
-      audioContext.DECODE_AUDIO_DATA_FAILED = true;
+        assert.throws(function() {
+          audioContext.decodeAudioData("INVALID");
+        }, function(e) {
+          return e instanceof TypeError && /should be an ArrayBuffer/.test(e.message);
+        });
 
-      audioContext.decodeAudioData(audioData, function() {
-        throw new Error("NOT REACHED");
-      }, function() {
-        done();
-      });
-    });
-    it(".DECODE_AUDIO_DATA_RESULT", function(done) {
-      var audioData = new Uint8Array(128).buffer;
-      var result = audioContext.createBuffer(2, 256, 44100);
+        assert.throws(function() {
+          audioContext.decodeAudioData(audioData, "INVALID");
+        }, function(e) {
+          return e instanceof TypeError && /should be a function/.test(e.message);
+        });
 
-      audioContext.DECODE_AUDIO_DATA_RESULT = result;
-      audioContext.decodeAudioData(audioData, function(buffer) {
-        assert(buffer === result);
-        done();
-      }, function() {
-        throw new Error("NOT REACHED");
+        assert.throws(function() {
+          audioContext.decodeAudioData(audioData, function() {}, "INVALID");
+        }, function(e) {
+          return e instanceof TypeError && /should be a function/.test(e.message);
+        });
+
+        audioContext.decodeAudioData(audioData, function(buffer) {
+          assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
+          done();
+        }, function() {
+          throw new Error("NOT REACHED");
+        });
       });
     });
   });

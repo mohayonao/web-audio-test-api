@@ -96,39 +96,68 @@ export default class AudioContext extends EventTarget {
     );
   }
 
-  decodeAudioData(audioData, successCallback, errorCallback = () => {}) {
-    this._.inspector.describe("decodeAudioData", [ "audioData", "successCallback", "errorCallback" ], (assert) => {
-      assert(util.isInstanceOf(audioData, global.ArrayBuffer), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(audioData, "audioData", "ArrayBuffer")}
-        `);
+  decodeAudioData(audioData, _successCallback, _errorCallback) {
+    let isPromiseBased = util.configuration.getState("AudioContext#decodeAudioData") === "promise";
+    let successCallback, errorCallback;
+
+    if (isPromiseBased) {
+      successCallback = util.defaults(_successCallback, () => {});
+      errorCallback = util.defaults(_errorCallback, () => {});
+    } else {
+      successCallback = _successCallback;
+      errorCallback = util.defaults(_errorCallback, () => {});
+    }
+
+    function assertion() {
+      if (assertion.done) {
+        return;
+      }
+
+      this._.inspector.describe("decodeAudioData", [ "audioData", "successCallback", "errorCallback" ], (assert) => {
+        assert(util.isInstanceOf(audioData, global.ArrayBuffer), (fmt) => {
+          throw new TypeError(fmt.plain `
+            ${fmt.form};
+            ${fmt.butGot(audioData, "audioData", "ArrayBuffer")}
+          `);
+        });
+
+        assert(util.isFunction(successCallback), (fmt) => {
+          throw new TypeError(fmt.plain `
+            ${fmt.form};
+            ${fmt.butGot(successCallback, "successCallback", "function")}
+          `);
+        });
+
+        assert(util.isFunction(errorCallback), (fmt) => {
+          throw new TypeError(fmt.plain `
+            ${fmt.form};
+            ${fmt.butGot(errorCallback, "errorCallback", "function")}
+          `);
+        });
       });
 
-      assert(util.isFunction(successCallback), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(successCallback, "successCallback", "function")}
-        `);
-      });
+      assertion.done = true;
+    }
 
-      assert(util.isFunction(errorCallback), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(errorCallback, "errorCallback", "function")}
-        `);
-      });
-    });
+    let promise = new Promise((resolve, reject) => {
+      assertion.call(this);
 
-    setTimeout(() => {
       if (this.DECODE_AUDIO_DATA_FAILED) {
-        errorCallback();
+        reject();
       } else {
-        successCallback(this.DECODE_AUDIO_DATA_RESULT || util.immigration.apply(admission =>
+        resolve(this.DECODE_AUDIO_DATA_RESULT || util.immigration.apply(admission =>
           new AudioBuffer(admission, this, 2, 1024, this.sampleRate)
         ));
       }
-    }, 0);
+    });
+
+    promise.then(successCallback, errorCallback);
+
+    if (isPromiseBased) {
+      return promise;
+    }
+
+    assertion.call(this);
   }
 
   createBufferSource() {
