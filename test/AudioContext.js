@@ -164,6 +164,16 @@ describe("AudioContext", function() {
     });
   });
 
+  describe("#createAudioWorker", function() {
+    it("(): Promise<AudioWorker>", function() {
+      assert.throws(function() {
+        audioContext.createAudioWorker();
+      }, function(e) {
+        return e instanceof TypeError && /not enabled/.test(e.message);
+      });
+    });
+  });
+
   describe("#createScriptProcessor", function() {
     it("(bufferSize: number, numberOfInputChannels: number, numberOfOutputChannels: number): ScriptProcessorNode", function() {
       var node = audioContext.createScriptProcessor(1024, 1, 1);

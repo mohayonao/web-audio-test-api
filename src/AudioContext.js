@@ -155,6 +155,17 @@ export default class AudioContext extends EventTarget {
     );
   }
 
+  createAudioWorker() {
+    this._.inspector.describe("createAudioWorker", (assert) => {
+      assert(false, (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          not enabled
+        `);
+      });
+    });
+  }
+
   createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
     return util.immigration.apply(admission =>
       new ScriptProcessorNode(admission, this, bufferSize, numberOfInputChannels, numberOfOutputChannels)
