@@ -33,7 +33,6 @@ describe("OfflineAudioContext", function() {
 
   describe("#destination", function() {
     it("get: AudioDestinationNode", function() {
-
       assert(audioContext.destination instanceof WebAudioTestAPI.AudioDestinationNode);
 
       assert.throws(function() {
@@ -81,19 +80,43 @@ describe("OfflineAudioContext", function() {
   });
 
   describe("#startRendering", function() {
-    it("(): void", function() {
-      audioContext.startRendering();
-
-      assert.throws(function() {
+    describe("promise-based", function() {
+      before(function() {
+        WebAudioTestAPI.setState("OfflineAudioContext#startRendering", "promise");
+      });
+      after(function() {
+        WebAudioTestAPI.setState("OfflineAudioContext#startRendering", "void");
+      });
+      it("(): Promise<AudioBuffer>", function() {
+        return Promise.resolve().then(function() {
+          setTimeout(function() {
+            audioContext.$processTo("00:00.100");
+          }, 0);
+          return audioContext.startRendering();
+        }).then(function(buffer) {
+          assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
+        }).then(function() {
+          return audioContext.startRendering();
+        }).catch(function(e) {
+          return e instanceof Error && /cannot call startRendering more than once/.test(e.message);
+        });
+      });
+    });
+    describe("void-based", function() {
+      it("(): void", function() {
         audioContext.startRendering();
-      }, Error);
+
+        assert.throws(function() {
+          audioContext.startRendering();
+        }, Error);
+      });
     });
   });
 
   describe("#oncomplete", function() {
     it("get/set: function", function() {
-      var fn1 = function() {};
-      var fn2 = function() {};
+      function fn1() {}
+      function fn2() {}
 
       assert(audioContext.oncomplete === null);
 
@@ -129,6 +152,7 @@ describe("OfflineAudioContext", function() {
   describe("works", function() {
     it("oncomplete", function() {
       var oncomplete = sinon.spy();
+      var event;
 
       audioContext.oncomplete = oncomplete;
 
@@ -144,7 +168,7 @@ describe("OfflineAudioContext", function() {
       audioContext.$processTo("00:00.100");
       assert(oncomplete.callCount === 1, "00:00.100");
 
-      var event = oncomplete.args[0][0];
+      event = oncomplete.args[0][0];
 
       assert(event instanceof WebAudioTestAPI.OfflineAudioCompletionEvent);
       assert(event.renderedBuffer instanceof WebAudioTestAPI.AudioBuffer);
@@ -161,5 +185,4 @@ describe("OfflineAudioContext", function() {
       assert(oncomplete.callCount === 0, "00:00.100");
     });
   });
-
 });

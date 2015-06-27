@@ -1,4 +1,4 @@
-import * as util from "./util";
+import utils from "./utils";
 
 global.Event = global.Event || class Event {
   constructor() {
@@ -6,14 +6,14 @@ global.Event = global.Event || class Event {
   }
 };
 
-export default class Event extends util.preventSuperCall(global.Event) {
+export default class Event extends utils.preventSuperCall(global.Event) {
   constructor(name, target) {
     super();
 
     Object.defineProperty(this, "_", { value: {} });
 
     this._.type = name;
-    this._.target = util.defaults(target, null);
+    this._.target = utils.defaults(target, null);
     this._.timeStamp = Date.now();
   }
 

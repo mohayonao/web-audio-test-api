@@ -1,0 +1,11 @@
+{
+  "parser": "babel-eslint",
+  "no-var": 2,
+
+  "globals": {
+    "assert": false,
+    "sinon": false,
+    "_": false,
+    "closeTo": false
+  }
+}

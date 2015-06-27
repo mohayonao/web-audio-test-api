@@ -1,7 +1,14 @@
 {
+  "parser": "",
+
+  // best practice
+  "dot-notation": 0,
+
+  // es6
+  "no-var": 0,
+
   "globals": {
     "describe": true,
-    "context": true,
     "it": true,
     "before": true,
     "beforeEach": true,

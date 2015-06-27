@@ -1,6 +1,9 @@
-import * as util from "./util";
-import Enumerator from "./util/Enumerator";
+import utils from "./utils";
+import Configuration from "./utils/Configuration";
+import Enumerator from "./utils/Enumerator";
 import AudioNode from "./AudioNode";
+
+let configuration = Configuration.getInstance();
 
 export default class AnalyserNode extends AudioNode {
   constructor(admission, context) {
@@ -58,7 +61,7 @@ export default class AnalyserNode extends AudioNode {
 
   set minDecibels(value) {
     this._.inspector.describe("minDecibels", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "minDecibels", "number")}
@@ -75,7 +78,7 @@ export default class AnalyserNode extends AudioNode {
 
   set maxDecibels(value) {
     this._.inspector.describe("maxDecibels", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "maxDecibels", "number")}
@@ -92,7 +95,7 @@ export default class AnalyserNode extends AudioNode {
 
   set smoothingTimeConstant(value) {
     this._.inspector.describe("smoothingTimeConstant", (assert) => {
-      assert(util.isNumber(value), (fmt) => {
+      assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "smoothingTimeConstant", "number")}
@@ -105,19 +108,18 @@ export default class AnalyserNode extends AudioNode {
 
   getFloatFrequencyData(array) {
     this._.inspector.describe("getFloatFrequencyData", (assert) => {
-      assert(util.isInstanceOf(array, Float32Array), (fmt) => {
+      assert(utils.isInstanceOf(array, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(array, "array", "Float32Array")}
         `);
       });
     });
-
   }
 
   getByteFrequencyData(array) {
     this._.inspector.describe("getByteFrequencyData", (assert) => {
-      assert(util.isInstanceOf(array, Uint8Array), (fmt) => {
+      assert(utils.isInstanceOf(array, Uint8Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(array, "array", "Uint8Array")}
@@ -128,13 +130,13 @@ export default class AnalyserNode extends AudioNode {
 
   getFloatTimeDomainData(array) {
     this._.inspector.describe("getFloatTimeDomainData", (assert) => {
-      assert(util.configuration.getState("AnalyserNode#getFloatTimeDomainData") === "enabled", (fmt) => {
+      assert(configuration.getState("AnalyserNode#getFloatTimeDomainData") === "enabled", (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           not enabled
         `);
       });
-      assert(util.isInstanceOf(array, Float32Array), (fmt) => {
+      assert(utils.isInstanceOf(array, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(array, "array", "Float32Array")}
@@ -145,7 +147,7 @@ export default class AnalyserNode extends AudioNode {
 
   getByteTimeDomainData(array) {
     this._.inspector.describe("getByteTimeDomainData", (assert) => {
-      assert(util.isInstanceOf(array, Uint8Array), (fmt) => {
+      assert(utils.isInstanceOf(array, Uint8Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(array, "array", "Uint8Array")}

@@ -123,8 +123,9 @@ describe("AudioBufferSourceNode", function() {
   describe("#onended", function() {
     it("get/set: function", function() {
       var node = audioContext.createBufferSource();
-      var fn1 = function() {};
-      var fn2 = function() {};
+
+      function fn1() {}
+      function fn2() {}
 
       assert(node.onended === null);
 
@@ -447,5 +448,4 @@ describe("AudioBufferSourceNode", function() {
       assert(node.$stateAtTime("00:00.200") === "FINISHED");
     });
   });
-
 });

@@ -1,6 +1,9 @@
-import * as util from "./util";
+import utils from "./utils";
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import AudioParam from "./AudioParam";
+
+let immigration = Immigration.getInstance();
 
 export default class DelayNode extends AudioNode {
   constructor(admission, context, maxDelayTime) {
@@ -15,7 +18,7 @@ export default class DelayNode extends AudioNode {
     });
 
     this._.inspector.describe("constructor", (assert) => {
-      assert(util.isPositiveNumber(maxDelayTime), (fmt) => {
+      assert(utils.isPositiveNumber(maxDelayTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(maxDelayTime, "maxDelayTime", "positive number")}
@@ -23,7 +26,7 @@ export default class DelayNode extends AudioNode {
       });
     });
 
-    this._.delayTime = util.immigration.apply(admission =>
+    this._.delayTime = immigration.apply(admission =>
       new AudioParam(admission, this, "delayTime", 0, 0, maxDelayTime)
     );
     this._.maxDelayTime = maxDelayTime;

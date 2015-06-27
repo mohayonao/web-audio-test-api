@@ -177,5 +177,4 @@ describe("AudioListener", function() {
       assert(listener.$context === audioContext);
     });
   });
-
 });

@@ -2,8 +2,16 @@ describe("StereoPannerNode", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
+  before(function() {
+    WebAudioTestAPI.setState("AudioContext#createStereoPanner", "enabled");
+  });
+
   beforeEach(function() {
     audioContext = new WebAudioTestAPI.AudioContext();
+  });
+
+  after(function() {
+    WebAudioTestAPI.setState("AudioContext#createStereoPanner", "disabled");
   });
 
   describe("constructor", function() {
@@ -65,5 +73,4 @@ describe("StereoPannerNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

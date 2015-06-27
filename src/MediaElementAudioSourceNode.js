@@ -1,4 +1,4 @@
-import * as util from "./util";
+import utils from "./utils";
 import AudioNode from "./AudioNode";
 
 export default class MediaElementAudioSourceNode extends AudioNode {
@@ -14,7 +14,7 @@ export default class MediaElementAudioSourceNode extends AudioNode {
     });
 
     this._.inspector.describe("constructor", (assert) => {
-      assert(util.isInstanceOf(mediaElement, global.HTMLMediaElement), (fmt) => {
+      assert(utils.isInstanceOf(mediaElement, global.HTMLMediaElement), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(mediaElement, "mediaElement", "HTMLMediaElement")}

@@ -11,13 +11,15 @@ export default class Inspector {
     }
 
     let formatter = new Formatter(this.instance, methodName, args);
-    let assert = (test, callback) => {
+    let _this = this;
+
+    function assert(test, callback) {
       if (test) {
         return;
       }
 
-      callback.call(this.instance, formatter);
-    };
+      callback.call(_this.instance, formatter);
+    }
 
     assert.throwReadOnlyTypeError = () => {
       throw new TypeError(formatter.plain `

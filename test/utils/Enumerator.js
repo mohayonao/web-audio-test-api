@@ -1,16 +1,17 @@
-import Enumerator from "../../src/util/Enumerator";
+import assert from "power-assert";
+import Enumerator from "../../src/utils/Enumerator";
 
-describe("Enumerator", function() {
-  describe("constructor", function() {
-    it("([list: any[]])", function() {
+describe("Enumerator", () => {
+  describe("constructor", () => {
+    it("([list: any[]])", () => {
       let enumerator = new Enumerator();
 
       assert(enumerator instanceof Enumerator);
     });
   });
 
-  describe("#contains", function() {
-    it("(value: any): boolean", function() {
+  describe("#contains", () => {
+    it("(value: any): boolean", () => {
       let enumerator = new Enumerator([ "foo", "bar", "baz" ]);
 
       assert(enumerator.contains("baz") === true);
@@ -18,8 +19,8 @@ describe("Enumerator", function() {
     });
   });
 
-  describe("#toString", function() {
-    it("(): string", function() {
+  describe("#toString", () => {
+    it("(): string", () => {
       let enumerator = new Enumerator([ "foo", "bar", "baz" ]);
 
       assert(enumerator.toString() === "enum { foo, bar, baz }");

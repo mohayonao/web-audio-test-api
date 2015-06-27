@@ -1,17 +1,29 @@
-import Configuration from "../../src/util/Configuration";
+import assert from "power-assert";
+import Configuration from "../../src/utils/Configuration";
 
-describe("Configuration", function() {
-  describe("constructor", function() {
-    it("()", function() {
-      var configuration = new Configuration();
+describe("Configuration", () => {
+  describe("constructor", () => {
+    it("()", () => {
+      let configuration = new Configuration();
 
       assert(configuration instanceof Configuration);
     });
   });
 
-  describe("#getState", function() {
-    it("(name: string): string", function() {
-      var configuration = new Configuration();
+  describe(".getInstance", () => {
+    it("(): Configuration", () => {
+      let configuration1 = Configuration.getInstance();
+      let configuration2 = Configuration.getInstance();
+
+      assert(configuration1 instanceof Configuration);
+      assert(configuration2 instanceof Configuration);
+      assert(configuration1 === configuration2);
+    });
+  });
+
+  describe("#getState", () => {
+    it("(name: string): string", () => {
+      let configuration = new Configuration();
 
       assert(configuration.getState("AnalyserNode#getFloatTimeDomainData") === "disabled");
       assert(configuration.getState("AudioBuffer#copyFromChannel") === "disabled");
@@ -25,17 +37,17 @@ describe("Configuration", function() {
       assert(configuration.getState("OfflineAudioContext#startRendering") === "void");
       assert(configuration.getState("AudioNode#disconnect") === "channel");
 
-      assert.throws(function() {
+      assert.throws(() => {
         configuration.getState("AudioNode#valueOf");
-      }, function(e) {
+      }, (e) => {
         return e instanceof TypeError && /invalid state name/.test(e.message);
       });
     });
   });
 
-  describe("#setState", function() {
-    it("(name: string, value: string): void", function() {
-      var configuration = new Configuration();
+  describe("#setState", () => {
+    it("(name: string, value: string): void", () => {
+      let configuration = new Configuration();
 
       configuration.setState("AnalyserNode#getFloatTimeDomainData", "enabled");
       configuration.setState("AudioBuffer#copyFromChannel", "enabled");
@@ -87,15 +99,15 @@ describe("Configuration", function() {
       assert(configuration.getState("OfflineAudioContext#startRendering") === "void");
       assert(configuration.getState("AudioNode#disconnect") === "channel");
 
-      assert.throws(function() {
+      assert.throws(() => {
         configuration.setState("AudioNode#valueOf", "enabled");
-      }, function(e) {
+      }, (e) => {
         return e instanceof TypeError && /invalid state name/.test(e.message);
       });
 
-      assert.throws(function() {
+      assert.throws(() => {
         configuration.setState("AudioNode#disconnect", "enabled");
-      }, function(e) {
+      }, (e) => {
         return e instanceof TypeError && /invalid state value/.test(e.message);
       });
     });

@@ -11,6 +11,9 @@ describe("PeriodicWave", function() {
   describe("constructor", function() {
     it("()", function() {
       var wave = audioContext.createPeriodicWave(real, imag);
+      var f128 = new Float32Array(128);
+      var f256 = new Float32Array(256);
+      var f8192 = new Float32Array(8192);
 
       assert(wave instanceof global.PeriodicWave);
 
@@ -26,16 +29,11 @@ describe("PeriodicWave", function() {
         return e instanceof TypeError && /should be a Float32Array/.test(e.message);
       });
 
-      var f128 = new Float32Array(128);
-      var f256 = new Float32Array(256);
-
       assert.throws(function() {
         audioContext.createPeriodicWave(f128, f256);
       }, function(e) {
         return e instanceof TypeError && /must match/.test(e.message);
       });
-
-      var f8192 = new Float32Array(8192);
 
       assert.throws(function() {
         audioContext.createPeriodicWave(f8192, f128);
@@ -88,5 +86,4 @@ describe("PeriodicWave", function() {
       assert(wave.$imag === imag);
     });
   });
-
 });

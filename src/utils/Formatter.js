@@ -1,4 +1,4 @@
-import * as util from "./";
+import utils from "./";
 
 function getFunctionDeclaration(fn) {
   return /^function (\w+\([^)]*\))/.exec(fn.toString())[1];
@@ -26,6 +26,7 @@ export default class Formatter {
       } else {
         let descriptor = Object.getOwnPropertyDescriptor(this.instance, this.methodName)
           || Object.getOwnPropertyDescriptor(Object.getPrototypeOf(this.instance), this.methodName);
+
         if (descriptor && typeof descriptor.value === "function") {
           result += "#" + getFunctionDeclaration(descriptor.value);
         }
@@ -46,6 +47,6 @@ export default class Formatter {
   }
 
   butGot(value, name, type) {
-    return `"${name}" should be ${util.article(type)} ${type}, but got: ${util.pp(value)}`;
+    return `"${name}" should be ${utils.article(type)} ${type}, but got: ${utils.prettyPrint(value)}`;
   }
 }

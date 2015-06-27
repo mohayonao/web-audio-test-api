@@ -1,9 +1,12 @@
-import * as util from "./util";
-import Inspector from "./util/Inspector";
+import utils from "./utils";
+import Immigration from "./utils/Immigration";
+import Inspector from "./utils/Inspector";
+
+let immigration = Immigration.getInstance();
 
 export default class PeriodicWave {
   constructor(admission, context, real, imag) {
-    util.immigration.check(admission, () => {
+    immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
 
@@ -14,7 +17,7 @@ export default class PeriodicWave {
     });
 
     this._.inspector.describe("constructor", (assert) => {
-      assert(util.isInstanceOf(real, Float32Array), (fmt) => {
+      assert(utils.isInstanceOf(real, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(real, "real", "Float32Array")}
@@ -28,7 +31,7 @@ export default class PeriodicWave {
         `);
       });
 
-      assert(util.isInstanceOf(imag, Float32Array), (fmt) => {
+      assert(utils.isInstanceOf(imag, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(imag, "imag", "Float32Array")}

@@ -253,5 +253,4 @@ describe("AnalyserNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

@@ -1,22 +1,25 @@
-import * as util from "./util";
-import Enumerator from "./util/Enumerator";
+import utils from "./utils";
+import Enumerator from "./utils/Enumerator";
+import Immigration from "./utils/Immigration";
 import EventTarget from "./EventTarget";
+
+let immigration = Immigration.getInstance();
 
 export default class AudioNode extends EventTarget {
   constructor(admission, spec) {
     super();
 
-    util.immigration.check(admission, () => {
+    immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
 
     this._.context = spec.context;
-    this._.name = util.defaults(spec.name, "AudioNode");
-    this._.numberOfInputs = util.defaults(spec.numberOfInputs, 1);
-    this._.numberOfOutputs = util.defaults(spec.numberOfOutputs, 1);
-    this._.channelCount = util.defaults(spec.channelCount, 2);
-    this._.channelCountMode = util.defaults(spec.channelCountMode, "max");
-    this._.channelInterpretation = util.defaults(spec.channelInterpretation, "speakers");
+    this._.name = utils.defaults(spec.name, "AudioNode");
+    this._.numberOfInputs = utils.defaults(spec.numberOfInputs, 1);
+    this._.numberOfOutputs = utils.defaults(spec.numberOfOutputs, 1);
+    this._.channelCount = utils.defaults(spec.channelCount, 2);
+    this._.channelCountMode = utils.defaults(spec.channelCountMode, "max");
+    this._.channelInterpretation = utils.defaults(spec.channelInterpretation, "speakers");
     this._.JSONKeys = [];
     this._.inputs = [];
     this._.outputs = [];
@@ -59,7 +62,7 @@ export default class AudioNode extends EventTarget {
 
   set channelCount(value) {
     this._.inspector.describe("channelCount", (assert) => {
-      assert(util.isPositiveInteger(value), (fmt) => {
+      assert(utils.isPositiveInteger(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "channelCount", "positive integer")}
@@ -126,7 +129,7 @@ export default class AudioNode extends EventTarget {
 
   connect(destination, output = 0, input = 0) {
     this._.inspector.describe("connect", (assert) => {
-      assert(util.isInstanceOf(destination, global.AudioNode) || util.isInstanceOf(destination, global.AudioParam), (fmt) => {
+      assert(utils.isInstanceOf(destination, global.AudioNode) || utils.isInstanceOf(destination, global.AudioParam), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(destination, "destination", "AudioNode or an AudioParam")}
@@ -140,14 +143,14 @@ export default class AudioNode extends EventTarget {
         `);
       });
 
-      assert(util.isPositiveInteger(output), (fmt) => {
+      assert(utils.isPositiveInteger(output), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(output, "output", "positive integer")}
         `);
       });
 
-      assert(util.isPositiveInteger(input), (fmt) => {
+      assert(utils.isPositiveInteger(input), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(input, "input", "positive integer")}
@@ -179,7 +182,7 @@ export default class AudioNode extends EventTarget {
 
   disconnect(output = 0) {
     this._.inspector.describe("disconnect", (assert) => {
-      assert(util.isPositiveInteger(output), (fmt) => {
+      assert(utils.isPositiveInteger(output), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(output, "output", "positive integer")}
@@ -196,6 +199,7 @@ export default class AudioNode extends EventTarget {
 
     this._.outputs.splice(0).forEach((dst) => {
       let index = dst.$inputs.indexOf(this);
+
       if (index !== -1) {
         dst.$inputs.splice(index, 1);
       }
@@ -210,10 +214,10 @@ export default class AudioNode extends EventTarget {
       return obj;
     }
 
-    return util.toJSON(this, (node, memo) => {
+    return utils.toJSON(this, (node, memo) => {
       let json = {};
 
-      json.name = util.name(node);
+      json.name = utils.toNodeName(node);
 
       node._.JSONKeys.forEach((key) => {
         json[key] = toJSON(node[key], memo);

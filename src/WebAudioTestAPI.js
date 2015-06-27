@@ -1,6 +1,6 @@
-import * as util from "./util";
+import utils from "./utils";
+import Configuration from "./utils/Configuration";
 import WebAudioAPI from "./WebAudioAPI";
-import VERSION from "./VERSION";
 import AnalyserNode from "./AnalyserNode";
 import AudioBuffer from "./AudioBuffer";
 import AudioBufferSourceNode from "./AudioBufferSourceNode";
@@ -36,10 +36,11 @@ import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
 
 let sampleRate = 44100;
+let configuration = Configuration.getInstance();
 
 let WebAudioTestAPI = {
-  VERSION,
-  util,
+  VERSION: utils.getAPIVersion(),
+  utils,
   sampleRate,
   AnalyserNode,
   AudioBuffer,
@@ -75,10 +76,10 @@ let WebAudioTestAPI = {
   StereoPannerNode,
   WaveShaperNode,
   getState(name) {
-    return util.configuration.getState(name);
+    return configuration.getState(name);
   },
   setState(name, value) {
-    util.configuration.setState(name, value);
+    configuration.setState(name, value);
   },
   use() {
     global.AnalyserNode = WebAudioTestAPI.AnalyserNode;

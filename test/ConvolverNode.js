@@ -89,5 +89,4 @@ describe("ConvolverNode", function() {
       assert(node.$context === audioContext);
     });
   });
-
 });

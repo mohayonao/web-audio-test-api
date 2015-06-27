@@ -1,4 +1,6 @@
-import * as util from "./util";
+import utils from "./utils";
+import Configuration from "./utils/Configuration";
+import Immigration from "./utils/Immigration";
 import EventTarget from "./EventTarget";
 import AnalyserNode from "./AnalyserNode";
 import AudioBuffer from "./AudioBuffer";
@@ -22,15 +24,18 @@ import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
 
+let configuration = Configuration.getInstance();
+let immigration = Immigration.getInstance();
+
 export default class AudioContext extends EventTarget {
   constructor() {
     super();
 
-    this._.destination = util.immigration.apply(admission =>
+    this._.destination = immigration.apply(admission =>
       new AudioDestinationNode(admission, this)
     );
     this._.sampleRate = global.WebAudioTestAPI.sampleRate;
-    this._.listener = util.immigration.apply(admission =>
+    this._.listener = immigration.apply(admission =>
       new AudioListener(admission, this)
     );
     this._.microCurrentTime = 0;
@@ -39,7 +44,7 @@ export default class AudioContext extends EventTarget {
   }
 
   static get WEB_AUDIO_TEST_API_VERSION() {
-    return util.getAPIVersion();
+    return utils.getAPIVersion();
   }
 
   get destination() {
@@ -91,168 +96,218 @@ export default class AudioContext extends EventTarget {
   }
 
   createBuffer(numberOfChannels, length, sampleRate) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new AudioBuffer(admission, this, numberOfChannels, length, sampleRate)
     );
   }
 
-  decodeAudioData(audioData, successCallback, errorCallback = () => {}) {
-    this._.inspector.describe("decodeAudioData", [ "audioData", "successCallback", "errorCallback" ], (assert) => {
-      assert(util.isInstanceOf(audioData, global.ArrayBuffer), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(audioData, "audioData", "ArrayBuffer")}
-        `);
+  decodeAudioData(audioData, _successCallback, _errorCallback) {
+    let isPromiseBased = configuration.getState("AudioContext#decodeAudioData") === "promise";
+    let successCallback, errorCallback;
+
+    if (isPromiseBased) {
+      successCallback = utils.defaults(_successCallback, () => {});
+      errorCallback = utils.defaults(_errorCallback, () => {});
+    } else {
+      successCallback = _successCallback;
+      errorCallback = utils.defaults(_errorCallback, () => {});
+    }
+
+    function assertion() {
+      if (assertion.done) {
+        return;
+      }
+
+      this._.inspector.describe("decodeAudioData", [ "audioData", "successCallback", "errorCallback" ], (assert) => {
+        assert(utils.isInstanceOf(audioData, global.ArrayBuffer), (fmt) => {
+          throw new TypeError(fmt.plain `
+            ${fmt.form};
+            ${fmt.butGot(audioData, "audioData", "ArrayBuffer")}
+          `);
+        });
+
+        assert(utils.isFunction(successCallback), (fmt) => {
+          throw new TypeError(fmt.plain `
+            ${fmt.form};
+            ${fmt.butGot(successCallback, "successCallback", "function")}
+          `);
+        });
+
+        assert(utils.isFunction(errorCallback), (fmt) => {
+          throw new TypeError(fmt.plain `
+            ${fmt.form};
+            ${fmt.butGot(errorCallback, "errorCallback", "function")}
+          `);
+        });
       });
 
-      assert(util.isFunction(successCallback), (fmt) => {
+      assertion.done = true;
+    }
+
+    let promise = new Promise((resolve, reject) => {
+      assertion.call(this);
+
+      if (this.DECODE_AUDIO_DATA_FAILED) {
+        reject();
+      } else {
+        resolve(this.DECODE_AUDIO_DATA_RESULT || immigration.apply(admission =>
+          new AudioBuffer(admission, this, 2, 1024, this.sampleRate)
+        ));
+      }
+    });
+
+    promise.then(successCallback, errorCallback);
+
+    if (isPromiseBased) {
+      return promise;
+    }
+
+    assertion.call(this);
+  }
+
+  createBufferSource() {
+    return immigration.apply(admission =>
+      new AudioBufferSourceNode(admission, this)
+    );
+  }
+
+  createMediaElementSource(mediaElement) {
+    return immigration.apply(admission =>
+      new MediaElementAudioSourceNode(admission, this, mediaElement)
+    );
+  }
+
+  createMediaStreamSource(mediaStream) {
+    return immigration.apply(admission =>
+      new MediaStreamAudioSourceNode(admission, this, mediaStream)
+    );
+  }
+
+  createMediaStreamDestination() {
+    return immigration.apply(admission =>
+      new MediaStreamAudioDestinationNode(admission, this)
+    );
+  }
+
+  createAudioWorker() {
+    this._.inspector.describe("createAudioWorker", (assert) => {
+      assert(false, (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
-          ${fmt.butGot(successCallback, "successCallback", "function")}
+          not enabled
         `);
       });
+    });
+  }
 
-      assert(util.isFunction(errorCallback), (fmt) => {
+  createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
+    return immigration.apply(admission =>
+      new ScriptProcessorNode(admission, this, bufferSize, numberOfInputChannels, numberOfOutputChannels)
+    );
+  }
+
+  createAnalyser() {
+    return immigration.apply(admission =>
+      new AnalyserNode(admission, this)
+    );
+  }
+
+  createGain() {
+    return immigration.apply(admission =>
+      new GainNode(admission, this)
+    );
+  }
+
+  createDelay(maxDelayTime = 1) {
+    return immigration.apply(admission =>
+      new DelayNode(admission, this, maxDelayTime)
+    );
+  }
+
+  createBiquadFilter() {
+    return immigration.apply(admission =>
+      new BiquadFilterNode(admission, this)
+    );
+  }
+
+  createWaveShaper() {
+    return immigration.apply(admission =>
+      new WaveShaperNode(admission, this)
+    );
+  }
+
+  createPanner() {
+    return immigration.apply(admission =>
+      new PannerNode(admission, this)
+    );
+  }
+
+  createStereoPanner() {
+    this._.inspector.describe("createStereoPanner", (assert) => {
+      assert(configuration.getState("AudioContext#createStereoPanner") === "enabled", (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
-          ${fmt.butGot(errorCallback, "errorCallback", "function")}
+          not enabled
         `);
       });
     });
 
-    setTimeout(() => {
-      if (this.DECODE_AUDIO_DATA_FAILED) {
-        errorCallback();
-      } else {
-        successCallback(this.DECODE_AUDIO_DATA_RESULT || util.immigration.apply(admission =>
-          new AudioBuffer(admission, this, 2, 1024, this.sampleRate)
-        ));
-      }
-    }, 0);
-  }
-
-  createBufferSource() {
-    return util.immigration.apply(admission =>
-      new AudioBufferSourceNode(admission, this)
-    );
-  };
-
-  createMediaElementSource(mediaElement) {
-    return util.immigration.apply(admission =>
-      new MediaElementAudioSourceNode(admission, this, mediaElement)
-    );
-  };
-
-  createMediaStreamSource(mediaStream) {
-    return util.immigration.apply(admission =>
-      new MediaStreamAudioSourceNode(admission, this, mediaStream)
-    );
-  };
-
-  createMediaStreamDestination() {
-    return util.immigration.apply(admission =>
-      new MediaStreamAudioDestinationNode(admission, this)
-    );
-  };
-
-  createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-    return util.immigration.apply(admission =>
-      new ScriptProcessorNode(admission, this, bufferSize, numberOfInputChannels, numberOfOutputChannels)
-    );
-  };
-
-  createAnalyser() {
-    return util.immigration.apply(admission =>
-      new AnalyserNode(admission, this)
-    );
-  };
-
-  createGain() {
-    return util.immigration.apply(admission =>
-      new GainNode(admission, this)
-    );
-  };
-
-  createDelay(maxDelayTime = 1) {
-    return util.immigration.apply(admission =>
-      new DelayNode(admission, this, maxDelayTime)
-    );
-  };
-
-  createBiquadFilter() {
-    return util.immigration.apply(admission =>
-      new BiquadFilterNode(admission, this)
-    );
-  };
-
-  createWaveShaper() {
-    return util.immigration.apply(admission =>
-      new WaveShaperNode(admission, this)
-    );
-  };
-
-  createPanner() {
-    return util.immigration.apply(admission =>
-      new PannerNode(admission, this)
-    );
-  };
-
-  createStereoPanner() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new StereoPannerNode(admission, this)
     );
-  };
+  }
 
   createConvolver() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new ConvolverNode(admission, this)
     );
-  };
+  }
 
   createChannelSplitter(numberOfOutputs = 6) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new ChannelSplitterNode(admission, this, numberOfOutputs)
     );
-  };
+  }
 
   createChannelMerger(numberOfInputs = 6) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new ChannelMergerNode(admission, this, numberOfInputs)
     );
-  };
+  }
 
   createDynamicsCompressor() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new DynamicsCompressorNode(admission, this)
     );
-  };
+  }
 
   createOscillator() {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new OscillatorNode(admission, this)
     );
-  };
+  }
 
   createPeriodicWave(real, imag) {
-    return util.immigration.apply(admission =>
+    return immigration.apply(admission =>
       new PeriodicWave(admission, this, real, imag)
     );
-  };
+  }
 
   toJSON() {
     return this.destination.toJSON([]);
-  };
+  }
 
   $process(time) {
-    this._process(util.toMicroseconds(time));
-  };
+    this._process(utils.toMicroseconds(time));
+  }
 
-  $processTo(time) {
-    time = util.toMicroseconds(time);
+  $processTo(_time) {
+    let time = utils.toMicroseconds(_time);
+
     if (this._.microCurrentTime < time) {
       this._process(time - this._.microCurrentTime);
     }
-  };
+  }
 
   $reset() {
     this._.microCurrentTime = 0;
@@ -260,7 +315,7 @@ export default class AudioContext extends EventTarget {
     this.destination.$inputs.forEach((node) => {
       node.disconnect();
     });
-  };
+  }
 
   _process(microseconds) {
     let nextMicroCurrentTime = this._.microCurrentTime + microseconds;
@@ -275,5 +330,5 @@ export default class AudioContext extends EventTarget {
 
       this.destination.$process(inNumSamples, ++this._.tick);
     }
-  };
+  }
 }

@@ -58,8 +58,9 @@ describe("ScriptProcessorNode", function() {
   describe("#onaudioprocess", function() {
     it("get/set: function", function() {
       var node = audioContext.createScriptProcessor(1024, 0, 1);
-      var fn1 = function() {};
-      var fn2 = function() {};
+
+      function fn1() {}
+      function fn2() {}
 
       assert(node.onaudioprocess === null);
 
@@ -93,7 +94,7 @@ describe("ScriptProcessorNode", function() {
 
   describe("#$name", function() {
     it("get: string", function() {
-     var node = audioContext.createScriptProcessor(256, 1, 1);
+      var node = audioContext.createScriptProcessor(256, 1, 1);
 
       assert(node.$name === "ScriptProcessorNode");
     });
@@ -101,7 +102,7 @@ describe("ScriptProcessorNode", function() {
 
   describe("#$context", function() {
     it("get: AudioContext", function() {
-     var node = audioContext.createScriptProcessor(256, 1, 1);
+      var node = audioContext.createScriptProcessor(256, 1, 1);
 
       assert(node.$context === audioContext);
     });
@@ -166,5 +167,4 @@ describe("ScriptProcessorNode", function() {
       assert(onaudioprocess.args[0][0] !== onaudioprocess.args[1][0]);
     });
   });
-
 });

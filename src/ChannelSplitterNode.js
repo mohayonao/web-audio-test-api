@@ -1,4 +1,4 @@
-import * as util from "./util";
+import utils from "./utils";
 import AudioNode from "./AudioNode";
 
 export default class ChannelSplitterNode extends AudioNode {
@@ -14,7 +14,7 @@ export default class ChannelSplitterNode extends AudioNode {
     });
 
     this._.inspector.describe("constructor", (assert) => {
-      assert(util.isPositiveInteger(numberOfOutputs), (fmt) => {
+      assert(utils.isPositiveInteger(numberOfOutputs), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfOutputs, "numberOfOutputs", "positive integer")}

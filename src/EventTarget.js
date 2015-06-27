@@ -1,5 +1,5 @@
-import * as util from "./util";
-import Inspector from "./util/Inspector";
+import utils from "./utils";
+import Inspector from "./utils/Inspector";
 
 global.EventTarget = global.EventTarget || class EventTarget {
   constructor() {
@@ -7,7 +7,7 @@ global.EventTarget = global.EventTarget || class EventTarget {
   }
 };
 
-export default class EventTarget extends util.preventSuperCall(global.EventTarget) {
+export default class EventTarget extends utils.preventSuperCall(global.EventTarget) {
   constructor() {
     super();
 
@@ -22,14 +22,14 @@ export default class EventTarget extends util.preventSuperCall(global.EventTarge
 
   addEventListener(type, listener) {
     this._.inspector.describe("addEventListener", (assert) => {
-      assert(util.isString(type), (fmt) => {
+      assert(utils.isString(type), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(type, "type", "string")}
         `);
       });
 
-      assert(util.isFunction(listener), (fmt) => {
+      assert(utils.isFunction(listener), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(listener, "listener", "function")}
@@ -43,14 +43,14 @@ export default class EventTarget extends util.preventSuperCall(global.EventTarge
 
   removeEventListener(type, listener) {
     this._.inspector.describe("removeEventListener", (assert) => {
-      assert(util.isString(type), (fmt) => {
+      assert(utils.isString(type), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(type, "type", "string")}
         `);
       });
 
-      assert(util.isFunction(listener), (fmt) => {
+      assert(utils.isFunction(listener), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(listener, "listener", "function")}
@@ -59,7 +59,9 @@ export default class EventTarget extends util.preventSuperCall(global.EventTarge
     });
 
     this._.listeners[type] = this._.listeners[type] || [];
+
     let index = this._.listeners[type].indexOf(listener);
+
     if (index !== -1) {
       this._.listeners[type].splice(index, 1);
     }
@@ -67,7 +69,7 @@ export default class EventTarget extends util.preventSuperCall(global.EventTarge
 
   dispatchEvent(event) {
     this._.inspector.describe("dispatchEvent", (assert) => {
-      assert(util.isInstanceOf(event, global.Event), (fmt) => {
+      assert(utils.isInstanceOf(event, global.Event), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(event, "event", "Event")}
