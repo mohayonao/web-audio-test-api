@@ -33,7 +33,7 @@ describe("ChannelMergerNode", function() {
 
       assert.deepEqual(node.toJSON(), {
         name: "ChannelMergerNode",
-        inputs: [],
+        inputs: [ [], [], [], [], [], [] ],
       });
     });
   });

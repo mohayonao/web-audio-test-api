@@ -49,4 +49,8 @@ export default class Formatter {
   butGot(value, name, type) {
     return `"${name}" should be ${utils.article(type)} ${type}, but got: ${utils.prettyPrint(value)}`;
   }
+
+  outsideTheRange(value, name, minValue, maxValue) {
+    return `"${name}" provided (${value}) is outside the range [${minValue}, ${maxValue})`;
+  }
 }
