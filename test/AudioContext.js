@@ -220,6 +220,26 @@ describe("AudioContext", function() {
     });
   });
 
+  describe("#createStereoPanner", function() {
+    it("(): StereoPannerNode", function() {
+      var node;
+
+      assert.throws(function() {
+        audioContext.createStereoPanner();
+      }, function(e) {
+        return e instanceof TypeError && /not enabled/.test(e.message);
+      });
+
+      WebAudioTestAPI.setState("AudioContext#createStereoPanner", "enabled");
+
+      node = audioContext.createStereoPanner();
+
+      assert(node instanceof global.StereoPannerNode);
+
+      WebAudioTestAPI.setState("AudioContext#createStereoPanner", "disabled");
+    });
+  });
+
   describe("#createConvolver", function() {
     it("(): ConvolverNode", function() {
       var node = audioContext.createConvolver();

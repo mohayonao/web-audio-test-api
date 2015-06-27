@@ -198,6 +198,15 @@ export default class AudioContext extends EventTarget {
   }
 
   createStereoPanner() {
+    this._.inspector.describe("createStereoPanner", (assert) => {
+      assert(util.configuration.getState("AudioContext#createStereoPanner") === "enabled", (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          not enabled
+        `);
+      });
+    });
+
     return util.immigration.apply(admission =>
       new StereoPannerNode(admission, this)
     );
