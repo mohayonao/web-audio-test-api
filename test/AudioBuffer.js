@@ -147,6 +147,70 @@ describe("AudioBuffer", function() {
     });
   });
 
+  describe("#copyFromChannel", function() {
+    it("(destination: Float32Array, channelNumber: number, startInChannel: number = 0): void", function() {
+      var buf1 = audioContext.createBuffer(2, 10, 44100);
+      var dest = new Float32Array(4);
+
+      buf1.getChannelData(0).set([ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]);
+      buf1.getChannelData(1).set([ 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]);
+
+      assert.throws(function() {
+        buf1.copyFromChannel(dest, 0, 0);
+      }, function(e) {
+        return e instanceof TypeError && /not enabled/.test(e.message);
+      });
+
+      WebAudioTestAPI.setState("AudioBuffer#copyFromChannel", "enabled");
+
+      buf1.copyFromChannel(dest, 0);
+      assert.deepEqual(dest, new Float32Array([ 10, 11, 12, 13 ]));
+
+      buf1.copyFromChannel(dest, 0, 2);
+      assert.deepEqual(dest, new Float32Array([ 12, 13, 14, 15 ]));
+
+      buf1.copyFromChannel(dest, 1, 4);
+      assert.deepEqual(dest, new Float32Array([ 24, 25, 26, 27 ]));
+
+      buf1.copyFromChannel(dest, 1, 8);
+      assert.deepEqual(dest, new Float32Array([ 28, 29, 26, 27 ]));
+
+      assert.throws(function() {
+        buf1.copyFromChannel("INVALID", 0, 0);
+      }, function(e) {
+        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
+      });
+
+      assert.throws(function() {
+        buf1.copyFromChannel(dest, "INVALID", 0);
+      }, function(e) {
+        return e instanceof TypeError && /should be a positive integer/.test(e.message);
+      });
+
+      assert.throws(function() {
+        buf1.copyFromChannel(dest, 0, "INVALID");
+      }, function(e) {
+        return e instanceof TypeError && /should be a positive integer/.test(e.message);
+      });
+
+      assert.throws(function() {
+        buf1.copyFromChannel(dest, 10, 0);
+      }, function(e) {
+        return e instanceof TypeError && /outside the range/.test(e.message);
+      });
+
+      assert.throws(function() {
+        buf1.copyFromChannel(dest, 0, 10);
+      }, function(e) {
+        return e instanceof TypeError && /outside the range/.test(e.message);
+      });
+
+      WebAudioTestAPI.setState("AudioBuffer#copyFromChannel", "disabled");
+
+      assert(buf1.copyFromChannel === global.AudioBuffer.prototype.copyFromChannel);
+    });
+  });
+
   describe("#toJSON", function() {
     it("(): object", function() {
       var buf1 = audioContext.createBuffer(1, 16, 44100);

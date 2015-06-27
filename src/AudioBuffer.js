@@ -115,6 +115,56 @@ export default class AudioBuffer {
     return this._.data[channel];
   }
 
+  copyFromChannel(destination, channelNumber, startInChannel = 0) {
+    this._.inspector.describe("copyFromChannel", (assert) => {
+      assert(util.configuration.getState("AudioBuffer#copyFromChannel") === "enabled", (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          not enabled
+        `);
+      });
+
+      assert(util.isInstanceOf(destination, Float32Array), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(destination, "destination", "Float32Array")}
+        `);
+      });
+
+      assert(util.isPositiveInteger(channelNumber), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(channelNumber, "channelNumber", "positive integer")}
+        `);
+      });
+
+      assert(util.isPositiveInteger(startInChannel), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(channelNumber, "startInChannel", "positive integer")}
+        `);
+      });
+
+      assert(0 <= channelNumber && channelNumber < this._.data.length, (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          The channelNumber provided (${channelNumber}) is outside the range [0, ${this._.data.length})
+        `);
+      });
+
+      assert(0 <= startInChannel && startInChannel < this._.length, (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          The startInChannel provided (${startInChannel}) is outside the range [0, ${this._.length}).
+        `);
+      });
+    });
+
+    let source = this._.data[channelNumber].subarray(startInChannel);
+
+    destination.set(source.subarray(0, Math.min(source.length, destination.length)));
+  }
+
   toJSON() {
     let json = {
       name: this.$name,
