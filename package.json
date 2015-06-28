@@ -1,7 +1,7 @@
 {
   "name": "web-audio-test-api",
   "description": "Web Audio API test library for CI",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "author": "Nao Yonamine <mohayonao@gmail.com>",
   "bugs": {
     "url": "https://github.com/mohayonao/web-audio-test-api/issues"
