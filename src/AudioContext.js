@@ -1,6 +1,7 @@
 import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
+import Event from "./Event";
 import EventTarget from "./EventTarget";
 import AnalyserNode from "./AnalyserNode";
 import AudioBuffer from "./AudioBuffer";
@@ -27,6 +28,37 @@ import WaveShaperNode from "./WaveShaperNode";
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
 
+function isEnabledState() {
+  return configuration.getState("AudioContext#suspend") === "enabled"
+    || configuration.getState("AudioContext#resume") === "enabled"
+    || configuration.getState("AudioContext#close") === "enabled";
+}
+
+function transitionToState(methodName, callback) {
+  this._.inspector.describe(methodName, [], (assert) => {
+    assert(configuration.getState(`AudioContext#${methodName}`) === "enabled", (fmt) => {
+      throw new TypeError(fmt.plain `
+        ${fmt.form};
+        not enabled
+      `);
+    });
+  });
+
+  return new Promise((resolve, reject) => {
+    this._.inspector.describe(methodName, [], (assert) => {
+      assert(this._.state !== "closed", (fmt) => {
+        reject(new Error(fmt.plain `
+          ${fmt.form};
+          Cannot ${methodName} a context that is being closed or has already been closed
+        `));
+      });
+    });
+
+    callback();
+    resolve();
+  });
+}
+
 export default class AudioContext extends EventTarget {
   constructor() {
     super();
@@ -41,6 +73,8 @@ export default class AudioContext extends EventTarget {
     this._.microCurrentTime = 0;
     this._.processedSamples = 0;
     this._.tick = 0;
+    this._.state = "running";
+    this._.onstatechange = null;
   }
 
   static get WEB_AUDIO_TEST_API_VERSION() {
@@ -87,12 +121,79 @@ export default class AudioContext extends EventTarget {
     });
   }
 
+  get state() {
+    if (isEnabledState()) {
+      return this._.state;
+    }
+  }
+
+  set state(value) {
+    if (!isEnabledState()) {
+      return;
+    }
+
+    this._.inspector.describe("state", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get onstatechange() {
+    if (isEnabledState()) {
+      return this._.onstatechange;
+    }
+  }
+
+  set onstatechange(value) {
+    if (!isEnabledState()) {
+      return;
+    }
+
+    this._.inspector.describe("onstatechange", (assert) => {
+      assert(utils.isNullOrFunction(value), (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          ${fmt.butGot(value, "onstatechange", "function")}
+        `);
+      });
+    });
+
+    this._.onstatechange = value;
+  }
+
   get $name() {
     return "AudioContext";
   }
 
   get $context() {
     return this;
+  }
+
+  suspend() {
+    return transitionToState.call(this, "suspend", () => {
+      if (this._.state === "running") {
+        this._.state = "suspended";
+        this.dispatchEvent(new Event("statechange", this));
+      }
+    });
+  }
+
+  resume() {
+    return transitionToState.call(this, "resume", () => {
+      if (this._.state === "suspended") {
+        this._.state = "running";
+        this.dispatchEvent(new Event("statechange", this));
+      }
+    });
+  }
+
+  close() {
+    return transitionToState.call(this, "close", () => {
+      if (this._.state !== "closed") {
+        this._.state = "closed";
+        this.$reset();
+        this.dispatchEvent(new Event("statechange", this));
+      }
+    });
   }
 
   createBuffer(numberOfChannels, length, sampleRate) {
@@ -322,7 +423,7 @@ export default class AudioContext extends EventTarget {
   _process(microseconds) {
     let nextMicroCurrentTime = this._.microCurrentTime + microseconds;
 
-    while (this._.microCurrentTime < nextMicroCurrentTime) {
+    while (this._.state === "running" && this._.microCurrentTime < nextMicroCurrentTime) {
       let _nextMicroCurrentTime = Math.min(this._.microCurrentTime + 1000, nextMicroCurrentTime);
       let _nextProcessedSamples = Math.floor(_nextMicroCurrentTime / (1000 * 1000) * this.sampleRate);
       let inNumSamples = _nextProcessedSamples - this._.processedSamples;

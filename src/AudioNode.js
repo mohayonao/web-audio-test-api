@@ -28,6 +28,15 @@ export default class AudioNode extends EventTarget {
     this._.inputs = utils.fill(new Array(Math.max(0, this._.numberOfInputs|0)), i => new Junction(this, i));
     this._.outputs = utils.fill(new Array(Math.max(0, this._.numberOfOutputs|0)), i => new Junction(this, i));
     this._.tick = -1;
+
+    this._.inspector.describe(`create${this._.name.replace(/Node$/, "")}`, [], (assert) => {
+      assert(this._.context.state !== "closed", (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          AudioContext has been closed
+        `);
+      });
+    });
   }
 
   get context() {

@@ -9,6 +9,12 @@ describe("AudioNode", function() {
   });
 
   describe("constructor", function() {
+    before(function() {
+      WebAudioTestAPI.setState("AudioContext#close", "enabled");
+    });
+    after(function() {
+      WebAudioTestAPI.setState("AudioContext#close", "disabled");
+    });
     it("()", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
@@ -21,6 +27,16 @@ describe("AudioNode", function() {
         return new global.AudioNode();
       }, function(e) {
         return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
+
+      return audioContext.close().then(function() {
+        return immigration.apply(function(admission) {
+          return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
+        });
+      }).then(function() {
+        throw new Error("NOT REACHED");
+      }, function(e) {
+        assert(e instanceof TypeError && /audioContext has been closed/i.test(e.message));
       });
     });
   });

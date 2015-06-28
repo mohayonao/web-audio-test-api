@@ -2,6 +2,12 @@ describe("OfflineAudioContext", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
 
+  function setStateForStateTransitionAPI(state) {
+    WebAudioTestAPI.setState("AudioContext#suspend", state);
+    WebAudioTestAPI.setState("AudioContext#resume", state);
+    WebAudioTestAPI.setState("AudioContext#close", state);
+  }
+
   beforeEach(function() {
     audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441, 44100);
   });
@@ -79,6 +85,129 @@ describe("OfflineAudioContext", function() {
     });
   });
 
+  describe("#suspend", function() {
+    describe("disabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("() throws TypeError", function() {
+        assert.throws(function() {
+          audioContext.suspend();
+        }, function(e) {
+          return e instanceof TypeError && /not enabled/.test(e.message);
+        });
+      });
+    });
+    describe("enabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("enabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("(): Promise<void>", function() {
+        audioContext.onstatechange = sinon.spy();
+
+        return Promise.resolve().then(function() {
+          assert(audioContext.state === "suspended");
+        }).then(function() {
+          audioContext.onstatechange.reset();
+          return audioContext.suspend();
+        }).catch(function(e) {
+          assert(e instanceof Error && /cannot suspend/i.test(e.message));
+        }).then(function() {
+          assert(audioContext.state === "suspended");
+          assert(!audioContext.onstatechange.called);
+        });
+      });
+    });
+  });
+
+  describe("#resume", function() {
+    describe("disabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("() throws TypeError", function() {
+        assert.throws(function() {
+          audioContext.resume();
+        }, function(e) {
+          return e instanceof TypeError && /not enabled/.test(e.message);
+        });
+      });
+    });
+    describe("enabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("enabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("(): Promise<void>", function() {
+        audioContext.onstatechange = sinon.spy();
+
+        return Promise.resolve().then(function() {
+          assert(audioContext.state === "suspended");
+        }).then(function() {
+          audioContext.onstatechange.reset();
+          return audioContext.resume();
+        }).catch(function(e) {
+          assert(e instanceof Error && /cannot resume/i.test(e.message));
+        }).then(function() {
+          assert(audioContext.state === "suspended");
+          assert(!audioContext.onstatechange.called);
+        });
+      });
+    });
+  });
+
+  describe("#close", function() {
+    describe("disabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("() throws TypeError", function() {
+        assert.throws(function() {
+          audioContext.close();
+        }, function(e) {
+          return e instanceof TypeError && /not enabled/.test(e.message);
+        });
+      });
+    });
+    describe("enabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("enabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("(): Promise<void>", function() {
+        audioContext.onstatechange = sinon.spy();
+
+        return Promise.resolve().then(function() {
+          assert(audioContext.state === "suspended");
+        }).then(function() {
+          audioContext.onstatechange.reset();
+          return audioContext.close();
+        }).catch(function(e) {
+          assert(e instanceof Error && /cannot close/i.test(e.message));
+        }).then(function() {
+          assert(audioContext.state === "suspended");
+          assert(!audioContext.onstatechange.called);
+        });
+      });
+    });
+  });
+
   describe("#startRendering", function() {
     describe("promise-based", function() {
       before(function() {
@@ -150,13 +279,23 @@ describe("OfflineAudioContext", function() {
   });
 
   describe("works", function() {
+    before(function() {
+      setStateForStateTransitionAPI("enabled");
+    });
+    after(function() {
+      setStateForStateTransitionAPI("disabled");
+    });
     it("oncomplete", function() {
       var oncomplete = sinon.spy();
       var event;
 
       audioContext.oncomplete = oncomplete;
 
+      assert(audioContext.state === "suspended");
+
       audioContext.startRendering();
+
+      assert(audioContext.state === "running");
 
       audioContext.$processTo("00:00.009");
       assert(oncomplete.callCount === 0, "00:00.009");
@@ -167,6 +306,8 @@ describe("OfflineAudioContext", function() {
 
       audioContext.$processTo("00:00.100");
       assert(oncomplete.callCount === 1, "00:00.100");
+
+      assert(audioContext.state === "closed");
 
       event = oncomplete.args[0][0];
 
