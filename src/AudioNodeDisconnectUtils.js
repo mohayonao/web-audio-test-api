@@ -11,7 +11,7 @@ export function disconnectAll() {
 }
 
 export function disconnectChannel(output) {
-  this._.inspector.describe("disconnect", (assert) => {
+  this._.inspector.describe("disconnect", [ "output" ], (assert) => {
     assert(utils.isPositiveInteger(output), (fmt) => {
       throw new TypeError(fmt.plain `
         ${fmt.form};

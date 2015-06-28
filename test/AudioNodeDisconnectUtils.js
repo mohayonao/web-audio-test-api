@@ -112,6 +112,62 @@ describe("AudioNodeDisconnectUtils", function() {
         });
       });
     });
+    describe("disconnect(output: number): void", function() {
+      it("assertion", function() {
+        var node = audioContext.createGain();
+
+        assert.throws(function() {
+          node.disconnect(1.5);
+        }, function(e) {
+          return e instanceof TypeError && /should be a positive integer/.test(e.message);
+        });
+
+        assert.throws(function() {
+          node.disconnect(2);
+        }, function(e) {
+          return e instanceof TypeError && /exceeds number of outputs/.test(e.message);
+        });
+      });
+      it("works", function() {
+        var splitter = audioContext.createChannelSplitter(2);
+        var merger = audioContext.createChannelMerger(2);
+        var gain = audioContext.createGain();
+
+        splitter.connect(merger, 0, 0);
+        splitter.connect(merger, 1, 1);
+        splitter.connect(gain, 0, 0);
+        merger.connect(audioContext.destination);
+        gain.connect(audioContext.destination);
+
+        splitter.disconnect(0);
+
+        assert.deepEqual(audioContext.toJSON(), {
+          name: "AudioDestinationNode",
+          inputs: [
+            {
+              name: "ChannelMergerNode",
+              inputs: [
+                [],
+                [
+                  {
+                    name: "ChannelSplitterNode",
+                    inputs: [],
+                  },
+                ],
+              ],
+            },
+            {
+              name: "GainNode",
+              gain: {
+                value: 1,
+                inputs: [],
+              },
+              inputs: [],
+            },
+          ],
+        });
+      });
+    });
     describe("disconnect(destination: AudioNode): void", function() {
       it("assertion", function() {
         var node1 = audioContext.createGain();

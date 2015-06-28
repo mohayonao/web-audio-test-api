@@ -208,8 +208,9 @@ export default class AudioNode extends EventTarget {
       case 1:
         if (utils.isNumber(_destination)) {
           AudioNodeDisconnectUtils.disconnectChannel.call(this, _destination);
+        } else {
+          AudioNodeDisconnectUtils.disconnectSelective1.call(this, _destination);
         }
-        AudioNodeDisconnectUtils.disconnectSelective1.call(this, _destination);
         break;
       case 2:
         AudioNodeDisconnectUtils.disconnectSelective2.call(this, _destination, _output);
