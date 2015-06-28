@@ -32,6 +32,10 @@ describe("Formatter", () => {
 
   describe("#form", () => {
     it("getter: string", () => {
+      let fmt0 = new Formatter(foo);
+
+      assert(fmt0.form === "Foo");
+
       let fmt1 = new Formatter(foo, "m1");
 
       assert(fmt1.form === "Foo#m1(arg1)");

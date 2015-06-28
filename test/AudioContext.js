@@ -3,6 +3,12 @@ describe("AudioContext", function() {
   var utils = WebAudioTestAPI.utils;
   var audioContext;
 
+  function setStateForStateTransitionAPI(state) {
+    WebAudioTestAPI.setState("AudioContext#suspend", state);
+    WebAudioTestAPI.setState("AudioContext#resume", state);
+    WebAudioTestAPI.setState("AudioContext#close", state);
+  }
+
   beforeEach(function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
@@ -64,6 +70,253 @@ describe("AudioContext", function() {
         audioContext.listener = null;
       }, function(e) {
         return e instanceof TypeError && /readonly/.test(e.message);
+      });
+    });
+  });
+
+  describe("#state", function() {
+    describe("disabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("get: undefined", function() {
+        var undef;
+
+        assert(audioContext.state === undef);
+      });
+      it("set: nothing to do", function() {
+        var undef;
+
+        assert.doesNotThrow(function() {
+          audioContext.state = "closed";
+        });
+        assert(audioContext.state === undef);
+      });
+    });
+    describe("enabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("enabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("get: string", function() {
+        assert(audioContext.state === "running");
+
+        assert.throws(function() {
+          audioContext.state = 0;
+        }, function(e) {
+          return e instanceof TypeError && /readonly/.test(e.message);
+        });
+      });
+    });
+  });
+
+  describe("#onstatechange", function() {
+    describe("disabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("get: undefined", function() {
+        var undef;
+
+        assert(audioContext.onstatechange === undef);
+      });
+      it("set: nothing to do", function() {
+        var undef;
+
+        assert.doesNotThrow(function() {
+          audioContext.onstatechange = function() {};
+        });
+        assert(audioContext.state === undef);
+      });
+    });
+    describe("enabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("enabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("get: string", function() {
+        function fn1() {}
+        function fn2() {}
+
+        assert(audioContext.onstatechange === null);
+
+        audioContext.onstatechange = fn1;
+        assert(audioContext.onstatechange === fn1);
+
+        audioContext.onstatechange = fn2;
+        assert(audioContext.onstatechange === fn2);
+
+        audioContext.onstatechange = null;
+        assert(audioContext.onstatechange === null);
+
+        assert.throws(function() {
+          audioContext.onstatechange = "INVALID";
+        }, function(e) {
+          return e instanceof TypeError && /should be a function/.test(e.message);
+        });
+      });
+    });
+  });
+
+  describe("#suspend", function() {
+    describe("disabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("() throws TypeError", function() {
+        assert.throws(function() {
+          audioContext.suspend();
+        }, function(e) {
+          return e instanceof TypeError && /not enabled/.test(e.message);
+        });
+      });
+    });
+    describe("enabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("enabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("(): Promise<void>", function() {
+        audioContext.onstatechange = sinon.spy();
+
+        return Promise.resolve().then(function() {
+          assert(audioContext.state === "running");
+        }).then(function() {
+          audioContext.onstatechange.reset();
+          return audioContext.suspend();
+        }).then(function() {
+          assert(audioContext.state === "suspended");
+          assert(audioContext.onstatechange.calledOnce);
+          assert(audioContext.onstatechange.args[0][0] instanceof global.Event);
+        }).then(function() {
+          audioContext.$processTo("00:00:01.000");
+          assert(audioContext.currentTime === 0);
+        }).then(function() {
+          return audioContext.suspend();
+        }).then(function() {
+          assert(audioContext.onstatechange.calledOnce);
+        });
+      });
+    });
+  });
+
+  describe("#resume", function() {
+    describe("disabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("() throws TypeError", function() {
+        assert.throws(function() {
+          audioContext.resume();
+        }, function(e) {
+          return e instanceof TypeError && /not enabled/.test(e.message);
+        });
+      });
+    });
+    describe("enabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("enabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("(): Promise<void>", function() {
+        audioContext.onstatechange = sinon.spy();
+
+        return Promise.resolve().then(function() {
+          assert(audioContext.state === "running");
+        }).then(function() {
+          return audioContext.suspend();
+        }).then(function() {
+          audioContext.onstatechange.reset();
+          return audioContext.resume();
+        }).then(function() {
+          assert(audioContext.state === "running");
+          assert(audioContext.onstatechange.calledOnce);
+          assert(audioContext.onstatechange.args[0][0] instanceof global.Event);
+        }).then(function() {
+          audioContext.$processTo("00:01.000");
+          assert(audioContext.currentTime === 1);
+        }).then(function() {
+          return audioContext.resume();
+        }).then(function() {
+          assert(audioContext.onstatechange.calledOnce);
+        });
+      });
+    });
+  });
+
+  describe("#close", function() {
+    describe("disabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("() throws TypeError", function() {
+        assert.throws(function() {
+          audioContext.close();
+        }, function(e) {
+          return e instanceof TypeError && /not enabled/.test(e.message);
+        });
+      });
+    });
+    describe("enabled", function() {
+      before(function() {
+        setStateForStateTransitionAPI("enabled");
+      });
+      after(function() {
+        setStateForStateTransitionAPI("disabled");
+      });
+      it("(): Promise<void>", function() {
+        audioContext.onstatechange = sinon.spy();
+
+        return Promise.resolve().then(function() {
+          assert(audioContext.state === "running");
+        }).then(function() {
+          audioContext.onstatechange.reset();
+          return audioContext.close();
+        }).then(function() {
+          assert(audioContext.state === "closed");
+          assert(audioContext.onstatechange.calledOnce);
+          assert(audioContext.onstatechange.args[0][0] instanceof global.Event);
+        }).then(function() {
+          return audioContext.suspend();
+        }).catch(function(e) {
+          assert(audioContext.state === "closed");
+          assert(e instanceof Error && /cannot suspend/i.test(e.message));
+        }).then(function() {
+          return audioContext.resume();
+        }).catch(function(e) {
+          assert(audioContext.state === "closed");
+          assert(e instanceof Error && /cannot resume/i.test(e.message));
+        }).then(function() {
+          return audioContext.close();
+        }).catch(function(e) {
+          assert(audioContext.state === "closed");
+          assert(e instanceof Error && /cannot close/i.test(e.message));
+        }).then(function() {
+          assert(audioContext.onstatechange.calledOnce);
+        });
       });
     });
   });

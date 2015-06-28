@@ -194,7 +194,7 @@ describe("AnalyserNode", function() {
       });
 
       assert.throws(function() {
-        node.getFloatFrequencyData(i16);
+        node.getFloatTimeDomainData(i16);
       }, function(e) {
         return e instanceof TypeError && /should be a Float32Array/.test(e.message);
       });

@@ -24,6 +24,9 @@ describe("AudioParam", function() {
       }, function(e) {
         return e instanceof TypeError && /Illegal constructor/.test(e.message);
       });
+
+      // test api
+      assert(param.$node === node);
     });
   });
 
@@ -287,7 +290,7 @@ describe("AudioParam", function() {
     });
   });
 
-  describe("#$name", function() {
+  describe("$name", function() {
     it("get: string", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
@@ -300,7 +303,7 @@ describe("AudioParam", function() {
     });
   });
 
-  describe("#$context", function() {
+  describe("$context", function() {
     it("get: AudioContext", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
@@ -323,6 +326,35 @@ describe("AudioParam", function() {
       });
 
       assert(typeof param.$valueAtTime("00:00.000") === "number");
+    });
+  });
+
+  describe("$process", function() {
+    it("(inNumSamples, tick): void", function() {
+      var node = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
+      });
+      var param = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioParam(admission, node, "name", 0, 0, 0);
+      });
+
+      param.$inputs[0].process = sinon.spy();
+
+      param.$process(10, 0);
+      assert(param.$inputs[0].process.callCount === 1);
+      assert.deepEqual(param.$inputs[0].process.args[0], [ 10, 0 ]);
+
+      param.$process(10, 0);
+      assert(param.$inputs[0].process.callCount === 1);
+      assert.deepEqual(param.$inputs[0].process.args[0], [ 10, 0 ]);
+
+      param.$process(10, 1);
+      assert(param.$inputs[0].process.callCount === 2);
+      assert.deepEqual(param.$inputs[0].process.args[1], [ 10, 1 ]);
+
+      param.$process(10, 1);
+      assert(param.$inputs[0].process.callCount === 2);
+      assert.deepEqual(param.$inputs[0].process.args[1], [ 10, 1 ]);
     });
   });
 

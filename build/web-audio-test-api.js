@@ -703,6 +703,10 @@ var _utilsImmigration = require("./utils/Immigration");
 
 var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
 
+var _Event = require("./Event");
+
+var _Event2 = _interopRequireDefault(_Event);
+
 var _EventTarget2 = require("./EventTarget");
 
 var _EventTarget3 = _interopRequireDefault(_EventTarget2);
@@ -794,41 +798,105 @@ var _WaveShaperNode2 = _interopRequireDefault(_WaveShaperNode);
 var configuration = _utilsConfiguration2["default"].getInstance();
 var immigration = _utilsImmigration2["default"].getInstance();
 
+function isEnabledState() {
+  return configuration.getState("AudioContext#suspend") === "enabled" || configuration.getState("AudioContext#resume") === "enabled" || configuration.getState("AudioContext#close") === "enabled";
+}
+
+function transitionToState(methodName, callback) {
+  var _this = this;
+
+  this._.inspector.describe(methodName, [], function (assert) {
+    assert(configuration.getState("AudioContext#" + methodName) === "enabled", function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        not enabled\n      "], ["\n        ", ";\n        not enabled\n      "]), fmt.form));
+    });
+  });
+
+  return new Promise(function (resolve, reject) {
+    _this._.inspector.describe(methodName, [], function (assert) {
+      assert(_this._.state !== "closed", function (fmt) {
+        reject(new Error(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          Cannot ", " a context that is being closed or has already been closed\n        "], ["\n          ", ";\n          Cannot ", " a context that is being closed or has already been closed\n        "]), fmt.form, methodName)));
+      });
+    });
+
+    callback();
+    resolve();
+  });
+}
+
 var AudioContext = (function (_EventTarget) {
   function AudioContext() {
-    var _this = this;
+    var _this2 = this;
 
     _classCallCheck(this, AudioContext);
 
     _get(Object.getPrototypeOf(AudioContext.prototype), "constructor", this).call(this);
 
     this._.destination = immigration.apply(function (admission) {
-      return new _AudioDestinationNode2["default"](admission, _this);
+      return new _AudioDestinationNode2["default"](admission, _this2);
     });
     this._.sampleRate = global.WebAudioTestAPI.sampleRate;
     this._.listener = immigration.apply(function (admission) {
-      return new _AudioListener2["default"](admission, _this);
+      return new _AudioListener2["default"](admission, _this2);
     });
     this._.microCurrentTime = 0;
     this._.processedSamples = 0;
     this._.tick = 0;
+    this._.state = "running";
+    this._.onstatechange = null;
   }
 
   _inherits(AudioContext, _EventTarget);
 
   _createClass(AudioContext, [{
+    key: "suspend",
+    value: function suspend() {
+      var _this3 = this;
+
+      return transitionToState.call(this, "suspend", function () {
+        if (_this3._.state === "running") {
+          _this3._.state = "suspended";
+          _this3.dispatchEvent(new _Event2["default"]("statechange", _this3));
+        }
+      });
+    }
+  }, {
+    key: "resume",
+    value: function resume() {
+      var _this4 = this;
+
+      return transitionToState.call(this, "resume", function () {
+        if (_this4._.state === "suspended") {
+          _this4._.state = "running";
+          _this4.dispatchEvent(new _Event2["default"]("statechange", _this4));
+        }
+      });
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      var _this5 = this;
+
+      return transitionToState.call(this, "close", function () {
+        if (_this5._.state !== "closed") {
+          _this5._.state = "closed";
+          _this5.$reset();
+          _this5.dispatchEvent(new _Event2["default"]("statechange", _this5));
+        }
+      });
+    }
+  }, {
     key: "createBuffer",
     value: function createBuffer(numberOfChannels, length, sampleRate) {
-      var _this2 = this;
+      var _this6 = this;
 
       return immigration.apply(function (admission) {
-        return new _AudioBuffer2["default"](admission, _this2, numberOfChannels, length, sampleRate);
+        return new _AudioBuffer2["default"](admission, _this6, numberOfChannels, length, sampleRate);
       });
     }
   }, {
     key: "decodeAudioData",
     value: function decodeAudioData(audioData, _successCallback, _errorCallback) {
-      var _this3 = this;
+      var _this7 = this;
 
       var isPromiseBased = configuration.getState("AudioContext#decodeAudioData") === "promise";
       var successCallback = undefined,
@@ -865,13 +933,13 @@ var AudioContext = (function (_EventTarget) {
       }
 
       var promise = new Promise(function (resolve, reject) {
-        assertion.call(_this3);
+        assertion.call(_this7);
 
-        if (_this3.DECODE_AUDIO_DATA_FAILED) {
+        if (_this7.DECODE_AUDIO_DATA_FAILED) {
           reject();
         } else {
-          resolve(_this3.DECODE_AUDIO_DATA_RESULT || immigration.apply(function (admission) {
-            return new _AudioBuffer2["default"](admission, _this3, 2, 1024, _this3.sampleRate);
+          resolve(_this7.DECODE_AUDIO_DATA_RESULT || immigration.apply(function (admission) {
+            return new _AudioBuffer2["default"](admission, _this7, 2, 1024, _this7.sampleRate);
           }));
         }
       });
@@ -887,37 +955,37 @@ var AudioContext = (function (_EventTarget) {
   }, {
     key: "createBufferSource",
     value: function createBufferSource() {
-      var _this4 = this;
+      var _this8 = this;
 
       return immigration.apply(function (admission) {
-        return new _AudioBufferSourceNode2["default"](admission, _this4);
+        return new _AudioBufferSourceNode2["default"](admission, _this8);
       });
     }
   }, {
     key: "createMediaElementSource",
     value: function createMediaElementSource(mediaElement) {
-      var _this5 = this;
+      var _this9 = this;
 
       return immigration.apply(function (admission) {
-        return new _MediaElementAudioSourceNode2["default"](admission, _this5, mediaElement);
+        return new _MediaElementAudioSourceNode2["default"](admission, _this9, mediaElement);
       });
     }
   }, {
     key: "createMediaStreamSource",
     value: function createMediaStreamSource(mediaStream) {
-      var _this6 = this;
+      var _this10 = this;
 
       return immigration.apply(function (admission) {
-        return new _MediaStreamAudioSourceNode2["default"](admission, _this6, mediaStream);
+        return new _MediaStreamAudioSourceNode2["default"](admission, _this10, mediaStream);
       });
     }
   }, {
     key: "createMediaStreamDestination",
     value: function createMediaStreamDestination() {
-      var _this7 = this;
+      var _this11 = this;
 
       return immigration.apply(function (admission) {
-        return new _MediaStreamAudioDestinationNode2["default"](admission, _this7);
+        return new _MediaStreamAudioDestinationNode2["default"](admission, _this11);
       });
     }
   }, {
@@ -932,72 +1000,72 @@ var AudioContext = (function (_EventTarget) {
   }, {
     key: "createScriptProcessor",
     value: function createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-      var _this8 = this;
+      var _this12 = this;
 
       return immigration.apply(function (admission) {
-        return new _ScriptProcessorNode2["default"](admission, _this8, bufferSize, numberOfInputChannels, numberOfOutputChannels);
+        return new _ScriptProcessorNode2["default"](admission, _this12, bufferSize, numberOfInputChannels, numberOfOutputChannels);
       });
     }
   }, {
     key: "createAnalyser",
     value: function createAnalyser() {
-      var _this9 = this;
+      var _this13 = this;
 
       return immigration.apply(function (admission) {
-        return new _AnalyserNode2["default"](admission, _this9);
+        return new _AnalyserNode2["default"](admission, _this13);
       });
     }
   }, {
     key: "createGain",
     value: function createGain() {
-      var _this10 = this;
+      var _this14 = this;
 
       return immigration.apply(function (admission) {
-        return new _GainNode2["default"](admission, _this10);
+        return new _GainNode2["default"](admission, _this14);
       });
     }
   }, {
     key: "createDelay",
     value: function createDelay() {
-      var _this11 = this;
+      var _this15 = this;
 
       var maxDelayTime = arguments[0] === undefined ? 1 : arguments[0];
 
       return immigration.apply(function (admission) {
-        return new _DelayNode2["default"](admission, _this11, maxDelayTime);
+        return new _DelayNode2["default"](admission, _this15, maxDelayTime);
       });
     }
   }, {
     key: "createBiquadFilter",
     value: function createBiquadFilter() {
-      var _this12 = this;
+      var _this16 = this;
 
       return immigration.apply(function (admission) {
-        return new _BiquadFilterNode2["default"](admission, _this12);
+        return new _BiquadFilterNode2["default"](admission, _this16);
       });
     }
   }, {
     key: "createWaveShaper",
     value: function createWaveShaper() {
-      var _this13 = this;
+      var _this17 = this;
 
       return immigration.apply(function (admission) {
-        return new _WaveShaperNode2["default"](admission, _this13);
+        return new _WaveShaperNode2["default"](admission, _this17);
       });
     }
   }, {
     key: "createPanner",
     value: function createPanner() {
-      var _this14 = this;
+      var _this18 = this;
 
       return immigration.apply(function (admission) {
-        return new _PannerNode2["default"](admission, _this14);
+        return new _PannerNode2["default"](admission, _this18);
       });
     }
   }, {
     key: "createStereoPanner",
     value: function createStereoPanner() {
-      var _this15 = this;
+      var _this19 = this;
 
       this._.inspector.describe("createStereoPanner", function (assert) {
         assert(configuration.getState("AudioContext#createStereoPanner") === "enabled", function (fmt) {
@@ -1006,65 +1074,65 @@ var AudioContext = (function (_EventTarget) {
       });
 
       return immigration.apply(function (admission) {
-        return new _StereoPannerNode2["default"](admission, _this15);
+        return new _StereoPannerNode2["default"](admission, _this19);
       });
     }
   }, {
     key: "createConvolver",
     value: function createConvolver() {
-      var _this16 = this;
+      var _this20 = this;
 
       return immigration.apply(function (admission) {
-        return new _ConvolverNode2["default"](admission, _this16);
+        return new _ConvolverNode2["default"](admission, _this20);
       });
     }
   }, {
     key: "createChannelSplitter",
     value: function createChannelSplitter() {
-      var _this17 = this;
+      var _this21 = this;
 
       var numberOfOutputs = arguments[0] === undefined ? 6 : arguments[0];
 
       return immigration.apply(function (admission) {
-        return new _ChannelSplitterNode2["default"](admission, _this17, numberOfOutputs);
+        return new _ChannelSplitterNode2["default"](admission, _this21, numberOfOutputs);
       });
     }
   }, {
     key: "createChannelMerger",
     value: function createChannelMerger() {
-      var _this18 = this;
+      var _this22 = this;
 
       var numberOfInputs = arguments[0] === undefined ? 6 : arguments[0];
 
       return immigration.apply(function (admission) {
-        return new _ChannelMergerNode2["default"](admission, _this18, numberOfInputs);
+        return new _ChannelMergerNode2["default"](admission, _this22, numberOfInputs);
       });
     }
   }, {
     key: "createDynamicsCompressor",
     value: function createDynamicsCompressor() {
-      var _this19 = this;
+      var _this23 = this;
 
       return immigration.apply(function (admission) {
-        return new _DynamicsCompressorNode2["default"](admission, _this19);
+        return new _DynamicsCompressorNode2["default"](admission, _this23);
       });
     }
   }, {
     key: "createOscillator",
     value: function createOscillator() {
-      var _this20 = this;
+      var _this24 = this;
 
       return immigration.apply(function (admission) {
-        return new _OscillatorNode2["default"](admission, _this20);
+        return new _OscillatorNode2["default"](admission, _this24);
       });
     }
   }, {
     key: "createPeriodicWave",
     value: function createPeriodicWave(real, imag) {
-      var _this21 = this;
+      var _this25 = this;
 
       return immigration.apply(function (admission) {
-        return new _PeriodicWave2["default"](admission, _this21, real, imag);
+        return new _PeriodicWave2["default"](admission, _this25, real, imag);
       });
     }
   }, {
@@ -1102,7 +1170,7 @@ var AudioContext = (function (_EventTarget) {
     value: function _process(microseconds) {
       var nextMicroCurrentTime = this._.microCurrentTime + microseconds;
 
-      while (this._.microCurrentTime < nextMicroCurrentTime) {
+      while (this._.state === "running" && this._.microCurrentTime < nextMicroCurrentTime) {
         var _nextMicroCurrentTime = Math.min(this._.microCurrentTime + 1000, nextMicroCurrentTime);
         var _nextProcessedSamples = Math.floor(_nextMicroCurrentTime / (1000 * 1000) * this.sampleRate);
         var inNumSamples = _nextProcessedSamples - this._.processedSamples;
@@ -1154,6 +1222,42 @@ var AudioContext = (function (_EventTarget) {
       });
     }
   }, {
+    key: "state",
+    get: function get() {
+      if (isEnabledState()) {
+        return this._.state;
+      }
+    },
+    set: function set(value) {
+      if (!isEnabledState()) {
+        return;
+      }
+
+      this._.inspector.describe("state", function (assert) {
+        assert.throwReadOnlyTypeError(value);
+      });
+    }
+  }, {
+    key: "onstatechange",
+    get: function get() {
+      if (isEnabledState()) {
+        return this._.onstatechange;
+      }
+    },
+    set: function set(value) {
+      if (!isEnabledState()) {
+        return;
+      }
+
+      this._.inspector.describe("onstatechange", function (assert) {
+        assert(_utils2["default"].isNullOrFunction(value), function (fmt) {
+          throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]), fmt.form, fmt.butGot(value, "onstatechange", "function")));
+        });
+      });
+
+      this._.onstatechange = value;
+    }
+  }, {
     key: "$name",
     get: function get() {
       return "AudioContext";
@@ -1177,7 +1281,7 @@ exports["default"] = AudioContext;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioBufferSourceNode":3,"./AudioDestinationNode":5,"./AudioListener":6,"./BiquadFilterNode":11,"./ChannelMergerNode":12,"./ChannelSplitterNode":13,"./ConvolverNode":14,"./DelayNode":15,"./DynamicsCompressorNode":16,"./EventTarget":19,"./GainNode":20,"./MediaElementAudioSourceNode":23,"./MediaStreamAudioDestinationNode":25,"./MediaStreamAudioSourceNode":26,"./OscillatorNode":29,"./PannerNode":30,"./PeriodicWave":31,"./ScriptProcessorNode":32,"./StereoPannerNode":33,"./WaveShaperNode":34,"./utils":44,"./utils/Configuration":37,"./utils/Immigration":40}],5:[function(require,module,exports){
+},{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioBufferSourceNode":3,"./AudioDestinationNode":5,"./AudioListener":6,"./BiquadFilterNode":11,"./ChannelMergerNode":12,"./ChannelSplitterNode":13,"./ConvolverNode":14,"./DelayNode":15,"./DynamicsCompressorNode":16,"./Event":18,"./EventTarget":19,"./GainNode":20,"./MediaElementAudioSourceNode":23,"./MediaStreamAudioDestinationNode":25,"./MediaStreamAudioSourceNode":26,"./OscillatorNode":29,"./PannerNode":30,"./PeriodicWave":31,"./ScriptProcessorNode":32,"./StereoPannerNode":33,"./WaveShaperNode":34,"./utils":44,"./utils/Configuration":37,"./utils/Immigration":40}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1470,6 +1574,12 @@ var AudioNode = (function (_EventTarget) {
       return new _utilsJunction2["default"](_this, i);
     });
     this._.tick = -1;
+
+    this._.inspector.describe("create" + this._.name.replace(/Node$/, ""), [], function (assert) {
+      assert(_this._.context.state !== "closed", function (fmt) {
+        throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          AudioContext has been closed\n        "], ["\n          ", ";\n          AudioContext has been closed\n        "]), fmt.form));
+      });
+    });
   }
 
   _inherits(AudioNode, _EventTarget);
@@ -1504,7 +1614,7 @@ var AudioNode = (function (_EventTarget) {
         });
 
         assert(input < (destination.numberOfInputs || 1), function (fmt) {
-          throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          input index (", ") exceeds number of inputs (", ")\n        "], ["\n          ", ";\n          input index (", ") exceeds number of inputs (", ")\n        "]), fmt.form, input, destination.numberOfInputs || 1));
+          throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          input index (", ") exceeds number of inputs (", ")\n        "], ["\n          ", ";\n          input index (", ") exceeds number of inputs (", ")\n        "]), fmt.form, input, destination.numberOfInputs));
         });
       });
 
@@ -1528,8 +1638,9 @@ var AudioNode = (function (_EventTarget) {
         case 1:
           if (_utils2["default"].isNumber(_destination)) {
             _AudioNodeDisconnectUtils2["default"].disconnectChannel.call(this, _destination);
+          } else {
+            _AudioNodeDisconnectUtils2["default"].disconnectSelective1.call(this, _destination);
           }
-          _AudioNodeDisconnectUtils2["default"].disconnectSelective1.call(this, _destination);
           break;
         case 2:
           _AudioNodeDisconnectUtils2["default"].disconnectSelective2.call(this, _destination, _output);
@@ -1738,7 +1849,7 @@ function disconnectAll() {
 function disconnectChannel(output) {
   var _this = this;
 
-  this._.inspector.describe("disconnect", function (assert) {
+  this._.inspector.describe("disconnect", ["output"], function (assert) {
     assert(_utils2["default"].isPositiveInteger(output), function (fmt) {
       throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.butGot(output, "output", "positive integer")));
     });
@@ -1855,6 +1966,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+exports.linTo = linTo;
+exports.expTo = expTo;
+exports.setTarget = setTarget;
+exports.setCurveValue = setCurveValue;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1901,18 +2017,41 @@ function insertEvent(that, event) {
 }
 
 function linTo(v, v0, v1, t, t0, t1) {
+  if (t <= t0) {
+    return v0;
+  }
+  if (t1 <= t) {
+    return v1;
+  }
   var dt = (t - t0) / (t1 - t0);
 
   return (1 - dt) * v0 + dt * v1;
 }
 
 function expTo(v, v0, v1, t, t0, t1) {
+  if (t <= t0) {
+    return v0;
+  }
+  if (t1 <= t) {
+    return v1;
+  }
+  if (v0 === v1) {
+    return v0;
+  }
+
   var dt = (t - t0) / (t1 - t0);
 
-  return 0 < v0 && 0 < v1 ? v0 * Math.pow(v1 / v0, dt) : v;
+  if (0 < v0 && 0 < v1 || v0 < 0 && v1 < 0) {
+    return v0 * Math.pow(v1 / v0, dt);
+  }
+
+  return v;
 }
 
 function setTarget(v0, v1, t, t0, timeConstant) {
+  if (t <= t0) {
+    return v0;
+  }
   return v1 + (v0 - v1) * Math.exp((t0 - t) / timeConstant);
 }
 
@@ -2207,7 +2346,6 @@ var AudioParam = (function () {
 })();
 
 exports["default"] = AudioParam;
-module.exports = exports["default"];
 
 },{"./utils":44,"./utils/Immigration":40,"./utils/Inspector":41,"./utils/Junction":42}],10:[function(require,module,exports){
 "use strict";
@@ -2947,7 +3085,7 @@ var Event = (function (_utils$preventSuperCall) {
 
     this._.type = name;
     this._.target = _utils2["default"].defaults(target, null);
-    this._.timeStamp = Date.now();
+    this._.timestamp = Date.now();
   }
 
   _inherits(Event, _utils$preventSuperCall);
@@ -3580,6 +3718,10 @@ var _utilsImmigration = require("./utils/Immigration");
 
 var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
 
+var _Event = require("./Event");
+
+var _Event2 = _interopRequireDefault(_Event);
+
 var _AudioContext2 = require("./AudioContext");
 
 var _AudioContext3 = _interopRequireDefault(_AudioContext2);
@@ -3594,6 +3736,24 @@ var _OfflineAudioCompletionEvent2 = _interopRequireDefault(_OfflineAudioCompleti
 
 var configuration = _utilsConfiguration2["default"].getInstance();
 var immigration = _utilsImmigration2["default"].getInstance();
+
+function transitionToState(methodName) {
+  var _this = this;
+
+  this._.inspector.describe(methodName, [], function (assert) {
+    assert(configuration.getState("AudioContext#" + methodName) === "enabled", function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        not enabled\n      "], ["\n        ", ";\n        not enabled\n      "]), fmt.form));
+    });
+  });
+
+  return new Promise(function (resolve, reject) {
+    _this._.inspector.describe(methodName, [], function (assert) {
+      assert(false, function (fmt) {
+        reject(new Error(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          Cannot ", " on an OfflineAudioContext\n        "], ["\n          ", ";\n          Cannot ", " on an OfflineAudioContext\n        "]), fmt.form, methodName)));
+      });
+    });
+  });
+}
 
 var OfflineAudioContext = (function (_AudioContext) {
   function OfflineAudioContext(numberOfChannels, length, sampleRate) {
@@ -3621,14 +3781,30 @@ var OfflineAudioContext = (function (_AudioContext) {
     this._.length = length;
     this._.rendering = false;
     this._.resolve = null;
+    this._.state = "suspended";
   }
 
   _inherits(OfflineAudioContext, _AudioContext);
 
   _createClass(OfflineAudioContext, [{
+    key: "suspend",
+    value: function suspend() {
+      return transitionToState.call(this, "suspend");
+    }
+  }, {
+    key: "resume",
+    value: function resume() {
+      return transitionToState.call(this, "resume");
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      return transitionToState.call(this, "close");
+    }
+  }, {
     key: "startRendering",
     value: function startRendering() {
-      var _this = this;
+      var _this2 = this;
 
       var isPromiseBased = configuration.getState("OfflineAudioContext#startRendering") === "promise";
       var rendering = this._.rendering;
@@ -3645,17 +3821,23 @@ var OfflineAudioContext = (function (_AudioContext) {
 
       if (isPromiseBased) {
         return new Promise(function (resolve) {
-          assertion.call(_this);
-          _this._.resolve = resolve;
+          assertion.call(_this2);
+
+          _this2._.resolve = resolve;
+          _this2._.state = "running";
+          _this2.dispatchEvent(new _Event2["default"]("statechange", _this2));
         });
       }
 
       assertion.call(this);
+
+      this._.state = "running";
+      this.dispatchEvent(new _Event2["default"]("statechange", this));
     }
   }, {
     key: "_process",
     value: function _process(microseconds) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (!this._.rendering || this._.length <= this._.processedSamples) {
         return;
@@ -3680,19 +3862,23 @@ var OfflineAudioContext = (function (_AudioContext) {
 
       if (this._.length <= this._.processedSamples) {
         var renderedBuffer = immigration.apply(function (admission) {
-          return new _AudioBuffer2["default"](admission, _this2, _this2._.numberOfChannels, _this2._.length, _this2.sampleRate);
+          return new _AudioBuffer2["default"](admission, _this3, _this3._.numberOfChannels, _this3._.length, _this3.sampleRate);
         });
         var _event = immigration.apply(function (admission) {
-          return new _OfflineAudioCompletionEvent2["default"](admission, _this2);
+          return new _OfflineAudioCompletionEvent2["default"](admission, _this3);
         });
 
         _event.renderedBuffer = renderedBuffer;
+
+        this._.state = "closed";
 
         this.dispatchEvent(_event);
         if (this._.resolve !== null) {
           this._.resolve(renderedBuffer);
           this._.resolve = null;
         }
+
+        this.dispatchEvent(new _Event2["default"]("statechange", this));
       }
     }
   }, {
@@ -3722,7 +3908,7 @@ var OfflineAudioContext = (function (_AudioContext) {
 exports["default"] = OfflineAudioContext;
 module.exports = exports["default"];
 
-},{"./AudioBuffer":2,"./AudioContext":4,"./OfflineAudioCompletionEvent":27,"./utils":44,"./utils/Configuration":37,"./utils/Immigration":40}],29:[function(require,module,exports){
+},{"./AudioBuffer":2,"./AudioContext":4,"./Event":18,"./OfflineAudioCompletionEvent":27,"./utils":44,"./utils/Configuration":37,"./utils/Immigration":40}],29:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -5549,13 +5735,13 @@ function prettyPrint(value) {
   return article(name) + " " + name;
 }
 
-function preventSuperCall() {
-  var superClass = arguments[0] === undefined ? function () {} : arguments[0];
-
+function preventSuperCall(superClass) {
   function ctor() {}
+
   ctor.prototype = Object.create(superClass.prototype, {
     constructor: { value: ctor, enumerable: false, writable: true, configurable: true }
   });
+
   return ctor;
 }
 
@@ -5645,7 +5831,7 @@ exports["default"] = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = "0.3.3";
+exports["default"] = "0.3.4";
 module.exports = exports["default"];
 
 },{}],46:[function(require,module,exports){

@@ -56,6 +56,7 @@ describe("EventTarget", function() {
 
       target.removeEventListener("foo", listener1);
       target.removeEventListener("bar", listener2);
+      target.removeEventListener("baz", listener3);
 
       assert.deepEqual(target.$listeners("foo"), [ listener2 ]);
       assert.deepEqual(target.$listeners("bar"), [ listener3 ]);

@@ -28,6 +28,15 @@ export default class AudioNode extends EventTarget {
     this._.inputs = utils.fill(new Array(Math.max(0, this._.numberOfInputs|0)), i => new Junction(this, i));
     this._.outputs = utils.fill(new Array(Math.max(0, this._.numberOfOutputs|0)), i => new Junction(this, i));
     this._.tick = -1;
+
+    this._.inspector.describe(`create${this._.name.replace(/Node$/, "")}`, [], (assert) => {
+      assert(this._.context.state !== "closed", (fmt) => {
+        throw new TypeError(fmt.plain `
+          ${fmt.form};
+          AudioContext has been closed
+        `);
+      });
+    });
   }
 
   get context() {
@@ -175,7 +184,7 @@ export default class AudioNode extends EventTarget {
       assert(input < (destination.numberOfInputs || 1), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
-          input index (${input}) exceeds number of inputs (${destination.numberOfInputs || 1})
+          input index (${input}) exceeds number of inputs (${destination.numberOfInputs})
         `);
       });
     });
@@ -199,8 +208,9 @@ export default class AudioNode extends EventTarget {
       case 1:
         if (utils.isNumber(_destination)) {
           AudioNodeDisconnectUtils.disconnectChannel.call(this, _destination);
+        } else {
+          AudioNodeDisconnectUtils.disconnectSelective1.call(this, _destination);
         }
-        AudioNodeDisconnectUtils.disconnectSelective1.call(this, _destination);
         break;
       case 2:
         AudioNodeDisconnectUtils.disconnectSelective2.call(this, _destination, _output);

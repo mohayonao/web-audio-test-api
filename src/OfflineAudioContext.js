@@ -1,12 +1,35 @@
 import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
+import Event from "./Event";
 import AudioContext from "./AudioContext";
 import AudioBuffer from "./AudioBuffer";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
+
+function transitionToState(methodName) {
+  this._.inspector.describe(methodName, [], (assert) => {
+    assert(configuration.getState(`AudioContext#${methodName}`) === "enabled", (fmt) => {
+      throw new TypeError(fmt.plain `
+        ${fmt.form};
+        not enabled
+      `);
+    });
+  });
+
+  return new Promise((resolve, reject) => {
+    this._.inspector.describe(methodName, [], (assert) => {
+      assert(false, (fmt) => {
+        reject(new Error(fmt.plain `
+          ${fmt.form};
+          Cannot ${methodName} on an OfflineAudioContext
+        `));
+      });
+    });
+  });
+}
 
 export default class OfflineAudioContext extends AudioContext {
   constructor(numberOfChannels, length, sampleRate) {
@@ -41,6 +64,7 @@ export default class OfflineAudioContext extends AudioContext {
     this._.length = length;
     this._.rendering = false;
     this._.resolve = null;
+    this._.state = "suspended";
   }
 
   get oncomplete() {
@@ -64,6 +88,18 @@ export default class OfflineAudioContext extends AudioContext {
     return "OfflineAudioContext";
   }
 
+  suspend() {
+    return transitionToState.call(this, "suspend");
+  }
+
+  resume() {
+    return transitionToState.call(this, "resume");
+  }
+
+  close() {
+    return transitionToState.call(this, "close");
+  }
+
   startRendering() {
     let isPromiseBased = configuration.getState("OfflineAudioContext#startRendering") === "promise";
     let rendering = this._.rendering;
@@ -84,11 +120,17 @@ export default class OfflineAudioContext extends AudioContext {
     if (isPromiseBased) {
       return new Promise((resolve) => {
         assertion.call(this);
+
         this._.resolve = resolve;
+        this._.state = "running";
+        this.dispatchEvent(new Event("statechange", this));
       });
     }
 
     assertion.call(this);
+
+    this._.state = "running";
+    this.dispatchEvent(new Event("statechange", this));
   }
 
   _process(microseconds) {
@@ -123,11 +165,15 @@ export default class OfflineAudioContext extends AudioContext {
 
       event.renderedBuffer = renderedBuffer;
 
+      this._.state = "closed";
+
       this.dispatchEvent(event);
       if (this._.resolve !== null) {
         this._.resolve(renderedBuffer);
         this._.resolve = null;
       }
+
+      this.dispatchEvent(new Event("statechange", this));
     }
   }
 }

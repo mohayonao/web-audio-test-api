@@ -14,7 +14,7 @@ export default class Event extends utils.preventSuperCall(global.Event) {
 
     this._.type = name;
     this._.target = utils.defaults(target, null);
-    this._.timeStamp = Date.now();
+    this._.timestamp = Date.now();
   }
 
   get type() {

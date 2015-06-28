@@ -9,6 +9,12 @@ describe("AudioNode", function() {
   });
 
   describe("constructor", function() {
+    before(function() {
+      WebAudioTestAPI.setState("AudioContext#close", "enabled");
+    });
+    after(function() {
+      WebAudioTestAPI.setState("AudioContext#close", "disabled");
+    });
     it("()", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
@@ -21,6 +27,16 @@ describe("AudioNode", function() {
         return new global.AudioNode();
       }, function(e) {
         return e instanceof TypeError && /Illegal constructor/.test(e.message);
+      });
+
+      return audioContext.close().then(function() {
+        return immigration.apply(function(admission) {
+          return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
+        });
+      }).then(function() {
+        throw new Error("NOT REACHED");
+      }, function(e) {
+        assert(e instanceof TypeError && /audioContext has been closed/i.test(e.message));
       });
     });
   });
@@ -243,7 +259,7 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("#$name", function() {
+  describe("$name", function() {
     it("get: string", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
@@ -253,13 +269,39 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("#$context", function() {
+  describe("$context", function() {
     it("get: AudioContext", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
 
       assert(node.$context === audioContext);
+    });
+  });
+
+  describe("$process", function() {
+    it("(inNumSamples, tick): void", function() {
+      var node = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
+      });
+
+      node.$inputs[0].process = sinon.spy();
+
+      node.$process(10, 0);
+      assert(node.$inputs[0].process.callCount === 1);
+      assert.deepEqual(node.$inputs[0].process.args[0], [ 10, 0 ]);
+
+      node.$process(10, 0);
+      assert(node.$inputs[0].process.callCount === 1);
+      assert.deepEqual(node.$inputs[0].process.args[0], [ 10, 0 ]);
+
+      node.$process(10, 1);
+      assert(node.$inputs[0].process.callCount === 2);
+      assert.deepEqual(node.$inputs[0].process.args[1], [ 10, 1 ]);
+
+      node.$process(10, 1);
+      assert(node.$inputs[0].process.callCount === 2);
+      assert.deepEqual(node.$inputs[0].process.args[1], [ 10, 1 ]);
     });
   });
 
