@@ -25,23 +25,46 @@ function insertEvent(that, event) {
   events.splice(i, replace, event);
 }
 
-function linTo(v, v0, v1, t, t0, t1) {
+export function linTo(v, v0, v1, t, t0, t1) {
+  if (t <= t0) {
+    return v0;
+  }
+  if (t1 <= t) {
+    return v1;
+  }
   let dt = (t - t0) / (t1 - t0);
 
   return (1 - dt) * v0 + dt * v1;
 }
 
-function expTo(v, v0, v1, t, t0, t1) {
+export function expTo(v, v0, v1, t, t0, t1) {
+  if (t <= t0) {
+    return v0;
+  }
+  if (t1 <= t) {
+    return v1;
+  }
+  if (v0 === v1) {
+    return v0;
+  }
+
   let dt = (t - t0) / (t1 - t0);
 
-  return 0 < v0 && 0 < v1 ? v0 * Math.pow(v1 / v0, dt) : v;
+  if ((0 < v0 && 0 < v1) || (v0 < 0 && v1 < 0)) {
+    return v0 * Math.pow(v1 / v0, dt);
+  }
+
+  return v;
 }
 
-function setTarget(v0, v1, t, t0, timeConstant) {
+export function setTarget(v0, v1, t, t0, timeConstant) {
+  if (t <= t0) {
+    return v0;
+  }
   return v1 + (v0 - v1) * Math.exp((t0 - t) / timeConstant);
 }
 
-function setCurveValue(v, t, t0, t1, curve) {
+export function setCurveValue(v, t, t0, t1, curve) {
   let dt = (t - t0) / (t1 - t0);
 
   if (dt <= 0) {

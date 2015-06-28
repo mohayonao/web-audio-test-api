@@ -259,7 +259,7 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("#$name", function() {
+  describe("$name", function() {
     it("get: string", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
@@ -269,13 +269,39 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("#$context", function() {
+  describe("$context", function() {
     it("get: AudioContext", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
 
       assert(node.$context === audioContext);
+    });
+  });
+
+  describe("$process", function() {
+    it("(inNumSamples, tick): void", function() {
+      var node = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
+      });
+
+      node.$inputs[0].process = sinon.spy();
+
+      node.$process(10, 0);
+      assert(node.$inputs[0].process.callCount === 1);
+      assert.deepEqual(node.$inputs[0].process.args[0], [ 10, 0 ]);
+
+      node.$process(10, 0);
+      assert(node.$inputs[0].process.callCount === 1);
+      assert.deepEqual(node.$inputs[0].process.args[0], [ 10, 0 ]);
+
+      node.$process(10, 1);
+      assert(node.$inputs[0].process.callCount === 2);
+      assert.deepEqual(node.$inputs[0].process.args[1], [ 10, 1 ]);
+
+      node.$process(10, 1);
+      assert(node.$inputs[0].process.callCount === 2);
+      assert.deepEqual(node.$inputs[0].process.args[1], [ 10, 1 ]);
     });
   });
 

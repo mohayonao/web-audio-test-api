@@ -2,11 +2,19 @@ describe("AudioProcessingEvent", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var utils = WebAudioTestAPI.utils;
   var immigration = utils.Immigration.getInstance();
+  var audioContext;
+
+  beforeEach(function() {
+    audioContext = new WebAudioTestAPI.AudioContext();
+  });
 
   describe("constructor", function() {
     it("()", function() {
+      var node = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
+      });
       var event = immigration.apply(function(admission) {
-        return new WebAudioTestAPI.AudioProcessingEvent(admission);
+        return new WebAudioTestAPI.AudioProcessingEvent(admission, node);
       });
 
       assert(event instanceof global.AudioProcessingEvent);
@@ -17,6 +25,10 @@ describe("AudioProcessingEvent", function() {
       }, function(e) {
         return e instanceof TypeError && /Illegal constructor/.test(e.message);
       });
+
+      // test api
+      assert(event.$name === "AudioProcessingEvent");
+      assert(event.$node === node);
     });
   });
 });

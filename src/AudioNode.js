@@ -184,7 +184,7 @@ export default class AudioNode extends EventTarget {
       assert(input < (destination.numberOfInputs || 1), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
-          input index (${input}) exceeds number of inputs (${destination.numberOfInputs || 1})
+          input index (${input}) exceeds number of inputs (${destination.numberOfInputs})
         `);
       });
     });

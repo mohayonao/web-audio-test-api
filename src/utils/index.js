@@ -134,11 +134,14 @@ export function prettyPrint(value) {
   return `${article(name)} ${name}`;
 }
 
-export function preventSuperCall(superClass = () => {}) {
-  function ctor() {}
+export function preventSuperCall(superClass) {
+  function ctor() {
+  }
+
   ctor.prototype = Object.create(superClass.prototype, {
     constructor: { value: ctor, enumerable: false, writable: true, configurable: true },
   });
+
   return ctor;
 }
 
