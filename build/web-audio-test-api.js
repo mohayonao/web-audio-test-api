@@ -175,7 +175,7 @@ exports["default"] = AnalyserNode;
 AnalyserNode.$JSONKeys = ["fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant"];
 module.exports = exports["default"];
 
-},{"./AudioNode":7,"./utils":42,"./utils/Configuration":36,"./utils/Enumerator":37}],2:[function(require,module,exports){
+},{"./AudioNode":7,"./utils":44,"./utils/Configuration":37,"./utils/Enumerator":38}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -416,7 +416,7 @@ var AudioBuffer = (function () {
 exports["default"] = AudioBuffer;
 module.exports = exports["default"];
 
-},{"./utils":42,"./utils/Configuration":36,"./utils/Immigration":39,"./utils/Inspector":40}],3:[function(require,module,exports){
+},{"./utils":44,"./utils/Configuration":37,"./utils/Immigration":40,"./utils/Inspector":41}],3:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -671,7 +671,7 @@ AudioBufferSourceNode.$JSONKeys = ["buffer", "playbackRate", "loop", "loopStart"
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./AudioParam":8,"./Event":17,"./utils":42,"./utils/Immigration":39}],4:[function(require,module,exports){
+},{"./AudioNode":7,"./AudioParam":9,"./Event":18,"./utils":44,"./utils/Immigration":40}],4:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1091,8 +1091,10 @@ var AudioContext = (function (_EventTarget) {
     value: function $reset() {
       this._.microCurrentTime = 0;
       this._.processedSamples = 0;
-      this.destination.$inputs.forEach(function (node) {
-        node.disconnect();
+      this.destination.$inputs.forEach(function (junction) {
+        junction.inputs.forEach(function (junction) {
+          junction.disconnectAll();
+        });
       });
     }
   }, {
@@ -1175,7 +1177,7 @@ exports["default"] = AudioContext;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioBufferSourceNode":3,"./AudioDestinationNode":5,"./AudioListener":6,"./BiquadFilterNode":10,"./ChannelMergerNode":11,"./ChannelSplitterNode":12,"./ConvolverNode":13,"./DelayNode":14,"./DynamicsCompressorNode":15,"./EventTarget":18,"./GainNode":19,"./MediaElementAudioSourceNode":22,"./MediaStreamAudioDestinationNode":24,"./MediaStreamAudioSourceNode":25,"./OscillatorNode":28,"./PannerNode":29,"./PeriodicWave":30,"./ScriptProcessorNode":31,"./StereoPannerNode":32,"./WaveShaperNode":33,"./utils":42,"./utils/Configuration":36,"./utils/Immigration":39}],5:[function(require,module,exports){
+},{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioBufferSourceNode":3,"./AudioDestinationNode":5,"./AudioListener":6,"./BiquadFilterNode":11,"./ChannelMergerNode":12,"./ChannelSplitterNode":13,"./ConvolverNode":14,"./DelayNode":15,"./DynamicsCompressorNode":16,"./EventTarget":19,"./GainNode":20,"./MediaElementAudioSourceNode":23,"./MediaStreamAudioDestinationNode":25,"./MediaStreamAudioSourceNode":26,"./OscillatorNode":29,"./PannerNode":30,"./PeriodicWave":31,"./ScriptProcessorNode":32,"./StereoPannerNode":33,"./WaveShaperNode":34,"./utils":44,"./utils/Configuration":37,"./utils/Immigration":40}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1390,7 +1392,7 @@ var AudioListener = (function () {
 exports["default"] = AudioListener;
 module.exports = exports["default"];
 
-},{"./utils":42,"./utils/Immigration":39,"./utils/Inspector":40}],7:[function(require,module,exports){
+},{"./utils":44,"./utils/Immigration":40,"./utils/Inspector":41}],7:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1400,7 +1402,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x4, _x5, _x6) { var _again = true; _function: while (_again) { var object = _x4, property = _x5, receiver = _x6; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x4 = parent; _x5 = property; _x6 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -1414,6 +1416,10 @@ var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
+var _utilsConfiguration = require("./utils/Configuration");
+
+var _utilsConfiguration2 = _interopRequireDefault(_utilsConfiguration);
+
 var _utilsEnumerator = require("./utils/Enumerator");
 
 var _utilsEnumerator2 = _interopRequireDefault(_utilsEnumerator);
@@ -1422,14 +1428,25 @@ var _utilsImmigration = require("./utils/Immigration");
 
 var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
 
+var _utilsJunction = require("./utils/Junction");
+
+var _utilsJunction2 = _interopRequireDefault(_utilsJunction);
+
 var _EventTarget2 = require("./EventTarget");
 
 var _EventTarget3 = _interopRequireDefault(_EventTarget2);
 
+var _AudioNodeDisconnectUtils = require("./AudioNodeDisconnectUtils");
+
+var _AudioNodeDisconnectUtils2 = _interopRequireDefault(_AudioNodeDisconnectUtils);
+
+var configuration = _utilsConfiguration2["default"].getInstance();
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var AudioNode = (function (_EventTarget) {
   function AudioNode(admission, spec) {
+    var _this = this;
+
     _classCallCheck(this, AudioNode);
 
     _get(Object.getPrototypeOf(AudioNode.prototype), "constructor", this).call(this);
@@ -1446,8 +1463,12 @@ var AudioNode = (function (_EventTarget) {
     this._.channelCountMode = _utils2["default"].defaults(spec.channelCountMode, "max");
     this._.channelInterpretation = _utils2["default"].defaults(spec.channelInterpretation, "speakers");
     this._.JSONKeys = [];
-    this._.inputs = [];
-    this._.outputs = [];
+    this._.inputs = _utils2["default"].fill(new Array(Math.max(0, this._.numberOfInputs | 0)), function (i) {
+      return new _utilsJunction2["default"](_this, i);
+    });
+    this._.outputs = _utils2["default"].fill(new Array(Math.max(0, this._.numberOfOutputs | 0)), function (i) {
+      return new _utilsJunction2["default"](_this, i);
+    });
     this._.tick = -1;
   }
 
@@ -1456,7 +1477,7 @@ var AudioNode = (function (_EventTarget) {
   _createClass(AudioNode, [{
     key: "connect",
     value: function connect(destination) {
-      var _this = this;
+      var _this2 = this;
 
       var output = arguments[1] === undefined ? 0 : arguments[1];
       var input = arguments[2] === undefined ? 0 : arguments[2];
@@ -1466,7 +1487,7 @@ var AudioNode = (function (_EventTarget) {
           throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]), fmt.form, fmt.butGot(destination, "destination", "AudioNode or an AudioParam")));
         });
 
-        assert(_this.$context === destination.$context, function (fmt) {
+        assert(_this2.$context === destination.$context, function (fmt) {
           throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          cannot connect to a destination belonging to a different audio context\n        "], ["\n          ", ";\n          cannot connect to a destination belonging to a different audio context\n        "]), fmt.form));
         });
 
@@ -1478,8 +1499,8 @@ var AudioNode = (function (_EventTarget) {
           throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]), fmt.form, fmt.butGot(input, "input", "positive integer")));
         });
 
-        assert(output < _this.numberOfOutputs, function (fmt) {
-          throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          output index (", ") exceeds number of outputs (", ")\n        "], ["\n          ", ";\n          output index (", ") exceeds number of outputs (", ")\n        "]), fmt.form, output, _this.numberOfOutputs));
+        assert(output < _this2.numberOfOutputs, function (fmt) {
+          throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          output index (", ") exceeds number of outputs (", ")\n        "], ["\n          ", ";\n          output index (", ") exceeds number of outputs (", ")\n        "]), fmt.form, output, _this2.numberOfOutputs));
         });
 
         assert(input < (destination.numberOfInputs || 1), function (fmt) {
@@ -1487,37 +1508,38 @@ var AudioNode = (function (_EventTarget) {
         });
       });
 
-      var index = this._.outputs.indexOf(destination);
-
-      if (index === -1) {
-        this._.outputs.push(destination);
-        destination.$inputs.push(this);
-      }
+      this._.outputs[output].connect(destination.$inputs[input]);
     }
   }, {
     key: "disconnect",
-    value: function disconnect() {
-      var _this2 = this;
+    value: function disconnect(_destination, _output, _input) {
+      var isSelectiveDisconnect = configuration.getState("AudioNode#disconnect") === "selective";
+      var argNum = _utils2["default"].countArguments([_destination, _output, _input]);
 
-      var output = arguments[0] === undefined ? 0 : arguments[0];
+      if (!isSelectiveDisconnect) {
+        _AudioNodeDisconnectUtils2["default"].disconnectChannel.call(this, _utils2["default"].defaults(_destination, 0));
+        return;
+      }
 
-      this._.inspector.describe("disconnect", function (assert) {
-        assert(_utils2["default"].isPositiveInteger(output), function (fmt) {
-          throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]), fmt.form, fmt.butGot(output, "output", "positive integer")));
-        });
-
-        assert(output < _this2.numberOfOutputs, function (fmt) {
-          throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n          ", ";\n          output index (", ") exceeds number of outputs (", ")\n        "], ["\n          ", ";\n          output index (", ") exceeds number of outputs (", ")\n        "]), fmt.form, output, _this2.numberOfOutputs));
-        });
-      });
-
-      this._.outputs.splice(0).forEach(function (dst) {
-        var index = dst.$inputs.indexOf(_this2);
-
-        if (index !== -1) {
-          dst.$inputs.splice(index, 1);
-        }
-      });
+      switch (argNum) {
+        case 0:
+          _AudioNodeDisconnectUtils2["default"].disconnectAll.call(this);
+          break;
+        case 1:
+          if (_utils2["default"].isNumber(_destination)) {
+            _AudioNodeDisconnectUtils2["default"].disconnectChannel.call(this, _destination);
+          }
+          _AudioNodeDisconnectUtils2["default"].disconnectSelective1.call(this, _destination);
+          break;
+        case 2:
+          _AudioNodeDisconnectUtils2["default"].disconnectSelective2.call(this, _destination, _output);
+          break;
+        case 3:
+          _AudioNodeDisconnectUtils2["default"].disconnectSelective3.call(this, _destination, _output, _input);
+          break;
+        default:
+        // no default
+      }
     }
   }, {
     key: "toJSON",
@@ -1546,9 +1568,13 @@ var AudioNode = (function (_EventTarget) {
           json.channelInterpretation = node.channelInterpretation;
         }
 
-        json.inputs = node.$inputs.map(function (node) {
-          return node.toJSON(memo);
-        });
+        if (node.$inputs.length === 1) {
+          json.inputs = node.$inputs[0].toJSON(memo);
+        } else {
+          json.inputs = node.$inputs.map(function (junction) {
+            return junction.toJSON(memo);
+          });
+        }
 
         return json;
       }, memo);
@@ -1560,8 +1586,8 @@ var AudioNode = (function (_EventTarget) {
 
       if (this._.tick !== tick) {
         this._.tick = tick;
-        this.$inputs.forEach(function (src) {
-          src.$process(inNumSamples, tick);
+        this.$inputs.forEach(function (junction) {
+          junction.process(inNumSamples, tick);
         });
         Object.keys(this._).forEach(function (key) {
           if (_this3[key] instanceof global.AudioParam) {
@@ -1662,6 +1688,10 @@ var AudioNode = (function (_EventTarget) {
   }, {
     key: "$inputs",
     get: function get() {
+      // TODO: remove v0.4.0
+      if (this._.inputs.length === 0) {
+        return [new _utilsJunction2["default"](this, 0)];
+      }
       return this._.inputs;
     }
   }]);
@@ -1673,7 +1703,150 @@ exports["default"] = AudioNode;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./EventTarget":18,"./utils":42,"./utils/Enumerator":37,"./utils/Immigration":39}],8:[function(require,module,exports){
+},{"./AudioNodeDisconnectUtils":8,"./EventTarget":19,"./utils":44,"./utils/Configuration":37,"./utils/Enumerator":38,"./utils/Immigration":40,"./utils/Junction":42}],8:[function(require,module,exports){
+(function (global){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.isConnectable = isConnectable;
+exports.disconnectAll = disconnectAll;
+exports.disconnectChannel = disconnectChannel;
+exports.disconnectSelective1 = disconnectSelective1;
+exports.disconnectSelective2 = disconnectSelective2;
+exports.disconnectSelective3 = disconnectSelective3;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var _utils = require("./utils");
+
+var _utils2 = _interopRequireDefault(_utils);
+
+function isConnectable(destination) {
+  return _utils2["default"].isInstanceOf(destination, global.AudioNode) || _utils2["default"].isInstanceOf(destination, global.AudioParam);
+}
+
+function disconnectAll() {
+  this._.outputs.forEach(function (junction) {
+    junction.disconnectAll();
+  });
+}
+
+function disconnectChannel(output) {
+  var _this = this;
+
+  this._.inspector.describe("disconnect", function (assert) {
+    assert(_utils2["default"].isPositiveInteger(output), function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.butGot(output, "output", "positive integer")));
+    });
+
+    assert(output < _this.numberOfOutputs, function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        output index (", ") exceeds number of outputs (", ")\n      "], ["\n        ", ";\n        output index (", ") exceeds number of outputs (", ")\n      "]), fmt.form, output, _this.numberOfOutputs));
+    });
+  });
+
+  this._.outputs[output].disconnectAll();
+}
+
+function disconnectSelective1(destination) {
+  var _this2 = this;
+
+  this._.inspector.describe("disconnect", ["destination"], function (assert) {
+    assert(isConnectable(destination), function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.butGot(destination, "destination", "AudioNode or an AudioParam")));
+    });
+
+    var isConnectedDestination = _this2._.outputs.some(function (junction) {
+      return junction.isConnected(destination);
+    });
+
+    assert(isConnectedDestination, function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        the given destination is not connected\n      "], ["\n        ", ";\n        the given destination is not connected\n      "]), fmt.form));
+    });
+  });
+
+  this._.outputs.forEach(function (junction) {
+    junction.disconnectNode(destination);
+  });
+}
+
+function disconnectSelective2(destination, output) {
+  var _this3 = this;
+
+  this._.inspector.describe("disconnect", ["destination", "output"], function (assert) {
+    assert(isConnectable(destination), function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.butGot(destination, "destination", "AudioNode or an AudioParam")));
+    });
+
+    var isConnectedDestination = _this3._.outputs.some(function (junction) {
+      return junction.isConnected(destination);
+    });
+
+    assert(isConnectedDestination, function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        the given destination is not connected\n      "], ["\n        ", ";\n        the given destination is not connected\n      "]), fmt.form));
+    });
+
+    assert(_utils2["default"].isInteger(output), function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.butGot(output, "output", "integer")));
+    });
+
+    assert(0 <= output && output < _this3.numberOfOutputs, function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.outsideTheRange(output, "output", 0, _this3.numberOfOutputs)));
+    });
+  });
+
+  this._.outputs[output].disconnectNode(destination);
+}
+
+function disconnectSelective3(destination, output, input) {
+  var _this4 = this;
+
+  this._.inspector.describe("disconnect", ["destination", "output", "input"], function (assert) {
+    assert(isConnectable(destination), function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.butGot(destination, "destination", "AudioNode or an AudioParam")));
+    });
+
+    var isConnectedDestination = _this4._.outputs.some(function (junction) {
+      return junction.isConnected(destination);
+    });
+
+    assert(isConnectedDestination, function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        the given destination is not connected\n      "], ["\n        ", ";\n        the given destination is not connected\n      "]), fmt.form));
+    });
+
+    assert(_utils2["default"].isInteger(output), function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.butGot(output, "output", "integer")));
+    });
+
+    assert(_utils2["default"].isInteger(input), function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.butGot(input, "input", "integer")));
+    });
+
+    assert(0 <= output && output < _this4.numberOfOutputs, function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.outsideTheRange(output, "output", 0, _this4.numberOfOutputs)));
+    });
+
+    assert(0 <= input && input < destination.numberOfInputs, function (fmt) {
+      throw new TypeError(fmt.plain(_taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]), fmt.form, fmt.outsideTheRange(input, "input", 0, _this4.numberOfOutputs)));
+    });
+  });
+
+  this._.outputs[output].disconnectChannel(destination, input);
+}
+
+exports["default"] = {
+  disconnectAll: disconnectAll,
+  disconnectChannel: disconnectChannel,
+  disconnectSelective1: disconnectSelective1,
+  disconnectSelective2: disconnectSelective2,
+  disconnectSelective3: disconnectSelective3
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./utils":44}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1699,6 +1872,10 @@ var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
 var _utilsInspector = require("./utils/Inspector");
 
 var _utilsInspector2 = _interopRequireDefault(_utilsInspector);
+
+var _utilsJunction = require("./utils/Junction");
+
+var _utilsJunction2 = _interopRequireDefault(_utilsJunction);
 
 var immigration = _utilsImmigration2["default"].getInstance();
 
@@ -1774,7 +1951,7 @@ var AudioParam = (function () {
     this._.maxValue = maxValue;
     this._.context = node.context;
     this._.node = node;
-    this._.inputs = [];
+    this._.inputs = [new _utilsJunction2["default"](this, 0)];
     this._.events = [];
     this._.tick = -1;
   }
@@ -1908,10 +2085,7 @@ var AudioParam = (function () {
         var json = {};
 
         json.value = node.value;
-
-        json.inputs = node.$inputs.map(function (node) {
-          return node.toJSON(memo);
-        });
+        json.inputs = node.$inputs[0].toJSON(memo);
 
         return json;
       }, memo);
@@ -1964,9 +2138,7 @@ var AudioParam = (function () {
     value: function $process(inNumSamples, tick) {
       if (this._.tick !== tick) {
         this._.tick = tick;
-        this.$inputs.forEach(function (src) {
-          src.$process(inNumSamples, tick);
-        });
+        this.$inputs[0].process(inNumSamples, tick);
       }
     }
   }, {
@@ -2037,7 +2209,7 @@ var AudioParam = (function () {
 exports["default"] = AudioParam;
 module.exports = exports["default"];
 
-},{"./utils":42,"./utils/Immigration":39,"./utils/Inspector":40}],9:[function(require,module,exports){
+},{"./utils":44,"./utils/Immigration":40,"./utils/Inspector":41,"./utils/Junction":42}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2097,7 +2269,7 @@ var AudioProcessingEvent = (function (_Event) {
 exports["default"] = AudioProcessingEvent;
 module.exports = exports["default"];
 
-},{"./Event":17,"./utils/Immigration":39}],10:[function(require,module,exports){
+},{"./Event":18,"./utils/Immigration":40}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2255,7 +2427,7 @@ exports["default"] = BiquadFilterNode;
 BiquadFilterNode.$JSONKeys = ["type", "frequency", "detune", "Q", "gain"];
 module.exports = exports["default"];
 
-},{"./AudioNode":7,"./AudioParam":8,"./utils":42,"./utils/Enumerator":37,"./utils/Immigration":39}],11:[function(require,module,exports){
+},{"./AudioNode":7,"./AudioParam":9,"./utils":44,"./utils/Enumerator":38,"./utils/Immigration":40}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2309,7 +2481,7 @@ var ChannelMergerNode = (function (_AudioNode) {
 exports["default"] = ChannelMergerNode;
 module.exports = exports["default"];
 
-},{"./AudioNode":7,"./utils":42}],12:[function(require,module,exports){
+},{"./AudioNode":7,"./utils":44}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2363,7 +2535,7 @@ var ChannelSplitterNode = (function (_AudioNode) {
 exports["default"] = ChannelSplitterNode;
 module.exports = exports["default"];
 
-},{"./AudioNode":7,"./utils":42}],13:[function(require,module,exports){
+},{"./AudioNode":7,"./utils":44}],14:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -2451,7 +2623,7 @@ ConvolverNode.$JSONKeys = ["normalize"];
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":42}],14:[function(require,module,exports){
+},{"./AudioNode":7,"./utils":44}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2544,7 +2716,7 @@ exports["default"] = DelayNode;
 DelayNode.$JSONKeys = ["delayTime"];
 module.exports = exports["default"];
 
-},{"./AudioNode":7,"./AudioParam":8,"./utils":42,"./utils/Immigration":39}],15:[function(require,module,exports){
+},{"./AudioNode":7,"./AudioParam":9,"./utils":44,"./utils/Immigration":40}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2684,7 +2856,7 @@ exports["default"] = DynamicsCompressorNode;
 DynamicsCompressorNode.$JSONKeys = ["threshold", "knee", "ratio", "reduction", "attack", "release"];
 module.exports = exports["default"];
 
-},{"./AudioNode":7,"./AudioParam":8,"./utils/Immigration":39}],16:[function(require,module,exports){
+},{"./AudioNode":7,"./AudioParam":9,"./utils/Immigration":40}],17:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -2737,7 +2909,7 @@ exports["default"] = Element;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./EventTarget":18,"./utils":42}],17:[function(require,module,exports){
+},{"./EventTarget":19,"./utils":44}],18:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -2804,7 +2976,7 @@ exports["default"] = Event;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils":42}],18:[function(require,module,exports){
+},{"./utils":44}],19:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -2929,7 +3101,7 @@ exports["default"] = EventTarget;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils":42,"./utils/Inspector":40}],19:[function(require,module,exports){
+},{"./utils":44,"./utils/Inspector":41}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3004,7 +3176,7 @@ exports["default"] = GainNode;
 GainNode.$JSONKeys = ["gain"];
 module.exports = exports["default"];
 
-},{"./AudioNode":7,"./AudioParam":8,"./utils/Immigration":39}],20:[function(require,module,exports){
+},{"./AudioNode":7,"./AudioParam":9,"./utils/Immigration":40}],21:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -3057,7 +3229,7 @@ exports["default"] = HTMLElement;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Element":16,"./utils":42}],21:[function(require,module,exports){
+},{"./Element":17,"./utils":44}],22:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -3110,7 +3282,7 @@ exports["default"] = HTMLMediaElement;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./HTMLElement":20,"./utils":42}],22:[function(require,module,exports){
+},{"./HTMLElement":21,"./utils":44}],23:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -3166,7 +3338,7 @@ exports["default"] = MediaElementAudioSourceNode;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":42}],23:[function(require,module,exports){
+},{"./AudioNode":7,"./utils":44}],24:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -3219,7 +3391,7 @@ exports["default"] = MediaStream;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./EventTarget":18,"./utils":42}],24:[function(require,module,exports){
+},{"./EventTarget":19,"./utils":44}],25:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3261,7 +3433,7 @@ var MediaStreamAudioDestinationNode = (function (_AudioNode) {
 exports["default"] = MediaStreamAudioDestinationNode;
 module.exports = exports["default"];
 
-},{"./AudioNode":7}],25:[function(require,module,exports){
+},{"./AudioNode":7}],26:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -3317,7 +3489,7 @@ exports["default"] = MediaStreamAudioSourceNode;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./utils":42}],26:[function(require,module,exports){
+},{"./AudioNode":7,"./utils":44}],27:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3377,7 +3549,7 @@ var OfflineAudioCompletionEvent = (function (_Event) {
 exports["default"] = OfflineAudioCompletionEvent;
 module.exports = exports["default"];
 
-},{"./Event":17,"./utils/Immigration":39}],27:[function(require,module,exports){
+},{"./Event":18,"./utils/Immigration":40}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3550,7 +3722,7 @@ var OfflineAudioContext = (function (_AudioContext) {
 exports["default"] = OfflineAudioContext;
 module.exports = exports["default"];
 
-},{"./AudioBuffer":2,"./AudioContext":4,"./OfflineAudioCompletionEvent":26,"./utils":42,"./utils/Configuration":36,"./utils/Immigration":39}],28:[function(require,module,exports){
+},{"./AudioBuffer":2,"./AudioContext":4,"./OfflineAudioCompletionEvent":27,"./utils":44,"./utils/Configuration":37,"./utils/Immigration":40}],29:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -3779,7 +3951,7 @@ OscillatorNode.$JSONKeys = ["type", "frequency", "detune"];
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNode":7,"./AudioParam":8,"./Event":17,"./utils":42,"./utils/Enumerator":37,"./utils/Immigration":39}],29:[function(require,module,exports){
+},{"./AudioNode":7,"./AudioParam":9,"./Event":18,"./utils":44,"./utils/Enumerator":38,"./utils/Immigration":40}],30:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4014,7 +4186,7 @@ exports["default"] = PannerNode;
 PannerNode.$JSONKeys = ["panningModel", "distanceModel", "refDistance", "maxDistance", "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"];
 module.exports = exports["default"];
 
-},{"./AudioNode":7,"./utils":42,"./utils/Enumerator":37}],30:[function(require,module,exports){
+},{"./AudioNode":7,"./utils":44,"./utils/Enumerator":38}],31:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4112,7 +4284,7 @@ var PeriodicWave = (function () {
 exports["default"] = PeriodicWave;
 module.exports = exports["default"];
 
-},{"./utils":42,"./utils/Immigration":39,"./utils/Inspector":40}],31:[function(require,module,exports){
+},{"./utils":44,"./utils/Immigration":40,"./utils/Inspector":41}],32:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4256,7 +4428,7 @@ var ScriptProcessorNode = (function (_AudioNode) {
 exports["default"] = ScriptProcessorNode;
 module.exports = exports["default"];
 
-},{"./AudioBuffer":2,"./AudioNode":7,"./AudioProcessingEvent":9,"./utils":42,"./utils/Enumerator":37,"./utils/Immigration":39}],32:[function(require,module,exports){
+},{"./AudioBuffer":2,"./AudioNode":7,"./AudioProcessingEvent":10,"./utils":44,"./utils/Enumerator":38,"./utils/Immigration":40}],33:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4331,7 +4503,7 @@ exports["default"] = StereoPannerNode;
 StereoPannerNode.$JSONKeys = ["pan"];
 module.exports = exports["default"];
 
-},{"./AudioNode":7,"./AudioParam":8,"./utils/Immigration":39}],33:[function(require,module,exports){
+},{"./AudioNode":7,"./AudioParam":9,"./utils/Immigration":40}],34:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4423,7 +4595,7 @@ exports["default"] = WaveShaperNode;
 WaveShaperNode.$JSONKeys = ["oversample"];
 module.exports = exports["default"];
 
-},{"./AudioNode":7,"./utils":42,"./utils/Enumerator":37}],34:[function(require,module,exports){
+},{"./AudioNode":7,"./utils":44,"./utils/Enumerator":38}],35:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4462,7 +4634,7 @@ exports["default"] = {
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4727,7 +4899,7 @@ exports["default"] = WebAudioTestAPI;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioBufferSourceNode":3,"./AudioContext":4,"./AudioDestinationNode":5,"./AudioListener":6,"./AudioNode":7,"./AudioParam":8,"./AudioProcessingEvent":9,"./BiquadFilterNode":10,"./ChannelMergerNode":11,"./ChannelSplitterNode":12,"./ConvolverNode":13,"./DelayNode":14,"./DynamicsCompressorNode":15,"./Element":16,"./Event":17,"./EventTarget":18,"./GainNode":19,"./HTMLElement":20,"./HTMLMediaElement":21,"./MediaElementAudioSourceNode":22,"./MediaStream":23,"./MediaStreamAudioDestinationNode":24,"./MediaStreamAudioSourceNode":25,"./OfflineAudioCompletionEvent":26,"./OfflineAudioContext":27,"./OscillatorNode":28,"./PannerNode":29,"./PeriodicWave":30,"./ScriptProcessorNode":31,"./StereoPannerNode":32,"./WaveShaperNode":33,"./WebAudioAPI":34,"./utils":42,"./utils/Configuration":36}],36:[function(require,module,exports){
+},{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioBufferSourceNode":3,"./AudioContext":4,"./AudioDestinationNode":5,"./AudioListener":6,"./AudioNode":7,"./AudioParam":9,"./AudioProcessingEvent":10,"./BiquadFilterNode":11,"./ChannelMergerNode":12,"./ChannelSplitterNode":13,"./ConvolverNode":14,"./DelayNode":15,"./DynamicsCompressorNode":16,"./Element":17,"./Event":18,"./EventTarget":19,"./GainNode":20,"./HTMLElement":21,"./HTMLMediaElement":22,"./MediaElementAudioSourceNode":23,"./MediaStream":24,"./MediaStreamAudioDestinationNode":25,"./MediaStreamAudioSourceNode":26,"./OfflineAudioCompletionEvent":27,"./OfflineAudioContext":28,"./OscillatorNode":29,"./PannerNode":30,"./PeriodicWave":31,"./ScriptProcessorNode":32,"./StereoPannerNode":33,"./WaveShaperNode":34,"./WebAudioAPI":35,"./utils":44,"./utils/Configuration":37}],37:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4809,7 +4981,7 @@ var Configuration = (function () {
 exports["default"] = Configuration;
 module.exports = exports["default"];
 
-},{"./api.json":41}],37:[function(require,module,exports){
+},{"./api.json":43}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4847,7 +5019,7 @@ var Enumerator = (function () {
 exports["default"] = Enumerator;
 module.exports = exports["default"];
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4898,6 +5070,11 @@ var Formatter = (function () {
       return "\"" + name + "\" should be " + _2["default"].article(type) + " " + type + ", but got: " + _2["default"].prettyPrint(value);
     }
   }, {
+    key: "outsideTheRange",
+    value: function outsideTheRange(value, name, minValue, maxValue) {
+      return "\"" + name + "\" provided (" + value + ") is outside the range [" + minValue + ", " + maxValue + ")";
+    }
+  }, {
     key: "form",
     get: function get() {
       var result = this.instance.constructor.name;
@@ -4930,7 +5107,7 @@ var Formatter = (function () {
 exports["default"] = Formatter;
 module.exports = exports["default"];
 
-},{"./":42}],39:[function(require,module,exports){
+},{"./":44}],40:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4994,7 +5171,7 @@ var Immigration = (function () {
 exports["default"] = Immigration;
 module.exports = exports["default"];
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5054,7 +5231,102 @@ var Inspector = (function () {
 exports["default"] = Inspector;
 module.exports = exports["default"];
 
-},{"./Formatter":38}],41:[function(require,module,exports){
+},{"./Formatter":39}],42:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _ = require("./");
+
+var _2 = _interopRequireDefault(_);
+
+var Junction = (function () {
+  function Junction(node, index) {
+    _classCallCheck(this, Junction);
+
+    this.node = node;
+    this.index = index;
+    this.inputs = [];
+    this.outputs = [];
+  }
+
+  _createClass(Junction, [{
+    key: "connect",
+    value: function connect(destination) {
+      _2["default"].appendIfNotExists(this.outputs, destination);
+      _2["default"].appendIfNotExists(destination.inputs, this);
+    }
+  }, {
+    key: "disconnectAll",
+    value: function disconnectAll() {
+      var _this = this;
+
+      this.outputs.splice(0).forEach(function (destination) {
+        _2["default"].removeIfExists(destination.inputs, _this);
+      });
+    }
+  }, {
+    key: "disconnectNode",
+    value: function disconnectNode(node) {
+      for (var i = this.outputs.length - 1; i >= 0; i--) {
+        var destination = this.outputs[i];
+
+        if (destination.node === node) {
+          this.outputs.splice(i, 1);
+          _2["default"].removeIfExists(destination.inputs, this);
+        }
+      }
+    }
+  }, {
+    key: "disconnectChannel",
+    value: function disconnectChannel(node, input) {
+      for (var i = this.outputs.length - 1; i >= 0; i--) {
+        var destination = this.outputs[i];
+
+        if (destination.node === node && destination.index === input) {
+          this.outputs.splice(i, 1);
+          _2["default"].removeIfExists(destination.inputs, this);
+        }
+      }
+    }
+  }, {
+    key: "isConnected",
+    value: function isConnected(destination) {
+      return this.outputs.some(function (junction) {
+        return junction.node === destination;
+      });
+    }
+  }, {
+    key: "process",
+    value: function process(inNumSamples, tick) {
+      this.inputs.forEach(function (junction) {
+        junction.node.$process(inNumSamples, tick);
+      });
+    }
+  }, {
+    key: "toJSON",
+    value: function toJSON(memo) {
+      return this.inputs.map(function (junction) {
+        return junction.node.toJSON(memo);
+      });
+    }
+  }]);
+
+  return Junction;
+})();
+
+exports["default"] = Junction;
+module.exports = exports["default"];
+
+},{"./":44}],43:[function(require,module,exports){
 module.exports={
   "AnalyserNode#getFloatTimeDomainData": {
     "states": [ "disabled", "enabled" ]
@@ -5091,14 +5363,17 @@ module.exports={
   }
 }
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.appendIfNotExists = appendIfNotExists;
 exports.article = article;
 exports.defaults = defaults;
+exports.countArguments = countArguments;
+exports.fill = fill;
 exports.getAPIVersion = getAPIVersion;
 exports.isBoolean = isBoolean;
 exports.isFunction = isFunction;
@@ -5110,6 +5385,8 @@ exports.isInteger = isInteger;
 exports.isPositiveNumber = isPositiveNumber;
 exports.isPositiveInteger = isPositiveInteger;
 exports.isString = isString;
+exports.isUndefined = isUndefined;
+exports.removeIfExists = removeIfExists;
 exports.toNodeName = toNodeName;
 exports.prettyPrint = prettyPrint;
 exports.preventSuperCall = preventSuperCall;
@@ -5146,12 +5423,36 @@ var _version2 = _interopRequireDefault(_version);
 var MIN_MICRO_SECONDS = 0;
 var MAX_MICRO_SECONDS = 24 * 60 * 60 * 1000 * 1000;
 
+function appendIfNotExists(list, value) {
+  var index = list.indexOf(value);
+
+  if (index === -1) {
+    list.push(value);
+  }
+}
+
 function article(str) {
   return /[aeiou]/i.test(str.charAt(0)) ? "an" : "a";
 }
 
 function defaults(value, defaultValue) {
   return typeof value !== "undefined" ? value : defaultValue;
+}
+
+function countArguments(args) {
+  for (var i = args.length - 1; i >= 0; i--) {
+    if (typeof args[i] !== "undefined") {
+      return i + 1;
+    }
+  }
+  return 0;
+}
+
+function fill(list, value) {
+  for (var i = 0; i < list.length; i++) {
+    list[i] = typeof value === "function" ? value(i) : value;
+  }
+  return list;
 }
 
 function getAPIVersion() {
@@ -5196,6 +5497,20 @@ function isPositiveInteger(value) {
 
 function isString(value) {
   return typeof value === "string";
+}
+
+function isUndefined(value) {
+  return typeof value === "undefined";
+}
+
+function removeIfExists(list, value) {
+  var index = list.indexOf(value);
+
+  if (index !== -1) {
+    return list.splice(index, 1)[0];
+  }
+
+  return null;
 }
 
 function toNodeName(obj) {
@@ -5298,8 +5613,11 @@ exports["default"] = {
   Formatter: _Formatter2["default"],
   Immigration: _Immigration2["default"],
   Inspector: _Inspector2["default"],
+  appendIfNotExists: appendIfNotExists,
   article: article,
+  countArguments: countArguments,
   defaults: defaults,
+  fill: fill,
   getAPIVersion: getAPIVersion,
   isBoolean: isBoolean,
   isFunction: isFunction,
@@ -5311,6 +5629,8 @@ exports["default"] = {
   isPositiveNumber: isPositiveNumber,
   isPositiveInteger: isPositiveInteger,
   isString: isString,
+  isUndefined: isUndefined,
+  removeIfExists: removeIfExists,
   toNodeName: toNodeName,
   prettyPrint: prettyPrint,
   preventSuperCall: preventSuperCall,
@@ -5319,16 +5639,16 @@ exports["default"] = {
   toSeconds: toSeconds
 };
 
-},{"../version":43,"./Configuration":36,"./Enumerator":37,"./Formatter":38,"./Immigration":39,"./Inspector":40}],43:[function(require,module,exports){
+},{"../version":45,"./Configuration":37,"./Enumerator":38,"./Formatter":39,"./Immigration":40,"./Inspector":41}],45:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = "0.3.2";
+exports["default"] = "0.3.3";
 module.exports = exports["default"];
 
-},{}],44:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -5350,4 +5670,4 @@ exports["default"] = _WebAudioTestAPI2["default"];
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./WebAudioTestAPI":35}]},{},[44]);
+},{"./WebAudioTestAPI":36}]},{},[46]);
