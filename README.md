@@ -31,7 +31,7 @@ WebAudioTestAPI.unuse();
 npm install web-audio-test-api
 ```
 
-install Web Audio API interfaces as global variables
+install Web Audio API interfaces to global scope
 
 ```javascript
 require("web-audio-test-api");
@@ -247,7 +247,7 @@ audioContext.decodeAudioData(audioData, function(result) {
 });
 ```
 
-- NEW API
+- New API support
 
 ```javascript
 WebAudioTestAPI.setState({
@@ -261,11 +261,16 @@ var node = audioContext.createStereoPanner();
 console.log(WebAudioTestAPI.getState("AudioContext#createStereoPanner")); // "enabled"
 ```
 
-| API                                   | states                      |
-|---------------------------------------|-----------------------------|
-| `AnalyserNode#getFloatTimeDomainData` | "enabled" or **"disabled"** |
-| `AudioContext#createStereoPanner`     | "enabled" or **"disabled"** |
-
+| API Name                              | states                       |
+|---------------------------------------|------------------------------|
+| `AnalyserNode#getFloatTimeDomainData` | "enabled" or **"disabled"**  |
+| `AudioBuffer#copyToChannel`           | "enabled" or **"disabled"**  |
+| `AudioBuffer#copyFromChannel`         | "enabled" or **"disabled"**  |
+| `AudioContext#createAudioWorker`      | **"disabled"**               |
+| `AudioContext#createStereoPanner`     | "enabled" or **"disabled"**  |
+| `AudioContext#decodeAudioData`        | "promise" or **"void"**      |
+| `OfflineAudioContext#startRendering`  | "promise" or **"void"**      |
+| `AudioNode#disconnect`                | "selective" or **"channel"** |
 
 ## License
 
