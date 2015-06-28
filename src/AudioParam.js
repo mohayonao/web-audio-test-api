@@ -1,6 +1,7 @@
 import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import Inspector from "./utils/Inspector";
+import Junction from "./utils/Junction";
 
 let immigration = Immigration.getInstance();
 
@@ -73,7 +74,7 @@ export default class AudioParam {
     this._.maxValue = maxValue;
     this._.context = node.context;
     this._.node = node;
-    this._.inputs = [];
+    this._.inputs = [ new Junction(this, 0) ];
     this._.events = [];
     this._.tick = -1;
   }
@@ -296,8 +297,7 @@ export default class AudioParam {
       let json = {};
 
       json.value = node.value;
-
-      json.inputs = node.$inputs.map(node => node.toJSON(memo));
+      json.inputs = node.$inputs[0].toJSON(memo);
 
       return json;
     }, memo);
@@ -348,9 +348,7 @@ export default class AudioParam {
   $process(inNumSamples, tick) {
     if (this._.tick !== tick) {
       this._.tick = tick;
-      this.$inputs.forEach((src) => {
-        src.$process(inNumSamples, tick);
-      });
+      this.$inputs[0].process(inNumSamples, tick);
     }
   }
 }

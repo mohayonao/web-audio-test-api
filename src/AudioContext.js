@@ -312,8 +312,10 @@ export default class AudioContext extends EventTarget {
   $reset() {
     this._.microCurrentTime = 0;
     this._.processedSamples = 0;
-    this.destination.$inputs.forEach((node) => {
-      node.disconnect();
+    this.destination.$inputs.forEach((junction) => {
+      junction.inputs.forEach((junction) => {
+        junction.disconnectAll();
+      });
     });
   }
 

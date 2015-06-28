@@ -8,12 +8,36 @@ import version from "../version";
 const MIN_MICRO_SECONDS = 0;
 const MAX_MICRO_SECONDS = 24 * 60 * 60 * 1000 * 1000;
 
+export function appendIfNotExists(list, value) {
+  let index = list.indexOf(value);
+
+  if (index === -1) {
+    list.push(value);
+  }
+}
+
 export function article(str) {
   return (/[aeiou]/i.test(str.charAt(0)) ? "an" : "a");
 }
 
 export function defaults(value, defaultValue) {
   return typeof value !== "undefined" ? value : defaultValue;
+}
+
+export function countArguments(args) {
+  for (let i = args.length - 1; i >= 0; i--) {
+    if (typeof args[i] !== "undefined") {
+      return i + 1;
+    }
+  }
+  return 0;
+}
+
+export function fill(list, value) {
+  for (let i = 0; i < list.length; i++) {
+    list[i] = typeof value === "function" ? value(i) : value;
+  }
+  return list;
 }
 
 export function getAPIVersion() {
@@ -58,6 +82,20 @@ export function isPositiveInteger(value) {
 
 export function isString(value) {
   return typeof value === "string";
+}
+
+export function isUndefined(value) {
+  return typeof value === "undefined";
+}
+
+export function removeIfExists(list, value) {
+  let index = list.indexOf(value);
+
+  if (index !== -1) {
+    return list.splice(index, 1)[0];
+  }
+
+  return null;
 }
 
 export function toNodeName(obj) {
@@ -156,8 +194,11 @@ export default {
   Formatter,
   Immigration,
   Inspector,
+  appendIfNotExists,
   article,
+  countArguments,
   defaults,
+  fill,
   getAPIVersion,
   isBoolean,
   isFunction,
@@ -169,6 +210,8 @@ export default {
   isPositiveNumber,
   isPositiveInteger,
   isString,
+  isUndefined,
+  removeIfExists,
   toNodeName,
   prettyPrint,
   preventSuperCall,

@@ -1,8 +1,12 @@
 import utils from "./utils";
+import Configuration from "./utils/Configuration";
 import Enumerator from "./utils/Enumerator";
 import Immigration from "./utils/Immigration";
+import Junction from "./utils/Junction";
 import EventTarget from "./EventTarget";
+import AudioNodeDisconnectUtils from "./AudioNodeDisconnectUtils";
 
+let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
 
 export default class AudioNode extends EventTarget {
@@ -21,8 +25,8 @@ export default class AudioNode extends EventTarget {
     this._.channelCountMode = utils.defaults(spec.channelCountMode, "max");
     this._.channelInterpretation = utils.defaults(spec.channelInterpretation, "speakers");
     this._.JSONKeys = [];
-    this._.inputs = [];
-    this._.outputs = [];
+    this._.inputs = utils.fill(new Array(Math.max(0, this._.numberOfInputs|0)), i => new Junction(this, i));
+    this._.outputs = utils.fill(new Array(Math.max(0, this._.numberOfOutputs|0)), i => new Junction(this, i));
     this._.tick = -1;
   }
 
@@ -124,6 +128,10 @@ export default class AudioNode extends EventTarget {
   }
 
   get $inputs() {
+    // TODO: remove v0.4.0
+    if (this._.inputs.length === 0) {
+      return [ new Junction(this, 0) ];
+    }
     return this._.inputs;
   }
 
@@ -172,38 +180,37 @@ export default class AudioNode extends EventTarget {
       });
     });
 
-    let index = this._.outputs.indexOf(destination);
-
-    if (index === -1) {
-      this._.outputs.push(destination);
-      destination.$inputs.push(this);
-    }
+    this._.outputs[output].connect(destination.$inputs[input]);
   }
 
-  disconnect(output = 0) {
-    this._.inspector.describe("disconnect", (assert) => {
-      assert(utils.isPositiveInteger(output), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(output, "output", "positive integer")}
-        `);
-      });
+  disconnect(_destination, _output, _input) {
+    let isSelectiveDisconnect = configuration.getState("AudioNode#disconnect") === "selective";
+    let argNum = utils.countArguments([ _destination, _output, _input ]);
 
-      assert(output < this.numberOfOutputs, (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          output index (${output}) exceeds number of outputs (${this.numberOfOutputs})
-        `);
-      });
-    });
+    if (!isSelectiveDisconnect) {
+      AudioNodeDisconnectUtils.disconnectChannel.call(this, utils.defaults(_destination, 0));
+      return;
+    }
 
-    this._.outputs.splice(0).forEach((dst) => {
-      let index = dst.$inputs.indexOf(this);
-
-      if (index !== -1) {
-        dst.$inputs.splice(index, 1);
-      }
-    });
+    switch (argNum) {
+      case 0:
+        AudioNodeDisconnectUtils.disconnectAll.call(this);
+        break;
+      case 1:
+        if (utils.isNumber(_destination)) {
+          AudioNodeDisconnectUtils.disconnectChannel.call(this, _destination);
+        }
+        AudioNodeDisconnectUtils.disconnectSelective1.call(this, _destination);
+        break;
+      case 2:
+        AudioNodeDisconnectUtils.disconnectSelective2.call(this, _destination, _output);
+        break;
+      case 3:
+        AudioNodeDisconnectUtils.disconnectSelective3.call(this, _destination, _output, _input);
+        break;
+      default:
+        // no default
+    }
   }
 
   toJSON(memo) {
@@ -231,7 +238,11 @@ export default class AudioNode extends EventTarget {
         json.channelInterpretation = node.channelInterpretation;
       }
 
-      json.inputs = node.$inputs.map(node => node.toJSON(memo));
+      if (node.$inputs.length === 1) {
+        json.inputs = node.$inputs[0].toJSON(memo);
+      } else {
+        json.inputs = node.$inputs.map(junction => junction.toJSON(memo));
+      }
 
       return json;
     }, memo);
@@ -240,8 +251,8 @@ export default class AudioNode extends EventTarget {
   $process(inNumSamples, tick) {
     if (this._.tick !== tick) {
       this._.tick = tick;
-      this.$inputs.forEach((src) => {
-        src.$process(inNumSamples, tick);
+      this.$inputs.forEach((junction) => {
+        junction.process(inNumSamples, tick);
       });
       Object.keys(this._).forEach((key) => {
         if (this[key] instanceof global.AudioParam) {

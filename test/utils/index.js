@@ -7,6 +7,20 @@ describe("utils", () => {
   let pkg = require("../../package.json");
   let bower = require("../../bower.json");
 
+  describe("appendIfNotExists", () => {
+    it("(list: any[], value: any): void", () => {
+      let list = [];
+
+      utils.appendIfNotExists(list, 1);
+      utils.appendIfNotExists(list, 2);
+      utils.appendIfNotExists(list, 1);
+      utils.appendIfNotExists(list, 2);
+      utils.appendIfNotExists(list, 3);
+
+      assert.deepEqual(list, [ 1, 2, 3 ]);
+    });
+  });
+
   describe("article", () => {
     it("(str: string): string", () => {
       assert(utils.article("AprettyPrintle") === "an");
@@ -19,12 +33,43 @@ describe("utils", () => {
     });
   });
 
+  describe("countArguments", () => {
+    it("(args: any[]): number", () => {
+      assert(utils.countArguments([ 0, 1, 2 ]) === 3);
+      assert(utils.countArguments([ 0, 1, undefined ]) === 2);
+      assert(utils.countArguments([ 0, undefined, undefined ]) === 1);
+      assert(utils.countArguments([ undefined, undefined, undefined ]) === 0);
+      assert(utils.countArguments([ 0, undefined, 2 ]) === 3);
+      assert(utils.countArguments([ undefined, 1, 2 ]) === 3);
+      assert(utils.countArguments([ undefined, 1, undefined ]) === 2);
+      assert(utils.countArguments([ undefined, undefined, 2 ]) === 3);
+    });
+  });
+
   describe("defaults", () => {
     it("(value: any, defaultValue: any): any", () => {
       assert(utils.defaults(0, 1) === 0);
       assert(utils.defaults(1, 2) === 1);
       assert(utils.defaults(undefined, 0) === 0);
       assert(utils.defaults(undefined, 1) === 1);
+    });
+  });
+
+  describe("fill", () => {
+    it("(list: any[], value: any): any[]", () => {
+      let list = new Array(4);
+      let result;
+
+      assert.deepEqual(utils.fill(list, 1), [ 1, 1, 1, 1 ]);
+      assert.deepEqual(utils.fill(list, i => i * 2), [ 0, 2, 4, 6 ]);
+
+      result = utils.fill(list, () => []);
+
+      assert.deepEqual(result, [ [], [], [], [] ]);
+      assert(list === result);
+      assert(result[0] !== result[1]);
+      assert(result[1] !== result[2]);
+      assert(result[2] !== result[3]);
     });
   });
 
@@ -190,6 +235,36 @@ describe("utils", () => {
       assert(utils.isString(NaN) === false);
       assert(utils.isString(null) === false);
       assert(utils.isString(undefined) === false);
+    });
+  });
+
+  describe("isUndefined", () => {
+    it("(value: any): boolean", () => {
+      assert(utils.isUndefined(-1.5) === false);
+      assert(utils.isUndefined(-1) === false);
+      assert(utils.isUndefined(0) === false);
+      assert(utils.isUndefined(1) === false);
+      assert(utils.isUndefined(1.5) === false);
+      assert(utils.isUndefined(true) === false);
+      assert(utils.isUndefined(false) === false);
+      assert(utils.isUndefined("0") === false);
+      assert(utils.isUndefined(it) === false);
+      assert(utils.isUndefined(NaN) === false);
+      assert(utils.isUndefined(null) === false);
+      assert(utils.isUndefined(undefined) === true);
+    });
+  });
+
+  describe("removeIfExists", () => {
+    it("(list: any[], value: any): any[]", () => {
+      let list = [ 1, 2, 3, 4, 5 ];
+
+      let result1 = utils.removeIfExists(list, 3);
+      let result2 = utils.removeIfExists(list, 0);
+
+      assert.deepEqual(list, [ 1, 2, 4, 5 ]);
+      assert(result1 === 3);
+      assert(result2 === null);
     });
   });
 
