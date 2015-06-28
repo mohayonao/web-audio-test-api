@@ -268,6 +268,9 @@ console.log(WebAudioTestAPI.getState("AudioContext#createStereoPanner")); // "en
 | `AudioBuffer#copyFromChannel`         | "enabled" or **"disabled"**  |
 | `AudioContext#createAudioWorker`      | **"disabled"**               |
 | `AudioContext#createStereoPanner`     | "enabled" or **"disabled"**  |
+| `AudioContext#close`                  | "enabled" or **"disabled"**  |
+| `AudioContext#suspend`                | "enabled" or **"disabled"**  |
+| `AudioContext#resume`                 | "enabled" or **"disabled"**  |
 | `AudioContext#decodeAudioData`        | "promise" or **"void"**      |
 | `OfflineAudioContext#startRendering`  | "promise" or **"void"**      |
 | `AudioNode#disconnect`                | "selective" or **"channel"** |
