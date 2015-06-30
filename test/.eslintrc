@@ -1,11 +1,13 @@
 {
   "parser": "",
 
-  // best practice
-  "dot-notation": 0,
+  "rules": {
+    // best practice
+    "dot-notation": 0,
 
-  // es6
-  "no-var": 0,
+    // es6
+    "no-var": 0,
+  },
 
   "globals": {
     "describe": true,
