@@ -277,8 +277,8 @@ describe("utils", () => {
 
   describe("prettyPrint", () => {
     it("(value: any): string", () => {
-      var f32 = new Float32Array(100);
-      var i16 = new Int16Array(100);
+      let f32 = new Float32Array(100);
+      let i16 = new Int16Array(100);
 
       assert(utils.prettyPrint(null) === "null");
       assert(utils.prettyPrint(undefined) === "undefined");
