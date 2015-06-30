@@ -1,6 +1,9 @@
 {
   "parser": "babel-eslint",
-  "no-var": 2,
+
+  "rules": {
+    "no-var": 2,
+  },
 
   "globals": {
     "assert": false,
