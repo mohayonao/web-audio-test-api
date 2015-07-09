@@ -100,6 +100,14 @@ export default class OscillatorNode extends AudioNode {
     return this._.custom;
   }
 
+  get $startTime() {
+    return this._.startTime;
+  }
+
+  get $stopTime() {
+    return this._.stopTime;
+  }
+
   start(when = 0) {
     this._.inspector.describe("start", (assert) => {
       assert(utils.isPositiveNumber(when), (fmt) => {

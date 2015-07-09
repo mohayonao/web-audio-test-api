@@ -131,6 +131,14 @@ export default class AudioBufferSourceNode extends AudioNode {
     return this.$stateAtTime(this.context.currentTime);
   }
 
+  get $startTime() {
+    return this._.startTime;
+  }
+
+  get $stopTime() {
+    return this._.stopTime;
+  }
+
   start(when = 0, offset = 0, duration = 0) {
     this._.inspector.describe("start", [ "when", "offset", "duration" ], (assert) => {
       assert(utils.isPositiveNumber(when), (fmt) => {
