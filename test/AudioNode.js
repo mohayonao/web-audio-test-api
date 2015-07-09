@@ -305,6 +305,66 @@ describe("AudioNode", function() {
     });
   });
 
+  describe("$isConnectedTo", function() {
+    it("(destination, output = 0, input = 0): boolean", function() {
+      var node1 = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext, numberOfOutputs: 3 });
+      });
+      var node2 = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext, numberOfInputs: 3 });
+      });
+      var node3 = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
+      });
+
+      node1.connect(node2, 1, 2);
+      node2.connect(node3);
+
+      assert(node1.$isConnectedTo(node2) === false);
+      assert(node1.$isConnectedTo(node2, 0, 1) === false);
+      assert(node1.$isConnectedTo(node2, 1, 0) === false);
+      assert(node1.$isConnectedTo(node2, 1, 1) === false);
+      assert(node1.$isConnectedTo(node2, 1, 2) === true);
+      assert(node1.$isConnectedTo(node2, 2, 1) === false);
+      assert(node1.$isConnectedTo(node2, 2, 2) === false);
+      assert(node1.$isConnectedTo(node2, 3, 0) === false);
+      assert(node1.$isConnectedTo(node2, 0, 3) === false);
+      assert(node1.$isConnectedTo(node3) === false);
+      assert(node2.$isConnectedTo(node3) === true);
+      assert(node1.$isConnectedTo({}) === false);
+    });
+  });
+
+  describe("$isConnectedFrom", function() {
+    it("(destination, output = 0, input = 0): boolean", function() {
+      var node1 = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext, numberOfOutputs: 3 });
+      });
+      var node2 = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext, numberOfInputs: 3 });
+      });
+      var node3 = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
+      });
+
+      node1.connect(node2, 1, 2);
+      node2.connect(node3);
+
+      assert(node2.$isConnectedFrom(node1) === false);
+      assert(node2.$isConnectedFrom(node1, 0, 1) === false);
+      assert(node2.$isConnectedFrom(node1, 1, 0) === false);
+      assert(node2.$isConnectedFrom(node1, 1, 1) === false);
+      assert(node2.$isConnectedFrom(node1, 1, 2) === true);
+      assert(node2.$isConnectedFrom(node1, 2, 1) === false);
+      assert(node2.$isConnectedFrom(node1, 2, 2) === false);
+      assert(node2.$isConnectedFrom(node1, 3, 0) === false);
+      assert(node2.$isConnectedFrom(node1, 0, 3) === false);
+      assert(node3.$isConnectedFrom(node1) === false);
+      assert(node3.$isConnectedFrom(node2) === true);
+      assert(node1.$isConnectedFrom({}) === false);
+    });
+  });
+
   describe("works", function() {
     it("connect", function() {
       var node1 = immigration.apply(function(admission) {

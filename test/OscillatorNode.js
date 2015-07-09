@@ -267,6 +267,31 @@ describe("OscillatorNode", function() {
     });
   });
 
+  describe("$startTime", function() {
+    it("get: number", function() {
+      var node = audioContext.createOscillator();
+
+      assert(node.$startTime === Infinity);
+
+      node.start(2);
+
+      assert(node.$startTime === 2);
+    });
+  });
+
+  describe("$stopTime", function() {
+    it("get: number", function() {
+      var node = audioContext.createOscillator();
+
+      assert(node.$stopTime === Infinity);
+
+      node.start(2);
+      node.stop(3);
+
+      assert(node.$stopTime === 3);
+    });
+  });
+
   describe("works", function() {
     it("onended", function() {
       var node = audioContext.createOscillator();
