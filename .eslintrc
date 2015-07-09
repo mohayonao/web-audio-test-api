@@ -36,7 +36,7 @@
 
     // best practice
     "accessor-pairs": [ 2, { "getWithoutSet": false, "setWithoutGet": true } ],
-    "block-scoped-var": 2,
+    "block-scoped-var": 0,
     "consistent-return": 2,
     "curly": [ 2, "all" ],
     "default-case": 2,
@@ -68,7 +68,7 @@
     "no-new": 2,
     "no-octal-escape": 2,
     "no-octal": 2,
-    "no-param-reassign": 2,
+    "no-param-reassign": 0,
     "no-process-env": 2,
     "no-proto": 2,
     "no-redeclare": 2,
@@ -110,7 +110,7 @@
     "consistent-this": [ 2, "_this" ],
     "eol-last": 2,
     "func-names": 0,
-    "func-style": [ 2, "declaration" ],
+    "func-style": 0,
     "indent": [ 2, 2 ],
     "key-spacing": 2,
     "linebreak-style": [ 2, "unix" ],
@@ -148,7 +148,7 @@
     "space-infix-ops": [ 2, { "int32Hint": true } ],
     "space-return-throw-case": 2,
     "space-unary-ops": [ 2, { "words": true, "nonwords": false } ],
-    "spaced-comment": [ 2, "always" ],
+    "spaced-comment": 0,
     "wrap-regex": 0,
 
     // es6
