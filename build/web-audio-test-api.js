@@ -270,7 +270,7 @@ var AudioBuffer = (function () {
     value: function copyFromChannel(destination, channelNumber) {
       var _this2 = this;
 
-      var startInChannel = arguments[2] === undefined ? 0 : arguments[2];
+      var startInChannel = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
 
       this._.inspector.describe("copyFromChannel", function (assert) {
         assert(configuration.getState("AudioBuffer#copyFromChannel") === "enabled", function (fmt) {
@@ -307,7 +307,7 @@ var AudioBuffer = (function () {
     value: function copyToChannel(source, channelNumber) {
       var _this3 = this;
 
-      var startInChannel = arguments[2] === undefined ? 0 : arguments[2];
+      var startInChannel = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
 
       this._.inspector.describe("copyToChannel", function (assert) {
         assert(configuration.getState("AudioBuffer#copyToChannel") === "enabled", function (fmt) {
@@ -493,12 +493,12 @@ var AudioBufferSourceNode = (function (_AudioNode) {
   _createClass(AudioBufferSourceNode, [{
     key: "start",
     value: function start() {
-      var when = arguments[0] === undefined ? 0 : arguments[0];
+      var when = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
 
       var _this2 = this;
 
-      var offset = arguments[1] === undefined ? 0 : arguments[1];
-      var duration = arguments[2] === undefined ? 0 : arguments[2];
+      var offset = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+      var duration = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
 
       this._.inspector.describe("start", ["when", "offset", "duration"], function (assert) {
         assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
@@ -525,7 +525,7 @@ var AudioBufferSourceNode = (function (_AudioNode) {
     value: function stop() {
       var _this3 = this;
 
-      var when = arguments[0] === undefined ? 0 : arguments[0];
+      var when = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
 
       this._.inspector.describe("stop", ["when"], function (assert) {
         assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
@@ -659,6 +659,16 @@ var AudioBufferSourceNode = (function (_AudioNode) {
     key: "$state",
     get: function get() {
       return this.$stateAtTime(this.context.currentTime);
+    }
+  }, {
+    key: "$startTime",
+    get: function get() {
+      return this._.startTime;
+    }
+  }, {
+    key: "$stopTime",
+    get: function get() {
+      return this._.stopTime;
     }
   }]);
 
@@ -1029,7 +1039,7 @@ var AudioContext = (function (_EventTarget) {
     value: function createDelay() {
       var _this15 = this;
 
-      var maxDelayTime = arguments[0] === undefined ? 1 : arguments[0];
+      var maxDelayTime = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
 
       return immigration.apply(function (admission) {
         return new _DelayNode2["default"](admission, _this15, maxDelayTime);
@@ -1091,7 +1101,7 @@ var AudioContext = (function (_EventTarget) {
     value: function createChannelSplitter() {
       var _this21 = this;
 
-      var numberOfOutputs = arguments[0] === undefined ? 6 : arguments[0];
+      var numberOfOutputs = arguments.length <= 0 || arguments[0] === undefined ? 6 : arguments[0];
 
       return immigration.apply(function (admission) {
         return new _ChannelSplitterNode2["default"](admission, _this21, numberOfOutputs);
@@ -1102,7 +1112,7 @@ var AudioContext = (function (_EventTarget) {
     value: function createChannelMerger() {
       var _this22 = this;
 
-      var numberOfInputs = arguments[0] === undefined ? 6 : arguments[0];
+      var numberOfInputs = arguments.length <= 0 || arguments[0] === undefined ? 6 : arguments[0];
 
       return immigration.apply(function (admission) {
         return new _ChannelMergerNode2["default"](admission, _this22, numberOfInputs);
@@ -1506,7 +1516,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x7, _x8, _x9) { var _again = true; _function: while (_again) { var object = _x7, property = _x8, receiver = _x9; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x7 = parent; _x8 = property; _x9 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -1589,8 +1599,8 @@ var AudioNode = (function (_EventTarget) {
     value: function connect(destination) {
       var _this2 = this;
 
-      var output = arguments[1] === undefined ? 0 : arguments[1];
-      var input = arguments[2] === undefined ? 0 : arguments[2];
+      var output = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+      var input = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
 
       this._.inspector.describe("connect", function (assert) {
         assert(_utils2["default"].isInstanceOf(destination, global.AudioNode) || _utils2["default"].isInstanceOf(destination, global.AudioParam), function (fmt) {
@@ -1709,6 +1719,48 @@ var AudioNode = (function (_EventTarget) {
           this._process(inNumSamples);
         }
       }
+    }
+  }, {
+    key: "$isConnectedTo",
+    value: function $isConnectedTo(destination) {
+      var output = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+      var input = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+
+      if (!(destination instanceof global.AudioNode) && !(destination instanceof global.AudioParam)) {
+        return false;
+      }
+
+      var outputJunction = this._.outputs[output];
+      var inputJunction = destination._.inputs[input];
+
+      if (!outputJunction || !inputJunction) {
+        return false;
+      }
+
+      return outputJunction.outputs.some(function (junction) {
+        return junction === inputJunction;
+      });
+    }
+  }, {
+    key: "$isConnectedFrom",
+    value: function $isConnectedFrom(destination) {
+      var output = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+      var input = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+
+      if (!(destination instanceof global.AudioNode)) {
+        return false;
+      }
+
+      var outputJunction = destination._.outputs[output];
+      var inputJunction = this._.inputs[input];
+
+      if (!outputJunction || !inputJunction) {
+        return false;
+      }
+
+      return inputJunction.inputs.some(function (junction) {
+        return junction === outputJunction;
+      });
     }
   }, {
     key: "context",
@@ -1958,6 +2010,7 @@ exports["default"] = {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./utils":44}],9:[function(require,module,exports){
+(function (global){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2281,6 +2334,26 @@ var AudioParam = (function () {
       }
     }
   }, {
+    key: "$isConnectedFrom",
+    value: function $isConnectedFrom(destination) {
+      var output = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+      if (!(destination instanceof global.AudioNode)) {
+        return false;
+      }
+
+      var outputJunction = destination._.outputs[output];
+      var inputJunction = this._.inputs[0];
+
+      if (!outputJunction || !inputJunction) {
+        return false;
+      }
+
+      return inputJunction.inputs.some(function (junction) {
+        return junction === outputJunction;
+      });
+    }
+  }, {
     key: "value",
     get: function get() {
       this._.value = this.$valueAtTime(this.$context.currentTime);
@@ -2347,6 +2420,7 @@ var AudioParam = (function () {
 
 exports["default"] = AudioParam;
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./utils":44,"./utils/Immigration":40,"./utils/Inspector":41,"./utils/Junction":42}],10:[function(require,module,exports){
 "use strict";
 
@@ -3992,7 +4066,7 @@ var OscillatorNode = (function (_AudioNode) {
     value: function start() {
       var _this2 = this;
 
-      var when = arguments[0] === undefined ? 0 : arguments[0];
+      var when = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
 
       this._.inspector.describe("start", function (assert) {
         assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
@@ -4011,7 +4085,7 @@ var OscillatorNode = (function (_AudioNode) {
     value: function stop() {
       var _this3 = this;
 
-      var when = arguments[0] === undefined ? 0 : arguments[0];
+      var when = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
 
       this._.inspector.describe("stop", function (assert) {
         assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
@@ -4125,6 +4199,16 @@ var OscillatorNode = (function (_AudioNode) {
     key: "$custom",
     get: function get() {
       return this._.custom;
+    }
+  }, {
+    key: "$startTime",
+    get: function get() {
+      return this._.startTime;
+    }
+  }, {
+    key: "$stopTime",
+    get: function get() {
+      return this._.stopTime;
     }
   }]);
 
@@ -4517,8 +4601,8 @@ var immigration = _utilsImmigration2["default"].getInstance();
 
 var ScriptProcessorNode = (function (_AudioNode) {
   function ScriptProcessorNode(admission, context, bufferSize) {
-    var numberOfInputChannels = arguments[3] === undefined ? 2 : arguments[3];
-    var numberOfOutputChannels = arguments[4] === undefined ? 2 : arguments[4];
+    var numberOfInputChannels = arguments.length <= 3 || arguments[3] === undefined ? 2 : arguments[3];
+    var numberOfOutputChannels = arguments.length <= 4 || arguments[4] === undefined ? 2 : arguments[4];
 
     _classCallCheck(this, ScriptProcessorNode);
 
@@ -5180,7 +5264,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Enumerator = (function () {
   function Enumerator() {
-    var list = arguments[0] === undefined ? [] : arguments[0];
+    var list = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
     _classCallCheck(this, Enumerator);
 
@@ -5746,7 +5830,7 @@ function preventSuperCall(superClass) {
 }
 
 function toJSON(node, func) {
-  var memo = arguments[2] === undefined ? [] : arguments[2];
+  var memo = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
 
   var result = undefined;
 
@@ -5831,7 +5915,7 @@ exports["default"] = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = "0.3.4";
+exports["default"] = "0.3.5";
 module.exports = exports["default"];
 
 },{}],46:[function(require,module,exports){
