@@ -374,4 +374,19 @@ export default class AudioParam {
       this.$inputs[0].process(inNumSamples, tick);
     }
   }
+
+  $isConnectedFrom(destination, output = 0) {
+    if (!(destination instanceof global.AudioNode)) {
+      return false;
+    }
+
+    let outputJunction = destination._.outputs[output];
+    let inputJunction = this._.inputs[0];
+
+    if (!outputJunction || !inputJunction) {
+      return false;
+    }
+
+    return inputJunction.inputs.some(junction => junction === outputJunction);
+  }
 }

@@ -274,4 +274,34 @@ export default class AudioNode extends EventTarget {
       }
     }
   }
+
+  $isConnectedTo(destination, output = 0, input = 0) {
+    if (!(destination instanceof global.AudioNode) && !(destination instanceof global.AudioParam)) {
+      return false;
+    }
+
+    let outputJunction = this._.outputs[output];
+    let inputJunction = destination._.inputs[input];
+
+    if (!outputJunction || !inputJunction) {
+      return false;
+    }
+
+    return outputJunction.outputs.some(junction => junction === inputJunction);
+  }
+
+  $isConnectedFrom(destination, output = 0, input = 0) {
+    if (!(destination instanceof global.AudioNode)) {
+      return false;
+    }
+
+    let outputJunction = destination._.outputs[output];
+    let inputJunction = this._.inputs[input];
+
+    if (!outputJunction || !inputJunction) {
+      return false;
+    }
+
+    return inputJunction.inputs.some(junction => junction === outputJunction);
+  }
 }

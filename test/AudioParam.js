@@ -358,6 +358,35 @@ describe("AudioParam", function() {
     });
   });
 
+  describe("$isConnectedFrom", function() {
+    it("(destination, output = 0): boolean", function() {
+      var node1 = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext, numberOfOutputs: 3 });
+      });
+      var node2 = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext, numberOfInputs: 3 });
+      });
+      var param = immigration.apply(function(admission) {
+        return new WebAudioTestAPI.AudioParam(admission, node1, "name", 0, 0, 0);
+      });
+
+      node1.connect(param, 1);
+      node2.connect(param);
+
+      assert(param.$isConnectedFrom(node1) === false);
+      assert(param.$isConnectedFrom(node1, 0) === false);
+      assert(param.$isConnectedFrom(node1, 1) === true);
+      assert(param.$isConnectedFrom(node1, 2) === false);
+      assert(param.$isConnectedFrom(node1, 3) === false);
+      assert(param.$isConnectedFrom(node2) === true);
+      assert(param.$isConnectedFrom(node2, 0) === true);
+      assert(param.$isConnectedFrom(node2, 1) === false);
+      assert(param.$isConnectedFrom(node2, 2) === false);
+      assert(param.$isConnectedFrom(node2, 3) === false);
+      assert(param.$isConnectedFrom({}) === false);
+    });
+  });
+
   describe("works", function() {
     it("SetValueAtTime", function() {
       var node = immigration.apply(function(admission) {
