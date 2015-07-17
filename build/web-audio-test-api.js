@@ -36,6 +36,8 @@ var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 var configuration = _utilsConfiguration2["default"].getInstance();
 
 var AnalyserNode = (function (_AudioNode) {
+  _inherits(AnalyserNode, _AudioNode);
+
   function AnalyserNode(admission, context) {
     _classCallCheck(this, AnalyserNode);
 
@@ -55,8 +57,6 @@ var AnalyserNode = (function (_AudioNode) {
     this._.smoothingTimeConstant = 0.8;
     this._.JSONKeys = AnalyserNode.$JSONKeys.slice();
   }
-
-  _inherits(AnalyserNode, _AudioNode);
 
   _createClass(AnalyserNode, [{
     key: "getFloatFrequencyData",
@@ -267,10 +267,12 @@ var AudioBuffer = (function () {
     }
   }, {
     key: "copyFromChannel",
-    value: function copyFromChannel(destination, channelNumber) {
+    value: function copyFromChannel(destination, channelNumber, startInChannel) {
       var _this2 = this;
 
-      var startInChannel = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+      if (arguments.length < 3) {
+        startInChannel = 0;
+      }
 
       this._.inspector.describe("copyFromChannel", function (assert) {
         assert(configuration.getState("AudioBuffer#copyFromChannel") === "enabled", function (fmt) {
@@ -304,10 +306,12 @@ var AudioBuffer = (function () {
     }
   }, {
     key: "copyToChannel",
-    value: function copyToChannel(source, channelNumber) {
+    value: function copyToChannel(source, channelNumber, startInChannel) {
       var _this3 = this;
 
-      var startInChannel = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+      if (arguments.length < 3) {
+        startInChannel = 0;
+      }
 
       this._.inspector.describe("copyToChannel", function (assert) {
         assert(configuration.getState("AudioBuffer#copyToChannel") === "enabled", function (fmt) {
@@ -426,7 +430,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x5, _x6, _x7) { var _again = true; _function: while (_again) { var object = _x5, property = _x6, receiver = _x7; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x5 = parent; _x6 = property; _x7 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -459,6 +463,8 @@ var _Event2 = _interopRequireDefault(_Event);
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var AudioBufferSourceNode = (function (_AudioNode) {
+  _inherits(AudioBufferSourceNode, _AudioNode);
+
   function AudioBufferSourceNode(admission, context) {
     var _this = this;
 
@@ -488,17 +494,20 @@ var AudioBufferSourceNode = (function (_AudioNode) {
     this._.JSONKeys = AudioBufferSourceNode.$JSONKeys.slice();
   }
 
-  _inherits(AudioBufferSourceNode, _AudioNode);
-
   _createClass(AudioBufferSourceNode, [{
     key: "start",
-    value: function start() {
-      var when = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-
+    value: function start(when, offset, duration) {
       var _this2 = this;
 
-      var offset = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-      var duration = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+      if (arguments.length < 3) {
+        duration = 0;
+      }
+      if (arguments.length < 2) {
+        offset = 0;
+      }
+      if (arguments.length < 1) {
+        when = 0;
+      }
 
       this._.inspector.describe("start", ["when", "offset", "duration"], function (assert) {
         assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
@@ -522,10 +531,12 @@ var AudioBufferSourceNode = (function (_AudioNode) {
     }
   }, {
     key: "stop",
-    value: function stop() {
+    value: function stop(when) {
       var _this3 = this;
 
-      var when = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+      if (arguments.length < 1) {
+        when = 0;
+      }
 
       this._.inspector.describe("stop", ["when"], function (assert) {
         assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
@@ -691,7 +702,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x4, _x5, _x6) { var _again = true; _function: while (_again) { var object = _x4, property = _x5, receiver = _x6; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x4 = parent; _x5 = property; _x6 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -834,6 +845,8 @@ function transitionToState(methodName, callback) {
 }
 
 var AudioContext = (function (_EventTarget) {
+  _inherits(AudioContext, _EventTarget);
+
   function AudioContext() {
     var _this2 = this;
 
@@ -854,8 +867,6 @@ var AudioContext = (function (_EventTarget) {
     this._.state = "running";
     this._.onstatechange = null;
   }
-
-  _inherits(AudioContext, _EventTarget);
 
   _createClass(AudioContext, [{
     key: "suspend",
@@ -1012,6 +1023,13 @@ var AudioContext = (function (_EventTarget) {
     value: function createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
       var _this12 = this;
 
+      if (arguments.length < 3) {
+        numberOfOutputChannels = 2;
+      }
+      if (arguments.length < 2) {
+        numberOfInputChannels = 2;
+      }
+
       return immigration.apply(function (admission) {
         return new _ScriptProcessorNode2["default"](admission, _this12, bufferSize, numberOfInputChannels, numberOfOutputChannels);
       });
@@ -1036,10 +1054,12 @@ var AudioContext = (function (_EventTarget) {
     }
   }, {
     key: "createDelay",
-    value: function createDelay() {
+    value: function createDelay(maxDelayTime) {
       var _this15 = this;
 
-      var maxDelayTime = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
+      if (arguments.length < 1) {
+        maxDelayTime = 1;
+      }
 
       return immigration.apply(function (admission) {
         return new _DelayNode2["default"](admission, _this15, maxDelayTime);
@@ -1313,6 +1333,8 @@ var _AudioNode2 = require("./AudioNode");
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
 var AudioDestinationNode = (function (_AudioNode) {
+  _inherits(AudioDestinationNode, _AudioNode);
+
   function AudioDestinationNode(admission, context) {
     _classCallCheck(this, AudioDestinationNode);
 
@@ -1328,8 +1350,6 @@ var AudioDestinationNode = (function (_AudioNode) {
 
     this._.maxChannelCount = 2;
   }
-
-  _inherits(AudioDestinationNode, _AudioNode);
 
   _createClass(AudioDestinationNode, [{
     key: "maxChannelCount",
@@ -1558,6 +1578,8 @@ var configuration = _utilsConfiguration2["default"].getInstance();
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var AudioNode = (function (_EventTarget) {
+  _inherits(AudioNode, _EventTarget);
+
   function AudioNode(admission, spec) {
     var _this = this;
 
@@ -1591,8 +1613,6 @@ var AudioNode = (function (_EventTarget) {
       });
     });
   }
-
-  _inherits(AudioNode, _EventTarget);
 
   _createClass(AudioNode, [{
     key: "connect",
@@ -2449,6 +2469,8 @@ var _Event3 = _interopRequireDefault(_Event2);
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var AudioProcessingEvent = (function (_Event) {
+  _inherits(AudioProcessingEvent, _Event);
+
   function AudioProcessingEvent(admission, node) {
     _classCallCheck(this, AudioProcessingEvent);
 
@@ -2460,8 +2482,6 @@ var AudioProcessingEvent = (function (_Event) {
 
     this._.node = node;
   }
-
-  _inherits(AudioProcessingEvent, _Event);
 
   _createClass(AudioProcessingEvent, [{
     key: "$name",
@@ -2523,6 +2543,8 @@ var _AudioParam2 = _interopRequireDefault(_AudioParam);
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var BiquadFilterNode = (function (_AudioNode) {
+  _inherits(BiquadFilterNode, _AudioNode);
+
   function BiquadFilterNode(admission, context) {
     var _this = this;
 
@@ -2553,8 +2575,6 @@ var BiquadFilterNode = (function (_AudioNode) {
     });
     this._.JSONKeys = BiquadFilterNode.$JSONKeys.slice();
   }
-
-  _inherits(BiquadFilterNode, _AudioNode);
 
   _createClass(BiquadFilterNode, [{
     key: "getFrequencyResponse",
@@ -2665,6 +2685,8 @@ var _AudioNode2 = require("./AudioNode");
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
 var ChannelMergerNode = (function (_AudioNode) {
+  _inherits(ChannelMergerNode, _AudioNode);
+
   function ChannelMergerNode(admission, context, numberOfInputs) {
     _classCallCheck(this, ChannelMergerNode);
 
@@ -2684,8 +2706,6 @@ var ChannelMergerNode = (function (_AudioNode) {
       });
     });
   }
-
-  _inherits(ChannelMergerNode, _AudioNode);
 
   return ChannelMergerNode;
 })(_AudioNode3["default"]);
@@ -2719,6 +2739,8 @@ var _AudioNode2 = require("./AudioNode");
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
 var ChannelSplitterNode = (function (_AudioNode) {
+  _inherits(ChannelSplitterNode, _AudioNode);
+
   function ChannelSplitterNode(admission, context, numberOfOutputs) {
     _classCallCheck(this, ChannelSplitterNode);
 
@@ -2738,8 +2760,6 @@ var ChannelSplitterNode = (function (_AudioNode) {
       });
     });
   }
-
-  _inherits(ChannelSplitterNode, _AudioNode);
 
   return ChannelSplitterNode;
 })(_AudioNode3["default"]);
@@ -2776,6 +2796,8 @@ var _AudioNode2 = require("./AudioNode");
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
 var ConvolverNode = (function (_AudioNode) {
+  _inherits(ConvolverNode, _AudioNode);
+
   function ConvolverNode(admission, context) {
     _classCallCheck(this, ConvolverNode);
 
@@ -2793,8 +2815,6 @@ var ConvolverNode = (function (_AudioNode) {
     this._.normalize = true;
     this._.JSONKeys = ConvolverNode.$JSONKeys.slice();
   }
-
-  _inherits(ConvolverNode, _AudioNode);
 
   _createClass(ConvolverNode, [{
     key: "buffer",
@@ -2873,6 +2893,8 @@ var _AudioParam2 = _interopRequireDefault(_AudioParam);
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var DelayNode = (function (_AudioNode) {
+  _inherits(DelayNode, _AudioNode);
+
   function DelayNode(admission, context, maxDelayTime) {
     var _this = this;
 
@@ -2900,8 +2922,6 @@ var DelayNode = (function (_AudioNode) {
     this._.maxDelayTime = maxDelayTime;
     this._.JSONKeys = DelayNode.$JSONKeys.slice();
   }
-
-  _inherits(DelayNode, _AudioNode);
 
   _createClass(DelayNode, [{
     key: "delayTime",
@@ -2960,6 +2980,8 @@ var _AudioParam2 = _interopRequireDefault(_AudioParam);
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var DynamicsCompressorNode = (function (_AudioNode) {
+  _inherits(DynamicsCompressorNode, _AudioNode);
+
   function DynamicsCompressorNode(admission, context) {
     var _this = this;
 
@@ -2995,8 +3017,6 @@ var DynamicsCompressorNode = (function (_AudioNode) {
     });
     this._.JSONKeys = DynamicsCompressorNode.$JSONKeys.slice();
   }
-
-  _inherits(DynamicsCompressorNode, _AudioNode);
 
   _createClass(DynamicsCompressorNode, [{
     key: "threshold",
@@ -3093,6 +3113,8 @@ var _EventTarget2 = require("./EventTarget");
 var _EventTarget3 = _interopRequireDefault(_EventTarget2);
 
 global.Element = global.Element || (function (_EventTarget) {
+  _inherits(Element, _EventTarget);
+
   function Element() {
     _classCallCheck(this, Element);
 
@@ -3100,19 +3122,17 @@ global.Element = global.Element || (function (_EventTarget) {
     throw new TypeError("Illegal constructor");
   }
 
-  _inherits(Element, _EventTarget);
-
   return Element;
 })(_EventTarget3["default"]);
 
 var Element = (function (_utils$preventSuperCall) {
+  _inherits(Element, _utils$preventSuperCall);
+
   function Element() {
     _classCallCheck(this, Element);
 
     _get(Object.getPrototypeOf(Element.prototype), "constructor", this).apply(this, arguments);
   }
-
-  _inherits(Element, _utils$preventSuperCall);
 
   return Element;
 })(_utils2["default"].preventSuperCall(global.Element));
@@ -3150,6 +3170,8 @@ global.Event = global.Event || function Event() {
 };
 
 var Event = (function (_utils$preventSuperCall) {
+  _inherits(Event, _utils$preventSuperCall);
+
   function Event(name, target) {
     _classCallCheck(this, Event);
 
@@ -3161,8 +3183,6 @@ var Event = (function (_utils$preventSuperCall) {
     this._.target = _utils2["default"].defaults(target, null);
     this._.timestamp = Date.now();
   }
-
-  _inherits(Event, _utils$preventSuperCall);
 
   _createClass(Event, [{
     key: "type",
@@ -3223,6 +3243,8 @@ global.EventTarget = global.EventTarget || function EventTarget() {
 };
 
 var EventTarget = (function (_utils$preventSuperCall) {
+  _inherits(EventTarget, _utils$preventSuperCall);
+
   function EventTarget() {
     _classCallCheck(this, EventTarget);
 
@@ -3236,8 +3258,6 @@ var EventTarget = (function (_utils$preventSuperCall) {
 
     this._.listeners = {};
   }
-
-  _inherits(EventTarget, _utils$preventSuperCall);
 
   _createClass(EventTarget, [{
     key: "addEventListener",
@@ -3345,6 +3365,8 @@ var _AudioParam2 = _interopRequireDefault(_AudioParam);
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var GainNode = (function (_AudioNode) {
+  _inherits(GainNode, _AudioNode);
+
   function GainNode(admission, context) {
     var _this = this;
 
@@ -3365,8 +3387,6 @@ var GainNode = (function (_AudioNode) {
     });
     this._.JSONKeys = GainNode.$JSONKeys.slice();
   }
-
-  _inherits(GainNode, _AudioNode);
 
   _createClass(GainNode, [{
     key: "gain",
@@ -3413,6 +3433,8 @@ var _Element2 = require("./Element");
 var _Element3 = _interopRequireDefault(_Element2);
 
 global.HTMLElement = global.HTMLElement || (function (_Element) {
+  _inherits(HTMLElement, _Element);
+
   function HTMLElement() {
     _classCallCheck(this, HTMLElement);
 
@@ -3420,19 +3442,17 @@ global.HTMLElement = global.HTMLElement || (function (_Element) {
     throw new TypeError("Illegal constructor");
   }
 
-  _inherits(HTMLElement, _Element);
-
   return HTMLElement;
 })(_Element3["default"]);
 
 var HTMLElement = (function (_utils$preventSuperCall) {
+  _inherits(HTMLElement, _utils$preventSuperCall);
+
   function HTMLElement() {
     _classCallCheck(this, HTMLElement);
 
     _get(Object.getPrototypeOf(HTMLElement.prototype), "constructor", this).apply(this, arguments);
   }
-
-  _inherits(HTMLElement, _utils$preventSuperCall);
 
   return HTMLElement;
 })(_utils2["default"].preventSuperCall(global.HTMLElement));
@@ -3466,6 +3486,8 @@ var _HTMLElement2 = require("./HTMLElement");
 var _HTMLElement3 = _interopRequireDefault(_HTMLElement2);
 
 global.HTMLMediaElement = global.HTMLMediaElement || (function (_HTMLElement) {
+  _inherits(HTMLMediaElement, _HTMLElement);
+
   function HTMLMediaElement() {
     _classCallCheck(this, HTMLMediaElement);
 
@@ -3473,19 +3495,17 @@ global.HTMLMediaElement = global.HTMLMediaElement || (function (_HTMLElement) {
     throw new TypeError("Illegal constructor");
   }
 
-  _inherits(HTMLMediaElement, _HTMLElement);
-
   return HTMLMediaElement;
 })(_HTMLElement3["default"]);
 
 var HTMLMediaElement = (function (_utils$preventSuperCall) {
+  _inherits(HTMLMediaElement, _utils$preventSuperCall);
+
   function HTMLMediaElement() {
     _classCallCheck(this, HTMLMediaElement);
 
     _get(Object.getPrototypeOf(HTMLMediaElement.prototype), "constructor", this).apply(this, arguments);
   }
-
-  _inherits(HTMLMediaElement, _utils$preventSuperCall);
 
   return HTMLMediaElement;
 })(_utils2["default"].preventSuperCall(global.HTMLMediaElement));
@@ -3521,6 +3541,8 @@ var _AudioNode2 = require("./AudioNode");
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
 var MediaElementAudioSourceNode = (function (_AudioNode) {
+  _inherits(MediaElementAudioSourceNode, _AudioNode);
+
   function MediaElementAudioSourceNode(admission, context, mediaElement) {
     _classCallCheck(this, MediaElementAudioSourceNode);
 
@@ -3540,8 +3562,6 @@ var MediaElementAudioSourceNode = (function (_AudioNode) {
       });
     });
   }
-
-  _inherits(MediaElementAudioSourceNode, _AudioNode);
 
   return MediaElementAudioSourceNode;
 })(_AudioNode3["default"]);
@@ -3575,6 +3595,8 @@ var _EventTarget2 = require("./EventTarget");
 var _EventTarget3 = _interopRequireDefault(_EventTarget2);
 
 global.MediaStream = global.MediaStream || (function (_EventTarget) {
+  _inherits(MediaStream, _EventTarget);
+
   function MediaStream() {
     _classCallCheck(this, MediaStream);
 
@@ -3582,19 +3604,17 @@ global.MediaStream = global.MediaStream || (function (_EventTarget) {
     throw new TypeError("Illegal constructor");
   }
 
-  _inherits(MediaStream, _EventTarget);
-
   return MediaStream;
 })(_EventTarget3["default"]);
 
 var MediaStream = (function (_utils$preventSuperCall) {
+  _inherits(MediaStream, _utils$preventSuperCall);
+
   function MediaStream() {
     _classCallCheck(this, MediaStream);
 
     _get(Object.getPrototypeOf(MediaStream.prototype), "constructor", this).apply(this, arguments);
   }
-
-  _inherits(MediaStream, _utils$preventSuperCall);
 
   return MediaStream;
 })(_utils2["default"].preventSuperCall(global.MediaStream));
@@ -3623,6 +3643,8 @@ var _AudioNode2 = require("./AudioNode");
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
 var MediaStreamAudioDestinationNode = (function (_AudioNode) {
+  _inherits(MediaStreamAudioDestinationNode, _AudioNode);
+
   function MediaStreamAudioDestinationNode(admission, context) {
     _classCallCheck(this, MediaStreamAudioDestinationNode);
 
@@ -3636,8 +3658,6 @@ var MediaStreamAudioDestinationNode = (function (_AudioNode) {
       channelInterpretation: "speakers"
     });
   }
-
-  _inherits(MediaStreamAudioDestinationNode, _AudioNode);
 
   return MediaStreamAudioDestinationNode;
 })(_AudioNode3["default"]);
@@ -3672,6 +3692,8 @@ var _AudioNode2 = require("./AudioNode");
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
 var MediaStreamAudioSourceNode = (function (_AudioNode) {
+  _inherits(MediaStreamAudioSourceNode, _AudioNode);
+
   function MediaStreamAudioSourceNode(admission, context, mediaStream) {
     _classCallCheck(this, MediaStreamAudioSourceNode);
 
@@ -3691,8 +3713,6 @@ var MediaStreamAudioSourceNode = (function (_AudioNode) {
       });
     });
   }
-
-  _inherits(MediaStreamAudioSourceNode, _AudioNode);
 
   return MediaStreamAudioSourceNode;
 })(_AudioNode3["default"]);
@@ -3729,6 +3749,8 @@ var _Event3 = _interopRequireDefault(_Event2);
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var OfflineAudioCompletionEvent = (function (_Event) {
+  _inherits(OfflineAudioCompletionEvent, _Event);
+
   function OfflineAudioCompletionEvent(admission, node) {
     _classCallCheck(this, OfflineAudioCompletionEvent);
 
@@ -3740,8 +3762,6 @@ var OfflineAudioCompletionEvent = (function (_Event) {
 
     this._.node = node;
   }
-
-  _inherits(OfflineAudioCompletionEvent, _Event);
 
   _createClass(OfflineAudioCompletionEvent, [{
     key: "$name",
@@ -3830,6 +3850,8 @@ function transitionToState(methodName) {
 }
 
 var OfflineAudioContext = (function (_AudioContext) {
+  _inherits(OfflineAudioContext, _AudioContext);
+
   function OfflineAudioContext(numberOfChannels, length, sampleRate) {
     _classCallCheck(this, OfflineAudioContext);
 
@@ -3857,8 +3879,6 @@ var OfflineAudioContext = (function (_AudioContext) {
     this._.resolve = null;
     this._.state = "suspended";
   }
-
-  _inherits(OfflineAudioContext, _AudioContext);
 
   _createClass(OfflineAudioContext, [{
     key: "suspend",
@@ -3992,7 +4012,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -4029,6 +4049,8 @@ var _Event2 = _interopRequireDefault(_Event);
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var OscillatorNode = (function (_AudioNode) {
+  _inherits(OscillatorNode, _AudioNode);
+
   function OscillatorNode(admission, context) {
     var _this = this;
 
@@ -4059,14 +4081,14 @@ var OscillatorNode = (function (_AudioNode) {
     this._.JSONKeys = OscillatorNode.$JSONKeys.slice();
   }
 
-  _inherits(OscillatorNode, _AudioNode);
-
   _createClass(OscillatorNode, [{
     key: "start",
-    value: function start() {
+    value: function start(when) {
       var _this2 = this;
 
-      var when = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+      if (arguments.length < 1) {
+        when = 0;
+      }
 
       this._.inspector.describe("start", function (assert) {
         assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
@@ -4082,10 +4104,12 @@ var OscillatorNode = (function (_AudioNode) {
     }
   }, {
     key: "stop",
-    value: function stop() {
+    value: function stop(when) {
       var _this3 = this;
 
-      var when = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+      if (arguments.length < 1) {
+        when = 0;
+      }
 
       this._.inspector.describe("stop", function (assert) {
         assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
@@ -4253,6 +4277,8 @@ var _AudioNode2 = require("./AudioNode");
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
 var PannerNode = (function (_AudioNode) {
+  _inherits(PannerNode, _AudioNode);
+
   function PannerNode(admission, context) {
     _classCallCheck(this, PannerNode);
 
@@ -4276,8 +4302,6 @@ var PannerNode = (function (_AudioNode) {
     this._.coneOuterGain = 0;
     this._.JSONKeys = PannerNode.$JSONKeys.slice();
   }
-
-  _inherits(PannerNode, _AudioNode);
 
   _createClass(PannerNode, [{
     key: "setPosition",
@@ -4563,7 +4587,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -4600,10 +4624,9 @@ var _AudioProcessingEvent2 = _interopRequireDefault(_AudioProcessingEvent);
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var ScriptProcessorNode = (function (_AudioNode) {
-  function ScriptProcessorNode(admission, context, bufferSize) {
-    var numberOfInputChannels = arguments.length <= 3 || arguments[3] === undefined ? 2 : arguments[3];
-    var numberOfOutputChannels = arguments.length <= 4 || arguments[4] === undefined ? 2 : arguments[4];
+  _inherits(ScriptProcessorNode, _AudioNode);
 
+  function ScriptProcessorNode(admission, context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
     _classCallCheck(this, ScriptProcessorNode);
 
     _get(Object.getPrototypeOf(ScriptProcessorNode.prototype), "constructor", this).call(this, admission, {
@@ -4638,8 +4661,6 @@ var ScriptProcessorNode = (function (_AudioNode) {
     this._.numberOfOutputChannels = numberOfOutputChannels;
     this._.numSamples = 0;
   }
-
-  _inherits(ScriptProcessorNode, _AudioNode);
 
   _createClass(ScriptProcessorNode, [{
     key: "_process",
@@ -4730,6 +4751,8 @@ var _AudioParam2 = _interopRequireDefault(_AudioParam);
 var immigration = _utilsImmigration2["default"].getInstance();
 
 var StereoPannerNode = (function (_AudioNode) {
+  _inherits(StereoPannerNode, _AudioNode);
+
   function StereoPannerNode(admission, context) {
     var _this = this;
 
@@ -4750,8 +4773,6 @@ var StereoPannerNode = (function (_AudioNode) {
     });
     this._.JSONKeys = StereoPannerNode.$JSONKeys.slice();
   }
-
-  _inherits(StereoPannerNode, _AudioNode);
 
   _createClass(StereoPannerNode, [{
     key: "pan",
@@ -4805,6 +4826,8 @@ var _AudioNode2 = require("./AudioNode");
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
 var WaveShaperNode = (function (_AudioNode) {
+  _inherits(WaveShaperNode, _AudioNode);
+
   function WaveShaperNode(admission, context) {
     _classCallCheck(this, WaveShaperNode);
 
@@ -4822,8 +4845,6 @@ var WaveShaperNode = (function (_AudioNode) {
     this._.oversample = "none";
     this._.JSONKeys = WaveShaperNode.$JSONKeys.slice();
   }
-
-  _inherits(WaveShaperNode, _AudioNode);
 
   _createClass(WaveShaperNode, [{
     key: "curve",
@@ -5915,7 +5936,7 @@ exports["default"] = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = "0.3.5";
+exports["default"] = "0.3.6";
 module.exports = exports["default"];
 
 },{}],46:[function(require,module,exports){

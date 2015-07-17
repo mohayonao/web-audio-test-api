@@ -1,7 +1,7 @@
 {
   "name": "web-audio-test-api",
   "description": "Web Audio API test library for CI",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "authors": [
     "Nao Yonamine <mohayonao@gmail.com>"
   ],
