@@ -139,7 +139,17 @@ export default class AudioBufferSourceNode extends AudioNode {
     return this._.stopTime;
   }
 
-  start(when = 0, offset = 0, duration = 0) {
+  start(when, offset, duration) {
+    if (arguments.length < 3) {
+      duration = 0;
+    }
+    if (arguments.length < 2) {
+      offset = 0;
+    }
+    if (arguments.length < 1) {
+      when = 0;
+    }
+
     this._.inspector.describe("start", [ "when", "offset", "duration" ], (assert) => {
       assert(utils.isPositiveNumber(when), (fmt) => {
         throw new TypeError(fmt.plain `
@@ -173,7 +183,11 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.startTime = when;
   }
 
-  stop(when = 0) {
+  stop(when) {
+    if (arguments.length < 1) {
+      when = 0;
+    }
+
     this._.inspector.describe("stop", [ "when" ], (assert) => {
       assert(utils.isPositiveNumber(when), (fmt) => {
         throw new TypeError(fmt.plain `

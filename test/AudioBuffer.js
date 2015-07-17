@@ -205,6 +205,12 @@ describe("AudioBuffer", function() {
         return e instanceof TypeError && /outside the range/.test(e.message);
       });
 
+      assert.throws(function() {
+        buf1.copyFromChannel(dest, 0, undefined);
+      }, function(e) {
+        return e instanceof TypeError && /should be a positive integer/.test(e.message);
+      });
+
       WebAudioTestAPI.setState("AudioBuffer#copyFromChannel", "disabled");
 
       assert(buf1.copyFromChannel === global.AudioBuffer.prototype.copyFromChannel);
@@ -264,6 +270,12 @@ describe("AudioBuffer", function() {
         buf1.copyToChannel(source, 0, 10);
       }, function(e) {
         return e instanceof TypeError && /outside the range/.test(e.message);
+      });
+
+      assert.throws(function() {
+        buf1.copyToChannel(source, 0, undefined);
+      }, function(e) {
+        return e instanceof TypeError && /should be a positive integer/.test(e.message);
       });
 
       WebAudioTestAPI.setState("AudioBuffer#copyToChannel", "disabled");

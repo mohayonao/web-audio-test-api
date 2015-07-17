@@ -19,6 +19,16 @@ describe("DelayNode", function() {
         return e instanceof TypeError && /should be a positive number/.test(e.message);
       });
 
+      assert.doesNotThrow(function() {
+        audioContext.createDelay();
+      });
+
+      assert.throws(function() {
+        audioContext.createDelay(undefined);
+      }, function(e) {
+        return e instanceof TypeError && /should be a positive number/.test(e.message);
+      });
+
       assert.throws(function() {
         return new global.DelayNode();
       }, function(e) {

@@ -122,6 +122,12 @@ describe("OscillatorNode", function() {
         return e instanceof TypeError && /should be a positive number/.test(e.message);
       });
 
+      assert.throws(function() {
+        node.start(undefined);
+      }, function(e) {
+        return e instanceof TypeError && /should be a positive number/.test(e.message);
+      });
+
       node.start(0);
 
       assert.throws(function() {
@@ -142,6 +148,12 @@ describe("OscillatorNode", function() {
 
       assert.throws(function() {
         node.stop(-0.5);
+      }, function(e) {
+        return e instanceof TypeError && /should be a positive number/.test(e.message);
+      });
+
+      assert.throws(function() {
+        node.stop(undefined);
       }, function(e) {
         return e instanceof TypeError && /should be a positive number/.test(e.message);
       });

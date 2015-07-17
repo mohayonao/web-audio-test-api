@@ -120,7 +120,11 @@ export default class AudioBuffer {
     return this._.data[channel];
   }
 
-  copyFromChannel(destination, channelNumber, startInChannel = 0) {
+  copyFromChannel(destination, channelNumber, startInChannel) {
+    if (arguments.length < 3) {
+      startInChannel = 0;
+    }
+
     this._.inspector.describe("copyFromChannel", (assert) => {
       assert(configuration.getState("AudioBuffer#copyFromChannel") === "enabled", (fmt) => {
         throw new TypeError(fmt.plain `
@@ -170,7 +174,11 @@ export default class AudioBuffer {
     destination.set(source.subarray(0, Math.min(source.length, destination.length)));
   }
 
-  copyToChannel(source, channelNumber, startInChannel = 0) {
+  copyToChannel(source, channelNumber, startInChannel) {
+    if (arguments.length < 3) {
+      startInChannel = 0;
+    }
+
     this._.inspector.describe("copyToChannel", (assert) => {
       assert(configuration.getState("AudioBuffer#copyToChannel") === "enabled", (fmt) => {
         throw new TypeError(fmt.plain `

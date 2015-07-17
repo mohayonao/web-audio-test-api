@@ -31,6 +31,22 @@ describe("ScriptProcessorNode", function() {
         return e instanceof TypeError && /should be a positive integer/.test(e.message);
       });
 
+      assert.doesNotThrow(function() {
+        audioContext.createScriptProcessor(1024);
+      });
+
+      assert.throws(function() {
+        audioContext.createScriptProcessor(1024, undefined);
+      }, function(e) {
+        return e instanceof TypeError && /should be a positive integer/.test(e.message);
+      });
+
+      assert.throws(function() {
+        audioContext.createScriptProcessor(1024, 1, undefined);
+      }, function(e) {
+        return e instanceof TypeError && /should be a positive integer/.test(e.message);
+      });
+
       assert.throws(function() {
         return new global.ScriptProcessorNode();
       }, function(e) {
