@@ -108,7 +108,11 @@ export default class OscillatorNode extends AudioNode {
     return this._.stopTime;
   }
 
-  start(when = 0) {
+  start(when) {
+    if (arguments.length < 1) {
+      when = 0;
+    }
+
     this._.inspector.describe("start", (assert) => {
       assert(utils.isPositiveNumber(when), (fmt) => {
         throw new TypeError(fmt.plain `
@@ -128,7 +132,11 @@ export default class OscillatorNode extends AudioNode {
     this._.startTime = when;
   }
 
-  stop(when = 0) {
+  stop(when) {
+    if (arguments.length < 1) {
+      when = 0;
+    }
+
     this._.inspector.describe("stop", (assert) => {
       assert(utils.isPositiveNumber(when), (fmt) => {
         throw new TypeError(fmt.plain `

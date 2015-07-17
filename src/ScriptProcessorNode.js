@@ -8,7 +8,7 @@ import AudioProcessingEvent from "./AudioProcessingEvent";
 let immigration = Immigration.getInstance();
 
 export default class ScriptProcessorNode extends AudioNode {
-  constructor(admission, context, bufferSize, numberOfInputChannels = 2, numberOfOutputChannels = 2) {
+  constructor(admission, context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
     super(admission, {
       name: "ScriptProcessorNode",
       context: context,

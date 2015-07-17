@@ -5,6 +5,9 @@
     // best practice
     "dot-notation": 0,
 
+    // variables
+    "no-undefined": 0,
+
     // es6
     "no-var": 0,
   },

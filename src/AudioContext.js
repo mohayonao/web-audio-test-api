@@ -302,6 +302,13 @@ export default class AudioContext extends EventTarget {
   }
 
   createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
+    if (arguments.length < 3) {
+      numberOfOutputChannels = 2;
+    }
+    if (arguments.length < 2) {
+      numberOfInputChannels = 2;
+    }
+
     return immigration.apply(admission =>
       new ScriptProcessorNode(admission, this, bufferSize, numberOfInputChannels, numberOfOutputChannels)
     );
@@ -319,7 +326,11 @@ export default class AudioContext extends EventTarget {
     );
   }
 
-  createDelay(maxDelayTime = 1) {
+  createDelay(maxDelayTime) {
+    if (arguments.length < 1) {
+      maxDelayTime = 1;
+    }
+
     return immigration.apply(admission =>
       new DelayNode(admission, this, maxDelayTime)
     );
