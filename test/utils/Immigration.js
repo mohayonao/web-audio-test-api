@@ -102,7 +102,8 @@ describe("Immigration", () => {
         let immigration = new Immigration();
 
         assert.throws(() => {
-          immigration.apply((/* admission */) => {
+          /* admission */
+          immigration.apply(() => {
             // immigration.check(admission);
           });
         }, Error);
