@@ -24,6 +24,7 @@ import PeriodicWave from "./PeriodicWave";
 import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
+import oncallback from "./decorators/oncallback";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -74,7 +75,6 @@ export default class AudioContext extends EventTarget {
     this._.processedSamples = 0;
     this._.tick = 0;
     this._.state = "running";
-    this._.onstatechange = null;
   }
 
   static get WEB_AUDIO_TEST_API_VERSION() {
@@ -137,28 +137,8 @@ export default class AudioContext extends EventTarget {
     });
   }
 
-  get onstatechange() {
-    if (isEnabledState()) {
-      return this._.onstatechange;
-    }
-  }
-
-  set onstatechange(value) {
-    if (!isEnabledState()) {
-      return;
-    }
-
-    this._.inspector.describe("onstatechange", ($assert) => {
-      $assert(utils.isNullOrFunction(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "onstatechange", "function")}
-        `);
-      });
-    });
-
-    this._.onstatechange = value;
-  }
+  @oncallback()
+  onstatechange() {}
 
   get $name() {
     return "AudioContext";

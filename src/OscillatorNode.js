@@ -4,6 +4,7 @@ import AudioNode from "./AudioNode";
 import audioparam from "./decorators/audioparam";
 import enumerate from "./decorators/enumerate";
 import Event from "./Event";
+import oncallback from "./decorators/oncallback";
 
 let immigration = Immigration.getInstance();
 
@@ -19,7 +20,6 @@ export default class OscillatorNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.onended = null;
     this._.custom = null;
     this._.startTime = Infinity;
     this._.stopTime = Infinity;
@@ -36,22 +36,8 @@ export default class OscillatorNode extends AudioNode {
   @audioparam({ defaultValue: 0 })
   detune() {}
 
-  get onended() {
-    return this._.onended;
-  }
-
-  set onended(value) {
-    this._.inspector.describe("onended", ($assert) => {
-      $assert(utils.isNullOrFunction(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "onended", "function")}
-        `);
-      });
-    });
-
-    this._.onended = value;
-  }
+  @oncallback()
+  onended() {}
 
   get $state() {
     return this.$stateAtTime(this.context.currentTime);

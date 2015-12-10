@@ -5,6 +5,7 @@ import Event from "./Event";
 import AudioContext from "./AudioContext";
 import AudioBuffer from "./AudioBuffer";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
+import oncallback from "./decorators/oncallback";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -59,7 +60,6 @@ export default class OfflineAudioContext extends AudioContext {
     });
 
     this._.sampleRate = sampleRate;
-    this._.oncomplete = null;
     this._.numberOfChannels = numberOfChannels;
     this._.length = length;
     this._.rendering = false;
@@ -67,22 +67,8 @@ export default class OfflineAudioContext extends AudioContext {
     this._.state = "suspended";
   }
 
-  get oncomplete() {
-    return this._.oncomplete;
-  }
-
-  set oncomplete(value) {
-    this._.inspector.describe("oncomplete", ($assert) => {
-      $assert(utils.isNullOrFunction(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "value", "function")}
-        `);
-      });
-    });
-
-    this._.oncomplete = value;
-  }
+  @oncallback()
+  oncomplete() {}
 
   get $name() {
     return "OfflineAudioContext";

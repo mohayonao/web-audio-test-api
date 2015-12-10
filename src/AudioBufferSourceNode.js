@@ -3,6 +3,7 @@ import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import Event from "./Event";
 import audioparam from "./decorators/audioparam";
+import oncallback from "./decorators/oncallback";
 
 let immigration = Immigration.getInstance();
 
@@ -22,7 +23,6 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.loop = false;
     this._.loopStart = 0;
     this._.loopEnd = 0;
-    this._.onended = null;
     this._.startTime = Infinity;
     this._.stopTime = Infinity;
     this._.firedOnEnded = false;
@@ -103,22 +103,8 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.loopEnd = value;
   }
 
-  get onended() {
-    return this._.onended;
-  }
-
-  set onended(value) {
-    this._.inspector.describe("onended", ($assert) => {
-      $assert(utils.isNullOrFunction(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "onended", "function")}
-        `);
-      });
-    });
-
-    this._.onended = value;
-  }
+  @oncallback()
+  onended() {}
 
   get $state() {
     return this.$stateAtTime(this.context.currentTime);

@@ -116,54 +116,31 @@ describe("AudioContext", function() {
   });
 
   describe("#onstatechange", function() {
-    describe("disabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("get: undefined", function() {
-        var undef;
-
-        assert(audioContext.onstatechange === undef);
-      });
-      it("set: nothing to do", function() {
-        var undef;
-
-        assert.doesNotThrow(function() {
-          audioContext.onstatechange = function() {};
-        });
-        assert(audioContext.state === undef);
-      });
+    before(function() {
+      setStateForStateTransitionAPI("enabled");
     });
-    describe("enabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("enabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("get: string", function() {
-        function fn1() {}
-        function fn2() {}
+    after(function() {
+      setStateForStateTransitionAPI("disabled");
+    });
+    it("get: string", function() {
+      function fn1() {}
+      function fn2() {}
 
-        assert(audioContext.onstatechange === null);
+      assert(audioContext.onstatechange === null);
 
-        audioContext.onstatechange = fn1;
-        assert(audioContext.onstatechange === fn1);
+      audioContext.onstatechange = fn1;
+      assert(audioContext.onstatechange === fn1);
 
-        audioContext.onstatechange = fn2;
-        assert(audioContext.onstatechange === fn2);
+      audioContext.onstatechange = fn2;
+      assert(audioContext.onstatechange === fn2);
 
-        audioContext.onstatechange = null;
-        assert(audioContext.onstatechange === null);
+      audioContext.onstatechange = null;
+      assert(audioContext.onstatechange === null);
 
-        assert.throws(function() {
-          audioContext.onstatechange = "INVALID";
-        }, function(e) {
-          return e instanceof TypeError && /should be a function/.test(e.message);
-        });
+      assert.throws(function() {
+        audioContext.onstatechange = "INVALID";
+      }, function(e) {
+        return e instanceof TypeError && /should be a function/.test(e.message);
       });
     });
   });

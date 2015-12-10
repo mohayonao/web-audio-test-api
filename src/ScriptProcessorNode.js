@@ -4,6 +4,7 @@ import Enumerator from "./utils/Enumerator";
 import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import AudioProcessingEvent from "./AudioProcessingEvent";
+import oncallback from "./decorators/oncallback";
 
 let immigration = Immigration.getInstance();
 
@@ -47,7 +48,6 @@ export default class ScriptProcessorNode extends AudioNode {
     });
 
     this._.bufferSize = bufferSize;
-    this._.onaudioprocess = null;
     this._.numberOfInputChannels = numberOfInputChannels;
     this._.numberOfOutputChannels = numberOfOutputChannels;
     this._.numSamples = 0;
@@ -63,22 +63,8 @@ export default class ScriptProcessorNode extends AudioNode {
     });
   }
 
-  get onaudioprocess() {
-    return this._.onaudioprocess;
-  }
-
-  set onaudioprocess(value) {
-    this._.inspector.describe("onaudioprocess", ($assert) => {
-      $assert(utils.isNullOrFunction(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "onaudioprocess", "function")}
-        `);
-      });
-    });
-
-    this._.onaudioprocess = value;
-  }
+  @oncallback();
+  onaudioprocess() {}
 
   _process(inNumSamples) {
     this._.numSamples -= inNumSamples;
