@@ -22,6 +22,9 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.playbackRate = immigration.apply(admission =>
       new AudioParam(admission, this, "playbackRate", 1, 0, 1024)
     );
+    this._.detune = immigration.apply(admission =>
+      new AudioParam(admission, this, "detune", 0, -4800, 4800)
+    );
     this._.loop = false;
     this._.loopStart = 0;
     this._.loopEnd = 0;
@@ -55,6 +58,16 @@ export default class AudioBufferSourceNode extends AudioNode {
 
   set playbackRate(value) {
     this._.inspector.describe("playbackRate", (assert) => {
+      assert.throwReadOnlyTypeError(value);
+    });
+  }
+
+  get detune() {
+    return this._.detune;
+  }
+
+  set detune(value) {
+    this._.inspector.describe("detune", (assert) => {
       assert.throwReadOnlyTypeError(value);
     });
   }
