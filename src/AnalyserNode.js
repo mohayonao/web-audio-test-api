@@ -3,6 +3,7 @@ import Configuration from "./utils/Configuration";
 import AudioNode from "./AudioNode";
 import enumerate from "./decorators/enumerate";
 import readonly from "./decorators/readonly";
+import typedvalue from "./decorators/typedvalue";
 
 let configuration = Configuration.getInstance();
 
@@ -32,56 +33,14 @@ export default class AnalyserNode extends AudioNode {
     return this.fftSize >> 1;
   }
 
-  get minDecibels() {
-    return this._.minDecibels;
-  }
+  @typedvalue(-100, utils.isNumber, "number")
+  minDecibels() {}
 
-  set minDecibels(value) {
-    this._.inspector.describe("minDecibels", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "minDecibels", "number")}
-        `);
-      });
-    });
+  @typedvalue(30, utils.isNumber, "number")
+  maxDecibels() {}
 
-    this._.minDecibels = value;
-  }
-
-  get maxDecibels() {
-    return this._.maxDecibels;
-  }
-
-  set maxDecibels(value) {
-    this._.inspector.describe("maxDecibels", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "maxDecibels", "number")}
-        `);
-      });
-    });
-
-    this._.maxDecibels = value;
-  }
-
-  get smoothingTimeConstant() {
-    return this._.smoothingTimeConstant;
-  }
-
-  set smoothingTimeConstant(value) {
-    this._.inspector.describe("smoothingTimeConstant", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "smoothingTimeConstant", "number")}
-        `);
-      });
-    });
-
-    this._.smoothingTimeConstant = value;
-  }
+  @typedvalue(0.8, utils.isNumber, "number")
+  smoothingTimeConstant() {}
 
   getFloatFrequencyData(array) {
     this._.inspector.describe("getFloatFrequencyData", ($assert) => {

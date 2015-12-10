@@ -39,9 +39,9 @@ describe("AudioBufferSourceNode", function() {
       assert(node.buffer === null);
 
       assert.throws(function() {
-        node.buffer = "INVALID";
+         node.buffer = "INVALID";
       }, function(e) {
-        return e instanceof TypeError && /should be an AudioBuffer/.test(e.message);
+        return e instanceof TypeError && /should be a AudioBuffer/.test(e.message);
       });
     });
   });

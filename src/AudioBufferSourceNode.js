@@ -4,6 +4,7 @@ import AudioNode from "./AudioNode";
 import Event from "./Event";
 import audioparam from "./decorators/audioparam";
 import oncallback from "./decorators/oncallback";
+import typedvalue from "./decorators/typedvalue";
 
 let immigration = Immigration.getInstance();
 
@@ -29,22 +30,8 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.JSONKeys = AudioBufferSourceNode.$JSONKeys.slice();
   }
 
-  get buffer() {
-    return this._.buffer;
-  }
-
-  set buffer(value) {
-    this._.inspector.describe("buffer", ($assert) => {
-      $assert(utils.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "buffer", "AudioBuffer")}
-        `);
-      });
-    });
-
-    this._.buffer = value;
-  }
+  @typedvalue(null, value => utils.isNullOrInstanceOf(value, global.AudioBuffer), "AudioBuffer")
+  buffer() {}
 
   @audioparam({ defaultValue: 1 })
   playbackRate() {}
@@ -52,56 +39,14 @@ export default class AudioBufferSourceNode extends AudioNode {
   @audioparam({ defaultValue: 0 })
   detune() {}
 
-  get loop() {
-    return this._.loop;
-  }
+  @typedvalue(false, utils.isBoolean, "boolean")
+  loop() {}
 
-  set loop(value) {
-    this._.inspector.describe("loop", ($assert) => {
-      $assert(utils.isBoolean(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "loop", "boolean")}
-        `);
-      });
-    });
+  @typedvalue(0, utils.isPositiveNumber, "positive number")
+  loopStart() {}
 
-    this._.loop = value;
-  }
-
-  get loopStart() {
-    return this._.loopStart;
-  }
-
-  set loopStart(value) {
-    this._.inspector.describe("loopStart", ($assert) => {
-      $assert(utils.isPositiveNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "loopStart", "positive number")}
-        `);
-      });
-    });
-
-    this._.loopStart = value;
-  }
-
-  get loopEnd() {
-    return this._.loopEnd;
-  }
-
-  set loopEnd(value) {
-    this._.inspector.describe("loopEnd", ($assert) => {
-      $assert(utils.isPositiveNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "loopEnd", "positive number")}
-        `);
-      });
-    });
-
-    this._.loopEnd = value;
-  }
+  @typedvalue(0, utils.isPositiveNumber, "positive number")
+  loopEnd() {}
 
   @oncallback()
   onended() {}

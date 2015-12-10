@@ -3,6 +3,7 @@ import Immigration from "./utils/Immigration";
 import Inspector from "./utils/Inspector";
 import Junction from "./utils/Junction";
 import readonly from "./decorators/readonly";
+import typevalue from "./decorators/typedvalue";
 
 let immigration = Immigration.getInstance();
 
@@ -101,22 +102,10 @@ export default class AudioParam {
     this._.tick = -1;
   }
 
+  @typevalue(0, utils.isNumber, "number")
   get value() {
     this._.value = this.$valueAtTime(this.$context.currentTime);
     return this._.value;
-  }
-
-  set value(value) {
-    this._.inspector.describe("value", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "value", "number")}
-        `);
-      });
-    });
-
-    this._.value = value;
   }
 
   @readonly()

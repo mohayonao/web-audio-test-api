@@ -6,6 +6,7 @@ import EventTarget from "./EventTarget";
 import AudioNodeDisconnectUtils from "./AudioNodeDisconnectUtils";
 import enumerate from "./decorators/enumerate";
 import readonly from "./decorators/readonly";
+import typedvalue from "./decorators/typedvalue";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -55,22 +56,8 @@ export default class AudioNode extends EventTarget {
     return this._.numberOfOutputs;
   }
 
-  get channelCount() {
-    return this._.channelCount;
-  }
-
-  set channelCount(value) {
-    this._.inspector.describe("channelCount", ($assert) => {
-      $assert(utils.isPositiveInteger(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "channelCount", "positive integer")}
-        `);
-      });
-    });
-
-    this._.channelCount = value;
-  }
+  @typedvalue(2, utils.isPositiveInteger, "positive integer")
+  channelCount() {}
 
   @enumerate([ "max", "clamped-max", "explicit" ])
   channelCountMode() {}

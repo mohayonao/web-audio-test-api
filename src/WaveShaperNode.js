@@ -1,6 +1,7 @@
 import utils from "./utils";
 import AudioNode from "./AudioNode";
 import enumerate from "./decorators/enumerate";
+import typedvalue from "./decorators/typedvalue";
 
 export default class WaveShaperNode extends AudioNode {
   constructor(admission, context) {
@@ -19,22 +20,8 @@ export default class WaveShaperNode extends AudioNode {
     this._.JSONKeys = WaveShaperNode.$JSONKeys.slice();
   }
 
-  get curve() {
-    return this._.curve;
-  }
-
-  set curve(value) {
-    this._.inspector.describe("curve", ($assert) => {
-      $assert(utils.isNullOrInstanceOf(value, Float32Array), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "curve", "Float32Array")}
-        `);
-      });
-    });
-
-    this._.curve = value;
-  }
+  @typedvalue(null, value => utils.isNullOrInstanceOf(value, Float32Array), "Float32Array")
+  curve() {}
 
   @enumerate([ "none", "2x", "4x" ])
   oversample() {}

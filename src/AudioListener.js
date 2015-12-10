@@ -1,6 +1,7 @@
 import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import Inspector from "./utils/Inspector";
+import typedvalue from "./decorators/typedvalue";
 
 let immigration = Immigration.getInstance();
 
@@ -21,39 +22,11 @@ export default class AudioListener {
     });
   }
 
-  get dopplerFactor() {
-    return this._.dopplerFactor;
-  }
+  @typedvalue(1, utils.isNumber, "number")
+  dopplerFactor() {}
 
-  set dopplerFactor(value) {
-    this._.inspector.describe("dopplerFactor", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "dopplerFactor", "number")}
-        `);
-      });
-    });
-
-    this._.dopplerFactor = value;
-  }
-
-  get speedOfSound() {
-    return this._.speedOfSound;
-  }
-
-  set speedOfSound(value) {
-    this._.inspector.describe("speedOfSound", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "speedOfSound", "number")}
-        `);
-      });
-    });
-
-    this._.speedOfSound = value;
-  }
+  @typedvalue(343.3, utils.isNumber, "number")
+  speedOfSound() {}
 
   get $name() {
     return "AudioListener";

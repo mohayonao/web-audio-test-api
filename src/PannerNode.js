@@ -1,6 +1,7 @@
 import utils from "./utils";
 import AudioNode from "./AudioNode";
 import enumerate from "./decorators/enumerate";
+import typedvalue from "./decorators/typedvalue";
 
 export default class PannerNode extends AudioNode {
   constructor(admission, context) {
@@ -14,8 +15,6 @@ export default class PannerNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.refDistance = 1;
-    this._.maxDistance = 10000;
     this._.rolloffFactor = 1;
     this._.coneInnerAngle = 360;
     this._.coneOuterAngle = 360;
@@ -29,107 +28,23 @@ export default class PannerNode extends AudioNode {
   @enumerate([ "inverse", "linear", "exponential" ])
   distanceModel() {}
 
-  get refDistance() {
-    return this._.refDistance;
-  }
+  @typedvalue(1, utils.isNumber, "number")
+  refDistance() {}
 
-  set refDistance(value) {
-    this._.inspector.describe("refDistance", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "refDistance", "number")}
-        `);
-      });
-    });
+  @typedvalue(10000, utils.isNumber, "number")
+  maxDistance() {}
 
-    this._.refDistance = value;
-  }
+  @typedvalue(1, utils.isNumber, "number")
+  rolloffFactor() {}
 
-  get maxDistance() {
-    return this._.maxDistance;
-  }
+  @typedvalue(360, utils.isNumber, "number")
+  coneInnerAngle() {}
 
-  set maxDistance(value) {
-    this._.inspector.describe("maxDistance", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "maxDistance", "number")}
-        `);
-      });
-    });
+  @typedvalue(360, utils.isNumber, "number")
+  coneOuterAngle() {}
 
-    this._.maxDistance = value;
-  }
-
-  get rolloffFactor() {
-    return this._.rolloffFactor;
-  }
-
-  set rolloffFactor(value) {
-    this._.inspector.describe("rolloffFactor", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "rolloffFactor", "number")}
-        `);
-      });
-    });
-
-    this._.rolloffFactor = value;
-  }
-
-  get coneInnerAngle() {
-    return this._.coneInnerAngle;
-  }
-
-  set coneInnerAngle(value) {
-    this._.inspector.describe("coneInnerAngle", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "coneInnerAngle", "number")}
-        `);
-      });
-    });
-
-    this._.coneInnerAngle = value;
-  }
-
-  get coneOuterAngle() {
-    return this._.coneOuterAngle;
-  }
-
-  set coneOuterAngle(value) {
-    this._.inspector.describe("coneOuterAngle", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "coneOuterAngle", "number")}
-        `);
-      });
-    });
-
-    this._.coneOuterAngle = value;
-  }
-
-  get coneOuterGain() {
-    return this._.coneOuterGain;
-  }
-
-  set coneOuterGain(value) {
-    this._.inspector.describe("coneOuterGain", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "coneOuterGain", "number")}
-        `);
-      });
-    });
-
-    this._.coneOuterGain = value;
-  }
+  @typedvalue(0, utils.isNumber, "number")
+  coneOuterGain() {}
 
   setPosition(x, y, z) {
     this._.inspector.describe("setPosition", ($assert) => {
