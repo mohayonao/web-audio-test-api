@@ -60,6 +60,20 @@ describe("AudioBufferSourceNode", function() {
     });
   });
 
+  describe("#detune", function() {
+    it("get: AudioParam", function() {
+      var node = audioContext.createBufferSource();
+
+      assert(node.detune instanceof WebAudioTestAPI.AudioParam);
+
+      assert.throws(function() {
+        node.detune = 0;
+      }, function(e) {
+        return e instanceof TypeError && /readonly/.test(e.message);
+      });
+    });
+  });
+
   describe("#loop", function() {
     it("get/set: boolean", function() {
       var node = audioContext.createBufferSource();
