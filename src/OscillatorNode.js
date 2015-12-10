@@ -1,8 +1,8 @@
 import utils from "./utils";
-import Enumerator from "./utils/Enumerator";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import audioparam from "./decorators/audioparam";
+import enumerate from "./decorators/enumerate";
 import Event from "./Event";
 
 let immigration = Immigration.getInstance();
@@ -19,7 +19,6 @@ export default class OscillatorNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.type = "sine";
     this._.onended = null;
     this._.custom = null;
     this._.startTime = Infinity;
@@ -28,26 +27,8 @@ export default class OscillatorNode extends AudioNode {
     this._.JSONKeys = OscillatorNode.$JSONKeys.slice();
   }
 
-  get type() {
-    return this._.custom ? "custom" : this._.type;
-  }
-
-  set type(value) {
-    this._.inspector.describe("type", ($assert) => {
-      let enumOscillatorType = new Enumerator([
-        "sine", "square", "sawtooth", "triangle",
-      ]);
-
-      $assert(enumOscillatorType.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "type", enumOscillatorType.toString())}
-        `);
-      });
-    });
-
-    this._.type = value;
-  }
+  @enumerate([ "sine", "square", "sawtooth", "triangle" ])
+  type() {}
 
   @audioparam({ defaultValue: 440 })
   frequency() {}

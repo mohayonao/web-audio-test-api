@@ -1,8 +1,8 @@
 import utils from "./utils";
-import Enumerator from "./utils/Enumerator";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import audioparam from "./decorators/audioparam";
+import enumerate from "./decorators/enumerate";
 
 let immigration = Immigration.getInstance();
 
@@ -18,30 +18,11 @@ export default class BiquadFilterNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.type = "lowpass";
     this._.JSONKeys = BiquadFilterNode.$JSONKeys.slice();
   }
 
-  get type() {
-    return this._.type;
-  }
-
-  set type(value) {
-    this._.inspector.describe("type", ($assert) => {
-      let enumBiquadFilterType = new Enumerator([
-        "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass",
-      ]);
-
-      $assert(enumBiquadFilterType.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "type", enumBiquadFilterType.toString())}
-        `);
-      });
-    });
-
-    this._.type = value;
-  }
+  @enumerate([ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass" ])
+  type() {}
 
   @audioparam({ defaultValue: 350 })
   frequency() {}

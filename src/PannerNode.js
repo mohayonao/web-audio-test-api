@@ -1,6 +1,6 @@
 import utils from "./utils";
-import Enumerator from "./utils/Enumerator";
 import AudioNode from "./AudioNode";
+import enumerate from "./decorators/enumerate";
 
 export default class PannerNode extends AudioNode {
   constructor(admission, context) {
@@ -14,8 +14,6 @@ export default class PannerNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.panningModel = "HRTF";
-    this._.distanceModel = "inverse";
     this._.refDistance = 1;
     this._.maxDistance = 10000;
     this._.rolloffFactor = 1;
@@ -25,47 +23,11 @@ export default class PannerNode extends AudioNode {
     this._.JSONKeys = PannerNode.$JSONKeys.slice();
   }
 
-  get panningModel() {
-    return this._.panningModel;
-  }
+  @enumerate([ "HRTF", "equalpower" ])
+  panningModel() {}
 
-  set panningModel(value) {
-    this._.inspector.describe("panningModel", ($assert) => {
-      let enumPanningModelType = new Enumerator([
-        "equalpower", "HRTF",
-      ]);
-
-      $assert(enumPanningModelType.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "panningModel", enumPanningModelType.toString())}
-        `);
-      });
-    });
-
-    this._.panningModel = value;
-  }
-
-  get distanceModel() {
-    return this._.distanceModel;
-  }
-
-  set distanceModel(value) {
-    this._.inspector.describe("distanceModel", ($assert) => {
-      let enumDistanceModelType = new Enumerator([
-        "linear", "inverse", "exponential",
-      ]);
-
-      $assert(enumDistanceModelType.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "distanceModel", enumDistanceModelType.toString())}
-        `);
-      });
-    });
-
-    this._.distanceModel = value;
-  }
+  @enumerate([ "inverse", "linear", "exponential" ])
+  distanceModel() {}
 
   get refDistance() {
     return this._.refDistance;

@@ -1,10 +1,10 @@
 import utils from "./utils";
 import Configuration from "./utils/Configuration";
-import Enumerator from "./utils/Enumerator";
 import Immigration from "./utils/Immigration";
 import Junction from "./utils/Junction";
 import EventTarget from "./EventTarget";
 import AudioNodeDisconnectUtils from "./AudioNodeDisconnectUtils";
+import enumerate from "./decorators/enumerate";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -86,47 +86,11 @@ export default class AudioNode extends EventTarget {
     this._.channelCount = value;
   }
 
-  get channelCountMode() {
-    return this._.channelCountMode;
-  }
+  @enumerate([ "max", "clamped-max", "explicit" ])
+  channelCountMode() {}
 
-  set channelCountMode(value) {
-    this._.inspector.describe("channelCountMode", ($assert) => {
-      let enumChannelCountMode = new Enumerator([
-        "max", "clamped-max", "explicit",
-      ]);
-
-      $assert(enumChannelCountMode.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "channelCountMode", enumChannelCountMode.toString())}
-        `);
-      });
-    });
-
-    this._.channelCountMode = value;
-  }
-
-  get channelInterpretation() {
-    return this._.channelInterpretation;
-  }
-
-  set channelInterpretation(value) {
-    this._.inspector.describe("channelInterpretation", ($assert) => {
-      let enumChannelInterpretation = new Enumerator([
-        "speakers", "discrete",
-      ]);
-
-      $assert(enumChannelInterpretation.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "channelInterpretation", enumChannelInterpretation.toString())}
-        `);
-      });
-    });
-
-    this._.channelInterpretation = value;
-  }
+  @enumerate([ "speakers", "discrete" ])
+  channelInterpretation() {}
 
   get $name() {
     return this._.name;

@@ -1,6 +1,6 @@
 import utils from "./utils";
-import Enumerator from "./utils/Enumerator";
 import AudioNode from "./AudioNode";
+import enumerate from "./decorators/enumerate";
 
 export default class WaveShaperNode extends AudioNode {
   constructor(admission, context) {
@@ -36,26 +36,8 @@ export default class WaveShaperNode extends AudioNode {
     this._.curve = value;
   }
 
-  get oversample() {
-    return this._.oversample;
-  }
-
-  set oversample(value) {
-    this._.inspector.describe("oversample", ($assert) => {
-      let enumOverSampleType = new Enumerator([
-        "none", "2x", "4x",
-      ]);
-
-      $assert(enumOverSampleType.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "oversample", enumOverSampleType.toString())}
-        `);
-      });
-    });
-
-    this._.oversample = value;
-  }
+  @enumerate([ "none", "2x", "4x" ])
+  oversample() {}
 }
 
 WaveShaperNode.$JSONKeys = [

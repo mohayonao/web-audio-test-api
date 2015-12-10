@@ -1,7 +1,7 @@
 import utils from "./utils";
 import Configuration from "./utils/Configuration";
-import Enumerator from "./utils/Enumerator";
 import AudioNode from "./AudioNode";
+import enumerate from "./decorators/enumerate";
 
 let configuration = Configuration.getInstance();
 
@@ -17,33 +17,14 @@ export default class AnalyserNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.fftSize = 2048;
     this._.minDecibels = -100;
     this._.maxDecibels = 30;
     this._.smoothingTimeConstant = 0.8;
     this._.JSONKeys = AnalyserNode.$JSONKeys.slice();
   }
 
-  get fftSize() {
-    return this._.fftSize;
-  }
-
-  set fftSize(value) {
-    this._.inspector.describe("fftSize", ($assert) => {
-      let enumFFTSize = new Enumerator([
-        32, 64, 128, 256, 512, 1024, 2048,
-      ]);
-
-      $assert(enumFFTSize.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "fftSize", enumFFTSize.toString())}
-        `);
-      });
-    });
-
-    this._.fftSize = value;
-  }
+  @enumerate([ 32, 64, 128, 256, 512, 1024, 2048 ], 2048)
+  fftSize() {}
 
   get frequencyBinCount() {
     return this.fftSize >> 1;
