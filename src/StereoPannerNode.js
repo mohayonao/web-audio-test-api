@@ -1,8 +1,5 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
-
-let immigration = Immigration.getInstance();
 
 export default class StereoPannerNode extends AudioNode {
   constructor(admission, context) {
@@ -15,7 +12,6 @@ export default class StereoPannerNode extends AudioNode {
       channelCountMode: "clamped-max",
       channelInterpretation: "speakers",
     });
-
     this._.JSONKeys = StereoPannerNode.$JSONKeys.slice();
   }
 

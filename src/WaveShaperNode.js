@@ -1,6 +1,6 @@
-import utils from "./utils";
 import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
+import * as validators from "./validators";
 
 export default class WaveShaperNode extends AudioNode {
   constructor(admission, context) {
@@ -13,13 +13,10 @@ export default class WaveShaperNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers",
     });
-
-    this._.curve = null;
-    this._.oversample = "none";
     this._.JSONKeys = WaveShaperNode.$JSONKeys.slice();
   }
 
-  @props.typed(null, value => utils.isNullOrInstanceOf(value, Float32Array), "Float32Array")
+  @props.typed(validators.isNullOrInstanceOf(Float32Array), null)
   curve() {}
 
   @props.enum([ "none", "2x", "4x" ])

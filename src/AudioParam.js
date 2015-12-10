@@ -1,9 +1,10 @@
 import utils from "./utils";
 import Immigration from "./utils/Immigration";
-import Inspector from "./utils/Inspector";
 import Junction from "./utils/Junction";
 import typed from "./decorators/props/typed";
 import readonly from "./decorators/props/readonly";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 let immigration = Immigration.getInstance();
 
@@ -85,12 +86,7 @@ export default class AudioParam {
     immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
-
-    Object.defineProperty(this, "_", {
-      value: {
-        inspector: new Inspector(this),
-      },
-    });
+    Object.defineProperty(this, "_", { value: {} });
 
     this._.value = defaultValue;
     this._.name = name;
@@ -102,7 +98,7 @@ export default class AudioParam {
     this._.tick = -1;
   }
 
-  @typed(0, utils.isNumber, "number")
+  @typed(validators.isNumber, 0)
   get value() {
     this._.value = this.$valueAtTime(this.$context.currentTime);
     return this._.value;
@@ -138,23 +134,9 @@ export default class AudioParam {
     return this._.events;
   }
 
+  @methods.param("value", validators.isNumber)
+  @methods.param("startTime", validators.isNumber)
   setValueAtTime(value, startTime) {
-    this._.inspector.describe("setValueAtTime", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "value", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(startTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(startTime, "startTime", "number")}
-        `);
-      });
-    });
-
     insertEvent(this, {
       type: "SetValue",
       value: value,
@@ -162,23 +144,9 @@ export default class AudioParam {
     });
   }
 
+  @methods.param("value", validators.isNumber)
+  @methods.param("endTime", validators.isNumber)
   linearRampToValueAtTime(value, endTime) {
-    this._.inspector.describe("linearRampToValueAtTime", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "value", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(endTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(endTime, "endTime", "number")}
-        `);
-      });
-    });
-
     insertEvent(this, {
       type: "LinearRampToValue",
       value: value,
@@ -186,23 +154,9 @@ export default class AudioParam {
     });
   }
 
+  @methods.param("value", validators.isNumber)
+  @methods.param("endTime", validators.isNumber)
   exponentialRampToValueAtTime(value, endTime) {
-    this._.inspector.describe("exponentialRampToValueAtTime", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "value", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(endTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(endTime, "endTime", "number")}
-        `);
-      });
-    });
-
     insertEvent(this, {
       type: "ExponentialRampToValue",
       value: value,
@@ -210,30 +164,10 @@ export default class AudioParam {
     });
   }
 
+  @methods.param("value", validators.isNumber)
+  @methods.param("endTime", validators.isNumber)
+  @methods.param("timeConstant", validators.isNumber)
   setTargetAtTime(target, startTime, timeConstant) {
-    this._.inspector.describe("setTargetAtTime", ($assert) => {
-      $assert(utils.isNumber(target), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(target, "target", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(startTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(startTime, "startTime", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(timeConstant), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(timeConstant, "timeConstant", "number")}
-        `);
-      });
-    });
-
     insertEvent(this, {
       type: "SetTarget",
       value: target,
@@ -242,30 +176,10 @@ export default class AudioParam {
     });
   }
 
+  @methods.param("values", validators.isInstanceOf(Float32Array))
+  @methods.param("startTime", validators.isNumber)
+  @methods.param("duration", validators.isNumber)
   setValueCurveAtTime(values, startTime, duration) {
-    this._.inspector.describe("setValueCurveAtTime", ($assert) => {
-      $assert(utils.isInstanceOf(values, Float32Array), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(values, "values", "Float32Array")}
-        `);
-      });
-
-      $assert(utils.isNumber(startTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(startTime, "startTime", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(duration), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(duration, "duration", "number")}
-        `);
-      });
-    });
-
     insertEvent(this, {
       type: "SetValueCurve",
       time: startTime,
@@ -274,16 +188,8 @@ export default class AudioParam {
     });
   }
 
+  @methods.param("startTime", validators.isNumber)
   cancelScheduledValues(startTime) {
-    this._.inspector.describe("cancelScheduledValues", ($assert) => {
-      $assert(utils.isNumber(startTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(startTime, "startTime", "number")}
-        `);
-      });
-    });
-
     let events = this.$events;
 
     for (let i = 0, imax = events.length; i < imax; ++i) {

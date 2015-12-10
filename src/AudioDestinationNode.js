@@ -12,12 +12,8 @@ export default class AudioDestinationNode extends AudioNode {
       channelCountMode: "explicit",
       channelInterpretation: "speakers",
     });
-
-    this._.maxChannelCount = 2;
   }
 
-  @props.readonly()
-  maxChannelCount() {
-    return this._.maxChannelCount;
-  }
+  @props.readonly(2)
+  maxChannelCount() {}
 }

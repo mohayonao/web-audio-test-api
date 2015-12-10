@@ -3,8 +3,8 @@ import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Event from "./Event";
 import EventTarget from "./EventTarget";
-import AnalyserNode from "./AnalyserNode";
 import AudioBuffer from "./AudioBuffer";
+import AnalyserNode from "./AnalyserNode";
 import AudioBufferSourceNode from "./AudioBufferSourceNode";
 import AudioDestinationNode from "./AudioDestinationNode";
 import AudioListener from "./AudioListener";
@@ -25,6 +25,8 @@ import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
 import * as props from "./decorators/props";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -261,14 +263,10 @@ export default class AudioContext extends EventTarget {
     });
   }
 
-  createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-    if (arguments.length < 3) {
-      numberOfOutputChannels = 2;
-    }
-    if (arguments.length < 2) {
-      numberOfInputChannels = 2;
-    }
-
+  @methods.param("bufferSize", validators.isPositiveInteger)
+  @methods.param("[ numberOfInputChannels ]", validators.isPositiveInteger)
+  @methods.param("[ numberOfOutputChannels ]", validators.isPositiveInteger)
+  createScriptProcessor(bufferSize, numberOfInputChannels = 2, numberOfOutputChannels = 2) {
     return immigration.apply(admission =>
       new ScriptProcessorNode(admission, this, bufferSize, numberOfInputChannels, numberOfOutputChannels)
     );
@@ -286,11 +284,8 @@ export default class AudioContext extends EventTarget {
     );
   }
 
-  createDelay(maxDelayTime) {
-    if (arguments.length < 1) {
-      maxDelayTime = 1;
-    }
-
+  @methods.param("[ maxDelayTime ]", validators.isPositiveNumber)
+  createDelay(maxDelayTime = 1) {
     return immigration.apply(admission =>
       new DelayNode(admission, this, maxDelayTime)
     );
@@ -314,16 +309,14 @@ export default class AudioContext extends EventTarget {
     );
   }
 
+  @methods.contract({
+    precondition() {
+      if (configuration.getState("AudioContext#createStereoPanner") !== "enabled") {
+        throw new TypeError("not enabled");
+      }
+    }
+  })
   createStereoPanner() {
-    this._.inspector.describe("createStereoPanner", ($assert) => {
-      $assert(configuration.getState("AudioContext#createStereoPanner") === "enabled", (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          not enabled
-        `);
-      });
-    });
-
     return immigration.apply(admission =>
       new StereoPannerNode(admission, this)
     );
@@ -335,12 +328,14 @@ export default class AudioContext extends EventTarget {
     );
   }
 
+  @methods.param("[ numberOfOutputs ]", validators.isPositiveInteger)
   createChannelSplitter(numberOfOutputs = 6) {
     return immigration.apply(admission =>
       new ChannelSplitterNode(admission, this, numberOfOutputs)
     );
   }
 
+  @methods.param("[ numberOfInputs ]", validators.isPositiveInteger)
   createChannelMerger(numberOfInputs = 6) {
     return immigration.apply(admission =>
       new ChannelMergerNode(admission, this, numberOfInputs)
@@ -359,6 +354,8 @@ export default class AudioContext extends EventTarget {
     );
   }
 
+  @methods.param("real", validators.isInstanceOf(Float32Array))
+  @methods.param("imag", validators.isInstanceOf(Float32Array))
   createPeriodicWave(real, imag) {
     return immigration.apply(admission =>
       new PeriodicWave(admission, this, real, imag)

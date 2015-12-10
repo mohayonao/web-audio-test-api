@@ -1,5 +1,7 @@
-import utils from "./utils";
 import AudioNode from "./AudioNode";
+import HTMLMediaElement from "./HTMLMediaElement";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 export default class MediaElementAudioSourceNode extends AudioNode {
   constructor(admission, context, mediaElement) {
@@ -12,14 +14,9 @@ export default class MediaElementAudioSourceNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers",
     });
-
-    this._.inspector.describe("constructor", ($assert) => {
-      $assert(utils.isInstanceOf(mediaElement, global.HTMLMediaElement), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(mediaElement, "mediaElement", "HTMLMediaElement")}
-        `);
-      });
-    });
+    this.__createMediaElementSource(mediaElement);
   }
+
+  @methods.param("mediaElement", validators.isInstanceOf(HTMLMediaElement))
+  __createMediaElementSource() {}
 }

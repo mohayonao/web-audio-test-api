@@ -1,9 +1,7 @@
-import utils from "./utils";
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
-
-let immigration = Immigration.getInstance();
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 export default class BiquadFilterNode extends AudioNode {
   constructor(admission, context) {
@@ -35,30 +33,10 @@ export default class BiquadFilterNode extends AudioNode {
   @props.audioparam(0)
   gain() {}
 
-  getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
-    this._.inspector.describe("getFrequencyResponse", ($assert) => {
-      $assert(utils.isInstanceOf(frequencyHz, Float32Array), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(frequencyHz, "frequencyHz", "Float32Array")}
-        `);
-      });
-
-      $assert(utils.isInstanceOf(magResponse, Float32Array), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(magResponse, "magResponse", "Float32Array")}
-        `);
-      });
-
-      $assert(utils.isInstanceOf(phaseResponse, Float32Array), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(phaseResponse, "phaseResponse", "Float32Array")}
-        `);
-      });
-    });
-  }
+  @methods.param("frequencyHz", validators.isInstanceOf(Float32Array))
+  @methods.param("magResponse", validators.isInstanceOf(Float32Array))
+  @methods.param("phaseResponse", validators.isInstanceOf(Float32Array))
+  getFrequencyResponse() {}
 }
 
 BiquadFilterNode.$JSONKeys = [

@@ -1,8 +1,11 @@
 import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import AudioBuffer from "./AudioBuffer";
 import Event from "./Event";
 import * as props from "./decorators/props";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 let immigration = Immigration.getInstance();
 
@@ -18,17 +21,13 @@ export default class AudioBufferSourceNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.buffer = null;
-    this._.loop = false;
-    this._.loopStart = 0;
-    this._.loopEnd = 0;
     this._.startTime = Infinity;
     this._.stopTime = Infinity;
     this._.firedOnEnded = false;
     this._.JSONKeys = AudioBufferSourceNode.$JSONKeys.slice();
   }
 
-  @props.typed(null, value => utils.isNullOrInstanceOf(value, global.AudioBuffer), "AudioBuffer")
+  @props.typed(validators.isNullOrInstanceOf(AudioBuffer), null)
   buffer() {}
 
   @props.audioparam(1)
@@ -37,13 +36,13 @@ export default class AudioBufferSourceNode extends AudioNode {
   @props.audioparam(0)
   detune() {}
 
-  @props.typed(false, utils.isBoolean, "boolean")
+  @props.typed(validators.isBoolean, false)
   loop() {}
 
-  @props.typed(0, utils.isPositiveNumber, "positive number")
+  @props.typed(validators.isPositiveNumber, 0)
   loopStart() {}
 
-  @props.typed(0, utils.isPositiveNumber, "positive number")
+  @props.typed(validators.isPositiveNumber, 0)
   loopEnd() {}
 
   @props.on("ended")
@@ -61,78 +60,34 @@ export default class AudioBufferSourceNode extends AudioNode {
     return this._.stopTime;
   }
 
-  start(when, offset, duration) {
-    if (arguments.length < 3) {
-      duration = 0;
+  @methods.param("[ when ]", validators.isPositiveNumber)
+  @methods.param("[ offset ]", validators.isPositiveNumber)
+  @methods.param("[ duration ]", validators.isPositiveNumber)
+  @methods.contract({
+    precondition() {
+      if (this._.startTime !== Infinity) {
+        throw new TypeError("cannot start more than once");
+      }
     }
-    if (arguments.length < 2) {
-      offset = 0;
-    }
-    if (arguments.length < 1) {
-      when = 0;
-    }
-
-    this._.inspector.describe("start", [ "when", "offset", "duration" ], ($assert) => {
-      $assert(utils.isPositiveNumber(when), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(when, "when", "positive number")}
-        `);
-      });
-
-      $assert(utils.isPositiveNumber(offset), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(offset, "offset", "positive number")}
-        `);
-      });
-
-      $assert(utils.isPositiveNumber(duration), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(duration, "duration", "positive number")}
-        `);
-      });
-
-      $assert(this._.startTime === Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot start more than once
-        `);
-      });
-    });
-
+  })
+  start(when = 0, offset = 0, duration = 0) {
     this._.startTime = when;
+    this._.offset = offset;
+    this._.duration = duration;
   }
 
-  stop(when) {
-    if (arguments.length < 1) {
-      when = 0;
+  @methods.param("[ when ]", validators.isPositiveNumber)
+  @methods.contract({
+    precondition() {
+      if (this._.startTime === Infinity) {
+        throw new TypeError("cannot call stop without calling start first");
+      }
+      if (this._.stopTime !== Infinity) {
+        throw new TypeError("cannot stop more than once");
+      }
     }
-
-    this._.inspector.describe("stop", [ "when" ], ($assert) => {
-      $assert(utils.isPositiveNumber(when), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(when, "when", "positive number")}
-        `);
-      });
-
-      $assert(this._.startTime !== Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot call stop without calling start first
-        `);
-      });
-
-      $assert(this._.stopTime === Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot stop more than once
-        `);
-      });
-    });
-
+  })
+  stop(when = 0) {
     this._.stopTime = when;
   }
 

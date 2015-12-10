@@ -168,7 +168,7 @@ describe("AnalyserNode", function() {
       assert.throws(function() {
         node.getByteFrequencyData(i16);
       }, function(e) {
-        return e instanceof TypeError && /should be an Uint8Array/.test(e.message);
+        return e instanceof TypeError && /should be a Uint8Array/.test(e.message);
       });
 
       assert(node.getByteFrequencyData === global.AnalyserNode.prototype.getByteFrequencyData);
@@ -216,7 +216,7 @@ describe("AnalyserNode", function() {
       assert.throws(function() {
         node.getByteTimeDomainData(i16);
       }, function(e) {
-        return e instanceof TypeError && /should be an Uint8Array/.test(e.message);
+        return e instanceof TypeError && /should be a Uint8Array/.test(e.message);
       });
 
       assert(node.getByteTimeDomainData === global.AnalyserNode.prototype.getByteTimeDomainData);

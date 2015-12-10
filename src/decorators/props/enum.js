@@ -1,9 +1,9 @@
-export default function _enum(values, defaultValue = values[0]) {
+export default function _enum(values) {
   return (target, name) => {
     return {
       get() {
         if (!this._.hasOwnProperty(name)) {
-          this._[name] = defaultValue;
+          this._[name] = values[0];
         }
         return this._[name];
       },

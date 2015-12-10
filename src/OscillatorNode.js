@@ -1,10 +1,10 @@
 import utils from "./utils";
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import PeriodicWave from "./PeriodicWave";
 import Event from "./Event";
 import * as props from "./decorators/props";
-
-let immigration = Immigration.getInstance();
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 export default class OscillatorNode extends AudioNode {
   constructor(admission, context) {
@@ -17,7 +17,6 @@ export default class OscillatorNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers",
     });
-
     this._.custom = null;
     this._.startTime = Infinity;
     this._.stopTime = Infinity;
@@ -53,71 +52,35 @@ export default class OscillatorNode extends AudioNode {
     return this._.stopTime;
   }
 
-  start(when) {
-    if (arguments.length < 1) {
-      when = 0;
+  @methods.param("[ when ]", validators.isPositiveNumber)
+  @methods.contract({
+    precondition() {
+      if (this._.startTime !== Infinity) {
+        throw new Error(`cannot start more than once`);
+      }
     }
-
-    this._.inspector.describe("start", ($assert) => {
-      $assert(utils.isPositiveNumber(when), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(when, "when", "positive number")}
-        `);
-      });
-
-      $assert(this._.startTime === Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot start more than once
-        `);
-      });
-    });
-
+  })
+  start(when = 0) {
     this._.startTime = when;
   }
 
-  stop(when) {
-    if (arguments.length < 1) {
-      when = 0;
+  @methods.param("[ when ]", validators.isPositiveNumber)
+  @methods.contract({
+    precondition() {
+      if (this._.startTime === Infinity) {
+        throw new Error(`cannot call stop without calling start first`);
+      }
+      if (this._.stopTime !== Infinity) {
+        throw new Error(`cannot stop more than once`);
+      }
     }
-
-    this._.inspector.describe("stop", ($assert) => {
-      $assert(utils.isPositiveNumber(when), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(when, "when", "positive number")}
-        `);
-      });
-
-      $assert(this._.startTime !== Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot call stop without calling start first
-        `);
-      });
-
-      $assert(this._.stopTime === Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot stop more than once
-        `);
-      });
-    });
-
+  })
+  stop(when = 0) {
     this._.stopTime = when;
   }
 
+  @methods.param("periodicWave", validators.isInstanceOf(PeriodicWave))
   setPeriodicWave(periodicWave) {
-    this._.inspector.describe("setPeriodicWave", ($assert) => {
-      $assert(utils.isInstanceOf(periodicWave, global.PeriodicWave), (fmt) => {
-        throw new TypeError(fmt.plain`
-          ${fmt.form};
-          ${fmt.butGot(periodicWave, "periodicWave", "PeriodicWave")}
-        `);
-      });
-    });
-
     this._.type = "custom";
     this._.custom = periodicWave;
   }

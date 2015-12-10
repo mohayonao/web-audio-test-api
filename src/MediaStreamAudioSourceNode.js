@@ -1,5 +1,7 @@
-import utils from "./utils";
 import AudioNode from "./AudioNode";
+import MediaStream from "./MediaStream";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 export default class MediaStreamAudioSourceNode extends AudioNode {
   constructor(admission, context, mediaStream) {
@@ -12,14 +14,9 @@ export default class MediaStreamAudioSourceNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers",
     });
-
-    this._.inspector.describe("constructor", ($assert) => {
-      $assert(utils.isInstanceOf(mediaStream, global.MediaStream), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(mediaStream, "mediaStream", "MediaStream")}
-        `);
-      });
-    });
+    this.__createMediaStreamSource(mediaStream)
   }
+
+  @methods.param("mediaStream", validators.isInstanceOf(MediaStream))
+  __createMediaStreamSource() {}
 }

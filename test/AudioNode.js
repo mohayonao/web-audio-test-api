@@ -184,7 +184,7 @@ describe("AudioNode", function() {
       assert.throws(function() {
         node.connect("INVALID");
       }, function(e) {
-        return e instanceof TypeError && /should be an AudioNode/.test(e.message);
+        return e instanceof TypeError && /should be a AudioNode/.test(e.message);
       });
 
       assert.throws(function() {

@@ -1,4 +1,3 @@
-import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Event from "./Event";
@@ -6,6 +5,8 @@ import AudioContext from "./AudioContext";
 import AudioBuffer from "./AudioBuffer";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
 import * as props from "./decorators/props";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -35,30 +36,13 @@ function transitionToState(methodName) {
 export default class OfflineAudioContext extends AudioContext {
   constructor(numberOfChannels, length, sampleRate) {
     super();
+    this.__OfflineAudioContext(numberOfChannels, length, sampleRate);
+  }
 
-    this._.inspector.describe("constructor", ($assert) => {
-      $assert(utils.isPositiveInteger(numberOfChannels), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(numberOfChannels, "numberOfChannels", "positive integer")}
-        `);
-      });
-
-      $assert(utils.isPositiveInteger(length), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(length, "length", "positive integer")}
-        `);
-      });
-
-      $assert(utils.isPositiveInteger(sampleRate), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(sampleRate, "sampleRate", "positive integer")}
-        `);
-      });
-    });
-
+  @methods.param("numberOfChannels", validators.isPositiveInteger)
+  @methods.param("length", validators.isPositiveInteger)
+  @methods.param("sampleRate", validators.isPositiveInteger)
+  __OfflineAudioContext(numberOfChannels, length, sampleRate) {
     this._.sampleRate = sampleRate;
     this._.numberOfChannels = numberOfChannels;
     this._.length = length;

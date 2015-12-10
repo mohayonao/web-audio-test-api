@@ -1,14 +1,19 @@
 import assert from "power-assert";
 import typed from "../../../src/decorators/props/typed";
 
-describe("@typed(defaultValue: any, validator: function, typeName: string)", () => {
+describe("@typed(validator: object, defaultValue: any)", () => {
   it("defines a callback property", () => {
+    const isNumber = {
+      name: "number",
+      test: value => typeof value === "number",
+    };
+
     class Foo {
       constructor() {
         this._ = {};
       }
 
-      @typed(0, _ => typeof _ === "number", "number")
+      @typed(isNumber, 0)
       bar() {}
     }
 

@@ -1,4 +1,4 @@
-export default function typed(defaultValue, validator, typeName) {
+export default function typed(validator, defaultValue) {
   return (target, name, descriptor) => {
     function get() {
       if (!this._.hasOwnProperty(name)) {
@@ -8,8 +8,8 @@ export default function typed(defaultValue, validator, typeName) {
     }
 
     function set(value) {
-      if (!validator(value)) {
-        throw new TypeError(`${this.constructor.name}; "${name}" should be a ${typeName}, but got: ${value}`);
+      if (!validator.test(value)) {
+        throw new TypeError(`${this.constructor.name}; "${name}" should be a ${validator.name}, but got: ${value}`);
       }
       this._[name] = value;
     }

@@ -1,8 +1,5 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
-
-let immigration = Immigration.getInstance();
 
 export default class DynamicsCompressorNode extends AudioNode {
   constructor(admission, context) {
@@ -15,7 +12,6 @@ export default class DynamicsCompressorNode extends AudioNode {
       channelCountMode: "explicit",
       channelInterpretation: "speakers",
     });
-
     this._.JSONKeys = DynamicsCompressorNode.$JSONKeys.slice();
   }
 

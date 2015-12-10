@@ -1,21 +1,23 @@
 import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
+import ration from "./utils/Immigration";
 import Junction from "./utils/Junction";
 import EventTarget from "./EventTarget";
 import AudioNodeDisconnectUtils from "./AudioNodeDisconnectUtils";
 import * as props from "./decorators/props";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
 
 export default class AudioNode extends EventTarget {
   constructor(admission, spec) {
-    super();
-
     immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
+    super();
 
     this._.context = spec.context;
     this._.name = utils.defaults(spec.name, "AudioNode");
@@ -29,15 +31,17 @@ export default class AudioNode extends EventTarget {
     this._.outputs = utils.fill(new Array(Math.max(0, this._.numberOfOutputs|0)), i => new Junction(this, i));
     this._.tick = -1;
 
-    this._.inspector.describe(`create${this._.name.replace(/Node$/, "")}`, [], ($assert) => {
-      $assert(this._.context.state !== "closed", (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          AudioContext has been closed
-        `);
-      });
-    });
+    this.__createAudioNode();
   }
+
+  @methods.contract({
+    precondition() {
+      if (this._.context.state === "closed") {
+        throw new TypeError(`AudioContext has been closed`);
+      }
+    }
+  })
+  __createAudioNode() {}
 
   @props.readonly()
   context() {
@@ -54,7 +58,7 @@ export default class AudioNode extends EventTarget {
     return this._.numberOfOutputs;
   }
 
-  @props.typed(2, utils.isPositiveInteger, "positive integer")
+  @props.typed(validators.isPositiveInteger, 2)
   channelCount() {}
 
   @props.enum([ "max", "clamped-max", "explicit" ])
@@ -79,54 +83,29 @@ export default class AudioNode extends EventTarget {
     return this._.inputs;
   }
 
+  @methods.param("destination", validators.isAudioSource);
+  @methods.param("[ output ]", validators.isPositiveInteger);
+  @methods.param("[ input ]", validators.isPositiveInteger);
+  @methods.contract({
+    precondition(destination, output = 0, input = 0) {
+      if (this.$context !== destination.$context) {
+        throw new TypeError(`cannot connect to a destination belonging to a different audio context`);
+      }
+      if (this.numberOfOutputs <= output) {
+        throw new TypeError(`output index (${output}) exceeds number of outputs (${this.numberOfOutputs})`);
+      }
+      if ((destination.numberOfInputs || 1) <= input) {
+        throw new TypeError(`input index (${input}) exceeds number of inputs (${destination.numberOfInputs})`);
+      }
+    }
+  })
   connect(destination, output = 0, input = 0) {
-    this._.inspector.describe("connect", ($assert) => {
-      $assert(utils.isInstanceOf(destination, global.AudioNode) || utils.isInstanceOf(destination, global.AudioParam), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(destination, "destination", "AudioNode or an AudioParam")}
-        `);
-      });
-
-      $assert(this.$context === destination.$context, (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          cannot connect to a destination belonging to a different audio context
-        `);
-      });
-
-      $assert(utils.isPositiveInteger(output), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(output, "output", "positive integer")}
-        `);
-      });
-
-      $assert(utils.isPositiveInteger(input), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(input, "input", "positive integer")}
-        `);
-      });
-
-      $assert(output < this.numberOfOutputs, (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          output index (${output}) exceeds number of outputs (${this.numberOfOutputs})
-        `);
-      });
-
-      $assert(input < (destination.numberOfInputs || 1), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          input index (${input}) exceeds number of inputs (${destination.numberOfInputs})
-        `);
-      });
-    });
-
     this._.outputs[output].connect(destination.$inputs[input]);
   }
 
+  // @methods.param("[ destination ]", validators.isAudioSource);
+  // @methods.param("[ output ]", validators.isPositiveInteger);
+  // @methods.param("[ input ]", validators.isPositiveInteger);
   disconnect(_destination, _output, _input) {
     let isSelectiveDisconnect = configuration.getState("AudioNode#disconnect") === "selective";
     let argNum = utils.countArguments([ _destination, _output, _input ]);

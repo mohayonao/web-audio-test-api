@@ -1,9 +1,7 @@
-import utils from "./utils";
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
-
-let immigration = Immigration.getInstance();
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 export default class DelayNode extends AudioNode {
   constructor(admission, context, maxDelayTime) {
@@ -16,18 +14,13 @@ export default class DelayNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers",
     });
-
-    this._.inspector.describe("constructor", ($assert) => {
-      $assert(utils.isPositiveNumber(maxDelayTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(maxDelayTime, "maxDelayTime", "positive number")}
-        `);
-      });
-    });
-
-    this._.maxDelayTime = maxDelayTime;
+    this.__createDelay(maxDelayTime);
     this._.JSONKeys = DelayNode.$JSONKeys.slice();
+  }
+
+  @methods.param("maxDelayTime", validators.isPositiveNumber)
+  __createDelay(maxDelayTime) {
+    this._.maxDelayTime = maxDelayTime;
   }
 
   @props.audioparam(0)

@@ -1,6 +1,7 @@
-import utils from "./utils";
 import AudioNode from "./AudioNode";
+import AudioBuffer from "./AudioBuffer";
 import * as props from "./decorators/props";
+import * as validators from "./validators";
 
 export default class ConvolverNode extends AudioNode {
   constructor(admission, context) {
@@ -13,16 +14,13 @@ export default class ConvolverNode extends AudioNode {
       channelCountMode: "clamped-max",
       channelInterpretation: "speakers",
     });
-
-    this._.buffer = null;
-    this._.normalize = true;
     this._.JSONKeys = ConvolverNode.$JSONKeys.slice();
   }
 
-  @props.typed(null, value => utils.isNullOrInstanceOf(value, global.AudioBuffer), "AudioBuffer")
+  @props.typed(validators.isNullOrInstanceOf(AudioBuffer), null)
   buffer() {}
 
-  @props.typed(true, utils.isBoolean, "boolean")
+  @props.typed(validators.isBoolean, true)
   normalize() {}
 }
 

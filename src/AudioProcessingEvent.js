@@ -5,11 +5,10 @@ let immigration = Immigration.getInstance();
 
 export default class AudioProcessingEvent extends Event {
   constructor(admission, node) {
-    super("audioprocess", node);
-
     immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
+    super("audioprocess", node);
 
     this._.node = node;
   }
