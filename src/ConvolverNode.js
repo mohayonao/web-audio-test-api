@@ -1,6 +1,6 @@
 import utils from "./utils";
 import AudioNode from "./AudioNode";
-import typedvalue from "./decorators/typedvalue";
+import * as props from "./decorators/props";
 
 export default class ConvolverNode extends AudioNode {
   constructor(admission, context) {
@@ -19,10 +19,10 @@ export default class ConvolverNode extends AudioNode {
     this._.JSONKeys = ConvolverNode.$JSONKeys.slice();
   }
 
-  @typedvalue(null, value => utils.isNullOrInstanceOf(value, global.AudioBuffer), "AudioBuffer")
+  @props.typed(null, value => utils.isNullOrInstanceOf(value, global.AudioBuffer), "AudioBuffer")
   buffer() {}
 
-  @typedvalue(true, utils.isBoolean, "boolean")
+  @props.typed(true, utils.isBoolean, "boolean")
   normalize() {}
 }
 

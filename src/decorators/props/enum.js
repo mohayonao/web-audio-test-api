@@ -1,4 +1,4 @@
-export default function enumerate(values, defaultValue = values[0]) {
+export default function _enum(values, defaultValue = values[0]) {
   return (target, name) => {
     return {
       get() {

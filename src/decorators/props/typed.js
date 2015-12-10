@@ -1,4 +1,4 @@
-export default function typedvalue(defaultValue, validator, typeName) {
+export default function typed(defaultValue, validator, typeName) {
   return (target, name, descriptor) => {
     function get() {
       if (!this._.hasOwnProperty(name)) {

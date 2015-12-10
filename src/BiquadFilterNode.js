@@ -1,8 +1,7 @@
 import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import audioparam from "./decorators/audioparam";
-import enumerate from "./decorators/enumerate";
+import * as props from "./decorators/props";
 
 let immigration = Immigration.getInstance();
 
@@ -21,19 +20,19 @@ export default class BiquadFilterNode extends AudioNode {
     this._.JSONKeys = BiquadFilterNode.$JSONKeys.slice();
   }
 
-  @enumerate([ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass" ])
+  @props.enum([ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass" ])
   type() {}
 
-  @audioparam({ defaultValue: 350 })
+  @props.audioparam(350)
   frequency() {}
 
-  @audioparam({ defaultValue: 0 })
+  @props.audioparam(0)
   detune() {}
 
-  @audioparam({ defaultValue: 1 })
+  @props.audioparam(1)
   Q() {}
 
-  @audioparam({ defaultValue: 0 })
+  @props.audioparam(0)
   gain() {}
 
   getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {

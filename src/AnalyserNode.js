@@ -1,9 +1,7 @@
 import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import AudioNode from "./AudioNode";
-import enumerate from "./decorators/enumerate";
-import readonly from "./decorators/readonly";
-import typedvalue from "./decorators/typedvalue";
+import * as props from "./decorators/props";
 
 let configuration = Configuration.getInstance();
 
@@ -25,21 +23,21 @@ export default class AnalyserNode extends AudioNode {
     this._.JSONKeys = AnalyserNode.$JSONKeys.slice();
   }
 
-  @enumerate([ 32, 64, 128, 256, 512, 1024, 2048 ], 2048)
+  @props.enum([ 32, 64, 128, 256, 512, 1024, 2048 ], 2048)
   fftSize() {}
 
-  @readonly()
+  @props.readonly()
   frequencyBinCount() {
     return this.fftSize >> 1;
   }
 
-  @typedvalue(-100, utils.isNumber, "number")
+  @props.typed(-100, utils.isNumber, "number")
   minDecibels() {}
 
-  @typedvalue(30, utils.isNumber, "number")
+  @props.typed(30, utils.isNumber, "number")
   maxDecibels() {}
 
-  @typedvalue(0.8, utils.isNumber, "number")
+  @props.typed(0.8, utils.isNumber, "number")
   smoothingTimeConstant() {}
 
   getFloatFrequencyData(array) {

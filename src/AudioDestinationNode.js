@@ -1,5 +1,5 @@
 import AudioNode from "./AudioNode";
-import readonly from "./decorators/readonly";
+import * as props from "./decorators/props";
 
 export default class AudioDestinationNode extends AudioNode {
   constructor(admission, context) {
@@ -16,7 +16,7 @@ export default class AudioDestinationNode extends AudioNode {
     this._.maxChannelCount = 2;
   }
 
-  @readonly()
+  @props.readonly()
   maxChannelCount() {
     return this._.maxChannelCount;
   }

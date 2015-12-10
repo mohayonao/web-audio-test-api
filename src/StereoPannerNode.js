@@ -1,6 +1,6 @@
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import audioparam from "./decorators/audioparam";
+import * as props from "./decorators/props";
 
 let immigration = Immigration.getInstance();
 
@@ -19,7 +19,7 @@ export default class StereoPannerNode extends AudioNode {
     this._.JSONKeys = StereoPannerNode.$JSONKeys.slice();
   }
 
-  @audioparam({ defaultValue: 0 })
+  @props.audioparam(0)
   pan() {}
 }
 

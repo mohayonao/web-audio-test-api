@@ -1,6 +1,6 @@
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import audioparam from "./decorators/audioparam";
+import * as props from "./decorators/props";
 
 let immigration = Immigration.getInstance();
 
@@ -19,22 +19,22 @@ export default class DynamicsCompressorNode extends AudioNode {
     this._.JSONKeys = DynamicsCompressorNode.$JSONKeys.slice();
   }
 
-  @audioparam({ defaultValue: -24 })
+  @props.audioparam(-24)
   threshold() {}
 
-  @audioparam({ defaultValue: 30 })
+  @props.audioparam(30)
   knee() {}
 
-  @audioparam({ defaultValue: 12 })
+  @props.audioparam(12)
   ratio() {}
 
-  @audioparam({ defaultValue: 0 })
+  @props.audioparam(0)
   reduction() {}
 
-  @audioparam({ defaultValue: 0.003 })
+  @props.audioparam(0.003)
   attack() {}
 
-  @audioparam({ defaultValue: 0.25 })
+  @props.audioparam(0.25)
   release() {}
 }
 

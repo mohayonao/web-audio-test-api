@@ -1,9 +1,9 @@
-import Immigration from "../utils/Immigration";
-import AudioParam from "../AudioParam";
+import Immigration from "../../utils/Immigration";
+import AudioParam from "../../AudioParam";
 
 const immigration = Immigration.getInstance();
 
-export default function audioparam({ defaultValue }) {
+export default function audioparam(defaultValue) {
   return (target, name) => {
     return {
       get() {

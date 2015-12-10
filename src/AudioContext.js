@@ -24,8 +24,7 @@ import PeriodicWave from "./PeriodicWave";
 import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
-import oncallback from "./decorators/oncallback";
-import readonly from "./decorators/readonly";
+import * as props from "./decorators/props";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -82,22 +81,22 @@ export default class AudioContext extends EventTarget {
     return utils.getAPIVersion();
   }
 
-  @readonly()
+  @props.readonly()
   destination() {
     return this._.destination;
   }
 
-  @readonly()
+  @props.readonly()
   sampleRate() {
     return this._.sampleRate;
   }
 
-  @readonly()
+  @props.readonly()
   currentTime() {
     return this._.microCurrentTime / (1000 * 1000);
   }
 
-  @readonly()
+  @props.readonly()
   listener() {
     return this._.listener;
   }
@@ -118,7 +117,7 @@ export default class AudioContext extends EventTarget {
     });
   }
 
-  @oncallback()
+  @props.on("statechange")
   onstatechange() {}
 
   get $name() {

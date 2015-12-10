@@ -4,9 +4,7 @@ import Immigration from "./utils/Immigration";
 import Junction from "./utils/Junction";
 import EventTarget from "./EventTarget";
 import AudioNodeDisconnectUtils from "./AudioNodeDisconnectUtils";
-import enumerate from "./decorators/enumerate";
-import readonly from "./decorators/readonly";
-import typedvalue from "./decorators/typedvalue";
+import * as props from "./decorators/props";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -41,28 +39,28 @@ export default class AudioNode extends EventTarget {
     });
   }
 
-  @readonly()
+  @props.readonly()
   context() {
     return this._.context;
   }
 
-  @readonly()
+  @props.readonly()
   numberOfInputs() {
     return this._.numberOfInputs;
   }
 
-  @readonly()
+  @props.readonly()
   numberOfOutputs() {
     return this._.numberOfOutputs;
   }
 
-  @typedvalue(2, utils.isPositiveInteger, "positive integer")
+  @props.typed(2, utils.isPositiveInteger, "positive integer")
   channelCount() {}
 
-  @enumerate([ "max", "clamped-max", "explicit" ])
+  @props.enum([ "max", "clamped-max", "explicit" ])
   channelCountMode() {}
 
-  @enumerate([ "speakers", "discrete" ])
+  @props.enum([ "speakers", "discrete" ])
   channelInterpretation() {}
 
   get $name() {

@@ -2,8 +2,8 @@ import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import Inspector from "./utils/Inspector";
 import Junction from "./utils/Junction";
-import readonly from "./decorators/readonly";
-import typevalue from "./decorators/typedvalue";
+import typed from "./decorators/props/typed";
+import readonly from "./decorators/props/readonly";
 
 let immigration = Immigration.getInstance();
 
@@ -102,7 +102,7 @@ export default class AudioParam {
     this._.tick = -1;
   }
 
-  @typevalue(0, utils.isNumber, "number")
+  @typed(0, utils.isNumber, "number")
   get value() {
     this._.value = this.$valueAtTime(this.$context.currentTime);
     return this._.value;

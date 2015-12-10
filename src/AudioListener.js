@@ -1,7 +1,7 @@
 import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import Inspector from "./utils/Inspector";
-import typedvalue from "./decorators/typedvalue";
+import * as props from "./decorators/props";
 
 let immigration = Immigration.getInstance();
 
@@ -22,10 +22,10 @@ export default class AudioListener {
     });
   }
 
-  @typedvalue(1, utils.isNumber, "number")
+  @props.typed(1, utils.isNumber, "number")
   dopplerFactor() {}
 
-  @typedvalue(343.3, utils.isNumber, "number")
+  @props.typed(343.3, utils.isNumber, "number")
   speedOfSound() {}
 
   get $name() {

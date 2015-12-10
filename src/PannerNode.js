@@ -1,7 +1,6 @@
 import utils from "./utils";
 import AudioNode from "./AudioNode";
-import enumerate from "./decorators/enumerate";
-import typedvalue from "./decorators/typedvalue";
+import * as props from "./decorators/props";
 
 export default class PannerNode extends AudioNode {
   constructor(admission, context) {
@@ -22,28 +21,28 @@ export default class PannerNode extends AudioNode {
     this._.JSONKeys = PannerNode.$JSONKeys.slice();
   }
 
-  @enumerate([ "HRTF", "equalpower" ])
+  @props.enum([ "HRTF", "equalpower" ])
   panningModel() {}
 
-  @enumerate([ "inverse", "linear", "exponential" ])
+  @props.enum([ "inverse", "linear", "exponential" ])
   distanceModel() {}
 
-  @typedvalue(1, utils.isNumber, "number")
+  @props.typed(1, utils.isNumber, "number")
   refDistance() {}
 
-  @typedvalue(10000, utils.isNumber, "number")
+  @props.typed(10000, utils.isNumber, "number")
   maxDistance() {}
 
-  @typedvalue(1, utils.isNumber, "number")
+  @props.typed(1, utils.isNumber, "number")
   rolloffFactor() {}
 
-  @typedvalue(360, utils.isNumber, "number")
+  @props.typed(360, utils.isNumber, "number")
   coneInnerAngle() {}
 
-  @typedvalue(360, utils.isNumber, "number")
+  @props.typed(360, utils.isNumber, "number")
   coneOuterAngle() {}
 
-  @typedvalue(0, utils.isNumber, "number")
+  @props.typed(0, utils.isNumber, "number")
   coneOuterGain() {}
 
   setPosition(x, y, z) {

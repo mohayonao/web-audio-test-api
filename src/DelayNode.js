@@ -1,7 +1,7 @@
 import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import audioparam from "./decorators/audioparam";
+import * as props from "./decorators/props";
 
 let immigration = Immigration.getInstance();
 
@@ -30,7 +30,7 @@ export default class DelayNode extends AudioNode {
     this._.JSONKeys = DelayNode.$JSONKeys.slice();
   }
 
-  @audioparam({ defaultValue: 0 })
+  @props.audioparam(0)
   delayTime() {}
 
   get $maxDelayTime() {

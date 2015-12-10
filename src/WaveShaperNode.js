@@ -1,7 +1,6 @@
 import utils from "./utils";
 import AudioNode from "./AudioNode";
-import enumerate from "./decorators/enumerate";
-import typedvalue from "./decorators/typedvalue";
+import * as props from "./decorators/props";
 
 export default class WaveShaperNode extends AudioNode {
   constructor(admission, context) {
@@ -20,10 +19,10 @@ export default class WaveShaperNode extends AudioNode {
     this._.JSONKeys = WaveShaperNode.$JSONKeys.slice();
   }
 
-  @typedvalue(null, value => utils.isNullOrInstanceOf(value, Float32Array), "Float32Array")
+  @props.typed(null, value => utils.isNullOrInstanceOf(value, Float32Array), "Float32Array")
   curve() {}
 
-  @enumerate([ "none", "2x", "4x" ])
+  @props.enum([ "none", "2x", "4x" ])
   oversample() {}
 }
 

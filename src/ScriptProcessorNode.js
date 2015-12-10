@@ -4,8 +4,7 @@ import Enumerator from "./utils/Enumerator";
 import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import AudioProcessingEvent from "./AudioProcessingEvent";
-import oncallback from "./decorators/oncallback";
-import readonly from "./decorators/readonly";
+import * as props from "./decorators/props";
 
 let immigration = Immigration.getInstance();
 
@@ -54,12 +53,12 @@ export default class ScriptProcessorNode extends AudioNode {
     this._.numSamples = 0;
   }
 
-  @readonly()
+  @props.readonly()
   bufferSize() {
     return this._.bufferSize;
   }
 
-  @oncallback();
+  @props.on("audioprocess");
   onaudioprocess() {}
 
   _process(inNumSamples) {

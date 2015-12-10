@@ -2,7 +2,7 @@ import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Inspector from "./utils/Inspector";
-import readonly from "./decorators/readonly";
+import * as props from "./decorators/props";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -53,22 +53,22 @@ export default class AudioBuffer {
     }
   }
 
-  @readonly()
+  @props.readonly()
   sampleRate() {
     return this._.sampleRate;
   }
 
-  @readonly()
+  @props.readonly()
   length() {
     return this._.length;
   }
 
-  @readonly()
+  @props.readonly()
   duration() {
     return this.length / this.sampleRate;
   }
 
-  @readonly()
+  @props.readonly()
   numberOfChannels() {
     return this._.numberOfChannels;
   }

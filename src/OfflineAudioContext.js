@@ -5,7 +5,7 @@ import Event from "./Event";
 import AudioContext from "./AudioContext";
 import AudioBuffer from "./AudioBuffer";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
-import oncallback from "./decorators/oncallback";
+import * as props from "./decorators/props";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -67,7 +67,7 @@ export default class OfflineAudioContext extends AudioContext {
     this._.state = "suspended";
   }
 
-  @oncallback()
+  @props.on("complete")
   oncomplete() {}
 
   get $name() {

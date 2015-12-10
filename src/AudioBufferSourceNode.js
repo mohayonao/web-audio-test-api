@@ -2,9 +2,7 @@ import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import Event from "./Event";
-import audioparam from "./decorators/audioparam";
-import oncallback from "./decorators/oncallback";
-import typedvalue from "./decorators/typedvalue";
+import * as props from "./decorators/props";
 
 let immigration = Immigration.getInstance();
 
@@ -30,25 +28,25 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.JSONKeys = AudioBufferSourceNode.$JSONKeys.slice();
   }
 
-  @typedvalue(null, value => utils.isNullOrInstanceOf(value, global.AudioBuffer), "AudioBuffer")
+  @props.typed(null, value => utils.isNullOrInstanceOf(value, global.AudioBuffer), "AudioBuffer")
   buffer() {}
 
-  @audioparam({ defaultValue: 1 })
+  @props.audioparam(1)
   playbackRate() {}
 
-  @audioparam({ defaultValue: 0 })
+  @props.audioparam(0)
   detune() {}
 
-  @typedvalue(false, utils.isBoolean, "boolean")
+  @props.typed(false, utils.isBoolean, "boolean")
   loop() {}
 
-  @typedvalue(0, utils.isPositiveNumber, "positive number")
+  @props.typed(0, utils.isPositiveNumber, "positive number")
   loopStart() {}
 
-  @typedvalue(0, utils.isPositiveNumber, "positive number")
+  @props.typed(0, utils.isPositiveNumber, "positive number")
   loopEnd() {}
 
-  @oncallback()
+  @props.on("ended")
   onended() {}
 
   get $state() {

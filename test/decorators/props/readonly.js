@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import readonly from "../../src/decorators/readonly";
+import readonly from "../../../src/decorators/props/readonly";
 
 describe("@readonly()", () => {
   it("defines a readonly property", () => {

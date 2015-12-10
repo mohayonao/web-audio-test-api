@@ -1,10 +1,8 @@
 import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import audioparam from "./decorators/audioparam";
-import enumerate from "./decorators/enumerate";
 import Event from "./Event";
-import oncallback from "./decorators/oncallback";
+import * as props from "./decorators/props";
 
 let immigration = Immigration.getInstance();
 
@@ -27,16 +25,16 @@ export default class OscillatorNode extends AudioNode {
     this._.JSONKeys = OscillatorNode.$JSONKeys.slice();
   }
 
-  @enumerate([ "sine", "square", "sawtooth", "triangle" ])
+  @props.enum([ "sine", "square", "sawtooth", "triangle" ])
   type() {}
 
-  @audioparam({ defaultValue: 440 })
+  @props.audioparam(440)
   frequency() {}
 
-  @audioparam({ defaultValue: 0 })
+  @props.audioparam(0)
   detune() {}
 
-  @oncallback()
+  @props.on("ended")
   onended() {}
 
   get $state() {

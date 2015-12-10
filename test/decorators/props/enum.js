@@ -1,14 +1,14 @@
 import assert from "power-assert";
-import enumerate from "../../src/decorators/enumerate";
+import _eum from "../../../src/decorators/props/enum";
 
-describe("@enumerate(values: any[], [ defaultValue: any ])", () => {
+describe("@props.enum(values: any[], [ defaultValue: any ])", () => {
   it("defines an enum property", () => {
     class Foo {
       constructor() {
         this._ = {};
       }
 
-      @enumerate([ "a", "b", "c" ])
+      @_eum([ "a", "b", "c" ])
       bar() {}
     }
 
