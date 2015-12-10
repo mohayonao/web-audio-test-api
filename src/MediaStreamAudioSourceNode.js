@@ -13,8 +13,8 @@ export default class MediaStreamAudioSourceNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.inspector.describe("constructor", (assert) => {
-      assert(utils.isInstanceOf(mediaStream, global.MediaStream), (fmt) => {
+    this._.inspector.describe("constructor", ($assert) => {
+      $assert(utils.isInstanceOf(mediaStream, global.MediaStream), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(mediaStream, "mediaStream", "MediaStream")}

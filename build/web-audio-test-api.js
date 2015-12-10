@@ -1,42 +1,42 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]),
     _templateObject2 = _taggedTemplateLiteral(["\n          ", ";\n          not enabled\n        "], ["\n          ", ";\n          not enabled\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsConfiguration = require("./utils/Configuration");
+var _Configuration = require("./utils/Configuration");
 
-var _utilsConfiguration2 = _interopRequireDefault(_utilsConfiguration);
+var _Configuration2 = _interopRequireDefault(_Configuration);
 
-var _utilsEnumerator = require("./utils/Enumerator");
+var _Enumerator = require("./utils/Enumerator");
 
-var _utilsEnumerator2 = _interopRequireDefault(_utilsEnumerator);
+var _Enumerator2 = _interopRequireDefault(_Enumerator);
 
 var _AudioNode2 = require("./AudioNode");
 
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
-var configuration = _utilsConfiguration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var configuration = _Configuration2.default.getInstance();
 
 var AnalyserNode = (function (_AudioNode) {
   _inherits(AnalyserNode, _AudioNode);
@@ -44,7 +44,7 @@ var AnalyserNode = (function (_AudioNode) {
   function AnalyserNode(admission, context) {
     _classCallCheck(this, AnalyserNode);
 
-    _get(Object.getPrototypeOf(AnalyserNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AnalyserNode).call(this, admission, {
       name: "AnalyserNode",
       context: context,
       numberOfInputs: 1,
@@ -52,20 +52,21 @@ var AnalyserNode = (function (_AudioNode) {
       channelCount: 1,
       channelCountMode: "explicit",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.fftSize = 2048;
-    this._.minDecibels = -100;
-    this._.maxDecibels = 30;
-    this._.smoothingTimeConstant = 0.8;
-    this._.JSONKeys = AnalyserNode.$JSONKeys.slice();
+    _this._.fftSize = 2048;
+    _this._.minDecibels = -100;
+    _this._.maxDecibels = 30;
+    _this._.smoothingTimeConstant = 0.8;
+    _this._.JSONKeys = AnalyserNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(AnalyserNode, [{
     key: "getFloatFrequencyData",
     value: function getFloatFrequencyData(array) {
-      this._.inspector.describe("getFloatFrequencyData", function (assert) {
-        assert(_utils2["default"].isInstanceOf(array, Float32Array), function (fmt) {
+      this._.inspector.describe("getFloatFrequencyData", function ($assert) {
+        $assert(_utils2.default.isInstanceOf(array, Float32Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(array, "array", "Float32Array")));
         });
       });
@@ -73,8 +74,8 @@ var AnalyserNode = (function (_AudioNode) {
   }, {
     key: "getByteFrequencyData",
     value: function getByteFrequencyData(array) {
-      this._.inspector.describe("getByteFrequencyData", function (assert) {
-        assert(_utils2["default"].isInstanceOf(array, Uint8Array), function (fmt) {
+      this._.inspector.describe("getByteFrequencyData", function ($assert) {
+        $assert(_utils2.default.isInstanceOf(array, Uint8Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(array, "array", "Uint8Array")));
         });
       });
@@ -82,11 +83,11 @@ var AnalyserNode = (function (_AudioNode) {
   }, {
     key: "getFloatTimeDomainData",
     value: function getFloatTimeDomainData(array) {
-      this._.inspector.describe("getFloatTimeDomainData", function (assert) {
-        assert(configuration.getState("AnalyserNode#getFloatTimeDomainData") === "enabled", function (fmt) {
+      this._.inspector.describe("getFloatTimeDomainData", function ($assert) {
+        $assert(configuration.getState("AnalyserNode#getFloatTimeDomainData") === "enabled", function (fmt) {
           throw new TypeError(fmt.plain(_templateObject2, fmt.form));
         });
-        assert(_utils2["default"].isInstanceOf(array, Float32Array), function (fmt) {
+        $assert(_utils2.default.isInstanceOf(array, Float32Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(array, "array", "Float32Array")));
         });
       });
@@ -94,8 +95,8 @@ var AnalyserNode = (function (_AudioNode) {
   }, {
     key: "getByteTimeDomainData",
     value: function getByteTimeDomainData(array) {
-      this._.inspector.describe("getByteTimeDomainData", function (assert) {
-        assert(_utils2["default"].isInstanceOf(array, Uint8Array), function (fmt) {
+      this._.inspector.describe("getByteTimeDomainData", function ($assert) {
+        $assert(_utils2.default.isInstanceOf(array, Uint8Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(array, "array", "Uint8Array")));
         });
       });
@@ -106,10 +107,10 @@ var AnalyserNode = (function (_AudioNode) {
       return this._.fftSize;
     },
     set: function set(value) {
-      this._.inspector.describe("fftSize", function (assert) {
-        var enumFFTSize = new _utilsEnumerator2["default"]([32, 64, 128, 256, 512, 1024, 2048]);
+      this._.inspector.describe("fftSize", function ($assert) {
+        var enumFFTSize = new _Enumerator2.default([32, 64, 128, 256, 512, 1024, 2048]);
 
-        assert(enumFFTSize.contains(value), function (fmt) {
+        $assert(enumFFTSize.contains(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "fftSize", enumFFTSize.toString())));
         });
       });
@@ -122,8 +123,8 @@ var AnalyserNode = (function (_AudioNode) {
       return this.fftSize >> 1;
     },
     set: function set(value) {
-      this._.inspector.describe("frequencyBinCount", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("frequencyBinCount", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -132,8 +133,8 @@ var AnalyserNode = (function (_AudioNode) {
       return this._.minDecibels;
     },
     set: function set(value) {
-      this._.inspector.describe("minDecibels", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("minDecibels", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "minDecibels", "number")));
         });
       });
@@ -146,8 +147,8 @@ var AnalyserNode = (function (_AudioNode) {
       return this._.maxDecibels;
     },
     set: function set(value) {
-      this._.inspector.describe("maxDecibels", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("maxDecibels", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "maxDecibels", "number")));
         });
       });
@@ -160,8 +161,8 @@ var AnalyserNode = (function (_AudioNode) {
       return this._.smoothingTimeConstant;
     },
     set: function set(value) {
-      this._.inspector.describe("smoothingTimeConstant", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("smoothingTimeConstant", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "smoothingTimeConstant", "number")));
         });
       });
@@ -171,19 +172,14 @@ var AnalyserNode = (function (_AudioNode) {
   }]);
 
   return AnalyserNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = AnalyserNode;
+exports.default = AnalyserNode;
 
 AnalyserNode.$JSONKeys = ["fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant"];
-module.exports = exports["default"];
 
 },{"./AudioNode":7,"./utils":44,"./utils/Configuration":37,"./utils/Enumerator":38}],2:[function(require,module,exports){
 "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -193,30 +189,34 @@ var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "
     _templateObject4 = _taggedTemplateLiteral(["\n          ", ";\n          The channelNumber provided (", ") is outside the range [0, ", ")\n        "], ["\n          ", ";\n          The channelNumber provided (", ") is outside the range [0, ", ")\n        "]),
     _templateObject5 = _taggedTemplateLiteral(["\n          ", ";\n          The startInChannel provided (", ") is outside the range [0, ", ").\n        "], ["\n          ", ";\n          The startInChannel provided (", ") is outside the range [0, ", ").\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsConfiguration = require("./utils/Configuration");
+var _Configuration = require("./utils/Configuration");
 
-var _utilsConfiguration2 = _interopRequireDefault(_utilsConfiguration);
+var _Configuration2 = _interopRequireDefault(_Configuration);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
-var _utilsInspector = require("./utils/Inspector");
+var _Inspector = require("./utils/Inspector");
 
-var _utilsInspector2 = _interopRequireDefault(_utilsInspector);
+var _Inspector2 = _interopRequireDefault(_Inspector);
 
-var configuration = _utilsConfiguration2["default"].getInstance();
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var configuration = _Configuration2.default.getInstance();
+var immigration = _Immigration2.default.getInstance();
 
 var AudioBuffer = (function () {
   function AudioBuffer(admission, context, numberOfChannels, length, sampleRate) {
@@ -228,20 +228,20 @@ var AudioBuffer = (function () {
 
     Object.defineProperty(this, "_", {
       value: {
-        inspector: new _utilsInspector2["default"](this)
+        inspector: new _Inspector2.default(this)
       }
     });
 
-    this._.inspector.describe("constructor", function (assert) {
-      assert(_utils2["default"].isPositiveInteger(numberOfChannels), function (fmt) {
+    this._.inspector.describe("constructor", function ($assert) {
+      $assert(_utils2.default.isPositiveInteger(numberOfChannels), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(numberOfChannels, "numberOfChannels", "positive integer")));
       });
 
-      assert(_utils2["default"].isPositiveInteger(length), function (fmt) {
+      $assert(_utils2.default.isPositiveInteger(length), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(length, "length", "positive integer")));
       });
 
-      assert(_utils2["default"].isPositiveInteger(sampleRate), function (fmt) {
+      $assert(_utils2.default.isPositiveInteger(sampleRate), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(sampleRate, "sampleRate", "positive integer")));
       });
     });
@@ -262,12 +262,12 @@ var AudioBuffer = (function () {
     value: function getChannelData(channel) {
       var _this = this;
 
-      this._.inspector.describe("getChannelData", function (assert) {
-        assert(_utils2["default"].isPositiveInteger(channel), function (fmt) {
+      this._.inspector.describe("getChannelData", function ($assert) {
+        $assert(_utils2.default.isPositiveInteger(channel), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(channel, "channel", "positive integer")));
         });
 
-        assert(channel < _this._.data.length, function (fmt) {
+        $assert(channel < _this._.data.length, function (fmt) {
           throw new TypeError(fmt.plain(_templateObject2, fmt.form, channel, _this._.data.length));
         });
       });
@@ -283,28 +283,28 @@ var AudioBuffer = (function () {
         startInChannel = 0;
       }
 
-      this._.inspector.describe("copyFromChannel", function (assert) {
-        assert(configuration.getState("AudioBuffer#copyFromChannel") === "enabled", function (fmt) {
+      this._.inspector.describe("copyFromChannel", function ($assert) {
+        $assert(configuration.getState("AudioBuffer#copyFromChannel") === "enabled", function (fmt) {
           throw new TypeError(fmt.plain(_templateObject3, fmt.form));
         });
 
-        assert(_utils2["default"].isInstanceOf(destination, Float32Array), function (fmt) {
+        $assert(_utils2.default.isInstanceOf(destination, Float32Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(destination, "destination", "Float32Array")));
         });
 
-        assert(_utils2["default"].isPositiveInteger(channelNumber), function (fmt) {
+        $assert(_utils2.default.isPositiveInteger(channelNumber), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(channelNumber, "channelNumber", "positive integer")));
         });
 
-        assert(_utils2["default"].isPositiveInteger(startInChannel), function (fmt) {
+        $assert(_utils2.default.isPositiveInteger(startInChannel), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(channelNumber, "startInChannel", "positive integer")));
         });
 
-        assert(0 <= channelNumber && channelNumber < _this2._.data.length, function (fmt) {
+        $assert(0 <= channelNumber && channelNumber < _this2._.data.length, function (fmt) {
           throw new TypeError(fmt.plain(_templateObject4, fmt.form, channelNumber, _this2._.data.length));
         });
 
-        assert(0 <= startInChannel && startInChannel < _this2._.length, function (fmt) {
+        $assert(0 <= startInChannel && startInChannel < _this2._.length, function (fmt) {
           throw new TypeError(fmt.plain(_templateObject5, fmt.form, startInChannel, _this2._.length));
         });
       });
@@ -322,28 +322,28 @@ var AudioBuffer = (function () {
         startInChannel = 0;
       }
 
-      this._.inspector.describe("copyToChannel", function (assert) {
-        assert(configuration.getState("AudioBuffer#copyToChannel") === "enabled", function (fmt) {
+      this._.inspector.describe("copyToChannel", function ($assert) {
+        $assert(configuration.getState("AudioBuffer#copyToChannel") === "enabled", function (fmt) {
           throw new TypeError(fmt.plain(_templateObject3, fmt.form));
         });
 
-        assert(_utils2["default"].isInstanceOf(source, Float32Array), function (fmt) {
+        $assert(_utils2.default.isInstanceOf(source, Float32Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(source, "destination", "Float32Array")));
         });
 
-        assert(_utils2["default"].isPositiveInteger(channelNumber), function (fmt) {
+        $assert(_utils2.default.isPositiveInteger(channelNumber), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(channelNumber, "channelNumber", "positive integer")));
         });
 
-        assert(_utils2["default"].isPositiveInteger(startInChannel), function (fmt) {
+        $assert(_utils2.default.isPositiveInteger(startInChannel), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(channelNumber, "startInChannel", "positive integer")));
         });
 
-        assert(0 <= channelNumber && channelNumber < _this3._.data.length, function (fmt) {
+        $assert(0 <= channelNumber && channelNumber < _this3._.data.length, function (fmt) {
           throw new TypeError(fmt.plain(_templateObject4, fmt.form, channelNumber, _this3._.data.length));
         });
 
-        assert(0 <= startInChannel && startInChannel < _this3._.length, function (fmt) {
+        $assert(0 <= startInChannel && startInChannel < _this3._.length, function (fmt) {
           throw new TypeError(fmt.plain(_templateObject5, fmt.form, startInChannel, _this3._.length));
         });
       });
@@ -377,8 +377,8 @@ var AudioBuffer = (function () {
       return this._.sampleRate;
     },
     set: function set(value) {
-      this._.inspector.describe("sampleRate", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("sampleRate", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -387,8 +387,8 @@ var AudioBuffer = (function () {
       return this._.length;
     },
     set: function set(value) {
-      this._.inspector.describe("length", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("length", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -397,8 +397,8 @@ var AudioBuffer = (function () {
       return this.length / this.sampleRate;
     },
     set: function set(value) {
-      this._.inspector.describe("duration", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("duration", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -407,8 +407,8 @@ var AudioBuffer = (function () {
       return this._.numberOfChannels;
     },
     set: function set(value) {
-      this._.inspector.describe("numberOfChannels", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("numberOfChannels", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -426,41 +426,30 @@ var AudioBuffer = (function () {
   return AudioBuffer;
 })();
 
-exports["default"] = AudioBuffer;
-module.exports = exports["default"];
+exports.default = AudioBuffer;
 
 },{"./utils":44,"./utils/Configuration":37,"./utils/Immigration":40,"./utils/Inspector":41}],3:[function(require,module,exports){
 (function (global){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]),
     _templateObject2 = _taggedTemplateLiteral(["\n          ", ";\n          cannot start more than once\n        "], ["\n          ", ";\n          cannot start more than once\n        "]),
     _templateObject3 = _taggedTemplateLiteral(["\n          ", ";\n          cannot call stop without calling start first\n        "], ["\n          ", ";\n          cannot call stop without calling start first\n        "]),
     _templateObject4 = _taggedTemplateLiteral(["\n          ", ";\n          cannot stop more than once\n        "], ["\n          ", ";\n          cannot stop more than once\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _AudioNode2 = require("./AudioNode");
 
@@ -474,17 +463,25 @@ var _Event = require("./Event");
 
 var _Event2 = _interopRequireDefault(_Event);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var immigration = _Immigration2.default.getInstance();
 
 var AudioBufferSourceNode = (function (_AudioNode) {
   _inherits(AudioBufferSourceNode, _AudioNode);
 
   function AudioBufferSourceNode(admission, context) {
-    var _this = this;
-
     _classCallCheck(this, AudioBufferSourceNode);
 
-    _get(Object.getPrototypeOf(AudioBufferSourceNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AudioBufferSourceNode).call(this, admission, {
       name: "AudioBufferSourceNode",
       context: context,
       numberOfInputs: 0,
@@ -492,23 +489,24 @@ var AudioBufferSourceNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.buffer = null;
-    this._.playbackRate = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "playbackRate", 1, 0, 1024);
+    _this._.buffer = null;
+    _this._.playbackRate = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "playbackRate", 1, 0, 1024);
     });
-    this._.detune = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "detune", 0, -4800, 4800);
+    _this._.detune = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "detune", 0, -4800, 4800);
     });
-    this._.loop = false;
-    this._.loopStart = 0;
-    this._.loopEnd = 0;
-    this._.onended = null;
-    this._.startTime = Infinity;
-    this._.stopTime = Infinity;
-    this._.firedOnEnded = false;
-    this._.JSONKeys = AudioBufferSourceNode.$JSONKeys.slice();
+    _this._.loop = false;
+    _this._.loopStart = 0;
+    _this._.loopEnd = 0;
+    _this._.onended = null;
+    _this._.startTime = Infinity;
+    _this._.stopTime = Infinity;
+    _this._.firedOnEnded = false;
+    _this._.JSONKeys = AudioBufferSourceNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(AudioBufferSourceNode, [{
@@ -526,20 +524,20 @@ var AudioBufferSourceNode = (function (_AudioNode) {
         when = 0;
       }
 
-      this._.inspector.describe("start", ["when", "offset", "duration"], function (assert) {
-        assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
+      this._.inspector.describe("start", ["when", "offset", "duration"], function ($assert) {
+        $assert(_utils2.default.isPositiveNumber(when), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(when, "when", "positive number")));
         });
 
-        assert(_utils2["default"].isPositiveNumber(offset), function (fmt) {
+        $assert(_utils2.default.isPositiveNumber(offset), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(offset, "offset", "positive number")));
         });
 
-        assert(_utils2["default"].isPositiveNumber(duration), function (fmt) {
+        $assert(_utils2.default.isPositiveNumber(duration), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(duration, "duration", "positive number")));
         });
 
-        assert(_this2._.startTime === Infinity, function (fmt) {
+        $assert(_this2._.startTime === Infinity, function (fmt) {
           throw new Error(fmt.plain(_templateObject2, fmt.form));
         });
       });
@@ -555,16 +553,16 @@ var AudioBufferSourceNode = (function (_AudioNode) {
         when = 0;
       }
 
-      this._.inspector.describe("stop", ["when"], function (assert) {
-        assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
+      this._.inspector.describe("stop", ["when"], function ($assert) {
+        $assert(_utils2.default.isPositiveNumber(when), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(when, "when", "positive number")));
         });
 
-        assert(_this3._.startTime !== Infinity, function (fmt) {
+        $assert(_this3._.startTime !== Infinity, function (fmt) {
           throw new Error(fmt.plain(_templateObject3, fmt.form));
         });
 
-        assert(_this3._.stopTime === Infinity, function (fmt) {
+        $assert(_this3._.stopTime === Infinity, function (fmt) {
           throw new Error(fmt.plain(_templateObject4, fmt.form));
         });
       });
@@ -574,7 +572,7 @@ var AudioBufferSourceNode = (function (_AudioNode) {
   }, {
     key: "$stateAtTime",
     value: function $stateAtTime(_time) {
-      var time = _utils2["default"].toSeconds(_time);
+      var time = _utils2.default.toSeconds(_time);
 
       if (this._.startTime === Infinity) {
         return "UNSCHEDULED";
@@ -599,7 +597,7 @@ var AudioBufferSourceNode = (function (_AudioNode) {
     key: "_process",
     value: function _process() {
       if (!this._.firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
-        this.dispatchEvent(new _Event2["default"]("ended", this));
+        this.dispatchEvent(new _Event2.default("ended", this));
         this._.firedOnEnded = true;
       }
     }
@@ -609,8 +607,8 @@ var AudioBufferSourceNode = (function (_AudioNode) {
       return this._.buffer;
     },
     set: function set(value) {
-      this._.inspector.describe("buffer", function (assert) {
-        assert(_utils2["default"].isNullOrInstanceOf(value, global.AudioBuffer), function (fmt) {
+      this._.inspector.describe("buffer", function ($assert) {
+        $assert(_utils2.default.isNullOrInstanceOf(value, global.AudioBuffer), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "buffer", "AudioBuffer")));
         });
       });
@@ -623,8 +621,8 @@ var AudioBufferSourceNode = (function (_AudioNode) {
       return this._.playbackRate;
     },
     set: function set(value) {
-      this._.inspector.describe("playbackRate", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("playbackRate", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -633,8 +631,8 @@ var AudioBufferSourceNode = (function (_AudioNode) {
       return this._.detune;
     },
     set: function set(value) {
-      this._.inspector.describe("detune", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("detune", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -643,8 +641,8 @@ var AudioBufferSourceNode = (function (_AudioNode) {
       return this._.loop;
     },
     set: function set(value) {
-      this._.inspector.describe("loop", function (assert) {
-        assert(_utils2["default"].isBoolean(value), function (fmt) {
+      this._.inspector.describe("loop", function ($assert) {
+        $assert(_utils2.default.isBoolean(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "loop", "boolean")));
         });
       });
@@ -657,8 +655,8 @@ var AudioBufferSourceNode = (function (_AudioNode) {
       return this._.loopStart;
     },
     set: function set(value) {
-      this._.inspector.describe("loopStart", function (assert) {
-        assert(_utils2["default"].isPositiveNumber(value), function (fmt) {
+      this._.inspector.describe("loopStart", function ($assert) {
+        $assert(_utils2.default.isPositiveNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "loopStart", "positive number")));
         });
       });
@@ -671,8 +669,8 @@ var AudioBufferSourceNode = (function (_AudioNode) {
       return this._.loopEnd;
     },
     set: function set(value) {
-      this._.inspector.describe("loopEnd", function (assert) {
-        assert(_utils2["default"].isPositiveNumber(value), function (fmt) {
+      this._.inspector.describe("loopEnd", function ($assert) {
+        $assert(_utils2.default.isPositiveNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "loopEnd", "positive number")));
         });
       });
@@ -685,8 +683,8 @@ var AudioBufferSourceNode = (function (_AudioNode) {
       return this._.onended;
     },
     set: function set(value) {
-      this._.inspector.describe("onended", function (assert) {
-        assert(_utils2["default"].isNullOrFunction(value), function (fmt) {
+      this._.inspector.describe("onended", function ($assert) {
+        $assert(_utils2.default.isNullOrFunction(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "onended", "function")));
         });
       });
@@ -711,51 +709,40 @@ var AudioBufferSourceNode = (function (_AudioNode) {
   }]);
 
   return AudioBufferSourceNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = AudioBufferSourceNode;
+exports.default = AudioBufferSourceNode;
 
 AudioBufferSourceNode.$JSONKeys = ["buffer", "playbackRate", "loop", "loopStart", "loopEnd"];
-module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./AudioNode":7,"./AudioParam":9,"./Event":18,"./utils":44,"./utils/Immigration":40}],4:[function(require,module,exports){
 (function (global){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _templateObject = _taggedTemplateLiteral(["\n        ", ";\n        not enabled\n      "], ["\n        ", ";\n        not enabled\n      "]),
     _templateObject2 = _taggedTemplateLiteral(["\n          ", ";\n          Cannot ", " a context that is being closed or has already been closed\n        "], ["\n          ", ";\n          Cannot ", " a context that is being closed or has already been closed\n        "]),
-    _templateObject3 = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]),
-    _templateObject4 = _taggedTemplateLiteral(["\n            ", ";\n            ", "\n          "], ["\n            ", ";\n            ", "\n          "]),
-    _templateObject5 = _taggedTemplateLiteral(["\n          ", ";\n          not enabled\n        "], ["\n          ", ";\n          not enabled\n        "]);
+    _templateObject3 = _taggedTemplateLiteral(["\n            ", ";\n            ", "\n          "], ["\n            ", ";\n            ", "\n          "]),
+    _templateObject4 = _taggedTemplateLiteral(["\n          ", ";\n          not enabled\n        "], ["\n          ", ";\n          not enabled\n        "]),
+    _templateObject5 = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsConfiguration = require("./utils/Configuration");
+var _Configuration = require("./utils/Configuration");
 
-var _utilsConfiguration2 = _interopRequireDefault(_utilsConfiguration);
+var _Configuration2 = _interopRequireDefault(_Configuration);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _Event = require("./Event");
 
@@ -849,8 +836,18 @@ var _WaveShaperNode = require("./WaveShaperNode");
 
 var _WaveShaperNode2 = _interopRequireDefault(_WaveShaperNode);
 
-var configuration = _utilsConfiguration2["default"].getInstance();
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var configuration = _Configuration2.default.getInstance();
+var immigration = _Immigration2.default.getInstance();
 
 function isEnabledState() {
   return configuration.getState("AudioContext#suspend") === "enabled" || configuration.getState("AudioContext#resume") === "enabled" || configuration.getState("AudioContext#close") === "enabled";
@@ -859,15 +856,15 @@ function isEnabledState() {
 function transitionToState(methodName, callback) {
   var _this = this;
 
-  this._.inspector.describe(methodName, [], function (assert) {
-    assert(configuration.getState("AudioContext#" + methodName) === "enabled", function (fmt) {
+  this._.inspector.describe(methodName, [], function ($assert) {
+    $assert(configuration.getState("AudioContext#" + methodName) === "enabled", function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form));
     });
   });
 
   return new Promise(function (resolve, reject) {
-    _this._.inspector.describe(methodName, [], function (assert) {
-      assert(_this._.state !== "closed", function (fmt) {
+    _this._.inspector.describe(methodName, [], function ($assert) {
+      $assert(_this._.state !== "closed", function (fmt) {
         reject(new Error(fmt.plain(_templateObject2, fmt.form, methodName)));
       });
     });
@@ -881,24 +878,23 @@ var AudioContext = (function (_EventTarget) {
   _inherits(AudioContext, _EventTarget);
 
   function AudioContext() {
-    var _this2 = this;
-
     _classCallCheck(this, AudioContext);
 
-    _get(Object.getPrototypeOf(AudioContext.prototype), "constructor", this).call(this);
+    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(AudioContext).call(this));
 
-    this._.destination = immigration.apply(function (admission) {
-      return new _AudioDestinationNode2["default"](admission, _this2);
+    _this2._.destination = immigration.apply(function (admission) {
+      return new _AudioDestinationNode2.default(admission, _this2);
     });
-    this._.sampleRate = global.WebAudioTestAPI.sampleRate;
-    this._.listener = immigration.apply(function (admission) {
-      return new _AudioListener2["default"](admission, _this2);
+    _this2._.sampleRate = global.WebAudioTestAPI.sampleRate;
+    _this2._.listener = immigration.apply(function (admission) {
+      return new _AudioListener2.default(admission, _this2);
     });
-    this._.microCurrentTime = 0;
-    this._.processedSamples = 0;
-    this._.tick = 0;
-    this._.state = "running";
-    this._.onstatechange = null;
+    _this2._.microCurrentTime = 0;
+    _this2._.processedSamples = 0;
+    _this2._.tick = 0;
+    _this2._.state = "running";
+    _this2._.onstatechange = null;
+    return _this2;
   }
 
   _createClass(AudioContext, [{
@@ -909,7 +905,7 @@ var AudioContext = (function (_EventTarget) {
       return transitionToState.call(this, "suspend", function () {
         if (_this3._.state === "running") {
           _this3._.state = "suspended";
-          _this3.dispatchEvent(new _Event2["default"]("statechange", _this3));
+          _this3.dispatchEvent(new _Event2.default("statechange", _this3));
         }
       });
     }
@@ -921,7 +917,7 @@ var AudioContext = (function (_EventTarget) {
       return transitionToState.call(this, "resume", function () {
         if (_this4._.state === "suspended") {
           _this4._.state = "running";
-          _this4.dispatchEvent(new _Event2["default"]("statechange", _this4));
+          _this4.dispatchEvent(new _Event2.default("statechange", _this4));
         }
       });
     }
@@ -934,7 +930,7 @@ var AudioContext = (function (_EventTarget) {
         if (_this5._.state !== "closed") {
           _this5._.state = "closed";
           _this5.$reset();
-          _this5.dispatchEvent(new _Event2["default"]("statechange", _this5));
+          _this5.dispatchEvent(new _Event2.default("statechange", _this5));
         }
       });
     }
@@ -944,7 +940,7 @@ var AudioContext = (function (_EventTarget) {
       var _this6 = this;
 
       return immigration.apply(function (admission) {
-        return new _AudioBuffer2["default"](admission, _this6, numberOfChannels, length, sampleRate);
+        return new _AudioBuffer2.default(admission, _this6, numberOfChannels, length, sampleRate);
       });
     }
   }, {
@@ -957,43 +953,43 @@ var AudioContext = (function (_EventTarget) {
           errorCallback = undefined;
 
       if (isPromiseBased) {
-        successCallback = _utils2["default"].defaults(_successCallback, function () {});
-        errorCallback = _utils2["default"].defaults(_errorCallback, function () {});
+        successCallback = _utils2.default.defaults(_successCallback, function () {});
+        errorCallback = _utils2.default.defaults(_errorCallback, function () {});
       } else {
         successCallback = _successCallback;
-        errorCallback = _utils2["default"].defaults(_errorCallback, function () {});
+        errorCallback = _utils2.default.defaults(_errorCallback, function () {});
       }
 
-      function assertion() {
-        if (assertion.done) {
+      function $assertion() {
+        if ($assertion.done) {
           return;
         }
 
-        this._.inspector.describe("decodeAudioData", ["audioData", "successCallback", "errorCallback"], function (assert) {
-          assert(_utils2["default"].isInstanceOf(audioData, global.ArrayBuffer), function (fmt) {
-            throw new TypeError(fmt.plain(_templateObject4, fmt.form, fmt.butGot(audioData, "audioData", "ArrayBuffer")));
+        this._.inspector.describe("decodeAudioData", ["audioData", "successCallback", "errorCallback"], function ($assert) {
+          $assert(_utils2.default.isInstanceOf(audioData, global.ArrayBuffer), function (fmt) {
+            throw new TypeError(fmt.plain(_templateObject3, fmt.form, fmt.butGot(audioData, "audioData", "ArrayBuffer")));
           });
 
-          assert(_utils2["default"].isFunction(successCallback), function (fmt) {
-            throw new TypeError(fmt.plain(_templateObject4, fmt.form, fmt.butGot(successCallback, "successCallback", "function")));
+          $assert(_utils2.default.isFunction(successCallback), function (fmt) {
+            throw new TypeError(fmt.plain(_templateObject3, fmt.form, fmt.butGot(successCallback, "successCallback", "function")));
           });
 
-          assert(_utils2["default"].isFunction(errorCallback), function (fmt) {
-            throw new TypeError(fmt.plain(_templateObject4, fmt.form, fmt.butGot(errorCallback, "errorCallback", "function")));
+          $assert(_utils2.default.isFunction(errorCallback), function (fmt) {
+            throw new TypeError(fmt.plain(_templateObject3, fmt.form, fmt.butGot(errorCallback, "errorCallback", "function")));
           });
         });
 
-        assertion.done = true;
+        $assertion.done = true;
       }
 
       var promise = new Promise(function (resolve, reject) {
-        assertion.call(_this7);
+        $assertion.call(_this7);
 
         if (_this7.DECODE_AUDIO_DATA_FAILED) {
           reject();
         } else {
           resolve(_this7.DECODE_AUDIO_DATA_RESULT || immigration.apply(function (admission) {
-            return new _AudioBuffer2["default"](admission, _this7, 2, 1024, _this7.sampleRate);
+            return new _AudioBuffer2.default(admission, _this7, 2, 1024, _this7.sampleRate);
           }));
         }
       });
@@ -1004,7 +1000,7 @@ var AudioContext = (function (_EventTarget) {
         return promise;
       }
 
-      assertion.call(this);
+      $assertion.call(this);
     }
   }, {
     key: "createBufferSource",
@@ -1012,7 +1008,7 @@ var AudioContext = (function (_EventTarget) {
       var _this8 = this;
 
       return immigration.apply(function (admission) {
-        return new _AudioBufferSourceNode2["default"](admission, _this8);
+        return new _AudioBufferSourceNode2.default(admission, _this8);
       });
     }
   }, {
@@ -1021,7 +1017,7 @@ var AudioContext = (function (_EventTarget) {
       var _this9 = this;
 
       return immigration.apply(function (admission) {
-        return new _MediaElementAudioSourceNode2["default"](admission, _this9, mediaElement);
+        return new _MediaElementAudioSourceNode2.default(admission, _this9, mediaElement);
       });
     }
   }, {
@@ -1030,7 +1026,7 @@ var AudioContext = (function (_EventTarget) {
       var _this10 = this;
 
       return immigration.apply(function (admission) {
-        return new _MediaStreamAudioSourceNode2["default"](admission, _this10, mediaStream);
+        return new _MediaStreamAudioSourceNode2.default(admission, _this10, mediaStream);
       });
     }
   }, {
@@ -1039,15 +1035,15 @@ var AudioContext = (function (_EventTarget) {
       var _this11 = this;
 
       return immigration.apply(function (admission) {
-        return new _MediaStreamAudioDestinationNode2["default"](admission, _this11);
+        return new _MediaStreamAudioDestinationNode2.default(admission, _this11);
       });
     }
   }, {
     key: "createAudioWorker",
     value: function createAudioWorker() {
-      this._.inspector.describe("createAudioWorker", function (assert) {
-        assert(false, function (fmt) {
-          throw new TypeError(fmt.plain(_templateObject5, fmt.form));
+      this._.inspector.describe("createAudioWorker", function ($assert) {
+        $assert(false, function (fmt) {
+          throw new TypeError(fmt.plain(_templateObject4, fmt.form));
         });
       });
     }
@@ -1064,7 +1060,7 @@ var AudioContext = (function (_EventTarget) {
       }
 
       return immigration.apply(function (admission) {
-        return new _ScriptProcessorNode2["default"](admission, _this12, bufferSize, numberOfInputChannels, numberOfOutputChannels);
+        return new _ScriptProcessorNode2.default(admission, _this12, bufferSize, numberOfInputChannels, numberOfOutputChannels);
       });
     }
   }, {
@@ -1073,7 +1069,7 @@ var AudioContext = (function (_EventTarget) {
       var _this13 = this;
 
       return immigration.apply(function (admission) {
-        return new _AnalyserNode2["default"](admission, _this13);
+        return new _AnalyserNode2.default(admission, _this13);
       });
     }
   }, {
@@ -1082,7 +1078,7 @@ var AudioContext = (function (_EventTarget) {
       var _this14 = this;
 
       return immigration.apply(function (admission) {
-        return new _GainNode2["default"](admission, _this14);
+        return new _GainNode2.default(admission, _this14);
       });
     }
   }, {
@@ -1095,7 +1091,7 @@ var AudioContext = (function (_EventTarget) {
       }
 
       return immigration.apply(function (admission) {
-        return new _DelayNode2["default"](admission, _this15, maxDelayTime);
+        return new _DelayNode2.default(admission, _this15, maxDelayTime);
       });
     }
   }, {
@@ -1104,7 +1100,7 @@ var AudioContext = (function (_EventTarget) {
       var _this16 = this;
 
       return immigration.apply(function (admission) {
-        return new _BiquadFilterNode2["default"](admission, _this16);
+        return new _BiquadFilterNode2.default(admission, _this16);
       });
     }
   }, {
@@ -1113,7 +1109,7 @@ var AudioContext = (function (_EventTarget) {
       var _this17 = this;
 
       return immigration.apply(function (admission) {
-        return new _WaveShaperNode2["default"](admission, _this17);
+        return new _WaveShaperNode2.default(admission, _this17);
       });
     }
   }, {
@@ -1122,7 +1118,7 @@ var AudioContext = (function (_EventTarget) {
       var _this18 = this;
 
       return immigration.apply(function (admission) {
-        return new _PannerNode2["default"](admission, _this18);
+        return new _PannerNode2.default(admission, _this18);
       });
     }
   }, {
@@ -1130,14 +1126,14 @@ var AudioContext = (function (_EventTarget) {
     value: function createStereoPanner() {
       var _this19 = this;
 
-      this._.inspector.describe("createStereoPanner", function (assert) {
-        assert(configuration.getState("AudioContext#createStereoPanner") === "enabled", function (fmt) {
-          throw new TypeError(fmt.plain(_templateObject5, fmt.form));
+      this._.inspector.describe("createStereoPanner", function ($assert) {
+        $assert(configuration.getState("AudioContext#createStereoPanner") === "enabled", function (fmt) {
+          throw new TypeError(fmt.plain(_templateObject4, fmt.form));
         });
       });
 
       return immigration.apply(function (admission) {
-        return new _StereoPannerNode2["default"](admission, _this19);
+        return new _StereoPannerNode2.default(admission, _this19);
       });
     }
   }, {
@@ -1146,7 +1142,7 @@ var AudioContext = (function (_EventTarget) {
       var _this20 = this;
 
       return immigration.apply(function (admission) {
-        return new _ConvolverNode2["default"](admission, _this20);
+        return new _ConvolverNode2.default(admission, _this20);
       });
     }
   }, {
@@ -1157,7 +1153,7 @@ var AudioContext = (function (_EventTarget) {
       var numberOfOutputs = arguments.length <= 0 || arguments[0] === undefined ? 6 : arguments[0];
 
       return immigration.apply(function (admission) {
-        return new _ChannelSplitterNode2["default"](admission, _this21, numberOfOutputs);
+        return new _ChannelSplitterNode2.default(admission, _this21, numberOfOutputs);
       });
     }
   }, {
@@ -1168,7 +1164,7 @@ var AudioContext = (function (_EventTarget) {
       var numberOfInputs = arguments.length <= 0 || arguments[0] === undefined ? 6 : arguments[0];
 
       return immigration.apply(function (admission) {
-        return new _ChannelMergerNode2["default"](admission, _this22, numberOfInputs);
+        return new _ChannelMergerNode2.default(admission, _this22, numberOfInputs);
       });
     }
   }, {
@@ -1177,7 +1173,7 @@ var AudioContext = (function (_EventTarget) {
       var _this23 = this;
 
       return immigration.apply(function (admission) {
-        return new _DynamicsCompressorNode2["default"](admission, _this23);
+        return new _DynamicsCompressorNode2.default(admission, _this23);
       });
     }
   }, {
@@ -1186,7 +1182,7 @@ var AudioContext = (function (_EventTarget) {
       var _this24 = this;
 
       return immigration.apply(function (admission) {
-        return new _OscillatorNode2["default"](admission, _this24);
+        return new _OscillatorNode2.default(admission, _this24);
       });
     }
   }, {
@@ -1195,7 +1191,7 @@ var AudioContext = (function (_EventTarget) {
       var _this25 = this;
 
       return immigration.apply(function (admission) {
-        return new _PeriodicWave2["default"](admission, _this25, real, imag);
+        return new _PeriodicWave2.default(admission, _this25, real, imag);
       });
     }
   }, {
@@ -1206,12 +1202,12 @@ var AudioContext = (function (_EventTarget) {
   }, {
     key: "$process",
     value: function $process(time) {
-      this._process(_utils2["default"].toMicroseconds(time));
+      this._process(_utils2.default.toMicroseconds(time));
     }
   }, {
     key: "$processTo",
     value: function $processTo(_time) {
-      var time = _utils2["default"].toMicroseconds(_time);
+      var time = _utils2.default.toMicroseconds(_time);
 
       if (this._.microCurrentTime < time) {
         this._process(time - this._.microCurrentTime);
@@ -1250,8 +1246,8 @@ var AudioContext = (function (_EventTarget) {
       return this._.destination;
     },
     set: function set(value) {
-      this._.inspector.describe("destination", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("destination", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -1260,8 +1256,8 @@ var AudioContext = (function (_EventTarget) {
       return this._.sampleRate;
     },
     set: function set(value) {
-      this._.inspector.describe("sampleRate", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("sampleRate", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -1270,8 +1266,8 @@ var AudioContext = (function (_EventTarget) {
       return this._.microCurrentTime / (1000 * 1000);
     },
     set: function set(value) {
-      this._.inspector.describe("currentTime", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("currentTime", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -1280,8 +1276,8 @@ var AudioContext = (function (_EventTarget) {
       return this._.listener;
     },
     set: function set(value) {
-      this._.inspector.describe("listener", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("listener", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -1296,8 +1292,8 @@ var AudioContext = (function (_EventTarget) {
         return;
       }
 
-      this._.inspector.describe("state", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("state", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -1312,9 +1308,9 @@ var AudioContext = (function (_EventTarget) {
         return;
       }
 
-      this._.inspector.describe("onstatechange", function (assert) {
-        assert(_utils2["default"].isNullOrFunction(value), function (fmt) {
-          throw new TypeError(fmt.plain(_templateObject3, fmt.form, fmt.butGot(value, "onstatechange", "function")));
+      this._.inspector.describe("onstatechange", function ($assert) {
+        $assert(_utils2.default.isNullOrFunction(value), function (fmt) {
+          throw new TypeError(fmt.plain(_templateObject5, fmt.form, fmt.butGot(value, "onstatechange", "function")));
         });
       });
 
@@ -1333,37 +1329,36 @@ var AudioContext = (function (_EventTarget) {
   }], [{
     key: "WEB_AUDIO_TEST_API_VERSION",
     get: function get() {
-      return _utils2["default"].getAPIVersion();
+      return _utils2.default.getAPIVersion();
     }
   }]);
 
   return AudioContext;
-})(_EventTarget3["default"]);
+})(_EventTarget3.default);
 
-exports["default"] = AudioContext;
-module.exports = exports["default"];
+exports.default = AudioContext;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioBufferSourceNode":3,"./AudioDestinationNode":5,"./AudioListener":6,"./BiquadFilterNode":11,"./ChannelMergerNode":12,"./ChannelSplitterNode":13,"./ConvolverNode":14,"./DelayNode":15,"./DynamicsCompressorNode":16,"./Event":18,"./EventTarget":19,"./GainNode":20,"./MediaElementAudioSourceNode":23,"./MediaStreamAudioDestinationNode":25,"./MediaStreamAudioSourceNode":26,"./OscillatorNode":29,"./PannerNode":30,"./PeriodicWave":31,"./ScriptProcessorNode":32,"./StereoPannerNode":33,"./WaveShaperNode":34,"./utils":44,"./utils/Configuration":37,"./utils/Immigration":40}],5:[function(require,module,exports){
 "use strict";
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var _AudioNode2 = require("./AudioNode");
 
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var AudioDestinationNode = (function (_AudioNode) {
   _inherits(AudioDestinationNode, _AudioNode);
@@ -1371,7 +1366,7 @@ var AudioDestinationNode = (function (_AudioNode) {
   function AudioDestinationNode(admission, context) {
     _classCallCheck(this, AudioDestinationNode);
 
-    _get(Object.getPrototypeOf(AudioDestinationNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AudioDestinationNode).call(this, admission, {
       name: "AudioDestinationNode",
       context: context,
       numberOfInputs: 1,
@@ -1379,9 +1374,10 @@ var AudioDestinationNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "explicit",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.maxChannelCount = 2;
+    _this._.maxChannelCount = 2;
+    return _this;
   }
 
   _createClass(AudioDestinationNode, [{
@@ -1390,48 +1386,47 @@ var AudioDestinationNode = (function (_AudioNode) {
       return this._.maxChannelCount;
     },
     set: function set(value) {
-      this._.inspector.describe("maxChannelCount", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("maxChannelCount", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }]);
 
   return AudioDestinationNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = AudioDestinationNode;
-module.exports = exports["default"];
+exports.default = AudioDestinationNode;
 
 },{"./AudioNode":7}],6:[function(require,module,exports){
 "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
-var _utilsInspector = require("./utils/Inspector");
+var _Inspector = require("./utils/Inspector");
 
-var _utilsInspector2 = _interopRequireDefault(_utilsInspector);
+var _Inspector2 = _interopRequireDefault(_Inspector);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var immigration = _Immigration2.default.getInstance();
 
 var AudioListener = (function () {
   function AudioListener(admission, context) {
@@ -1439,7 +1434,7 @@ var AudioListener = (function () {
 
     Object.defineProperty(this, "_", {
       value: {
-        inspector: new _utilsInspector2["default"](this)
+        inspector: new _Inspector2.default(this)
       }
     });
 
@@ -1455,16 +1450,16 @@ var AudioListener = (function () {
   _createClass(AudioListener, [{
     key: "setPosition",
     value: function setPosition(x, y, z) {
-      this._.inspector.describe("setPosition", function (assert) {
-        assert(_utils2["default"].isNumber(x), function (fmt) {
+      this._.inspector.describe("setPosition", function ($assert) {
+        $assert(_utils2.default.isNumber(x), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(x, "x", "number")));
         });
 
-        assert(_utils2["default"].isNumber(y), function (fmt) {
+        $assert(_utils2.default.isNumber(y), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(y, "y", "number")));
         });
 
-        assert(_utils2["default"].isNumber(z), function (fmt) {
+        $assert(_utils2.default.isNumber(z), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(z, "z", "number")));
         });
       });
@@ -1472,28 +1467,28 @@ var AudioListener = (function () {
   }, {
     key: "setOrientation",
     value: function setOrientation(x, y, z, xUp, yUp, zUp) {
-      this._.inspector.describe("setOrientation", function (assert) {
-        assert(_utils2["default"].isNumber(x), function (fmt) {
+      this._.inspector.describe("setOrientation", function ($assert) {
+        $assert(_utils2.default.isNumber(x), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(x, "x", "number")));
         });
 
-        assert(_utils2["default"].isNumber(y), function (fmt) {
+        $assert(_utils2.default.isNumber(y), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(y, "y", "number")));
         });
 
-        assert(_utils2["default"].isNumber(z), function (fmt) {
+        $assert(_utils2.default.isNumber(z), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(z, "z", "number")));
         });
 
-        assert(_utils2["default"].isNumber(xUp), function (fmt) {
+        $assert(_utils2.default.isNumber(xUp), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(xUp, "xUp", "number")));
         });
 
-        assert(_utils2["default"].isNumber(yUp), function (fmt) {
+        $assert(_utils2.default.isNumber(yUp), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(yUp, "yUp", "number")));
         });
 
-        assert(_utils2["default"].isNumber(zUp), function (fmt) {
+        $assert(_utils2.default.isNumber(zUp), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(zUp, "zUp", "number")));
         });
       });
@@ -1501,16 +1496,16 @@ var AudioListener = (function () {
   }, {
     key: "setVelocity",
     value: function setVelocity(x, y, z) {
-      this._.inspector.describe("setVelocity", function (assert) {
-        assert(_utils2["default"].isNumber(x), function (fmt) {
+      this._.inspector.describe("setVelocity", function ($assert) {
+        $assert(_utils2.default.isNumber(x), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(x, "x", "number")));
         });
 
-        assert(_utils2["default"].isNumber(y), function (fmt) {
+        $assert(_utils2.default.isNumber(y), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(y, "y", "number")));
         });
 
-        assert(_utils2["default"].isNumber(z), function (fmt) {
+        $assert(_utils2.default.isNumber(z), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(z, "z", "number")));
         });
       });
@@ -1521,8 +1516,8 @@ var AudioListener = (function () {
       return this._.dopplerFactor;
     },
     set: function set(value) {
-      this._.inspector.describe("dopplerFactor", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("dopplerFactor", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "dopplerFactor", "number")));
         });
       });
@@ -1535,8 +1530,8 @@ var AudioListener = (function () {
       return this._.speedOfSound;
     },
     set: function set(value) {
-      this._.inspector.describe("speedOfSound", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("speedOfSound", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "speedOfSound", "number")));
         });
       });
@@ -1558,20 +1553,13 @@ var AudioListener = (function () {
   return AudioListener;
 })();
 
-exports["default"] = AudioListener;
-module.exports = exports["default"];
+exports.default = AudioListener;
 
 },{"./utils":44,"./utils/Immigration":40,"./utils/Inspector":41}],7:[function(require,module,exports){
 (function (global){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x7, _x8, _x9) { var _again = true; _function: while (_again) { var object = _x7, property = _x8, receiver = _x9; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x7 = parent; _x8 = property; _x9 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          AudioContext has been closed\n        "], ["\n          ", ";\n          AudioContext has been closed\n        "]),
     _templateObject2 = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]),
@@ -1579,33 +1567,29 @@ var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          Audi
     _templateObject4 = _taggedTemplateLiteral(["\n          ", ";\n          output index (", ") exceeds number of outputs (", ")\n        "], ["\n          ", ";\n          output index (", ") exceeds number of outputs (", ")\n        "]),
     _templateObject5 = _taggedTemplateLiteral(["\n          ", ";\n          input index (", ") exceeds number of inputs (", ")\n        "], ["\n          ", ";\n          input index (", ") exceeds number of inputs (", ")\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsConfiguration = require("./utils/Configuration");
+var _Configuration = require("./utils/Configuration");
 
-var _utilsConfiguration2 = _interopRequireDefault(_utilsConfiguration);
+var _Configuration2 = _interopRequireDefault(_Configuration);
 
-var _utilsEnumerator = require("./utils/Enumerator");
+var _Enumerator = require("./utils/Enumerator");
 
-var _utilsEnumerator2 = _interopRequireDefault(_utilsEnumerator);
+var _Enumerator2 = _interopRequireDefault(_Enumerator);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
-var _utilsJunction = require("./utils/Junction");
+var _Junction = require("./utils/Junction");
 
-var _utilsJunction2 = _interopRequireDefault(_utilsJunction);
+var _Junction2 = _interopRequireDefault(_Junction);
 
 var _EventTarget2 = require("./EventTarget");
 
@@ -1615,44 +1599,53 @@ var _AudioNodeDisconnectUtils = require("./AudioNodeDisconnectUtils");
 
 var _AudioNodeDisconnectUtils2 = _interopRequireDefault(_AudioNodeDisconnectUtils);
 
-var configuration = _utilsConfiguration2["default"].getInstance();
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var configuration = _Configuration2.default.getInstance();
+var immigration = _Immigration2.default.getInstance();
 
 var AudioNode = (function (_EventTarget) {
   _inherits(AudioNode, _EventTarget);
 
   function AudioNode(admission, spec) {
-    var _this = this;
-
     _classCallCheck(this, AudioNode);
 
-    _get(Object.getPrototypeOf(AudioNode.prototype), "constructor", this).call(this);
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AudioNode).call(this));
 
     immigration.check(admission, function () {
       throw new TypeError("Illegal constructor");
     });
 
-    this._.context = spec.context;
-    this._.name = _utils2["default"].defaults(spec.name, "AudioNode");
-    this._.numberOfInputs = _utils2["default"].defaults(spec.numberOfInputs, 1);
-    this._.numberOfOutputs = _utils2["default"].defaults(spec.numberOfOutputs, 1);
-    this._.channelCount = _utils2["default"].defaults(spec.channelCount, 2);
-    this._.channelCountMode = _utils2["default"].defaults(spec.channelCountMode, "max");
-    this._.channelInterpretation = _utils2["default"].defaults(spec.channelInterpretation, "speakers");
-    this._.JSONKeys = [];
-    this._.inputs = _utils2["default"].fill(new Array(Math.max(0, this._.numberOfInputs | 0)), function (i) {
-      return new _utilsJunction2["default"](_this, i);
+    _this._.context = spec.context;
+    _this._.name = _utils2.default.defaults(spec.name, "AudioNode");
+    _this._.numberOfInputs = _utils2.default.defaults(spec.numberOfInputs, 1);
+    _this._.numberOfOutputs = _utils2.default.defaults(spec.numberOfOutputs, 1);
+    _this._.channelCount = _utils2.default.defaults(spec.channelCount, 2);
+    _this._.channelCountMode = _utils2.default.defaults(spec.channelCountMode, "max");
+    _this._.channelInterpretation = _utils2.default.defaults(spec.channelInterpretation, "speakers");
+    _this._.JSONKeys = [];
+    _this._.inputs = _utils2.default.fill(new Array(Math.max(0, _this._.numberOfInputs | 0)), function (i) {
+      return new _Junction2.default(_this, i);
     });
-    this._.outputs = _utils2["default"].fill(new Array(Math.max(0, this._.numberOfOutputs | 0)), function (i) {
-      return new _utilsJunction2["default"](_this, i);
+    _this._.outputs = _utils2.default.fill(new Array(Math.max(0, _this._.numberOfOutputs | 0)), function (i) {
+      return new _Junction2.default(_this, i);
     });
-    this._.tick = -1;
+    _this._.tick = -1;
 
-    this._.inspector.describe("create" + this._.name.replace(/Node$/, ""), [], function (assert) {
-      assert(_this._.context.state !== "closed", function (fmt) {
+    _this._.inspector.describe("create" + _this._.name.replace(/Node$/, ""), [], function ($assert) {
+      $assert(_this._.context.state !== "closed", function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form));
       });
     });
+    return _this;
   }
 
   _createClass(AudioNode, [{
@@ -1663,28 +1656,28 @@ var AudioNode = (function (_EventTarget) {
       var output = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
       var input = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
 
-      this._.inspector.describe("connect", function (assert) {
-        assert(_utils2["default"].isInstanceOf(destination, global.AudioNode) || _utils2["default"].isInstanceOf(destination, global.AudioParam), function (fmt) {
+      this._.inspector.describe("connect", function ($assert) {
+        $assert(_utils2.default.isInstanceOf(destination, global.AudioNode) || _utils2.default.isInstanceOf(destination, global.AudioParam), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject2, fmt.form, fmt.butGot(destination, "destination", "AudioNode or an AudioParam")));
         });
 
-        assert(_this2.$context === destination.$context, function (fmt) {
+        $assert(_this2.$context === destination.$context, function (fmt) {
           throw new TypeError(fmt.plain(_templateObject3, fmt.form));
         });
 
-        assert(_utils2["default"].isPositiveInteger(output), function (fmt) {
+        $assert(_utils2.default.isPositiveInteger(output), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject2, fmt.form, fmt.butGot(output, "output", "positive integer")));
         });
 
-        assert(_utils2["default"].isPositiveInteger(input), function (fmt) {
+        $assert(_utils2.default.isPositiveInteger(input), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject2, fmt.form, fmt.butGot(input, "input", "positive integer")));
         });
 
-        assert(output < _this2.numberOfOutputs, function (fmt) {
+        $assert(output < _this2.numberOfOutputs, function (fmt) {
           throw new TypeError(fmt.plain(_templateObject4, fmt.form, output, _this2.numberOfOutputs));
         });
 
-        assert(input < (destination.numberOfInputs || 1), function (fmt) {
+        $assert(input < (destination.numberOfInputs || 1), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject5, fmt.form, input, destination.numberOfInputs));
         });
       });
@@ -1695,29 +1688,29 @@ var AudioNode = (function (_EventTarget) {
     key: "disconnect",
     value: function disconnect(_destination, _output, _input) {
       var isSelectiveDisconnect = configuration.getState("AudioNode#disconnect") === "selective";
-      var argNum = _utils2["default"].countArguments([_destination, _output, _input]);
+      var argNum = _utils2.default.countArguments([_destination, _output, _input]);
 
       if (!isSelectiveDisconnect) {
-        _AudioNodeDisconnectUtils2["default"].disconnectChannel.call(this, _utils2["default"].defaults(_destination, 0));
+        _AudioNodeDisconnectUtils2.default.disconnectChannel.call(this, _utils2.default.defaults(_destination, 0));
         return;
       }
 
       switch (argNum) {
         case 0:
-          _AudioNodeDisconnectUtils2["default"].disconnectAll.call(this);
+          _AudioNodeDisconnectUtils2.default.disconnectAll.call(this);
           break;
         case 1:
-          if (_utils2["default"].isNumber(_destination)) {
-            _AudioNodeDisconnectUtils2["default"].disconnectChannel.call(this, _destination);
+          if (_utils2.default.isNumber(_destination)) {
+            _AudioNodeDisconnectUtils2.default.disconnectChannel.call(this, _destination);
           } else {
-            _AudioNodeDisconnectUtils2["default"].disconnectSelective1.call(this, _destination);
+            _AudioNodeDisconnectUtils2.default.disconnectSelective1.call(this, _destination);
           }
           break;
         case 2:
-          _AudioNodeDisconnectUtils2["default"].disconnectSelective2.call(this, _destination, _output);
+          _AudioNodeDisconnectUtils2.default.disconnectSelective2.call(this, _destination, _output);
           break;
         case 3:
-          _AudioNodeDisconnectUtils2["default"].disconnectSelective3.call(this, _destination, _output, _input);
+          _AudioNodeDisconnectUtils2.default.disconnectSelective3.call(this, _destination, _output, _input);
           break;
         default:
         // no default
@@ -1733,10 +1726,10 @@ var AudioNode = (function (_EventTarget) {
         return obj;
       }
 
-      return _utils2["default"].toJSON(this, function (node, memo) {
+      return _utils2.default.toJSON(this, function (node, memo) {
         var json = {};
 
-        json.name = _utils2["default"].toNodeName(node);
+        json.name = _utils2.default.toNodeName(node);
 
         node._.JSONKeys.forEach(function (key) {
           json[key] = toJSON(node[key], memo);
@@ -1829,8 +1822,8 @@ var AudioNode = (function (_EventTarget) {
       return this._.context;
     },
     set: function set(value) {
-      this._.inspector.describe("context", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("context", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -1839,8 +1832,8 @@ var AudioNode = (function (_EventTarget) {
       return this._.numberOfInputs;
     },
     set: function set(value) {
-      this._.inspector.describe("numberOfInputs", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("numberOfInputs", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -1849,8 +1842,8 @@ var AudioNode = (function (_EventTarget) {
       return this._.numberOfOutputs;
     },
     set: function set(value) {
-      this._.inspector.describe("numberOfOutputs", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("numberOfOutputs", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -1859,8 +1852,8 @@ var AudioNode = (function (_EventTarget) {
       return this._.channelCount;
     },
     set: function set(value) {
-      this._.inspector.describe("channelCount", function (assert) {
-        assert(_utils2["default"].isPositiveInteger(value), function (fmt) {
+      this._.inspector.describe("channelCount", function ($assert) {
+        $assert(_utils2.default.isPositiveInteger(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject2, fmt.form, fmt.butGot(value, "channelCount", "positive integer")));
         });
       });
@@ -1873,10 +1866,10 @@ var AudioNode = (function (_EventTarget) {
       return this._.channelCountMode;
     },
     set: function set(value) {
-      this._.inspector.describe("channelCountMode", function (assert) {
-        var enumChannelCountMode = new _utilsEnumerator2["default"](["max", "clamped-max", "explicit"]);
+      this._.inspector.describe("channelCountMode", function ($assert) {
+        var enumChannelCountMode = new _Enumerator2.default(["max", "clamped-max", "explicit"]);
 
-        assert(enumChannelCountMode.contains(value), function (fmt) {
+        $assert(enumChannelCountMode.contains(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject2, fmt.form, fmt.butGot(value, "channelCountMode", enumChannelCountMode.toString())));
         });
       });
@@ -1889,10 +1882,10 @@ var AudioNode = (function (_EventTarget) {
       return this._.channelInterpretation;
     },
     set: function set(value) {
-      this._.inspector.describe("channelInterpretation", function (assert) {
-        var enumChannelInterpretation = new _utilsEnumerator2["default"](["speakers", "discrete"]);
+      this._.inspector.describe("channelInterpretation", function ($assert) {
+        var enumChannelInterpretation = new _Enumerator2.default(["speakers", "discrete"]);
 
-        assert(enumChannelInterpretation.contains(value), function (fmt) {
+        $assert(enumChannelInterpretation.contains(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject2, fmt.form, fmt.butGot(value, "channelInterpretation", enumChannelInterpretation.toString())));
         });
       });
@@ -1914,22 +1907,25 @@ var AudioNode = (function (_EventTarget) {
     get: function get() {
       // TODO: remove v0.4.0
       if (this._.inputs.length === 0) {
-        return [new _utilsJunction2["default"](this, 0)];
+        return [new _Junction2.default(this, 0)];
       }
       return this._.inputs;
     }
   }]);
 
   return AudioNode;
-})(_EventTarget3["default"]);
+})(_EventTarget3.default);
 
-exports["default"] = AudioNode;
-module.exports = exports["default"];
+exports.default = AudioNode;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./AudioNodeDisconnectUtils":8,"./EventTarget":19,"./utils":44,"./utils/Configuration":37,"./utils/Enumerator":38,"./utils/Immigration":40,"./utils/Junction":42}],8:[function(require,module,exports){
 (function (global){
 "use strict";
+
+var _templateObject = _taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]),
+    _templateObject2 = _taggedTemplateLiteral(["\n        ", ";\n        output index (", ") exceeds number of outputs (", ")\n      "], ["\n        ", ";\n        output index (", ") exceeds number of outputs (", ")\n      "]),
+    _templateObject3 = _taggedTemplateLiteral(["\n        ", ";\n        the given destination is not connected\n      "], ["\n        ", ";\n        the given destination is not connected\n      "]);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -1941,20 +1937,16 @@ exports.disconnectSelective1 = disconnectSelective1;
 exports.disconnectSelective2 = disconnectSelective2;
 exports.disconnectSelective3 = disconnectSelective3;
 
-var _templateObject = _taggedTemplateLiteral(["\n        ", ";\n        ", "\n      "], ["\n        ", ";\n        ", "\n      "]),
-    _templateObject2 = _taggedTemplateLiteral(["\n        ", ";\n        output index (", ") exceeds number of outputs (", ")\n      "], ["\n        ", ";\n        output index (", ") exceeds number of outputs (", ")\n      "]),
-    _templateObject3 = _taggedTemplateLiteral(["\n        ", ";\n        the given destination is not connected\n      "], ["\n        ", ";\n        the given destination is not connected\n      "]);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
 function isConnectable(destination) {
-  return _utils2["default"].isInstanceOf(destination, global.AudioNode) || _utils2["default"].isInstanceOf(destination, global.AudioParam);
+  return _utils2.default.isInstanceOf(destination, global.AudioNode) || _utils2.default.isInstanceOf(destination, global.AudioParam);
 }
 
 function disconnectAll() {
@@ -1966,12 +1958,12 @@ function disconnectAll() {
 function disconnectChannel(output) {
   var _this = this;
 
-  this._.inspector.describe("disconnect", ["output"], function (assert) {
-    assert(_utils2["default"].isPositiveInteger(output), function (fmt) {
+  this._.inspector.describe("disconnect", ["output"], function ($assert) {
+    $assert(_utils2.default.isPositiveInteger(output), function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(output, "output", "positive integer")));
     });
 
-    assert(output < _this.numberOfOutputs, function (fmt) {
+    $assert(output < _this.numberOfOutputs, function (fmt) {
       throw new TypeError(fmt.plain(_templateObject2, fmt.form, output, _this.numberOfOutputs));
     });
   });
@@ -1982,8 +1974,8 @@ function disconnectChannel(output) {
 function disconnectSelective1(destination) {
   var _this2 = this;
 
-  this._.inspector.describe("disconnect", ["destination"], function (assert) {
-    assert(isConnectable(destination), function (fmt) {
+  this._.inspector.describe("disconnect", ["destination"], function ($assert) {
+    $assert(isConnectable(destination), function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(destination, "destination", "AudioNode or an AudioParam")));
     });
 
@@ -1991,7 +1983,7 @@ function disconnectSelective1(destination) {
       return junction.isConnected(destination);
     });
 
-    assert(isConnectedDestination, function (fmt) {
+    $assert(isConnectedDestination, function (fmt) {
       throw new TypeError(fmt.plain(_templateObject3, fmt.form));
     });
   });
@@ -2004,8 +1996,8 @@ function disconnectSelective1(destination) {
 function disconnectSelective2(destination, output) {
   var _this3 = this;
 
-  this._.inspector.describe("disconnect", ["destination", "output"], function (assert) {
-    assert(isConnectable(destination), function (fmt) {
+  this._.inspector.describe("disconnect", ["destination", "output"], function ($assert) {
+    $assert(isConnectable(destination), function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(destination, "destination", "AudioNode or an AudioParam")));
     });
 
@@ -2013,15 +2005,15 @@ function disconnectSelective2(destination, output) {
       return junction.isConnected(destination);
     });
 
-    assert(isConnectedDestination, function (fmt) {
+    $assert(isConnectedDestination, function (fmt) {
       throw new TypeError(fmt.plain(_templateObject3, fmt.form));
     });
 
-    assert(_utils2["default"].isInteger(output), function (fmt) {
+    $assert(_utils2.default.isInteger(output), function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(output, "output", "integer")));
     });
 
-    assert(0 <= output && output < _this3.numberOfOutputs, function (fmt) {
+    $assert(0 <= output && output < _this3.numberOfOutputs, function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.outsideTheRange(output, "output", 0, _this3.numberOfOutputs)));
     });
   });
@@ -2032,8 +2024,8 @@ function disconnectSelective2(destination, output) {
 function disconnectSelective3(destination, output, input) {
   var _this4 = this;
 
-  this._.inspector.describe("disconnect", ["destination", "output", "input"], function (assert) {
-    assert(isConnectable(destination), function (fmt) {
+  this._.inspector.describe("disconnect", ["destination", "output", "input"], function ($assert) {
+    $assert(isConnectable(destination), function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(destination, "destination", "AudioNode or an AudioParam")));
     });
 
@@ -2041,23 +2033,23 @@ function disconnectSelective3(destination, output, input) {
       return junction.isConnected(destination);
     });
 
-    assert(isConnectedDestination, function (fmt) {
+    $assert(isConnectedDestination, function (fmt) {
       throw new TypeError(fmt.plain(_templateObject3, fmt.form));
     });
 
-    assert(_utils2["default"].isInteger(output), function (fmt) {
+    $assert(_utils2.default.isInteger(output), function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(output, "output", "integer")));
     });
 
-    assert(_utils2["default"].isInteger(input), function (fmt) {
+    $assert(_utils2.default.isInteger(input), function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(input, "input", "integer")));
     });
 
-    assert(0 <= output && output < _this4.numberOfOutputs, function (fmt) {
+    $assert(0 <= output && output < _this4.numberOfOutputs, function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.outsideTheRange(output, "output", 0, _this4.numberOfOutputs)));
     });
 
-    assert(0 <= input && input < destination.numberOfInputs, function (fmt) {
+    $assert(0 <= input && input < destination.numberOfInputs, function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.outsideTheRange(input, "input", 0, _this4.numberOfOutputs)));
     });
   });
@@ -2065,7 +2057,7 @@ function disconnectSelective3(destination, output, input) {
   this._.outputs[output].disconnectChannel(destination, input);
 }
 
-exports["default"] = {
+exports.default = {
   disconnectAll: disconnectAll,
   disconnectChannel: disconnectChannel,
   disconnectSelective1: disconnectSelective1,
@@ -2078,42 +2070,41 @@ exports["default"] = {
 (function (global){
 "use strict";
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 exports.linTo = linTo;
 exports.expTo = expTo;
 exports.setTarget = setTarget;
 exports.setCurveValue = setCurveValue;
 
-var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
-var _utilsInspector = require("./utils/Inspector");
+var _Inspector = require("./utils/Inspector");
 
-var _utilsInspector2 = _interopRequireDefault(_utilsInspector);
+var _Inspector2 = _interopRequireDefault(_Inspector);
 
-var _utilsJunction = require("./utils/Junction");
+var _Junction = require("./utils/Junction");
 
-var _utilsJunction2 = _interopRequireDefault(_utilsJunction);
+var _Junction2 = _interopRequireDefault(_Junction);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var immigration = _Immigration2.default.getInstance();
 
 function insertEvent(that, event) {
   var time = event.time;
@@ -2179,14 +2170,14 @@ function setCurveValue(v, t, t0, t1, curve) {
   var dt = (t - t0) / (t1 - t0);
 
   if (dt <= 0) {
-    return _utils2["default"].defaults(curve[0], v);
+    return _utils2.default.defaults(curve[0], v);
   }
 
   if (1 <= dt) {
-    return _utils2["default"].defaults(curve[curve.length - 1], v);
+    return _utils2.default.defaults(curve[curve.length - 1], v);
   }
 
-  return _utils2["default"].defaults(curve[curve.length * dt | 0], v);
+  return _utils2.default.defaults(curve[curve.length * dt | 0], v);
 }
 
 var AudioParam = (function () {
@@ -2199,7 +2190,7 @@ var AudioParam = (function () {
 
     Object.defineProperty(this, "_", {
       value: {
-        inspector: new _utilsInspector2["default"](this)
+        inspector: new _Inspector2.default(this)
       }
     });
 
@@ -2210,7 +2201,7 @@ var AudioParam = (function () {
     this._.maxValue = maxValue;
     this._.context = node.context;
     this._.node = node;
-    this._.inputs = [new _utilsJunction2["default"](this, 0)];
+    this._.inputs = [new _Junction2.default(this, 0)];
     this._.events = [];
     this._.tick = -1;
   }
@@ -2218,12 +2209,12 @@ var AudioParam = (function () {
   _createClass(AudioParam, [{
     key: "setValueAtTime",
     value: function setValueAtTime(value, startTime) {
-      this._.inspector.describe("setValueAtTime", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("setValueAtTime", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "value", "number")));
         });
 
-        assert(_utils2["default"].isNumber(startTime), function (fmt) {
+        $assert(_utils2.default.isNumber(startTime), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(startTime, "startTime", "number")));
         });
       });
@@ -2237,12 +2228,12 @@ var AudioParam = (function () {
   }, {
     key: "linearRampToValueAtTime",
     value: function linearRampToValueAtTime(value, endTime) {
-      this._.inspector.describe("linearRampToValueAtTime", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("linearRampToValueAtTime", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "value", "number")));
         });
 
-        assert(_utils2["default"].isNumber(endTime), function (fmt) {
+        $assert(_utils2.default.isNumber(endTime), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(endTime, "endTime", "number")));
         });
       });
@@ -2256,12 +2247,12 @@ var AudioParam = (function () {
   }, {
     key: "exponentialRampToValueAtTime",
     value: function exponentialRampToValueAtTime(value, endTime) {
-      this._.inspector.describe("exponentialRampToValueAtTime", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("exponentialRampToValueAtTime", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "value", "number")));
         });
 
-        assert(_utils2["default"].isNumber(endTime), function (fmt) {
+        $assert(_utils2.default.isNumber(endTime), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(endTime, "endTime", "number")));
         });
       });
@@ -2275,16 +2266,16 @@ var AudioParam = (function () {
   }, {
     key: "setTargetAtTime",
     value: function setTargetAtTime(target, startTime, timeConstant) {
-      this._.inspector.describe("setTargetAtTime", function (assert) {
-        assert(_utils2["default"].isNumber(target), function (fmt) {
+      this._.inspector.describe("setTargetAtTime", function ($assert) {
+        $assert(_utils2.default.isNumber(target), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(target, "target", "number")));
         });
 
-        assert(_utils2["default"].isNumber(startTime), function (fmt) {
+        $assert(_utils2.default.isNumber(startTime), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(startTime, "startTime", "number")));
         });
 
-        assert(_utils2["default"].isNumber(timeConstant), function (fmt) {
+        $assert(_utils2.default.isNumber(timeConstant), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(timeConstant, "timeConstant", "number")));
         });
       });
@@ -2299,16 +2290,16 @@ var AudioParam = (function () {
   }, {
     key: "setValueCurveAtTime",
     value: function setValueCurveAtTime(values, startTime, duration) {
-      this._.inspector.describe("setValueCurveAtTime", function (assert) {
-        assert(_utils2["default"].isInstanceOf(values, Float32Array), function (fmt) {
+      this._.inspector.describe("setValueCurveAtTime", function ($assert) {
+        $assert(_utils2.default.isInstanceOf(values, Float32Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(values, "values", "Float32Array")));
         });
 
-        assert(_utils2["default"].isNumber(startTime), function (fmt) {
+        $assert(_utils2.default.isNumber(startTime), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(startTime, "startTime", "number")));
         });
 
-        assert(_utils2["default"].isNumber(duration), function (fmt) {
+        $assert(_utils2.default.isNumber(duration), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(duration, "duration", "number")));
         });
       });
@@ -2323,8 +2314,8 @@ var AudioParam = (function () {
   }, {
     key: "cancelScheduledValues",
     value: function cancelScheduledValues(startTime) {
-      this._.inspector.describe("cancelScheduledValues", function (assert) {
-        assert(_utils2["default"].isNumber(startTime), function (fmt) {
+      this._.inspector.describe("cancelScheduledValues", function ($assert) {
+        $assert(_utils2.default.isNumber(startTime), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(startTime, "startTime", "number")));
         });
       });
@@ -2340,7 +2331,7 @@ var AudioParam = (function () {
   }, {
     key: "toJSON",
     value: function toJSON(memo) {
-      return _utils2["default"].toJSON(this, function (node, memo) {
+      return _utils2.default.toJSON(this, function (node, memo) {
         var json = {};
 
         json.value = node.value;
@@ -2352,7 +2343,7 @@ var AudioParam = (function () {
   }, {
     key: "$valueAtTime",
     value: function $valueAtTime(_time) {
-      var time = _utils2["default"].toSeconds(_time);
+      var time = _utils2.default.toSeconds(_time);
 
       var value = this._.value;
       var events = this.$events;
@@ -2427,8 +2418,8 @@ var AudioParam = (function () {
       return this._.value;
     },
     set: function set(value) {
-      this._.inspector.describe("value", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("value", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "value", "number")));
         });
       });
@@ -2441,8 +2432,8 @@ var AudioParam = (function () {
       return this._.name;
     },
     set: function set(value) {
-      this._.inspector.describe("name", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("name", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -2451,8 +2442,8 @@ var AudioParam = (function () {
       return this._.defaultValue;
     },
     set: function set(value) {
-      this._.inspector.describe("defaultValue", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("defaultValue", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -2485,35 +2476,35 @@ var AudioParam = (function () {
   return AudioParam;
 })();
 
-exports["default"] = AudioParam;
+exports.default = AudioParam;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./utils":44,"./utils/Immigration":40,"./utils/Inspector":41,"./utils/Junction":42}],10:[function(require,module,exports){
 "use strict";
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _Immigration = require("./utils/Immigration");
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _utilsImmigration = require("./utils/Immigration");
-
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _Event2 = require("./Event");
 
 var _Event3 = _interopRequireDefault(_Event2);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var immigration = _Immigration2.default.getInstance();
 
 var AudioProcessingEvent = (function (_Event) {
   _inherits(AudioProcessingEvent, _Event);
@@ -2521,13 +2512,14 @@ var AudioProcessingEvent = (function (_Event) {
   function AudioProcessingEvent(admission, node) {
     _classCallCheck(this, AudioProcessingEvent);
 
-    _get(Object.getPrototypeOf(AudioProcessingEvent.prototype), "constructor", this).call(this, "audioprocess", node);
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AudioProcessingEvent).call(this, "audioprocess", node));
 
     immigration.check(admission, function () {
       throw new TypeError("Illegal constructor");
     });
 
-    this._.node = node;
+    _this._.node = node;
+    return _this;
   }
 
   _createClass(AudioProcessingEvent, [{
@@ -2543,43 +2535,32 @@ var AudioProcessingEvent = (function (_Event) {
   }]);
 
   return AudioProcessingEvent;
-})(_Event3["default"]);
+})(_Event3.default);
 
-exports["default"] = AudioProcessingEvent;
-module.exports = exports["default"];
+exports.default = AudioProcessingEvent;
 
 },{"./Event":18,"./utils/Immigration":40}],11:[function(require,module,exports){
 "use strict";
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsEnumerator = require("./utils/Enumerator");
+var _Enumerator = require("./utils/Enumerator");
 
-var _utilsEnumerator2 = _interopRequireDefault(_utilsEnumerator);
+var _Enumerator2 = _interopRequireDefault(_Enumerator);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _AudioNode2 = require("./AudioNode");
 
@@ -2589,17 +2570,25 @@ var _AudioParam = require("./AudioParam");
 
 var _AudioParam2 = _interopRequireDefault(_AudioParam);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var immigration = _Immigration2.default.getInstance();
 
 var BiquadFilterNode = (function (_AudioNode) {
   _inherits(BiquadFilterNode, _AudioNode);
 
   function BiquadFilterNode(admission, context) {
-    var _this = this;
-
     _classCallCheck(this, BiquadFilterNode);
 
-    _get(Object.getPrototypeOf(BiquadFilterNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(BiquadFilterNode).call(this, admission, {
       name: "BiquadFilterNode",
       context: context,
       numberOfInputs: 1,
@@ -2607,37 +2596,38 @@ var BiquadFilterNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.type = "lowpass";
-    this._.frequency = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "frequency", 350, 10, context.sampleRate / 2);
+    _this._.type = "lowpass";
+    _this._.frequency = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "frequency", 350, 10, context.sampleRate / 2);
     });
-    this._.detune = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "detune", 0, -4800, 4800);
+    _this._.detune = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "detune", 0, -4800, 4800);
     });
-    this._.Q = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "Q", 1, 0.0001, 1000);
+    _this._.Q = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "Q", 1, 0.0001, 1000);
     });
-    this._.gain = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "gain", 0, -40, 40);
+    _this._.gain = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "gain", 0, -40, 40);
     });
-    this._.JSONKeys = BiquadFilterNode.$JSONKeys.slice();
+    _this._.JSONKeys = BiquadFilterNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(BiquadFilterNode, [{
     key: "getFrequencyResponse",
     value: function getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
-      this._.inspector.describe("getFrequencyResponse", function (assert) {
-        assert(_utils2["default"].isInstanceOf(frequencyHz, Float32Array), function (fmt) {
+      this._.inspector.describe("getFrequencyResponse", function ($assert) {
+        $assert(_utils2.default.isInstanceOf(frequencyHz, Float32Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(frequencyHz, "frequencyHz", "Float32Array")));
         });
 
-        assert(_utils2["default"].isInstanceOf(magResponse, Float32Array), function (fmt) {
+        $assert(_utils2.default.isInstanceOf(magResponse, Float32Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(magResponse, "magResponse", "Float32Array")));
         });
 
-        assert(_utils2["default"].isInstanceOf(phaseResponse, Float32Array), function (fmt) {
+        $assert(_utils2.default.isInstanceOf(phaseResponse, Float32Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(phaseResponse, "phaseResponse", "Float32Array")));
         });
       });
@@ -2648,10 +2638,10 @@ var BiquadFilterNode = (function (_AudioNode) {
       return this._.type;
     },
     set: function set(value) {
-      this._.inspector.describe("type", function (assert) {
-        var enumBiquadFilterType = new _utilsEnumerator2["default"](["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"]);
+      this._.inspector.describe("type", function ($assert) {
+        var enumBiquadFilterType = new _Enumerator2.default(["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"]);
 
-        assert(enumBiquadFilterType.contains(value), function (fmt) {
+        $assert(enumBiquadFilterType.contains(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "type", enumBiquadFilterType.toString())));
         });
       });
@@ -2664,8 +2654,8 @@ var BiquadFilterNode = (function (_AudioNode) {
       return this._.frequency;
     },
     set: function set(value) {
-      this._.inspector.describe("frequency", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("frequency", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -2674,8 +2664,8 @@ var BiquadFilterNode = (function (_AudioNode) {
       return this._.detune;
     },
     set: function set(value) {
-      this._.inspector.describe("detune", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("detune", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -2684,8 +2674,8 @@ var BiquadFilterNode = (function (_AudioNode) {
       return this._.Q;
     },
     set: function set(value) {
-      this._.inspector.describe("Q", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("Q", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -2694,38 +2684,27 @@ var BiquadFilterNode = (function (_AudioNode) {
       return this._.gain;
     },
     set: function set(value) {
-      this._.inspector.describe("gain", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("gain", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }]);
 
   return BiquadFilterNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = BiquadFilterNode;
+exports.default = BiquadFilterNode;
 
 BiquadFilterNode.$JSONKeys = ["type", "frequency", "detune", "Q", "gain"];
-module.exports = exports["default"];
 
 },{"./AudioNode":7,"./AudioParam":9,"./utils":44,"./utils/Enumerator":38,"./utils/Immigration":40}],12:[function(require,module,exports){
 "use strict";
 
+var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 var _utils = require("./utils");
 
@@ -2734,6 +2713,16 @@ var _utils2 = _interopRequireDefault(_utils);
 var _AudioNode2 = require("./AudioNode");
 
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var ChannelMergerNode = (function (_AudioNode) {
   _inherits(ChannelMergerNode, _AudioNode);
@@ -2741,7 +2730,7 @@ var ChannelMergerNode = (function (_AudioNode) {
   function ChannelMergerNode(admission, context, numberOfInputs) {
     _classCallCheck(this, ChannelMergerNode);
 
-    _get(Object.getPrototypeOf(ChannelMergerNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChannelMergerNode).call(this, admission, {
       name: "ChannelMergerNode",
       context: context,
       numberOfInputs: numberOfInputs,
@@ -2749,39 +2738,29 @@ var ChannelMergerNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.inspector.describe("constructor", function (assert) {
-      assert(_utils2["default"].isPositiveInteger(numberOfInputs), function (fmt) {
+    _this._.inspector.describe("constructor", function ($assert) {
+      $assert(_utils2.default.isPositiveInteger(numberOfInputs), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(numberOfInputs, "numberOfInputs", "positive integer")));
       });
     });
+    return _this;
   }
 
   return ChannelMergerNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = ChannelMergerNode;
-module.exports = exports["default"];
+exports.default = ChannelMergerNode;
 
 },{"./AudioNode":7,"./utils":44}],13:[function(require,module,exports){
 "use strict";
 
+var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 var _utils = require("./utils");
 
@@ -2790,6 +2769,16 @@ var _utils2 = _interopRequireDefault(_utils);
 var _AudioNode2 = require("./AudioNode");
 
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var ChannelSplitterNode = (function (_AudioNode) {
   _inherits(ChannelSplitterNode, _AudioNode);
@@ -2797,7 +2786,7 @@ var ChannelSplitterNode = (function (_AudioNode) {
   function ChannelSplitterNode(admission, context, numberOfOutputs) {
     _classCallCheck(this, ChannelSplitterNode);
 
-    _get(Object.getPrototypeOf(ChannelSplitterNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChannelSplitterNode).call(this, admission, {
       name: "ChannelSplitterNode",
       context: context,
       numberOfInputs: 1,
@@ -2805,42 +2794,32 @@ var ChannelSplitterNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.inspector.describe("constructor", function (assert) {
-      assert(_utils2["default"].isPositiveInteger(numberOfOutputs), function (fmt) {
+    _this._.inspector.describe("constructor", function ($assert) {
+      $assert(_utils2.default.isPositiveInteger(numberOfOutputs), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(numberOfOutputs, "numberOfOutputs", "positive integer")));
       });
     });
+    return _this;
   }
 
   return ChannelSplitterNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = ChannelSplitterNode;
-module.exports = exports["default"];
+exports.default = ChannelSplitterNode;
 
 },{"./AudioNode":7,"./utils":44}],14:[function(require,module,exports){
 (function (global){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
@@ -2850,13 +2829,23 @@ var _AudioNode2 = require("./AudioNode");
 
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var ConvolverNode = (function (_AudioNode) {
   _inherits(ConvolverNode, _AudioNode);
 
   function ConvolverNode(admission, context) {
     _classCallCheck(this, ConvolverNode);
 
-    _get(Object.getPrototypeOf(ConvolverNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ConvolverNode).call(this, admission, {
       name: "ConvolverNode",
       context: context,
       numberOfInputs: 1,
@@ -2864,11 +2853,12 @@ var ConvolverNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "clamped-max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.buffer = null;
-    this._.normalize = true;
-    this._.JSONKeys = ConvolverNode.$JSONKeys.slice();
+    _this._.buffer = null;
+    _this._.normalize = true;
+    _this._.JSONKeys = ConvolverNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(ConvolverNode, [{
@@ -2877,8 +2867,8 @@ var ConvolverNode = (function (_AudioNode) {
       return this._.buffer;
     },
     set: function set(value) {
-      this._.inspector.describe("buffer", function (assert) {
-        assert(_utils2["default"].isNullOrInstanceOf(value, global.AudioBuffer), function (fmt) {
+      this._.inspector.describe("buffer", function ($assert) {
+        $assert(_utils2.default.isNullOrInstanceOf(value, global.AudioBuffer), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "buffer", "AudioBuffer")));
         });
       });
@@ -2891,8 +2881,8 @@ var ConvolverNode = (function (_AudioNode) {
       return this._.normalize;
     },
     set: function set(value) {
-      this._.inspector.describe("normalize", function (assert) {
-        assert(_utils2["default"].isBoolean(value), function (fmt) {
+      this._.inspector.describe("normalize", function ($assert) {
+        $assert(_utils2.default.isBoolean(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "normalize", "boolean")));
         });
       });
@@ -2902,42 +2892,31 @@ var ConvolverNode = (function (_AudioNode) {
   }]);
 
   return ConvolverNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = ConvolverNode;
+exports.default = ConvolverNode;
 
 ConvolverNode.$JSONKeys = ["normalize"];
-module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./AudioNode":7,"./utils":44}],15:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _AudioNode2 = require("./AudioNode");
 
@@ -2947,17 +2926,25 @@ var _AudioParam = require("./AudioParam");
 
 var _AudioParam2 = _interopRequireDefault(_AudioParam);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var immigration = _Immigration2.default.getInstance();
 
 var DelayNode = (function (_AudioNode) {
   _inherits(DelayNode, _AudioNode);
 
   function DelayNode(admission, context, maxDelayTime) {
-    var _this = this;
-
     _classCallCheck(this, DelayNode);
 
-    _get(Object.getPrototypeOf(DelayNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DelayNode).call(this, admission, {
       name: "DelayNode",
       context: context,
       numberOfInputs: 1,
@@ -2965,19 +2952,20 @@ var DelayNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.inspector.describe("constructor", function (assert) {
-      assert(_utils2["default"].isPositiveNumber(maxDelayTime), function (fmt) {
+    _this._.inspector.describe("constructor", function ($assert) {
+      $assert(_utils2.default.isPositiveNumber(maxDelayTime), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(maxDelayTime, "maxDelayTime", "positive number")));
       });
     });
 
-    this._.delayTime = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "delayTime", 0, 0, maxDelayTime);
+    _this._.delayTime = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "delayTime", 0, 0, maxDelayTime);
     });
-    this._.maxDelayTime = maxDelayTime;
-    this._.JSONKeys = DelayNode.$JSONKeys.slice();
+    _this._.maxDelayTime = maxDelayTime;
+    _this._.JSONKeys = DelayNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(DelayNode, [{
@@ -2986,8 +2974,8 @@ var DelayNode = (function (_AudioNode) {
       return this._.delayTime;
     },
     set: function set(value) {
-      this._.inspector.describe("delayTime", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("delayTime", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -2998,33 +2986,24 @@ var DelayNode = (function (_AudioNode) {
   }]);
 
   return DelayNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = DelayNode;
+exports.default = DelayNode;
 
 DelayNode.$JSONKeys = ["delayTime"];
-module.exports = exports["default"];
 
 },{"./AudioNode":7,"./AudioParam":9,"./utils":44,"./utils/Immigration":40}],16:[function(require,module,exports){
 "use strict";
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _Immigration = require("./utils/Immigration");
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _utilsImmigration = require("./utils/Immigration");
-
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _AudioNode2 = require("./AudioNode");
 
@@ -3034,17 +3013,23 @@ var _AudioParam = require("./AudioParam");
 
 var _AudioParam2 = _interopRequireDefault(_AudioParam);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var immigration = _Immigration2.default.getInstance();
 
 var DynamicsCompressorNode = (function (_AudioNode) {
   _inherits(DynamicsCompressorNode, _AudioNode);
 
   function DynamicsCompressorNode(admission, context) {
-    var _this = this;
-
     _classCallCheck(this, DynamicsCompressorNode);
 
-    _get(Object.getPrototypeOf(DynamicsCompressorNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DynamicsCompressorNode).call(this, admission, {
       name: "DynamicsCompressorNode",
       context: context,
       numberOfInputs: 1,
@@ -3052,27 +3037,28 @@ var DynamicsCompressorNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "explicit",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.threshold = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "threshold", -24, -100, 0);
+    _this._.threshold = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "threshold", -24, -100, 0);
     });
-    this._.knee = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "knee", 30, 0, 40);
+    _this._.knee = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "knee", 30, 0, 40);
     });
-    this._.ratio = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "ratio", 12, 1, 20);
+    _this._.ratio = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "ratio", 12, 1, 20);
     });
-    this._.reduction = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "reduction", 0, -20, 0);
+    _this._.reduction = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "reduction", 0, -20, 0);
     });
-    this._.attack = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "attack", 0.003, 0, 1.0);
+    _this._.attack = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "attack", 0.003, 0, 1.0);
     });
-    this._.release = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "release", 0.250, 0, 1.0);
+    _this._.release = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "release", 0.250, 0, 1.0);
     });
-    this._.JSONKeys = DynamicsCompressorNode.$JSONKeys.slice();
+    _this._.JSONKeys = DynamicsCompressorNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(DynamicsCompressorNode, [{
@@ -3081,8 +3067,8 @@ var DynamicsCompressorNode = (function (_AudioNode) {
       return this._.threshold;
     },
     set: function set(value) {
-      this._.inspector.describe("threshold", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("threshold", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -3091,8 +3077,8 @@ var DynamicsCompressorNode = (function (_AudioNode) {
       return this._.knee;
     },
     set: function set(value) {
-      this._.inspector.describe("knee", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("knee", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -3101,8 +3087,8 @@ var DynamicsCompressorNode = (function (_AudioNode) {
       return this._.ratio;
     },
     set: function set(value) {
-      this._.inspector.describe("ratio", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("ratio", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -3111,8 +3097,8 @@ var DynamicsCompressorNode = (function (_AudioNode) {
       return this._.reduction;
     },
     set: function set(value) {
-      this._.inspector.describe("reduction", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("reduction", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -3121,8 +3107,8 @@ var DynamicsCompressorNode = (function (_AudioNode) {
       return this._.attack;
     },
     set: function set(value) {
-      this._.inspector.describe("attack", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("attack", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -3131,19 +3117,18 @@ var DynamicsCompressorNode = (function (_AudioNode) {
       return this._.release;
     },
     set: function set(value) {
-      this._.inspector.describe("release", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("release", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }]);
 
   return DynamicsCompressorNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = DynamicsCompressorNode;
+exports.default = DynamicsCompressorNode;
 
 DynamicsCompressorNode.$JSONKeys = ["threshold", "knee", "ratio", "reduction", "attack", "release"];
-module.exports = exports["default"];
 
 },{"./AudioNode":7,"./AudioParam":9,"./utils/Immigration":40}],17:[function(require,module,exports){
 (function (global){
@@ -3153,14 +3138,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
@@ -3169,56 +3146,65 @@ var _EventTarget2 = require("./EventTarget");
 
 var _EventTarget3 = _interopRequireDefault(_EventTarget2);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 global.Element = global.Element || (function (_EventTarget) {
   _inherits(Element, _EventTarget);
 
   function Element() {
     _classCallCheck(this, Element);
 
-    _get(Object.getPrototypeOf(Element.prototype), "constructor", this).call(this);
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Element).call(this));
+
     throw new TypeError("Illegal constructor");
+    return _this;
   }
 
   return Element;
-})(_EventTarget3["default"]);
+})(_EventTarget3.default);
 
-var Element = (function (_utils$preventSuperCall) {
-  _inherits(Element, _utils$preventSuperCall);
+var Element = (function (_utils$preventSuperCa) {
+  _inherits(Element, _utils$preventSuperCa);
 
   function Element() {
     _classCallCheck(this, Element);
 
-    _get(Object.getPrototypeOf(Element.prototype), "constructor", this).apply(this, arguments);
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(Element).apply(this, arguments));
   }
 
   return Element;
-})(_utils2["default"].preventSuperCall(global.Element));
+})(_utils2.default.preventSuperCall(global.Element));
 
-exports["default"] = Element;
-module.exports = exports["default"];
+exports.default = Element;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./EventTarget":19,"./utils":44}],18:[function(require,module,exports){
 (function (global){
 "use strict";
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _utils = require("./utils");
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _utils2 = _interopRequireDefault(_utils);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _utils = require("./utils");
-
-var _utils2 = _interopRequireDefault(_utils);
 
 global.Event = global.Event || function Event() {
   _classCallCheck(this, Event);
@@ -3226,19 +3212,20 @@ global.Event = global.Event || function Event() {
   throw new TypeError("Illegal constructor");
 };
 
-var Event = (function (_utils$preventSuperCall) {
-  _inherits(Event, _utils$preventSuperCall);
+var Event = (function (_utils$preventSuperCa) {
+  _inherits(Event, _utils$preventSuperCa);
 
   function Event(name, target) {
     _classCallCheck(this, Event);
 
-    _get(Object.getPrototypeOf(Event.prototype), "constructor", this).call(this);
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Event).call(this));
 
-    Object.defineProperty(this, "_", { value: {} });
+    Object.defineProperty(_this, "_", { value: {} });
 
-    this._.type = name;
-    this._.target = _utils2["default"].defaults(target, null);
-    this._.timestamp = Date.now();
+    _this._.type = name;
+    _this._.target = _utils2.default.defaults(target, null);
+    _this._.timestamp = Date.now();
+    return _this;
   }
 
   _createClass(Event, [{
@@ -3259,41 +3246,40 @@ var Event = (function (_utils$preventSuperCall) {
   }]);
 
   return Event;
-})(_utils2["default"].preventSuperCall(global.Event));
+})(_utils2.default.preventSuperCall(global.Event));
 
-exports["default"] = Event;
-module.exports = exports["default"];
+exports.default = Event;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./utils":44}],19:[function(require,module,exports){
 (function (global){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsInspector = require("./utils/Inspector");
+var _Inspector = require("./utils/Inspector");
 
-var _utilsInspector2 = _interopRequireDefault(_utilsInspector);
+var _Inspector2 = _interopRequireDefault(_Inspector);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 global.EventTarget = global.EventTarget || function EventTarget() {
   _classCallCheck(this, EventTarget);
@@ -3301,32 +3287,33 @@ global.EventTarget = global.EventTarget || function EventTarget() {
   throw new TypeError("Illegal constructor");
 };
 
-var EventTarget = (function (_utils$preventSuperCall) {
-  _inherits(EventTarget, _utils$preventSuperCall);
+var EventTarget = (function (_utils$preventSuperCa) {
+  _inherits(EventTarget, _utils$preventSuperCa);
 
   function EventTarget() {
     _classCallCheck(this, EventTarget);
 
-    _get(Object.getPrototypeOf(EventTarget.prototype), "constructor", this).call(this);
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EventTarget).call(this));
 
-    Object.defineProperty(this, "_", {
+    Object.defineProperty(_this, "_", {
       value: {
-        inspector: new _utilsInspector2["default"](this)
+        inspector: new _Inspector2.default(_this)
       }
     });
 
-    this._.listeners = {};
+    _this._.listeners = {};
+    return _this;
   }
 
   _createClass(EventTarget, [{
     key: "addEventListener",
     value: function addEventListener(type, listener) {
-      this._.inspector.describe("addEventListener", function (assert) {
-        assert(_utils2["default"].isString(type), function (fmt) {
+      this._.inspector.describe("addEventListener", function ($assert) {
+        $assert(_utils2.default.isString(type), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(type, "type", "string")));
         });
 
-        assert(_utils2["default"].isFunction(listener), function (fmt) {
+        $assert(_utils2.default.isFunction(listener), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(listener, "listener", "function")));
         });
       });
@@ -3337,12 +3324,12 @@ var EventTarget = (function (_utils$preventSuperCall) {
   }, {
     key: "removeEventListener",
     value: function removeEventListener(type, listener) {
-      this._.inspector.describe("removeEventListener", function (assert) {
-        assert(_utils2["default"].isString(type), function (fmt) {
+      this._.inspector.describe("removeEventListener", function ($assert) {
+        $assert(_utils2.default.isString(type), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(type, "type", "string")));
         });
 
-        assert(_utils2["default"].isFunction(listener), function (fmt) {
+        $assert(_utils2.default.isFunction(listener), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(listener, "listener", "function")));
         });
       });
@@ -3358,10 +3345,10 @@ var EventTarget = (function (_utils$preventSuperCall) {
   }, {
     key: "dispatchEvent",
     value: function dispatchEvent(event) {
-      var _this = this;
+      var _this2 = this;
 
-      this._.inspector.describe("dispatchEvent", function (assert) {
-        assert(_utils2["default"].isInstanceOf(event, global.Event), function (fmt) {
+      this._.inspector.describe("dispatchEvent", function ($assert) {
+        $assert(_utils2.default.isInstanceOf(event, global.Event), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(event, "event", "Event")));
         });
       });
@@ -3373,7 +3360,7 @@ var EventTarget = (function (_utils$preventSuperCall) {
       }
 
       this.$listeners(type).forEach(function (listener) {
-        listener.call(_this, event);
+        listener.call(_this2, event);
       }, this);
 
       return true;
@@ -3386,32 +3373,23 @@ var EventTarget = (function (_utils$preventSuperCall) {
   }]);
 
   return EventTarget;
-})(_utils2["default"].preventSuperCall(global.EventTarget));
+})(_utils2.default.preventSuperCall(global.EventTarget));
 
-exports["default"] = EventTarget;
-module.exports = exports["default"];
+exports.default = EventTarget;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./utils":44,"./utils/Inspector":41}],20:[function(require,module,exports){
 "use strict";
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _Immigration = require("./utils/Immigration");
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _utilsImmigration = require("./utils/Immigration");
-
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _AudioNode2 = require("./AudioNode");
 
@@ -3421,17 +3399,23 @@ var _AudioParam = require("./AudioParam");
 
 var _AudioParam2 = _interopRequireDefault(_AudioParam);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var immigration = _Immigration2.default.getInstance();
 
 var GainNode = (function (_AudioNode) {
   _inherits(GainNode, _AudioNode);
 
   function GainNode(admission, context) {
-    var _this = this;
-
     _classCallCheck(this, GainNode);
 
-    _get(Object.getPrototypeOf(GainNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GainNode).call(this, admission, {
       name: "GainNode",
       context: context,
       numberOfInputs: 1,
@@ -3439,12 +3423,13 @@ var GainNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.gain = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "gain", 1.0, 0.0, 1.0);
+    _this._.gain = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "gain", 1.0, 0.0, 1.0);
     });
-    this._.JSONKeys = GainNode.$JSONKeys.slice();
+    _this._.JSONKeys = GainNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(GainNode, [{
@@ -3453,19 +3438,18 @@ var GainNode = (function (_AudioNode) {
       return this._.gain;
     },
     set: function set(value) {
-      this._.inspector.describe("gain", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("gain", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }]);
 
   return GainNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = GainNode;
+exports.default = GainNode;
 
 GainNode.$JSONKeys = ["gain"];
-module.exports = exports["default"];
 
 },{"./AudioNode":7,"./AudioParam":9,"./utils/Immigration":40}],21:[function(require,module,exports){
 (function (global){
@@ -3475,14 +3459,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
@@ -3491,33 +3467,42 @@ var _Element2 = require("./Element");
 
 var _Element3 = _interopRequireDefault(_Element2);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 global.HTMLElement = global.HTMLElement || (function (_Element) {
   _inherits(HTMLElement, _Element);
 
   function HTMLElement() {
     _classCallCheck(this, HTMLElement);
 
-    _get(Object.getPrototypeOf(HTMLElement.prototype), "constructor", this).call(this);
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(HTMLElement).call(this));
+
     throw new TypeError("Illegal constructor");
+    return _this;
   }
 
   return HTMLElement;
-})(_Element3["default"]);
+})(_Element3.default);
 
-var HTMLElement = (function (_utils$preventSuperCall) {
-  _inherits(HTMLElement, _utils$preventSuperCall);
+var HTMLElement = (function (_utils$preventSuperCa) {
+  _inherits(HTMLElement, _utils$preventSuperCa);
 
   function HTMLElement() {
     _classCallCheck(this, HTMLElement);
 
-    _get(Object.getPrototypeOf(HTMLElement.prototype), "constructor", this).apply(this, arguments);
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(HTMLElement).apply(this, arguments));
   }
 
   return HTMLElement;
-})(_utils2["default"].preventSuperCall(global.HTMLElement));
+})(_utils2.default.preventSuperCall(global.HTMLElement));
 
-exports["default"] = HTMLElement;
-module.exports = exports["default"];
+exports.default = HTMLElement;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./Element":17,"./utils":44}],22:[function(require,module,exports){
@@ -3528,14 +3513,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
@@ -3544,54 +3521,53 @@ var _HTMLElement2 = require("./HTMLElement");
 
 var _HTMLElement3 = _interopRequireDefault(_HTMLElement2);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 global.HTMLMediaElement = global.HTMLMediaElement || (function (_HTMLElement) {
   _inherits(HTMLMediaElement, _HTMLElement);
 
   function HTMLMediaElement() {
     _classCallCheck(this, HTMLMediaElement);
 
-    _get(Object.getPrototypeOf(HTMLMediaElement.prototype), "constructor", this).call(this);
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(HTMLMediaElement).call(this));
+
     throw new TypeError("Illegal constructor");
+    return _this;
   }
 
   return HTMLMediaElement;
-})(_HTMLElement3["default"]);
+})(_HTMLElement3.default);
 
-var HTMLMediaElement = (function (_utils$preventSuperCall) {
-  _inherits(HTMLMediaElement, _utils$preventSuperCall);
+var HTMLMediaElement = (function (_utils$preventSuperCa) {
+  _inherits(HTMLMediaElement, _utils$preventSuperCa);
 
   function HTMLMediaElement() {
     _classCallCheck(this, HTMLMediaElement);
 
-    _get(Object.getPrototypeOf(HTMLMediaElement.prototype), "constructor", this).apply(this, arguments);
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(HTMLMediaElement).apply(this, arguments));
   }
 
   return HTMLMediaElement;
-})(_utils2["default"].preventSuperCall(global.HTMLMediaElement));
+})(_utils2.default.preventSuperCall(global.HTMLMediaElement));
 
-exports["default"] = HTMLMediaElement;
-module.exports = exports["default"];
+exports.default = HTMLMediaElement;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./HTMLElement":21,"./utils":44}],23:[function(require,module,exports){
 (function (global){
 "use strict";
 
+var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 var _utils = require("./utils");
 
@@ -3601,13 +3577,23 @@ var _AudioNode2 = require("./AudioNode");
 
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var MediaElementAudioSourceNode = (function (_AudioNode) {
   _inherits(MediaElementAudioSourceNode, _AudioNode);
 
   function MediaElementAudioSourceNode(admission, context, mediaElement) {
     _classCallCheck(this, MediaElementAudioSourceNode);
 
-    _get(Object.getPrototypeOf(MediaElementAudioSourceNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MediaElementAudioSourceNode).call(this, admission, {
       name: "MediaElementAudioSourceNode",
       context: context,
       numberOfInputs: 0,
@@ -3615,20 +3601,20 @@ var MediaElementAudioSourceNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.inspector.describe("constructor", function (assert) {
-      assert(_utils2["default"].isInstanceOf(mediaElement, global.HTMLMediaElement), function (fmt) {
+    _this._.inspector.describe("constructor", function ($assert) {
+      $assert(_utils2.default.isInstanceOf(mediaElement, global.HTMLMediaElement), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(mediaElement, "mediaElement", "HTMLMediaElement")));
       });
     });
+    return _this;
   }
 
   return MediaElementAudioSourceNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = MediaElementAudioSourceNode;
-module.exports = exports["default"];
+exports.default = MediaElementAudioSourceNode;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./AudioNode":7,"./utils":44}],24:[function(require,module,exports){
@@ -3639,14 +3625,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
@@ -3655,33 +3633,42 @@ var _EventTarget2 = require("./EventTarget");
 
 var _EventTarget3 = _interopRequireDefault(_EventTarget2);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 global.MediaStream = global.MediaStream || (function (_EventTarget) {
   _inherits(MediaStream, _EventTarget);
 
   function MediaStream() {
     _classCallCheck(this, MediaStream);
 
-    _get(Object.getPrototypeOf(MediaStream.prototype), "constructor", this).call(this);
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MediaStream).call(this));
+
     throw new TypeError("Illegal constructor");
+    return _this;
   }
 
   return MediaStream;
-})(_EventTarget3["default"]);
+})(_EventTarget3.default);
 
-var MediaStream = (function (_utils$preventSuperCall) {
-  _inherits(MediaStream, _utils$preventSuperCall);
+var MediaStream = (function (_utils$preventSuperCa) {
+  _inherits(MediaStream, _utils$preventSuperCa);
 
   function MediaStream() {
     _classCallCheck(this, MediaStream);
 
-    _get(Object.getPrototypeOf(MediaStream.prototype), "constructor", this).apply(this, arguments);
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(MediaStream).apply(this, arguments));
   }
 
   return MediaStream;
-})(_utils2["default"].preventSuperCall(global.MediaStream));
+})(_utils2.default.preventSuperCall(global.MediaStream));
 
-exports["default"] = MediaStream;
-module.exports = exports["default"];
+exports.default = MediaStream;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./EventTarget":19,"./utils":44}],25:[function(require,module,exports){
@@ -3691,17 +3678,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var _AudioNode2 = require("./AudioNode");
 
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var MediaStreamAudioDestinationNode = (function (_AudioNode) {
   _inherits(MediaStreamAudioDestinationNode, _AudioNode);
@@ -3709,7 +3696,7 @@ var MediaStreamAudioDestinationNode = (function (_AudioNode) {
   function MediaStreamAudioDestinationNode(admission, context) {
     _classCallCheck(this, MediaStreamAudioDestinationNode);
 
-    _get(Object.getPrototypeOf(MediaStreamAudioDestinationNode.prototype), "constructor", this).call(this, admission, {
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(MediaStreamAudioDestinationNode).call(this, admission, {
       name: "MediaStreamAudioDestinationNode",
       context: context,
       numberOfInputs: 1,
@@ -3717,34 +3704,23 @@ var MediaStreamAudioDestinationNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "explicit",
       channelInterpretation: "speakers"
-    });
+    }));
   }
 
   return MediaStreamAudioDestinationNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = MediaStreamAudioDestinationNode;
-module.exports = exports["default"];
+exports.default = MediaStreamAudioDestinationNode;
 
 },{"./AudioNode":7}],26:[function(require,module,exports){
 (function (global){
 "use strict";
 
+var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 var _utils = require("./utils");
 
@@ -3754,13 +3730,23 @@ var _AudioNode2 = require("./AudioNode");
 
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var MediaStreamAudioSourceNode = (function (_AudioNode) {
   _inherits(MediaStreamAudioSourceNode, _AudioNode);
 
   function MediaStreamAudioSourceNode(admission, context, mediaStream) {
     _classCallCheck(this, MediaStreamAudioSourceNode);
 
-    _get(Object.getPrototypeOf(MediaStreamAudioSourceNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MediaStreamAudioSourceNode).call(this, admission, {
       name: "MediaStreamAudioSourceNode",
       context: context,
       numberOfInputs: 0,
@@ -3768,48 +3754,48 @@ var MediaStreamAudioSourceNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.inspector.describe("constructor", function (assert) {
-      assert(_utils2["default"].isInstanceOf(mediaStream, global.MediaStream), function (fmt) {
+    _this._.inspector.describe("constructor", function ($assert) {
+      $assert(_utils2.default.isInstanceOf(mediaStream, global.MediaStream), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(mediaStream, "mediaStream", "MediaStream")));
       });
     });
+    return _this;
   }
 
   return MediaStreamAudioSourceNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = MediaStreamAudioSourceNode;
-module.exports = exports["default"];
+exports.default = MediaStreamAudioSourceNode;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./AudioNode":7,"./utils":44}],27:[function(require,module,exports){
 "use strict";
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _Immigration = require("./utils/Immigration");
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _utilsImmigration = require("./utils/Immigration");
-
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _Event2 = require("./Event");
 
 var _Event3 = _interopRequireDefault(_Event2);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var immigration = _Immigration2.default.getInstance();
 
 var OfflineAudioCompletionEvent = (function (_Event) {
   _inherits(OfflineAudioCompletionEvent, _Event);
@@ -3817,13 +3803,14 @@ var OfflineAudioCompletionEvent = (function (_Event) {
   function OfflineAudioCompletionEvent(admission, node) {
     _classCallCheck(this, OfflineAudioCompletionEvent);
 
-    _get(Object.getPrototypeOf(OfflineAudioCompletionEvent.prototype), "constructor", this).call(this, "complete", node);
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(OfflineAudioCompletionEvent).call(this, "complete", node));
 
     immigration.check(admission, function () {
       throw new TypeError("Illegal constructor");
     });
 
-    this._.node = node;
+    _this._.node = node;
+    return _this;
   }
 
   _createClass(OfflineAudioCompletionEvent, [{
@@ -3839,46 +3826,35 @@ var OfflineAudioCompletionEvent = (function (_Event) {
   }]);
 
   return OfflineAudioCompletionEvent;
-})(_Event3["default"]);
+})(_Event3.default);
 
-exports["default"] = OfflineAudioCompletionEvent;
-module.exports = exports["default"];
+exports.default = OfflineAudioCompletionEvent;
 
 },{"./Event":18,"./utils/Immigration":40}],28:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _templateObject = _taggedTemplateLiteral(["\n        ", ";\n        not enabled\n      "], ["\n        ", ";\n        not enabled\n      "]),
     _templateObject2 = _taggedTemplateLiteral(["\n          ", ";\n          Cannot ", " on an OfflineAudioContext\n        "], ["\n          ", ";\n          Cannot ", " on an OfflineAudioContext\n        "]),
     _templateObject3 = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]),
     _templateObject4 = _taggedTemplateLiteral(["\n            ", ";\n            cannot call startRendering more than once\n          "], ["\n            ", ";\n            cannot call startRendering more than once\n          "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsConfiguration = require("./utils/Configuration");
+var _Configuration = require("./utils/Configuration");
 
-var _utilsConfiguration2 = _interopRequireDefault(_utilsConfiguration);
+var _Configuration2 = _interopRequireDefault(_Configuration);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _Event = require("./Event");
 
@@ -3896,21 +3872,31 @@ var _OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
 
 var _OfflineAudioCompletionEvent2 = _interopRequireDefault(_OfflineAudioCompletionEvent);
 
-var configuration = _utilsConfiguration2["default"].getInstance();
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var configuration = _Configuration2.default.getInstance();
+var immigration = _Immigration2.default.getInstance();
 
 function transitionToState(methodName) {
   var _this = this;
 
-  this._.inspector.describe(methodName, [], function (assert) {
-    assert(configuration.getState("AudioContext#" + methodName) === "enabled", function (fmt) {
+  this._.inspector.describe(methodName, [], function ($assert) {
+    $assert(configuration.getState("AudioContext#" + methodName) === "enabled", function (fmt) {
       throw new TypeError(fmt.plain(_templateObject, fmt.form));
     });
   });
 
   return new Promise(function (resolve, reject) {
-    _this._.inspector.describe(methodName, [], function (assert) {
-      assert(false, function (fmt) {
+    _this._.inspector.describe(methodName, [], function ($assert) {
+      $assert(false, function (fmt) {
         reject(new Error(fmt.plain(_templateObject2, fmt.form, methodName)));
       });
     });
@@ -3923,29 +3909,30 @@ var OfflineAudioContext = (function (_AudioContext) {
   function OfflineAudioContext(numberOfChannels, length, sampleRate) {
     _classCallCheck(this, OfflineAudioContext);
 
-    _get(Object.getPrototypeOf(OfflineAudioContext.prototype), "constructor", this).call(this);
+    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(OfflineAudioContext).call(this));
 
-    this._.inspector.describe("constructor", function (assert) {
-      assert(_utils2["default"].isPositiveInteger(numberOfChannels), function (fmt) {
+    _this2._.inspector.describe("constructor", function ($assert) {
+      $assert(_utils2.default.isPositiveInteger(numberOfChannels), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject3, fmt.form, fmt.butGot(numberOfChannels, "numberOfChannels", "positive integer")));
       });
 
-      assert(_utils2["default"].isPositiveInteger(length), function (fmt) {
+      $assert(_utils2.default.isPositiveInteger(length), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject3, fmt.form, fmt.butGot(length, "length", "positive integer")));
       });
 
-      assert(_utils2["default"].isPositiveInteger(sampleRate), function (fmt) {
+      $assert(_utils2.default.isPositiveInteger(sampleRate), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject3, fmt.form, fmt.butGot(sampleRate, "sampleRate", "positive integer")));
       });
     });
 
-    this._.sampleRate = sampleRate;
-    this._.oncomplete = null;
-    this._.numberOfChannels = numberOfChannels;
-    this._.length = length;
-    this._.rendering = false;
-    this._.resolve = null;
-    this._.state = "suspended";
+    _this2._.sampleRate = sampleRate;
+    _this2._.oncomplete = null;
+    _this2._.numberOfChannels = numberOfChannels;
+    _this2._.length = length;
+    _this2._.rendering = false;
+    _this2._.resolve = null;
+    _this2._.state = "suspended";
+    return _this2;
   }
 
   _createClass(OfflineAudioContext, [{
@@ -3966,14 +3953,14 @@ var OfflineAudioContext = (function (_AudioContext) {
   }, {
     key: "startRendering",
     value: function startRendering() {
-      var _this2 = this;
+      var _this3 = this;
 
       var isPromiseBased = configuration.getState("OfflineAudioContext#startRendering") === "promise";
       var rendering = this._.rendering;
 
-      function assertion() {
-        this._.inspector.describe("startRendering", function (assert) {
-          assert(!rendering, function (fmt) {
+      function $assertion() {
+        this._.inspector.describe("startRendering", function ($assert) {
+          $assert(!rendering, function (fmt) {
             throw new Error(fmt.plain(_templateObject4, fmt.form));
           });
         });
@@ -3983,23 +3970,23 @@ var OfflineAudioContext = (function (_AudioContext) {
 
       if (isPromiseBased) {
         return new Promise(function (resolve) {
-          assertion.call(_this2);
+          $assertion.call(_this3);
 
-          _this2._.resolve = resolve;
-          _this2._.state = "running";
-          _this2.dispatchEvent(new _Event2["default"]("statechange", _this2));
+          _this3._.resolve = resolve;
+          _this3._.state = "running";
+          _this3.dispatchEvent(new _Event2.default("statechange", _this3));
         });
       }
 
-      assertion.call(this);
+      $assertion.call(this);
 
       this._.state = "running";
-      this.dispatchEvent(new _Event2["default"]("statechange", this));
+      this.dispatchEvent(new _Event2.default("statechange", this));
     }
   }, {
     key: "_process",
     value: function _process(microseconds) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (!this._.rendering || this._.length <= this._.processedSamples) {
         return;
@@ -4024,23 +4011,23 @@ var OfflineAudioContext = (function (_AudioContext) {
 
       if (this._.length <= this._.processedSamples) {
         var renderedBuffer = immigration.apply(function (admission) {
-          return new _AudioBuffer2["default"](admission, _this3, _this3._.numberOfChannels, _this3._.length, _this3.sampleRate);
+          return new _AudioBuffer2.default(admission, _this4, _this4._.numberOfChannels, _this4._.length, _this4.sampleRate);
         });
-        var _event = immigration.apply(function (admission) {
-          return new _OfflineAudioCompletionEvent2["default"](admission, _this3);
+        var event = immigration.apply(function (admission) {
+          return new _OfflineAudioCompletionEvent2.default(admission, _this4);
         });
 
-        _event.renderedBuffer = renderedBuffer;
+        event.renderedBuffer = renderedBuffer;
 
         this._.state = "closed";
 
-        this.dispatchEvent(_event);
+        this.dispatchEvent(event);
         if (this._.resolve !== null) {
           this._.resolve(renderedBuffer);
           this._.resolve = null;
         }
 
-        this.dispatchEvent(new _Event2["default"]("statechange", this));
+        this.dispatchEvent(new _Event2.default("statechange", this));
       }
     }
   }, {
@@ -4049,8 +4036,8 @@ var OfflineAudioContext = (function (_AudioContext) {
       return this._.oncomplete;
     },
     set: function set(value) {
-      this._.inspector.describe("oncomplete", function (assert) {
-        assert(_utils2["default"].isNullOrFunction(value), function (fmt) {
+      this._.inspector.describe("oncomplete", function ($assert) {
+        $assert(_utils2.default.isNullOrFunction(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject3, fmt.form, fmt.butGot(value, "value", "function")));
         });
       });
@@ -4065,47 +4052,36 @@ var OfflineAudioContext = (function (_AudioContext) {
   }]);
 
   return OfflineAudioContext;
-})(_AudioContext3["default"]);
+})(_AudioContext3.default);
 
-exports["default"] = OfflineAudioContext;
-module.exports = exports["default"];
+exports.default = OfflineAudioContext;
 
 },{"./AudioBuffer":2,"./AudioContext":4,"./Event":18,"./OfflineAudioCompletionEvent":27,"./utils":44,"./utils/Configuration":37,"./utils/Immigration":40}],29:[function(require,module,exports){
 (function (global){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]),
     _templateObject2 = _taggedTemplateLiteral(["\n          ", ";\n          cannot start more than once\n        "], ["\n          ", ";\n          cannot start more than once\n        "]),
     _templateObject3 = _taggedTemplateLiteral(["\n          ", ";\n          cannot call stop without calling start first\n        "], ["\n          ", ";\n          cannot call stop without calling start first\n        "]),
     _templateObject4 = _taggedTemplateLiteral(["\n          ", ";\n          cannot stop more than once\n        "], ["\n          ", ";\n          cannot stop more than once\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsEnumerator = require("./utils/Enumerator");
+var _Enumerator = require("./utils/Enumerator");
 
-var _utilsEnumerator2 = _interopRequireDefault(_utilsEnumerator);
+var _Enumerator2 = _interopRequireDefault(_Enumerator);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _AudioNode2 = require("./AudioNode");
 
@@ -4119,17 +4095,25 @@ var _Event = require("./Event");
 
 var _Event2 = _interopRequireDefault(_Event);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var immigration = _Immigration2.default.getInstance();
 
 var OscillatorNode = (function (_AudioNode) {
   _inherits(OscillatorNode, _AudioNode);
 
   function OscillatorNode(admission, context) {
-    var _this = this;
-
     _classCallCheck(this, OscillatorNode);
 
-    _get(Object.getPrototypeOf(OscillatorNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(OscillatorNode).call(this, admission, {
       name: "OscillatorNode",
       context: context,
       numberOfInputs: 0,
@@ -4137,21 +4121,22 @@ var OscillatorNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.type = "sine";
-    this._.frequency = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "frequency", 440, 0, 100000);
+    _this._.type = "sine";
+    _this._.frequency = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "frequency", 440, 0, 100000);
     });
-    this._.detune = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "detune", 0, -4800, 4800);
+    _this._.detune = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "detune", 0, -4800, 4800);
     });
-    this._.onended = null;
-    this._.custom = null;
-    this._.startTime = Infinity;
-    this._.stopTime = Infinity;
-    this._.firedOnEnded = false;
-    this._.JSONKeys = OscillatorNode.$JSONKeys.slice();
+    _this._.onended = null;
+    _this._.custom = null;
+    _this._.startTime = Infinity;
+    _this._.stopTime = Infinity;
+    _this._.firedOnEnded = false;
+    _this._.JSONKeys = OscillatorNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(OscillatorNode, [{
@@ -4163,12 +4148,12 @@ var OscillatorNode = (function (_AudioNode) {
         when = 0;
       }
 
-      this._.inspector.describe("start", function (assert) {
-        assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
+      this._.inspector.describe("start", function ($assert) {
+        $assert(_utils2.default.isPositiveNumber(when), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(when, "when", "positive number")));
         });
 
-        assert(_this2._.startTime === Infinity, function (fmt) {
+        $assert(_this2._.startTime === Infinity, function (fmt) {
           throw new Error(fmt.plain(_templateObject2, fmt.form));
         });
       });
@@ -4184,16 +4169,16 @@ var OscillatorNode = (function (_AudioNode) {
         when = 0;
       }
 
-      this._.inspector.describe("stop", function (assert) {
-        assert(_utils2["default"].isPositiveNumber(when), function (fmt) {
+      this._.inspector.describe("stop", function ($assert) {
+        $assert(_utils2.default.isPositiveNumber(when), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(when, "when", "positive number")));
         });
 
-        assert(_this3._.startTime !== Infinity, function (fmt) {
+        $assert(_this3._.startTime !== Infinity, function (fmt) {
           throw new Error(fmt.plain(_templateObject3, fmt.form));
         });
 
-        assert(_this3._.stopTime === Infinity, function (fmt) {
+        $assert(_this3._.stopTime === Infinity, function (fmt) {
           throw new Error(fmt.plain(_templateObject4, fmt.form));
         });
       });
@@ -4203,8 +4188,8 @@ var OscillatorNode = (function (_AudioNode) {
   }, {
     key: "setPeriodicWave",
     value: function setPeriodicWave(periodicWave) {
-      this._.inspector.describe("setPeriodicWave", function (assert) {
-        assert(_utils2["default"].isInstanceOf(periodicWave, global.PeriodicWave), function (fmt) {
+      this._.inspector.describe("setPeriodicWave", function ($assert) {
+        $assert(_utils2.default.isInstanceOf(periodicWave, global.PeriodicWave), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(periodicWave, "periodicWave", "PeriodicWave")));
         });
       });
@@ -4215,7 +4200,7 @@ var OscillatorNode = (function (_AudioNode) {
   }, {
     key: "$stateAtTime",
     value: function $stateAtTime(_time) {
-      var time = _utils2["default"].toSeconds(_time);
+      var time = _utils2.default.toSeconds(_time);
 
       if (this._.startTime === Infinity) {
         return "UNSCHEDULED";
@@ -4233,7 +4218,7 @@ var OscillatorNode = (function (_AudioNode) {
     key: "_process",
     value: function _process() {
       if (!this._.firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
-        this.dispatchEvent(new _Event2["default"]("ended", this));
+        this.dispatchEvent(new _Event2.default("ended", this));
         this._.firedOnEnded = true;
       }
     }
@@ -4243,10 +4228,10 @@ var OscillatorNode = (function (_AudioNode) {
       return this._.custom ? "custom" : this._.type;
     },
     set: function set(value) {
-      this._.inspector.describe("type", function (assert) {
-        var enumOscillatorType = new _utilsEnumerator2["default"](["sine", "square", "sawtooth", "triangle"]);
+      this._.inspector.describe("type", function ($assert) {
+        var enumOscillatorType = new _Enumerator2.default(["sine", "square", "sawtooth", "triangle"]);
 
-        assert(enumOscillatorType.contains(value), function (fmt) {
+        $assert(enumOscillatorType.contains(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "type", enumOscillatorType.toString())));
         });
       });
@@ -4259,8 +4244,8 @@ var OscillatorNode = (function (_AudioNode) {
       return this._.frequency;
     },
     set: function set(value) {
-      this._.inspector.describe("frequency", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("frequency", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -4269,8 +4254,8 @@ var OscillatorNode = (function (_AudioNode) {
       return this._.detune;
     },
     set: function set(value) {
-      this._.inspector.describe("detune", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("detune", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }, {
@@ -4279,8 +4264,8 @@ var OscillatorNode = (function (_AudioNode) {
       return this._.onended;
     },
     set: function set(value) {
-      this._.inspector.describe("onended", function (assert) {
-        assert(_utils2["default"].isNullOrFunction(value), function (fmt) {
+      this._.inspector.describe("onended", function ($assert) {
+        $assert(_utils2.default.isNullOrFunction(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "onended", "function")));
         });
       });
@@ -4310,46 +4295,45 @@ var OscillatorNode = (function (_AudioNode) {
   }]);
 
   return OscillatorNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = OscillatorNode;
+exports.default = OscillatorNode;
 
 OscillatorNode.$JSONKeys = ["type", "frequency", "detune"];
-module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./AudioNode":7,"./AudioParam":9,"./Event":18,"./utils":44,"./utils/Enumerator":38,"./utils/Immigration":40}],30:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsEnumerator = require("./utils/Enumerator");
+var _Enumerator = require("./utils/Enumerator");
 
-var _utilsEnumerator2 = _interopRequireDefault(_utilsEnumerator);
+var _Enumerator2 = _interopRequireDefault(_Enumerator);
 
 var _AudioNode2 = require("./AudioNode");
 
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var PannerNode = (function (_AudioNode) {
   _inherits(PannerNode, _AudioNode);
@@ -4357,7 +4341,7 @@ var PannerNode = (function (_AudioNode) {
   function PannerNode(admission, context) {
     _classCallCheck(this, PannerNode);
 
-    _get(Object.getPrototypeOf(PannerNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PannerNode).call(this, admission, {
       name: "PannerNode",
       context: context,
       numberOfInputs: 1,
@@ -4365,32 +4349,33 @@ var PannerNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "clamped-max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.panningModel = "HRTF";
-    this._.distanceModel = "inverse";
-    this._.refDistance = 1;
-    this._.maxDistance = 10000;
-    this._.rolloffFactor = 1;
-    this._.coneInnerAngle = 360;
-    this._.coneOuterAngle = 360;
-    this._.coneOuterGain = 0;
-    this._.JSONKeys = PannerNode.$JSONKeys.slice();
+    _this._.panningModel = "HRTF";
+    _this._.distanceModel = "inverse";
+    _this._.refDistance = 1;
+    _this._.maxDistance = 10000;
+    _this._.rolloffFactor = 1;
+    _this._.coneInnerAngle = 360;
+    _this._.coneOuterAngle = 360;
+    _this._.coneOuterGain = 0;
+    _this._.JSONKeys = PannerNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(PannerNode, [{
     key: "setPosition",
     value: function setPosition(x, y, z) {
-      this._.inspector.describe("setPosition", function (assert) {
-        assert(_utils2["default"].isNumber(x), function (fmt) {
+      this._.inspector.describe("setPosition", function ($assert) {
+        $assert(_utils2.default.isNumber(x), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(x, "x", "number")));
         });
 
-        assert(_utils2["default"].isNumber(y), function (fmt) {
+        $assert(_utils2.default.isNumber(y), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(y, "y", "number")));
         });
 
-        assert(_utils2["default"].isNumber(z), function (fmt) {
+        $assert(_utils2.default.isNumber(z), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(z, "z", "number")));
         });
       });
@@ -4398,16 +4383,16 @@ var PannerNode = (function (_AudioNode) {
   }, {
     key: "setOrientation",
     value: function setOrientation(x, y, z) {
-      this._.inspector.describe("setOrientation", function (assert) {
-        assert(_utils2["default"].isNumber(x), function (fmt) {
+      this._.inspector.describe("setOrientation", function ($assert) {
+        $assert(_utils2.default.isNumber(x), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(x, "x", "number")));
         });
 
-        assert(_utils2["default"].isNumber(y), function (fmt) {
+        $assert(_utils2.default.isNumber(y), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(y, "y", "number")));
         });
 
-        assert(_utils2["default"].isNumber(z), function (fmt) {
+        $assert(_utils2.default.isNumber(z), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(z, "z", "number")));
         });
       });
@@ -4415,16 +4400,16 @@ var PannerNode = (function (_AudioNode) {
   }, {
     key: "setVelocity",
     value: function setVelocity(x, y, z) {
-      this._.inspector.describe("setVelocity", function (assert) {
-        assert(_utils2["default"].isNumber(x), function (fmt) {
+      this._.inspector.describe("setVelocity", function ($assert) {
+        $assert(_utils2.default.isNumber(x), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(x, "x", "number")));
         });
 
-        assert(_utils2["default"].isNumber(y), function (fmt) {
+        $assert(_utils2.default.isNumber(y), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(y, "y", "number")));
         });
 
-        assert(_utils2["default"].isNumber(z), function (fmt) {
+        $assert(_utils2.default.isNumber(z), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(z, "z", "number")));
         });
       });
@@ -4435,10 +4420,10 @@ var PannerNode = (function (_AudioNode) {
       return this._.panningModel;
     },
     set: function set(value) {
-      this._.inspector.describe("panningModel", function (assert) {
-        var enumPanningModelType = new _utilsEnumerator2["default"](["equalpower", "HRTF"]);
+      this._.inspector.describe("panningModel", function ($assert) {
+        var enumPanningModelType = new _Enumerator2.default(["equalpower", "HRTF"]);
 
-        assert(enumPanningModelType.contains(value), function (fmt) {
+        $assert(enumPanningModelType.contains(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "panningModel", enumPanningModelType.toString())));
         });
       });
@@ -4451,10 +4436,10 @@ var PannerNode = (function (_AudioNode) {
       return this._.distanceModel;
     },
     set: function set(value) {
-      this._.inspector.describe("distanceModel", function (assert) {
-        var enumDistanceModelType = new _utilsEnumerator2["default"](["linear", "inverse", "exponential"]);
+      this._.inspector.describe("distanceModel", function ($assert) {
+        var enumDistanceModelType = new _Enumerator2.default(["linear", "inverse", "exponential"]);
 
-        assert(enumDistanceModelType.contains(value), function (fmt) {
+        $assert(enumDistanceModelType.contains(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "distanceModel", enumDistanceModelType.toString())));
         });
       });
@@ -4467,8 +4452,8 @@ var PannerNode = (function (_AudioNode) {
       return this._.refDistance;
     },
     set: function set(value) {
-      this._.inspector.describe("refDistance", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("refDistance", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "refDistance", "number")));
         });
       });
@@ -4481,8 +4466,8 @@ var PannerNode = (function (_AudioNode) {
       return this._.maxDistance;
     },
     set: function set(value) {
-      this._.inspector.describe("maxDistance", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("maxDistance", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "maxDistance", "number")));
         });
       });
@@ -4495,8 +4480,8 @@ var PannerNode = (function (_AudioNode) {
       return this._.rolloffFactor;
     },
     set: function set(value) {
-      this._.inspector.describe("rolloffFactor", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("rolloffFactor", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "rolloffFactor", "number")));
         });
       });
@@ -4509,8 +4494,8 @@ var PannerNode = (function (_AudioNode) {
       return this._.coneInnerAngle;
     },
     set: function set(value) {
-      this._.inspector.describe("coneInnerAngle", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("coneInnerAngle", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "coneInnerAngle", "number")));
         });
       });
@@ -4523,8 +4508,8 @@ var PannerNode = (function (_AudioNode) {
       return this._.coneOuterAngle;
     },
     set: function set(value) {
-      this._.inspector.describe("coneOuterAngle", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("coneOuterAngle", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "coneOuterAngle", "number")));
         });
       });
@@ -4537,8 +4522,8 @@ var PannerNode = (function (_AudioNode) {
       return this._.coneOuterGain;
     },
     set: function set(value) {
-      this._.inspector.describe("coneOuterGain", function (assert) {
-        assert(_utils2["default"].isNumber(value), function (fmt) {
+      this._.inspector.describe("coneOuterGain", function ($assert) {
+        $assert(_utils2.default.isNumber(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "coneOuterGain", "number")));
         });
       });
@@ -4548,19 +4533,14 @@ var PannerNode = (function (_AudioNode) {
   }]);
 
   return PannerNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = PannerNode;
+exports.default = PannerNode;
 
 PannerNode.$JSONKeys = ["panningModel", "distanceModel", "refDistance", "maxDistance", "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"];
-module.exports = exports["default"];
 
 },{"./AudioNode":7,"./utils":44,"./utils/Enumerator":38}],31:[function(require,module,exports){
 "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -4569,25 +4549,29 @@ var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "
     _templateObject3 = _taggedTemplateLiteral(["\n          ", ";\n          length of \"imag\" array (", ") exceeds allow maximum of 4096\n        "], ["\n          ", ";\n          length of \"imag\" array (", ") exceeds allow maximum of 4096\n        "]),
     _templateObject4 = _taggedTemplateLiteral(["\n          ", ";\n          length of real array (", ") and length of imaginary array (", ") must match\n        "], ["\n          ", ";\n          length of real array (", ") and length of imaginary array (", ") must match\n        "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
-var _utilsInspector = require("./utils/Inspector");
+var _Inspector = require("./utils/Inspector");
 
-var _utilsInspector2 = _interopRequireDefault(_utilsInspector);
+var _Inspector2 = _interopRequireDefault(_Inspector);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var immigration = _Immigration2.default.getInstance();
 
 var PeriodicWave = (function () {
   function PeriodicWave(admission, context, real, imag) {
@@ -4599,28 +4583,28 @@ var PeriodicWave = (function () {
 
     Object.defineProperty(this, "_", {
       value: {
-        inspector: new _utilsInspector2["default"](this)
+        inspector: new _Inspector2.default(this)
       }
     });
 
-    this._.inspector.describe("constructor", function (assert) {
-      assert(_utils2["default"].isInstanceOf(real, Float32Array), function (fmt) {
+    this._.inspector.describe("constructor", function ($assert) {
+      $assert(_utils2.default.isInstanceOf(real, Float32Array), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(real, "real", "Float32Array")));
       });
 
-      assert(real.length <= 4096, function (fmt) {
+      $assert(real.length <= 4096, function (fmt) {
         throw new TypeError(fmt.plain(_templateObject2, fmt.form, real.length));
       });
 
-      assert(_utils2["default"].isInstanceOf(imag, Float32Array), function (fmt) {
+      $assert(_utils2.default.isInstanceOf(imag, Float32Array), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(imag, "imag", "Float32Array")));
       });
 
-      assert(imag.length <= 4096, function (fmt) {
+      $assert(imag.length <= 4096, function (fmt) {
         throw new TypeError(fmt.plain(_templateObject3, fmt.form, imag.length));
       });
 
-      assert(real.length === imag.length, function (fmt) {
+      $assert(real.length === imag.length, function (fmt) {
         throw new TypeError(fmt.plain(_templateObject4, fmt.form, real.length, imag.length));
       });
     });
@@ -4655,41 +4639,30 @@ var PeriodicWave = (function () {
   return PeriodicWave;
 })();
 
-exports["default"] = PeriodicWave;
-module.exports = exports["default"];
+exports.default = PeriodicWave;
 
 },{"./utils":44,"./utils/Immigration":40,"./utils/Inspector":41}],32:[function(require,module,exports){
 "use strict";
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsImmigration = require("./utils/Immigration");
+var _Immigration = require("./utils/Immigration");
 
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
-var _utilsEnumerator = require("./utils/Enumerator");
+var _Enumerator = require("./utils/Enumerator");
 
-var _utilsEnumerator2 = _interopRequireDefault(_utilsEnumerator);
+var _Enumerator2 = _interopRequireDefault(_Enumerator);
 
 var _AudioNode2 = require("./AudioNode");
 
@@ -4703,7 +4676,17 @@ var _AudioProcessingEvent = require("./AudioProcessingEvent");
 
 var _AudioProcessingEvent2 = _interopRequireDefault(_AudioProcessingEvent);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var immigration = _Immigration2.default.getInstance();
 
 var ScriptProcessorNode = (function (_AudioNode) {
   _inherits(ScriptProcessorNode, _AudioNode);
@@ -4711,7 +4694,7 @@ var ScriptProcessorNode = (function (_AudioNode) {
   function ScriptProcessorNode(admission, context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
     _classCallCheck(this, ScriptProcessorNode);
 
-    _get(Object.getPrototypeOf(ScriptProcessorNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ScriptProcessorNode).call(this, admission, {
       name: "ScriptProcessorNode",
       context: context,
       numberOfInputs: 1,
@@ -4719,54 +4702,55 @@ var ScriptProcessorNode = (function (_AudioNode) {
       channelCount: numberOfInputChannels,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.inspector.describe("constructor", function (assert) {
-      var enumBufferSize = new _utilsEnumerator2["default"]([256, 512, 1024, 2048, 4096, 8192, 16384]);
+    _this._.inspector.describe("constructor", function ($assert) {
+      var enumBufferSize = new _Enumerator2.default([256, 512, 1024, 2048, 4096, 8192, 16384]);
 
-      assert(enumBufferSize.contains(bufferSize), function (fmt) {
+      $assert(enumBufferSize.contains(bufferSize), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(bufferSize, "bufferSize", enumBufferSize.toString())));
       });
 
-      assert(_utils2["default"].isPositiveInteger(numberOfInputChannels), function (fmt) {
+      $assert(_utils2.default.isPositiveInteger(numberOfInputChannels), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(numberOfInputChannels, "numberOfInputChannels", "positive integer")));
       });
 
-      assert(_utils2["default"].isPositiveInteger(numberOfOutputChannels), function (fmt) {
+      $assert(_utils2.default.isPositiveInteger(numberOfOutputChannels), function (fmt) {
         throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(numberOfOutputChannels, "numberOfOutputChannels", "positive integer")));
       });
     });
 
-    this._.bufferSize = bufferSize;
-    this._.onaudioprocess = null;
-    this._.numberOfInputChannels = numberOfInputChannels;
-    this._.numberOfOutputChannels = numberOfOutputChannels;
-    this._.numSamples = 0;
+    _this._.bufferSize = bufferSize;
+    _this._.onaudioprocess = null;
+    _this._.numberOfInputChannels = numberOfInputChannels;
+    _this._.numberOfOutputChannels = numberOfOutputChannels;
+    _this._.numSamples = 0;
+    return _this;
   }
 
   _createClass(ScriptProcessorNode, [{
     key: "_process",
     value: function _process(inNumSamples) {
-      var _this = this;
+      var _this2 = this;
 
       this._.numSamples -= inNumSamples;
 
       if (this._.numSamples <= 0) {
         this._.numSamples += this.bufferSize;
 
-        var _event = immigration.apply(function (admission) {
-          return new _AudioProcessingEvent2["default"](admission, _this);
+        var event = immigration.apply(function (admission) {
+          return new _AudioProcessingEvent2.default(admission, _this2);
         });
 
-        _event.playbackTime = this.context.currentTime + this.bufferSize / this.context.sampleRate;
-        _event.inputBuffer = immigration.apply(function (admission) {
-          return new _AudioBuffer2["default"](admission, _this.context, _this._.numberOfInputChannels, _this.bufferSize, _this.context.sampleRate);
+        event.playbackTime = this.context.currentTime + this.bufferSize / this.context.sampleRate;
+        event.inputBuffer = immigration.apply(function (admission) {
+          return new _AudioBuffer2.default(admission, _this2.context, _this2._.numberOfInputChannels, _this2.bufferSize, _this2.context.sampleRate);
         });
-        _event.outputBuffer = immigration.apply(function (admission) {
-          return new _AudioBuffer2["default"](admission, _this.context, _this._.numberOfOutputChannels, _this.bufferSize, _this.context.sampleRate);
+        event.outputBuffer = immigration.apply(function (admission) {
+          return new _AudioBuffer2.default(admission, _this2.context, _this2._.numberOfOutputChannels, _this2.bufferSize, _this2.context.sampleRate);
         });
 
-        this.dispatchEvent(_event);
+        this.dispatchEvent(event);
       }
     }
   }, {
@@ -4775,8 +4759,8 @@ var ScriptProcessorNode = (function (_AudioNode) {
       return this._.bufferSize;
     },
     set: function set(value) {
-      this._.inspector.describe("bufferSize", function (assert) {
-        assert.throwReadOnlyTypeError(value, "bufferSize");
+      this._.inspector.describe("bufferSize", function ($assert) {
+        $assert.throwReadOnlyTypeError(value, "bufferSize");
       });
     }
   }, {
@@ -4785,8 +4769,8 @@ var ScriptProcessorNode = (function (_AudioNode) {
       return this._.onaudioprocess;
     },
     set: function set(value) {
-      this._.inspector.describe("onaudioprocess", function (assert) {
-        assert(_utils2["default"].isNullOrFunction(value), function (fmt) {
+      this._.inspector.describe("onaudioprocess", function ($assert) {
+        $assert(_utils2.default.isNullOrFunction(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "onaudioprocess", "function")));
         });
       });
@@ -4796,31 +4780,22 @@ var ScriptProcessorNode = (function (_AudioNode) {
   }]);
 
   return ScriptProcessorNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = ScriptProcessorNode;
-module.exports = exports["default"];
+exports.default = ScriptProcessorNode;
 
 },{"./AudioBuffer":2,"./AudioNode":7,"./AudioProcessingEvent":10,"./utils":44,"./utils/Enumerator":38,"./utils/Immigration":40}],33:[function(require,module,exports){
 "use strict";
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _Immigration = require("./utils/Immigration");
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _utilsImmigration = require("./utils/Immigration");
-
-var _utilsImmigration2 = _interopRequireDefault(_utilsImmigration);
+var _Immigration2 = _interopRequireDefault(_Immigration);
 
 var _AudioNode2 = require("./AudioNode");
 
@@ -4830,17 +4805,23 @@ var _AudioParam = require("./AudioParam");
 
 var _AudioParam2 = _interopRequireDefault(_AudioParam);
 
-var immigration = _utilsImmigration2["default"].getInstance();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var immigration = _Immigration2.default.getInstance();
 
 var StereoPannerNode = (function (_AudioNode) {
   _inherits(StereoPannerNode, _AudioNode);
 
   function StereoPannerNode(admission, context) {
-    var _this = this;
-
     _classCallCheck(this, StereoPannerNode);
 
-    _get(Object.getPrototypeOf(StereoPannerNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StereoPannerNode).call(this, admission, {
       name: "StereoPannerNode",
       context: context,
       numberOfInputs: 1,
@@ -4848,12 +4829,13 @@ var StereoPannerNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "clamped-max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.pan = immigration.apply(function (admission) {
-      return new _AudioParam2["default"](admission, _this, "pan", 0.0, -1.0, +1.0);
+    _this._.pan = immigration.apply(function (admission) {
+      return new _AudioParam2.default(admission, _this, "pan", 0.0, -1.0, +1.0);
     });
-    this._.JSONKeys = StereoPannerNode.$JSONKeys.slice();
+    _this._.JSONKeys = StereoPannerNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(StereoPannerNode, [{
@@ -4862,52 +4844,51 @@ var StereoPannerNode = (function (_AudioNode) {
       return this._.pan;
     },
     set: function set(value) {
-      this._.inspector.describe("pan", function (assert) {
-        assert.throwReadOnlyTypeError(value);
+      this._.inspector.describe("pan", function ($assert) {
+        $assert.throwReadOnlyTypeError(value);
       });
     }
   }]);
 
   return StereoPannerNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = StereoPannerNode;
+exports.default = StereoPannerNode;
 
 StereoPannerNode.$JSONKeys = ["pan"];
-module.exports = exports["default"];
 
 },{"./AudioNode":7,"./AudioParam":9,"./utils/Immigration":40}],34:[function(require,module,exports){
 "use strict";
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _templateObject = _taggedTemplateLiteral(["\n          ", ";\n          ", "\n        "], ["\n          ", ";\n          ", "\n        "]);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsEnumerator = require("./utils/Enumerator");
+var _Enumerator = require("./utils/Enumerator");
 
-var _utilsEnumerator2 = _interopRequireDefault(_utilsEnumerator);
+var _Enumerator2 = _interopRequireDefault(_Enumerator);
 
 var _AudioNode2 = require("./AudioNode");
 
 var _AudioNode3 = _interopRequireDefault(_AudioNode2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var WaveShaperNode = (function (_AudioNode) {
   _inherits(WaveShaperNode, _AudioNode);
@@ -4915,7 +4896,7 @@ var WaveShaperNode = (function (_AudioNode) {
   function WaveShaperNode(admission, context) {
     _classCallCheck(this, WaveShaperNode);
 
-    _get(Object.getPrototypeOf(WaveShaperNode.prototype), "constructor", this).call(this, admission, {
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WaveShaperNode).call(this, admission, {
       name: "WaveShaperNode",
       context: context,
       numberOfInputs: 1,
@@ -4923,11 +4904,12 @@ var WaveShaperNode = (function (_AudioNode) {
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
-    });
+    }));
 
-    this._.curve = null;
-    this._.oversample = "none";
-    this._.JSONKeys = WaveShaperNode.$JSONKeys.slice();
+    _this._.curve = null;
+    _this._.oversample = "none";
+    _this._.JSONKeys = WaveShaperNode.$JSONKeys.slice();
+    return _this;
   }
 
   _createClass(WaveShaperNode, [{
@@ -4936,8 +4918,8 @@ var WaveShaperNode = (function (_AudioNode) {
       return this._.curve;
     },
     set: function set(value) {
-      this._.inspector.describe("curve", function (assert) {
-        assert(_utils2["default"].isNullOrInstanceOf(value, Float32Array), function (fmt) {
+      this._.inspector.describe("curve", function ($assert) {
+        $assert(_utils2.default.isNullOrInstanceOf(value, Float32Array), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "curve", "Float32Array")));
         });
       });
@@ -4950,10 +4932,10 @@ var WaveShaperNode = (function (_AudioNode) {
       return this._.oversample;
     },
     set: function set(value) {
-      this._.inspector.describe("oversample", function (assert) {
-        var enumOverSampleType = new _utilsEnumerator2["default"](["none", "2x", "4x"]);
+      this._.inspector.describe("oversample", function ($assert) {
+        var enumOverSampleType = new _Enumerator2.default(["none", "2x", "4x"]);
 
-        assert(enumOverSampleType.contains(value), function (fmt) {
+        $assert(enumOverSampleType.contains(value), function (fmt) {
           throw new TypeError(fmt.plain(_templateObject, fmt.form, fmt.butGot(value, "oversample", enumOverSampleType.toString())));
         });
       });
@@ -4963,12 +4945,11 @@ var WaveShaperNode = (function (_AudioNode) {
   }]);
 
   return WaveShaperNode;
-})(_AudioNode3["default"]);
+})(_AudioNode3.default);
 
-exports["default"] = WaveShaperNode;
+exports.default = WaveShaperNode;
 
 WaveShaperNode.$JSONKeys = ["oversample"];
-module.exports = exports["default"];
 
 },{"./AudioNode":7,"./utils":44,"./utils/Enumerator":38}],35:[function(require,module,exports){
 (function (global){
@@ -4977,7 +4958,7 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = {
+exports.default = {
   AnalyserNode: global.AnalyserNode,
   AudioBuffer: global.AudioBuffer,
   AudioBufferSourceNode: global.AudioBufferSourceNode,
@@ -5006,7 +4987,6 @@ exports["default"] = {
   StereoPannerNode: global.StereoPannerNode,
   WaveShaperNode: global.WaveShaperNode
 };
-module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],36:[function(require,module,exports){
@@ -5017,15 +4997,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var _utils = require("./utils");
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _utilsConfiguration = require("./utils/Configuration");
+var _Configuration = require("./utils/Configuration");
 
-var _utilsConfiguration2 = _interopRequireDefault(_utilsConfiguration);
+var _Configuration2 = _interopRequireDefault(_Configuration);
 
 var _WebAudioAPI = require("./WebAudioAPI");
 
@@ -5163,46 +5141,48 @@ var _WaveShaperNode = require("./WaveShaperNode");
 
 var _WaveShaperNode2 = _interopRequireDefault(_WaveShaperNode);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var sampleRate = 44100;
-var configuration = _utilsConfiguration2["default"].getInstance();
+var configuration = _Configuration2.default.getInstance();
 
 var WebAudioTestAPI = {
-  VERSION: _utils2["default"].getAPIVersion(),
-  utils: _utils2["default"],
+  VERSION: _utils2.default.getAPIVersion(),
+  utils: _utils2.default,
   sampleRate: sampleRate,
-  AnalyserNode: _AnalyserNode2["default"],
-  AudioBuffer: _AudioBuffer2["default"],
-  AudioBufferSourceNode: _AudioBufferSourceNode2["default"],
-  AudioContext: _AudioContext2["default"],
-  AudioDestinationNode: _AudioDestinationNode2["default"],
-  AudioListener: _AudioListener2["default"],
-  AudioNode: _AudioNode2["default"],
-  AudioParam: _AudioParam2["default"],
-  AudioProcessingEvent: _AudioProcessingEvent2["default"],
-  BiquadFilterNode: _BiquadFilterNode2["default"],
-  ChannelMergerNode: _ChannelMergerNode2["default"],
-  ChannelSplitterNode: _ChannelSplitterNode2["default"],
-  ConvolverNode: _ConvolverNode2["default"],
-  DelayNode: _DelayNode2["default"],
-  DynamicsCompressorNode: _DynamicsCompressorNode2["default"],
-  Element: _Element2["default"],
-  Event: _Event2["default"],
-  EventTarget: _EventTarget2["default"],
-  GainNode: _GainNode2["default"],
-  HTMLElement: _HTMLElement2["default"],
-  HTMLMediaElement: _HTMLMediaElement2["default"],
-  MediaElementAudioSourceNode: _MediaElementAudioSourceNode2["default"],
-  MediaStream: _MediaStream2["default"],
-  MediaStreamAudioDestinationNode: _MediaStreamAudioDestinationNode2["default"],
-  MediaStreamAudioSourceNode: _MediaStreamAudioSourceNode2["default"],
-  OfflineAudioCompletionEvent: _OfflineAudioCompletionEvent2["default"],
-  OfflineAudioContext: _OfflineAudioContext2["default"],
-  OscillatorNode: _OscillatorNode2["default"],
-  PannerNode: _PannerNode2["default"],
-  PeriodicWave: _PeriodicWave2["default"],
-  ScriptProcessorNode: _ScriptProcessorNode2["default"],
-  StereoPannerNode: _StereoPannerNode2["default"],
-  WaveShaperNode: _WaveShaperNode2["default"],
+  AnalyserNode: _AnalyserNode2.default,
+  AudioBuffer: _AudioBuffer2.default,
+  AudioBufferSourceNode: _AudioBufferSourceNode2.default,
+  AudioContext: _AudioContext2.default,
+  AudioDestinationNode: _AudioDestinationNode2.default,
+  AudioListener: _AudioListener2.default,
+  AudioNode: _AudioNode2.default,
+  AudioParam: _AudioParam2.default,
+  AudioProcessingEvent: _AudioProcessingEvent2.default,
+  BiquadFilterNode: _BiquadFilterNode2.default,
+  ChannelMergerNode: _ChannelMergerNode2.default,
+  ChannelSplitterNode: _ChannelSplitterNode2.default,
+  ConvolverNode: _ConvolverNode2.default,
+  DelayNode: _DelayNode2.default,
+  DynamicsCompressorNode: _DynamicsCompressorNode2.default,
+  Element: _Element2.default,
+  Event: _Event2.default,
+  EventTarget: _EventTarget2.default,
+  GainNode: _GainNode2.default,
+  HTMLElement: _HTMLElement2.default,
+  HTMLMediaElement: _HTMLMediaElement2.default,
+  MediaElementAudioSourceNode: _MediaElementAudioSourceNode2.default,
+  MediaStream: _MediaStream2.default,
+  MediaStreamAudioDestinationNode: _MediaStreamAudioDestinationNode2.default,
+  MediaStreamAudioSourceNode: _MediaStreamAudioSourceNode2.default,
+  OfflineAudioCompletionEvent: _OfflineAudioCompletionEvent2.default,
+  OfflineAudioContext: _OfflineAudioContext2.default,
+  OscillatorNode: _OscillatorNode2.default,
+  PannerNode: _PannerNode2.default,
+  PeriodicWave: _PeriodicWave2.default,
+  ScriptProcessorNode: _ScriptProcessorNode2.default,
+  StereoPannerNode: _StereoPannerNode2.default,
+  WaveShaperNode: _WaveShaperNode2.default,
   getState: function getState(name) {
     return configuration.getState(name);
   },
@@ -5240,56 +5220,57 @@ var WebAudioTestAPI = {
     global.WebAudioTestAPI = WebAudioTestAPI;
   },
   unuse: function unuse() {
-    global.AnalyserNode = _WebAudioAPI2["default"].AnalyserNode;
-    global.AudioBuffer = _WebAudioAPI2["default"].AudioBuffer;
-    global.AudioBufferSourceNode = _WebAudioAPI2["default"].AudioBufferSourceNode;
-    global.AudioContext = _WebAudioAPI2["default"].AudioContext;
-    global.AudioDestinationNode = _WebAudioAPI2["default"].AudioDestinationNode;
-    global.AudioListener = _WebAudioAPI2["default"].AudioListener;
-    global.AudioNode = _WebAudioAPI2["default"].AudioNode;
-    global.AudioParam = _WebAudioAPI2["default"].AudioParam;
-    global.AudioProcessingEvent = _WebAudioAPI2["default"].AudioProcessingEvent;
-    global.BiquadFilterNode = _WebAudioAPI2["default"].BiquadFilterNode;
-    global.ChannelMergerNode = _WebAudioAPI2["default"].ChannelMergerNode;
-    global.ChannelSplitterNode = _WebAudioAPI2["default"].ChannelSplitterNode;
-    global.ConvolverNode = _WebAudioAPI2["default"].ConvolverNode;
-    global.DelayNode = _WebAudioAPI2["default"].DelayNode;
-    global.DynamicsCompressorNode = _WebAudioAPI2["default"].DynamicsCompressorNode;
-    global.GainNode = _WebAudioAPI2["default"].GainNode;
-    global.MediaElementAudioSourceNode = _WebAudioAPI2["default"].MediaElementAudioSourceNode;
-    global.MediaStreamAudioDestinationNode = _WebAudioAPI2["default"].MediaStreamAudioDestinationNode;
-    global.MediaStreamAudioSourceNode = _WebAudioAPI2["default"].MediaStreamAudioSourceNode;
-    global.OfflineAudioCompletionEvent = _WebAudioAPI2["default"].OfflineAudioCompletionEvent;
-    global.OfflineAudioContext = _WebAudioAPI2["default"].OfflineAudioContext;
-    global.OscillatorNode = _WebAudioAPI2["default"].OscillatorNode;
-    global.PannerNode = _WebAudioAPI2["default"].PannerNode;
-    global.PeriodicWave = _WebAudioAPI2["default"].PeriodicWave;
-    global.ScriptProcessorNode = _WebAudioAPI2["default"].ScriptProcessorNode;
-    global.StereoPannerNode = _WebAudioAPI2["default"].StereoPannerNode;
-    global.WaveShaperNode = _WebAudioAPI2["default"].WaveShaperNode;
+    global.AnalyserNode = _WebAudioAPI2.default.AnalyserNode;
+    global.AudioBuffer = _WebAudioAPI2.default.AudioBuffer;
+    global.AudioBufferSourceNode = _WebAudioAPI2.default.AudioBufferSourceNode;
+    global.AudioContext = _WebAudioAPI2.default.AudioContext;
+    global.AudioDestinationNode = _WebAudioAPI2.default.AudioDestinationNode;
+    global.AudioListener = _WebAudioAPI2.default.AudioListener;
+    global.AudioNode = _WebAudioAPI2.default.AudioNode;
+    global.AudioParam = _WebAudioAPI2.default.AudioParam;
+    global.AudioProcessingEvent = _WebAudioAPI2.default.AudioProcessingEvent;
+    global.BiquadFilterNode = _WebAudioAPI2.default.BiquadFilterNode;
+    global.ChannelMergerNode = _WebAudioAPI2.default.ChannelMergerNode;
+    global.ChannelSplitterNode = _WebAudioAPI2.default.ChannelSplitterNode;
+    global.ConvolverNode = _WebAudioAPI2.default.ConvolverNode;
+    global.DelayNode = _WebAudioAPI2.default.DelayNode;
+    global.DynamicsCompressorNode = _WebAudioAPI2.default.DynamicsCompressorNode;
+    global.GainNode = _WebAudioAPI2.default.GainNode;
+    global.MediaElementAudioSourceNode = _WebAudioAPI2.default.MediaElementAudioSourceNode;
+    global.MediaStreamAudioDestinationNode = _WebAudioAPI2.default.MediaStreamAudioDestinationNode;
+    global.MediaStreamAudioSourceNode = _WebAudioAPI2.default.MediaStreamAudioSourceNode;
+    global.OfflineAudioCompletionEvent = _WebAudioAPI2.default.OfflineAudioCompletionEvent;
+    global.OfflineAudioContext = _WebAudioAPI2.default.OfflineAudioContext;
+    global.OscillatorNode = _WebAudioAPI2.default.OscillatorNode;
+    global.PannerNode = _WebAudioAPI2.default.PannerNode;
+    global.PeriodicWave = _WebAudioAPI2.default.PeriodicWave;
+    global.ScriptProcessorNode = _WebAudioAPI2.default.ScriptProcessorNode;
+    global.StereoPannerNode = _WebAudioAPI2.default.StereoPannerNode;
+    global.WaveShaperNode = _WebAudioAPI2.default.WaveShaperNode;
   }
 };
 
-exports["default"] = WebAudioTestAPI;
-module.exports = exports["default"];
+exports.default = WebAudioTestAPI;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioBufferSourceNode":3,"./AudioContext":4,"./AudioDestinationNode":5,"./AudioListener":6,"./AudioNode":7,"./AudioParam":9,"./AudioProcessingEvent":10,"./BiquadFilterNode":11,"./ChannelMergerNode":12,"./ChannelSplitterNode":13,"./ConvolverNode":14,"./DelayNode":15,"./DynamicsCompressorNode":16,"./Element":17,"./Event":18,"./EventTarget":19,"./GainNode":20,"./HTMLElement":21,"./HTMLMediaElement":22,"./MediaElementAudioSourceNode":23,"./MediaStream":24,"./MediaStreamAudioDestinationNode":25,"./MediaStreamAudioSourceNode":26,"./OfflineAudioCompletionEvent":27,"./OfflineAudioContext":28,"./OscillatorNode":29,"./PannerNode":30,"./PeriodicWave":31,"./ScriptProcessorNode":32,"./StereoPannerNode":33,"./WaveShaperNode":34,"./WebAudioAPI":35,"./utils":44,"./utils/Configuration":37}],37:[function(require,module,exports){
 "use strict";
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _api = require("./api.json");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _api2 = _interopRequireDefault(_api);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _apiJson = require("./api.json");
-
-var _apiJson2 = _interopRequireDefault(_apiJson);
 
 var instance = null;
 
@@ -5300,8 +5281,8 @@ var Configuration = (function () {
     _classCallCheck(this, Configuration);
 
     this._states = {};
-    Object.keys(_apiJson2["default"]).forEach(function (key) {
-      _this._states[key] = _apiJson2["default"][key].states[0];
+    Object.keys(_api2.default).forEach(function (key) {
+      _this._states[key] = _api2.default[key].states[0];
     });
   }
 
@@ -5318,7 +5299,7 @@ var Configuration = (function () {
     value: function setState(name, value) {
       var _this2 = this;
 
-      if (name && typeof name === "object") {
+      if (name && (typeof name === "undefined" ? "undefined" : _typeof(name)) === "object") {
         var _ret = (function () {
           var dict = name;
 
@@ -5330,12 +5311,12 @@ var Configuration = (function () {
           };
         })();
 
-        if (typeof _ret === "object") return _ret.v;
+        if ((typeof _ret === "undefined" ? "undefined" : _typeof(_ret)) === "object") return _ret.v;
       }
       if (!this._states.hasOwnProperty(name)) {
         throw new TypeError("invalid state name " + name);
       }
-      if (_apiJson2["default"][name].states.indexOf(value) === -1) {
+      if (_api2.default[name].states.indexOf(value) === -1) {
         throw new TypeError("invalid state value " + value + " on " + name);
       }
       this._states[name] = value;
@@ -5353,17 +5334,16 @@ var Configuration = (function () {
   return Configuration;
 })();
 
-exports["default"] = Configuration;
-module.exports = exports["default"];
+exports.default = Configuration;
 
 },{"./api.json":43}],38:[function(require,module,exports){
 "use strict";
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5391,25 +5371,24 @@ var Enumerator = (function () {
   return Enumerator;
 })();
 
-exports["default"] = Enumerator;
-module.exports = exports["default"];
+exports.default = Enumerator;
 
 },{}],39:[function(require,module,exports){
 "use strict";
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 var _ = require("./");
 
 var _2 = _interopRequireDefault(_);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function getFunctionDeclaration(fn) {
   return (/^function (\w+\([^)]*\))/.exec(fn.toString())[1]
@@ -5443,7 +5422,7 @@ var Formatter = (function () {
   }, {
     key: "butGot",
     value: function butGot(value, name, type) {
-      return "\"" + name + "\" should be " + _2["default"].article(type) + " " + type + ", but got: " + _2["default"].prettyPrint(value);
+      return "\"" + name + "\" should be " + _2.default.article(type) + " " + type + ", but got: " + _2.default.prettyPrint(value);
     }
   }, {
     key: "outsideTheRange",
@@ -5480,17 +5459,16 @@ var Formatter = (function () {
   return Formatter;
 })();
 
-exports["default"] = Formatter;
-module.exports = exports["default"];
+exports.default = Formatter;
 
 },{"./":44}],40:[function(require,module,exports){
 "use strict";
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5544,29 +5522,28 @@ var Immigration = (function () {
   return Immigration;
 })();
 
-exports["default"] = Immigration;
-module.exports = exports["default"];
+exports.default = Immigration;
 
 },{}],41:[function(require,module,exports){
 "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _templateObject = _taggedTemplateLiteral(["\n        ", ";\n        attempt to write a readonly property: \"", "\"\n      "], ["\n        ", ";\n        attempt to write a readonly property: \"", "\"\n      "]);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _Formatter = require("./Formatter");
 
 var _Formatter2 = _interopRequireDefault(_Formatter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Inspector = (function () {
   function Inspector(instance) {
@@ -5584,7 +5561,7 @@ var Inspector = (function () {
         callback = _ref[1];
       }
 
-      var formatter = new _Formatter2["default"](this.instance, methodName, args);
+      var formatter = new _Formatter2.default(this.instance, methodName, args);
       var _this = this;
 
       function assert(test, callback) {
@@ -5606,25 +5583,24 @@ var Inspector = (function () {
   return Inspector;
 })();
 
-exports["default"] = Inspector;
-module.exports = exports["default"];
+exports.default = Inspector;
 
 },{"./Formatter":39}],42:[function(require,module,exports){
 "use strict";
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 var _ = require("./");
 
 var _2 = _interopRequireDefault(_);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Junction = (function () {
   function Junction(node, index) {
@@ -5639,8 +5615,8 @@ var Junction = (function () {
   _createClass(Junction, [{
     key: "connect",
     value: function connect(destination) {
-      _2["default"].appendIfNotExists(this.outputs, destination);
-      _2["default"].appendIfNotExists(destination.inputs, this);
+      _2.default.appendIfNotExists(this.outputs, destination);
+      _2.default.appendIfNotExists(destination.inputs, this);
     }
   }, {
     key: "disconnectAll",
@@ -5648,7 +5624,7 @@ var Junction = (function () {
       var _this = this;
 
       this.outputs.splice(0).forEach(function (destination) {
-        _2["default"].removeIfExists(destination.inputs, _this);
+        _2.default.removeIfExists(destination.inputs, _this);
       });
     }
   }, {
@@ -5659,7 +5635,7 @@ var Junction = (function () {
 
         if (destination.node === node) {
           this.outputs.splice(i, 1);
-          _2["default"].removeIfExists(destination.inputs, this);
+          _2.default.removeIfExists(destination.inputs, this);
         }
       }
     }
@@ -5671,7 +5647,7 @@ var Junction = (function () {
 
         if (destination.node === node && destination.index === input) {
           this.outputs.splice(i, 1);
-          _2["default"].removeIfExists(destination.inputs, this);
+          _2.default.removeIfExists(destination.inputs, this);
         }
       }
     }
@@ -5701,8 +5677,7 @@ var Junction = (function () {
   return Junction;
 })();
 
-exports["default"] = Junction;
-module.exports = exports["default"];
+exports.default = Junction;
 
 },{"./":44}],43:[function(require,module,exports){
 module.exports={
@@ -5772,8 +5747,6 @@ exports.toJSON = toJSON;
 exports.toMicroseconds = toMicroseconds;
 exports.toSeconds = toSeconds;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var _Configuration = require("./Configuration");
 
 var _Configuration2 = _interopRequireDefault(_Configuration);
@@ -5797,6 +5770,10 @@ var _Inspector2 = _interopRequireDefault(_Inspector);
 var _version = require("../version");
 
 var _version2 = _interopRequireDefault(_version);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
 var MIN_MICRO_SECONDS = 0;
 var MAX_MICRO_SECONDS = 24 * 60 * 60 * 1000 * 1000;
@@ -5835,7 +5812,7 @@ function fill(list, value) {
 }
 
 function getAPIVersion() {
-  return _version2["default"];
+  return _version2.default;
 }
 
 function isBoolean(value) {
@@ -5903,7 +5880,7 @@ function prettyPrint(value) {
   if (value === null || typeof value === "undefined") {
     return String(value);
   }
-  var type = typeof value;
+  var type = typeof value === "undefined" ? "undefined" : _typeof(value);
 
   if (type === "number" || type === "boolean") {
     return String(value);
@@ -5986,12 +5963,12 @@ function toSeconds(time) {
   return toMicroseconds(time) / (1000 * 1000);
 }
 
-exports["default"] = {
-  Configuration: _Configuration2["default"],
-  Enumerator: _Enumerator2["default"],
-  Formatter: _Formatter2["default"],
-  Immigration: _Immigration2["default"],
-  Inspector: _Inspector2["default"],
+exports.default = {
+  Configuration: _Configuration2.default,
+  Enumerator: _Enumerator2.default,
+  Formatter: _Formatter2.default,
+  Immigration: _Immigration2.default,
+  Inspector: _Inspector2.default,
   appendIfNotExists: appendIfNotExists,
   article: article,
   countArguments: countArguments,
@@ -6024,8 +6001,7 @@ exports["default"] = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = "0.3.7";
-module.exports = exports["default"];
+exports.default = "0.4.0";
 
 },{}],46:[function(require,module,exports){
 (function (global){
@@ -6035,18 +6011,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var _WebAudioTestAPI = require("./WebAudioTestAPI");
 
 var _WebAudioTestAPI2 = _interopRequireDefault(_WebAudioTestAPI);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 if (!global.WEB_AUDIO_TEST_API_IGNORE) {
-  _WebAudioTestAPI2["default"].use();
+  _WebAudioTestAPI2.default.use();
 }
 
-exports["default"] = _WebAudioTestAPI2["default"];
-module.exports = exports["default"];
+exports.default = _WebAudioTestAPI2.default;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebAudioTestAPI":36}]},{},[46]);

@@ -5,7 +5,6 @@ import utils from "../../src/utils/";
 
 describe("utils", () => {
   let pkg = require("../../package.json");
-  let bower = require("../../bower.json");
 
   describe("appendIfNotExists", () => {
     it("(list: any[], value: any): void", () => {
@@ -76,7 +75,6 @@ describe("utils", () => {
   describe("getAPIVersion", () => {
     it("(): string", () => {
       assert(utils.getAPIVersion() === pkg.version);
-      assert(utils.getAPIVersion() === bower.version);
     });
   });
 

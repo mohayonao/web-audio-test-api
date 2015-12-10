@@ -13,8 +13,8 @@ export default class ChannelMergerNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.inspector.describe("constructor", (assert) => {
-      assert(utils.isPositiveInteger(numberOfInputs), (fmt) => {
+    this._.inspector.describe("constructor", ($assert) => {
+      $assert(utils.isPositiveInteger(numberOfInputs), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfInputs, "numberOfInputs", "positive integer")}

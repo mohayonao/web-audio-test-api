@@ -27,8 +27,8 @@ export default class GainNode extends AudioNode {
   }
 
   set gain(value) {
-    this._.inspector.describe("gain", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("gain", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 }

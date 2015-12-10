@@ -39,12 +39,12 @@ export default class BiquadFilterNode extends AudioNode {
   }
 
   set type(value) {
-    this._.inspector.describe("type", (assert) => {
+    this._.inspector.describe("type", ($assert) => {
       let enumBiquadFilterType = new Enumerator([
         "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass",
       ]);
 
-      assert(enumBiquadFilterType.contains(value), (fmt) => {
+      $assert(enumBiquadFilterType.contains(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "type", enumBiquadFilterType.toString())}
@@ -60,8 +60,8 @@ export default class BiquadFilterNode extends AudioNode {
   }
 
   set frequency(value) {
-    this._.inspector.describe("frequency", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("frequency", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -70,8 +70,8 @@ export default class BiquadFilterNode extends AudioNode {
   }
 
   set detune(value) {
-    this._.inspector.describe("detune", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("detune", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -80,8 +80,8 @@ export default class BiquadFilterNode extends AudioNode {
   }
 
   set Q(value) {
-    this._.inspector.describe("Q", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("Q", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -90,28 +90,28 @@ export default class BiquadFilterNode extends AudioNode {
   }
 
   set gain(value) {
-    this._.inspector.describe("gain", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("gain", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
   getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
-    this._.inspector.describe("getFrequencyResponse", (assert) => {
-      assert(utils.isInstanceOf(frequencyHz, Float32Array), (fmt) => {
+    this._.inspector.describe("getFrequencyResponse", ($assert) => {
+      $assert(utils.isInstanceOf(frequencyHz, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(frequencyHz, "frequencyHz", "Float32Array")}
         `);
       });
 
-      assert(utils.isInstanceOf(magResponse, Float32Array), (fmt) => {
+      $assert(utils.isInstanceOf(magResponse, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(magResponse, "magResponse", "Float32Array")}
         `);
       });
 
-      assert(utils.isInstanceOf(phaseResponse, Float32Array), (fmt) => {
+      $assert(utils.isInstanceOf(phaseResponse, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(phaseResponse, "phaseResponse", "Float32Array")}

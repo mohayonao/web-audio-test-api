@@ -30,12 +30,12 @@ export default class PannerNode extends AudioNode {
   }
 
   set panningModel(value) {
-    this._.inspector.describe("panningModel", (assert) => {
+    this._.inspector.describe("panningModel", ($assert) => {
       let enumPanningModelType = new Enumerator([
         "equalpower", "HRTF",
       ]);
 
-      assert(enumPanningModelType.contains(value), (fmt) => {
+      $assert(enumPanningModelType.contains(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "panningModel", enumPanningModelType.toString())}
@@ -51,12 +51,12 @@ export default class PannerNode extends AudioNode {
   }
 
   set distanceModel(value) {
-    this._.inspector.describe("distanceModel", (assert) => {
+    this._.inspector.describe("distanceModel", ($assert) => {
       let enumDistanceModelType = new Enumerator([
         "linear", "inverse", "exponential",
       ]);
 
-      assert(enumDistanceModelType.contains(value), (fmt) => {
+      $assert(enumDistanceModelType.contains(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "distanceModel", enumDistanceModelType.toString())}
@@ -72,8 +72,8 @@ export default class PannerNode extends AudioNode {
   }
 
   set refDistance(value) {
-    this._.inspector.describe("refDistance", (assert) => {
-      assert(utils.isNumber(value), (fmt) => {
+    this._.inspector.describe("refDistance", ($assert) => {
+      $assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "refDistance", "number")}
@@ -89,8 +89,8 @@ export default class PannerNode extends AudioNode {
   }
 
   set maxDistance(value) {
-    this._.inspector.describe("maxDistance", (assert) => {
-      assert(utils.isNumber(value), (fmt) => {
+    this._.inspector.describe("maxDistance", ($assert) => {
+      $assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "maxDistance", "number")}
@@ -106,8 +106,8 @@ export default class PannerNode extends AudioNode {
   }
 
   set rolloffFactor(value) {
-    this._.inspector.describe("rolloffFactor", (assert) => {
-      assert(utils.isNumber(value), (fmt) => {
+    this._.inspector.describe("rolloffFactor", ($assert) => {
+      $assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "rolloffFactor", "number")}
@@ -123,8 +123,8 @@ export default class PannerNode extends AudioNode {
   }
 
   set coneInnerAngle(value) {
-    this._.inspector.describe("coneInnerAngle", (assert) => {
-      assert(utils.isNumber(value), (fmt) => {
+    this._.inspector.describe("coneInnerAngle", ($assert) => {
+      $assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "coneInnerAngle", "number")}
@@ -140,8 +140,8 @@ export default class PannerNode extends AudioNode {
   }
 
   set coneOuterAngle(value) {
-    this._.inspector.describe("coneOuterAngle", (assert) => {
-      assert(utils.isNumber(value), (fmt) => {
+    this._.inspector.describe("coneOuterAngle", ($assert) => {
+      $assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "coneOuterAngle", "number")}
@@ -157,8 +157,8 @@ export default class PannerNode extends AudioNode {
   }
 
   set coneOuterGain(value) {
-    this._.inspector.describe("coneOuterGain", (assert) => {
-      assert(utils.isNumber(value), (fmt) => {
+    this._.inspector.describe("coneOuterGain", ($assert) => {
+      $assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "coneOuterGain", "number")}
@@ -170,22 +170,22 @@ export default class PannerNode extends AudioNode {
   }
 
   setPosition(x, y, z) {
-    this._.inspector.describe("setPosition", (assert) => {
-      assert(utils.isNumber(x), (fmt) => {
+    this._.inspector.describe("setPosition", ($assert) => {
+      $assert(utils.isNumber(x), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(x, "x", "number")}
         `);
       });
 
-      assert(utils.isNumber(y), (fmt) => {
+      $assert(utils.isNumber(y), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(y, "y", "number")}
         `);
       });
 
-      assert(utils.isNumber(z), (fmt) => {
+      $assert(utils.isNumber(z), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(z, "z", "number")}
@@ -195,22 +195,22 @@ export default class PannerNode extends AudioNode {
   }
 
   setOrientation(x, y, z) {
-    this._.inspector.describe("setOrientation", (assert) => {
-      assert(utils.isNumber(x), (fmt) => {
+    this._.inspector.describe("setOrientation", ($assert) => {
+      $assert(utils.isNumber(x), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(x, "x", "number")}
         `);
       });
 
-      assert(utils.isNumber(y), (fmt) => {
+      $assert(utils.isNumber(y), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(y, "y", "number")}
         `);
       });
 
-      assert(utils.isNumber(z), (fmt) => {
+      $assert(utils.isNumber(z), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(z, "z", "number")}
@@ -220,22 +220,22 @@ export default class PannerNode extends AudioNode {
   }
 
   setVelocity(x, y, z) {
-    this._.inspector.describe("setVelocity", (assert) => {
-      assert(utils.isNumber(x), (fmt) => {
+    this._.inspector.describe("setVelocity", ($assert) => {
+      $assert(utils.isNumber(x), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(x, "x", "number")}
         `);
       });
 
-      assert(utils.isNumber(y), (fmt) => {
+      $assert(utils.isNumber(y), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(y, "y", "number")}
         `);
       });
 
-      assert(utils.isNumber(z), (fmt) => {
+      $assert(utils.isNumber(z), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(z, "z", "number")}

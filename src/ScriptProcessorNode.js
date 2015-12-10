@@ -19,26 +19,26 @@ export default class ScriptProcessorNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.inspector.describe("constructor", (assert) => {
+    this._.inspector.describe("constructor", ($assert) => {
       let enumBufferSize = new Enumerator([
         256, 512, 1024, 2048, 4096, 8192, 16384,
       ]);
 
-      assert(enumBufferSize.contains(bufferSize), (fmt) => {
+      $assert(enumBufferSize.contains(bufferSize), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(bufferSize, "bufferSize", enumBufferSize.toString())}
         `);
       });
 
-      assert(utils.isPositiveInteger(numberOfInputChannels), (fmt) => {
+      $assert(utils.isPositiveInteger(numberOfInputChannels), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfInputChannels, "numberOfInputChannels", "positive integer")}
         `);
       });
 
-      assert(utils.isPositiveInteger(numberOfOutputChannels), (fmt) => {
+      $assert(utils.isPositiveInteger(numberOfOutputChannels), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfOutputChannels, "numberOfOutputChannels", "positive integer")}
@@ -58,8 +58,8 @@ export default class ScriptProcessorNode extends AudioNode {
   }
 
   set bufferSize(value) {
-    this._.inspector.describe("bufferSize", (assert) => {
-      assert.throwReadOnlyTypeError(value, "bufferSize");
+    this._.inspector.describe("bufferSize", ($assert) => {
+      $assert.throwReadOnlyTypeError(value, "bufferSize");
     });
   }
 
@@ -68,8 +68,8 @@ export default class ScriptProcessorNode extends AudioNode {
   }
 
   set onaudioprocess(value) {
-    this._.inspector.describe("onaudioprocess", (assert) => {
-      assert(utils.isNullOrFunction(value), (fmt) => {
+    this._.inspector.describe("onaudioprocess", ($assert) => {
+      $assert(utils.isNullOrFunction(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "onaudioprocess", "function")}

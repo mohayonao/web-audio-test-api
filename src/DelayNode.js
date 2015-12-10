@@ -17,8 +17,8 @@ export default class DelayNode extends AudioNode {
       channelInterpretation: "speakers",
     });
 
-    this._.inspector.describe("constructor", (assert) => {
-      assert(utils.isPositiveNumber(maxDelayTime), (fmt) => {
+    this._.inspector.describe("constructor", ($assert) => {
+      $assert(utils.isPositiveNumber(maxDelayTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(maxDelayTime, "maxDelayTime", "positive number")}
@@ -38,8 +38,8 @@ export default class DelayNode extends AudioNode {
   }
 
   set delayTime(value) {
-    this._.inspector.describe("delayTime", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("delayTime", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 

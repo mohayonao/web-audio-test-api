@@ -39,12 +39,12 @@ export default class OscillatorNode extends AudioNode {
   }
 
   set type(value) {
-    this._.inspector.describe("type", (assert) => {
+    this._.inspector.describe("type", ($assert) => {
       let enumOscillatorType = new Enumerator([
         "sine", "square", "sawtooth", "triangle",
       ]);
 
-      assert(enumOscillatorType.contains(value), (fmt) => {
+      $assert(enumOscillatorType.contains(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "type", enumOscillatorType.toString())}
@@ -60,8 +60,8 @@ export default class OscillatorNode extends AudioNode {
   }
 
   set frequency(value) {
-    this._.inspector.describe("frequency", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("frequency", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -70,8 +70,8 @@ export default class OscillatorNode extends AudioNode {
   }
 
   set detune(value) {
-    this._.inspector.describe("detune", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("detune", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -80,8 +80,8 @@ export default class OscillatorNode extends AudioNode {
   }
 
   set onended(value) {
-    this._.inspector.describe("onended", (assert) => {
-      assert(utils.isNullOrFunction(value), (fmt) => {
+    this._.inspector.describe("onended", ($assert) => {
+      $assert(utils.isNullOrFunction(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "onended", "function")}
@@ -113,15 +113,15 @@ export default class OscillatorNode extends AudioNode {
       when = 0;
     }
 
-    this._.inspector.describe("start", (assert) => {
-      assert(utils.isPositiveNumber(when), (fmt) => {
+    this._.inspector.describe("start", ($assert) => {
+      $assert(utils.isPositiveNumber(when), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(when, "when", "positive number")}
         `);
       });
 
-      assert(this._.startTime === Infinity, (fmt) => {
+      $assert(this._.startTime === Infinity, (fmt) => {
         throw new Error(fmt.plain `
           ${fmt.form};
           cannot start more than once
@@ -137,22 +137,22 @@ export default class OscillatorNode extends AudioNode {
       when = 0;
     }
 
-    this._.inspector.describe("stop", (assert) => {
-      assert(utils.isPositiveNumber(when), (fmt) => {
+    this._.inspector.describe("stop", ($assert) => {
+      $assert(utils.isPositiveNumber(when), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(when, "when", "positive number")}
         `);
       });
 
-      assert(this._.startTime !== Infinity, (fmt) => {
+      $assert(this._.startTime !== Infinity, (fmt) => {
         throw new Error(fmt.plain `
           ${fmt.form};
           cannot call stop without calling start first
         `);
       });
 
-      assert(this._.stopTime === Infinity, (fmt) => {
+      $assert(this._.stopTime === Infinity, (fmt) => {
         throw new Error(fmt.plain `
           ${fmt.form};
           cannot stop more than once
@@ -164,8 +164,8 @@ export default class OscillatorNode extends AudioNode {
   }
 
   setPeriodicWave(periodicWave) {
-    this._.inspector.describe("setPeriodicWave", (assert) => {
-      assert(utils.isInstanceOf(periodicWave, global.PeriodicWave), (fmt) => {
+    this._.inspector.describe("setPeriodicWave", ($assert) => {
+      $assert(utils.isInstanceOf(periodicWave, global.PeriodicWave), (fmt) => {
         throw new TypeError(fmt.plain`
           ${fmt.form};
           ${fmt.butGot(periodicWave, "periodicWave", "PeriodicWave")}

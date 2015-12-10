@@ -10,8 +10,8 @@ let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
 
 function transitionToState(methodName) {
-  this._.inspector.describe(methodName, [], (assert) => {
-    assert(configuration.getState(`AudioContext#${methodName}`) === "enabled", (fmt) => {
+  this._.inspector.describe(methodName, [], ($assert) => {
+    $assert(configuration.getState(`AudioContext#${methodName}`) === "enabled", (fmt) => {
       throw new TypeError(fmt.plain `
         ${fmt.form};
         not enabled
@@ -20,8 +20,8 @@ function transitionToState(methodName) {
   });
 
   return new Promise((resolve, reject) => {
-    this._.inspector.describe(methodName, [], (assert) => {
-      assert(false, (fmt) => {
+    this._.inspector.describe(methodName, [], ($assert) => {
+      $assert(false, (fmt) => {
         reject(new Error(fmt.plain `
           ${fmt.form};
           Cannot ${methodName} on an OfflineAudioContext
@@ -35,22 +35,22 @@ export default class OfflineAudioContext extends AudioContext {
   constructor(numberOfChannels, length, sampleRate) {
     super();
 
-    this._.inspector.describe("constructor", (assert) => {
-      assert(utils.isPositiveInteger(numberOfChannels), (fmt) => {
+    this._.inspector.describe("constructor", ($assert) => {
+      $assert(utils.isPositiveInteger(numberOfChannels), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfChannels, "numberOfChannels", "positive integer")}
         `);
       });
 
-      assert(utils.isPositiveInteger(length), (fmt) => {
+      $assert(utils.isPositiveInteger(length), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(length, "length", "positive integer")}
         `);
       });
 
-      assert(utils.isPositiveInteger(sampleRate), (fmt) => {
+      $assert(utils.isPositiveInteger(sampleRate), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(sampleRate, "sampleRate", "positive integer")}
@@ -72,8 +72,8 @@ export default class OfflineAudioContext extends AudioContext {
   }
 
   set oncomplete(value) {
-    this._.inspector.describe("oncomplete", (assert) => {
-      assert(utils.isNullOrFunction(value), (fmt) => {
+    this._.inspector.describe("oncomplete", ($assert) => {
+      $assert(utils.isNullOrFunction(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "value", "function")}
@@ -104,9 +104,9 @@ export default class OfflineAudioContext extends AudioContext {
     let isPromiseBased = configuration.getState("OfflineAudioContext#startRendering") === "promise";
     let rendering = this._.rendering;
 
-    function assertion() {
-      this._.inspector.describe("startRendering", (assert) => {
-        assert(!rendering, (fmt) => {
+    function $assertion() {
+      this._.inspector.describe("startRendering", ($assert) => {
+        $assert(!rendering, (fmt) => {
           throw new Error(fmt.plain `
             ${fmt.form};
             cannot call startRendering more than once
@@ -119,7 +119,7 @@ export default class OfflineAudioContext extends AudioContext {
 
     if (isPromiseBased) {
       return new Promise((resolve) => {
-        assertion.call(this);
+        $assertion.call(this);
 
         this._.resolve = resolve;
         this._.state = "running";
@@ -127,7 +127,7 @@ export default class OfflineAudioContext extends AudioContext {
       });
     }
 
-    assertion.call(this);
+    $assertion.call(this);
 
     this._.state = "running";
     this.dispatchEvent(new Event("statechange", this));

@@ -35,8 +35,8 @@ function isEnabledState() {
 }
 
 function transitionToState(methodName, callback) {
-  this._.inspector.describe(methodName, [], (assert) => {
-    assert(configuration.getState(`AudioContext#${methodName}`) === "enabled", (fmt) => {
+  this._.inspector.describe(methodName, [], ($assert) => {
+    $assert(configuration.getState(`AudioContext#${methodName}`) === "enabled", (fmt) => {
       throw new TypeError(fmt.plain `
         ${fmt.form};
         not enabled
@@ -45,8 +45,8 @@ function transitionToState(methodName, callback) {
   });
 
   return new Promise((resolve, reject) => {
-    this._.inspector.describe(methodName, [], (assert) => {
-      assert(this._.state !== "closed", (fmt) => {
+    this._.inspector.describe(methodName, [], ($assert) => {
+      $assert(this._.state !== "closed", (fmt) => {
         reject(new Error(fmt.plain `
           ${fmt.form};
           Cannot ${methodName} a context that is being closed or has already been closed
@@ -86,8 +86,8 @@ export default class AudioContext extends EventTarget {
   }
 
   set destination(value) {
-    this._.inspector.describe("destination", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("destination", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -96,8 +96,8 @@ export default class AudioContext extends EventTarget {
   }
 
   set sampleRate(value) {
-    this._.inspector.describe("sampleRate", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("sampleRate", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -106,8 +106,8 @@ export default class AudioContext extends EventTarget {
   }
 
   set currentTime(value) {
-    this._.inspector.describe("currentTime", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("currentTime", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -116,8 +116,8 @@ export default class AudioContext extends EventTarget {
   }
 
   set listener(value) {
-    this._.inspector.describe("listener", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("listener", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -132,8 +132,8 @@ export default class AudioContext extends EventTarget {
       return;
     }
 
-    this._.inspector.describe("state", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("state", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -148,8 +148,8 @@ export default class AudioContext extends EventTarget {
       return;
     }
 
-    this._.inspector.describe("onstatechange", (assert) => {
-      assert(utils.isNullOrFunction(value), (fmt) => {
+    this._.inspector.describe("onstatechange", ($assert) => {
+      $assert(utils.isNullOrFunction(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "onstatechange", "function")}
@@ -214,27 +214,27 @@ export default class AudioContext extends EventTarget {
       errorCallback = utils.defaults(_errorCallback, () => {});
     }
 
-    function assertion() {
-      if (assertion.done) {
+    function $assertion() {
+      if ($assertion.done) {
         return;
       }
 
-      this._.inspector.describe("decodeAudioData", [ "audioData", "successCallback", "errorCallback" ], (assert) => {
-        assert(utils.isInstanceOf(audioData, global.ArrayBuffer), (fmt) => {
+      this._.inspector.describe("decodeAudioData", [ "audioData", "successCallback", "errorCallback" ], ($assert) => {
+        $assert(utils.isInstanceOf(audioData, global.ArrayBuffer), (fmt) => {
           throw new TypeError(fmt.plain `
             ${fmt.form};
             ${fmt.butGot(audioData, "audioData", "ArrayBuffer")}
           `);
         });
 
-        assert(utils.isFunction(successCallback), (fmt) => {
+        $assert(utils.isFunction(successCallback), (fmt) => {
           throw new TypeError(fmt.plain `
             ${fmt.form};
             ${fmt.butGot(successCallback, "successCallback", "function")}
           `);
         });
 
-        assert(utils.isFunction(errorCallback), (fmt) => {
+        $assert(utils.isFunction(errorCallback), (fmt) => {
           throw new TypeError(fmt.plain `
             ${fmt.form};
             ${fmt.butGot(errorCallback, "errorCallback", "function")}
@@ -242,11 +242,11 @@ export default class AudioContext extends EventTarget {
         });
       });
 
-      assertion.done = true;
+      $assertion.done = true;
     }
 
     let promise = new Promise((resolve, reject) => {
-      assertion.call(this);
+      $assertion.call(this);
 
       if (this.DECODE_AUDIO_DATA_FAILED) {
         reject();
@@ -263,7 +263,7 @@ export default class AudioContext extends EventTarget {
       return promise;
     }
 
-    assertion.call(this);
+    $assertion.call(this);
   }
 
   createBufferSource() {
@@ -291,8 +291,8 @@ export default class AudioContext extends EventTarget {
   }
 
   createAudioWorker() {
-    this._.inspector.describe("createAudioWorker", (assert) => {
-      assert(false, (fmt) => {
+    this._.inspector.describe("createAudioWorker", ($assert) => {
+      $assert(false, (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           not enabled
@@ -355,8 +355,8 @@ export default class AudioContext extends EventTarget {
   }
 
   createStereoPanner() {
-    this._.inspector.describe("createStereoPanner", (assert) => {
-      assert(configuration.getState("AudioContext#createStereoPanner") === "enabled", (fmt) => {
+    this._.inspector.describe("createStereoPanner", ($assert) => {
+      $assert(configuration.getState("AudioContext#createStereoPanner") === "enabled", (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           not enabled
