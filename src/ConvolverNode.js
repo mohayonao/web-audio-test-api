@@ -23,8 +23,8 @@ export default class ConvolverNode extends AudioNode {
   }
 
   set buffer(value) {
-    this._.inspector.describe("buffer", (assert) => {
-      assert(utils.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
+    this._.inspector.describe("buffer", ($assert) => {
+      $assert(utils.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "buffer", "AudioBuffer")}
@@ -40,8 +40,8 @@ export default class ConvolverNode extends AudioNode {
   }
 
   set normalize(value) {
-    this._.inspector.describe("normalize", (assert) => {
-      assert(utils.isBoolean(value), (fmt) => {
+    this._.inspector.describe("normalize", ($assert) => {
+      $assert(utils.isBoolean(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "normalize", "boolean")}

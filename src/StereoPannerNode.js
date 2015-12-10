@@ -27,8 +27,8 @@ export default class StereoPannerNode extends AudioNode {
   }
 
   set pan(value) {
-    this._.inspector.describe("pan", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("pan", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 }

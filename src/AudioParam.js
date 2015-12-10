@@ -108,8 +108,8 @@ export default class AudioParam {
   }
 
   set value(value) {
-    this._.inspector.describe("value", (assert) => {
-      assert(utils.isNumber(value), (fmt) => {
+    this._.inspector.describe("value", ($assert) => {
+      $assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "value", "number")}
@@ -125,8 +125,8 @@ export default class AudioParam {
   }
 
   set name(value) {
-    this._.inspector.describe("name", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("name", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -135,8 +135,8 @@ export default class AudioParam {
   }
 
   set defaultValue(value) {
-    this._.inspector.describe("defaultValue", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("defaultValue", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -161,15 +161,15 @@ export default class AudioParam {
   }
 
   setValueAtTime(value, startTime) {
-    this._.inspector.describe("setValueAtTime", (assert) => {
-      assert(utils.isNumber(value), (fmt) => {
+    this._.inspector.describe("setValueAtTime", ($assert) => {
+      $assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "value", "number")}
         `);
       });
 
-      assert(utils.isNumber(startTime), (fmt) => {
+      $assert(utils.isNumber(startTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(startTime, "startTime", "number")}
@@ -185,15 +185,15 @@ export default class AudioParam {
   }
 
   linearRampToValueAtTime(value, endTime) {
-    this._.inspector.describe("linearRampToValueAtTime", (assert) => {
-      assert(utils.isNumber(value), (fmt) => {
+    this._.inspector.describe("linearRampToValueAtTime", ($assert) => {
+      $assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "value", "number")}
         `);
       });
 
-      assert(utils.isNumber(endTime), (fmt) => {
+      $assert(utils.isNumber(endTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(endTime, "endTime", "number")}
@@ -209,15 +209,15 @@ export default class AudioParam {
   }
 
   exponentialRampToValueAtTime(value, endTime) {
-    this._.inspector.describe("exponentialRampToValueAtTime", (assert) => {
-      assert(utils.isNumber(value), (fmt) => {
+    this._.inspector.describe("exponentialRampToValueAtTime", ($assert) => {
+      $assert(utils.isNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "value", "number")}
         `);
       });
 
-      assert(utils.isNumber(endTime), (fmt) => {
+      $assert(utils.isNumber(endTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(endTime, "endTime", "number")}
@@ -233,22 +233,22 @@ export default class AudioParam {
   }
 
   setTargetAtTime(target, startTime, timeConstant) {
-    this._.inspector.describe("setTargetAtTime", (assert) => {
-      assert(utils.isNumber(target), (fmt) => {
+    this._.inspector.describe("setTargetAtTime", ($assert) => {
+      $assert(utils.isNumber(target), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(target, "target", "number")}
         `);
       });
 
-      assert(utils.isNumber(startTime), (fmt) => {
+      $assert(utils.isNumber(startTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(startTime, "startTime", "number")}
         `);
       });
 
-      assert(utils.isNumber(timeConstant), (fmt) => {
+      $assert(utils.isNumber(timeConstant), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(timeConstant, "timeConstant", "number")}
@@ -265,22 +265,22 @@ export default class AudioParam {
   }
 
   setValueCurveAtTime(values, startTime, duration) {
-    this._.inspector.describe("setValueCurveAtTime", (assert) => {
-      assert(utils.isInstanceOf(values, Float32Array), (fmt) => {
+    this._.inspector.describe("setValueCurveAtTime", ($assert) => {
+      $assert(utils.isInstanceOf(values, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(values, "values", "Float32Array")}
         `);
       });
 
-      assert(utils.isNumber(startTime), (fmt) => {
+      $assert(utils.isNumber(startTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(startTime, "startTime", "number")}
         `);
       });
 
-      assert(utils.isNumber(duration), (fmt) => {
+      $assert(utils.isNumber(duration), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(duration, "duration", "number")}
@@ -297,8 +297,8 @@ export default class AudioParam {
   }
 
   cancelScheduledValues(startTime) {
-    this._.inspector.describe("cancelScheduledValues", (assert) => {
-      assert(utils.isNumber(startTime), (fmt) => {
+    this._.inspector.describe("cancelScheduledValues", ($assert) => {
+      $assert(utils.isNumber(startTime), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(startTime, "startTime", "number")}

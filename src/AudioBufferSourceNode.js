@@ -40,8 +40,8 @@ export default class AudioBufferSourceNode extends AudioNode {
   }
 
   set buffer(value) {
-    this._.inspector.describe("buffer", (assert) => {
-      assert(utils.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
+    this._.inspector.describe("buffer", ($assert) => {
+      $assert(utils.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "buffer", "AudioBuffer")}
@@ -57,8 +57,8 @@ export default class AudioBufferSourceNode extends AudioNode {
   }
 
   set playbackRate(value) {
-    this._.inspector.describe("playbackRate", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("playbackRate", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -67,8 +67,8 @@ export default class AudioBufferSourceNode extends AudioNode {
   }
 
   set detune(value) {
-    this._.inspector.describe("detune", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("detune", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -77,8 +77,8 @@ export default class AudioBufferSourceNode extends AudioNode {
   }
 
   set loop(value) {
-    this._.inspector.describe("loop", (assert) => {
-      assert(utils.isBoolean(value), (fmt) => {
+    this._.inspector.describe("loop", ($assert) => {
+      $assert(utils.isBoolean(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "loop", "boolean")}
@@ -94,8 +94,8 @@ export default class AudioBufferSourceNode extends AudioNode {
   }
 
   set loopStart(value) {
-    this._.inspector.describe("loopStart", (assert) => {
-      assert(utils.isPositiveNumber(value), (fmt) => {
+    this._.inspector.describe("loopStart", ($assert) => {
+      $assert(utils.isPositiveNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "loopStart", "positive number")}
@@ -111,8 +111,8 @@ export default class AudioBufferSourceNode extends AudioNode {
   }
 
   set loopEnd(value) {
-    this._.inspector.describe("loopEnd", (assert) => {
-      assert(utils.isPositiveNumber(value), (fmt) => {
+    this._.inspector.describe("loopEnd", ($assert) => {
+      $assert(utils.isPositiveNumber(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "loopEnd", "positive number")}
@@ -128,8 +128,8 @@ export default class AudioBufferSourceNode extends AudioNode {
   }
 
   set onended(value) {
-    this._.inspector.describe("onended", (assert) => {
-      assert(utils.isNullOrFunction(value), (fmt) => {
+    this._.inspector.describe("onended", ($assert) => {
+      $assert(utils.isNullOrFunction(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "onended", "function")}
@@ -163,29 +163,29 @@ export default class AudioBufferSourceNode extends AudioNode {
       when = 0;
     }
 
-    this._.inspector.describe("start", [ "when", "offset", "duration" ], (assert) => {
-      assert(utils.isPositiveNumber(when), (fmt) => {
+    this._.inspector.describe("start", [ "when", "offset", "duration" ], ($assert) => {
+      $assert(utils.isPositiveNumber(when), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(when, "when", "positive number")}
         `);
       });
 
-      assert(utils.isPositiveNumber(offset), (fmt) => {
+      $assert(utils.isPositiveNumber(offset), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(offset, "offset", "positive number")}
         `);
       });
 
-      assert(utils.isPositiveNumber(duration), (fmt) => {
+      $assert(utils.isPositiveNumber(duration), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(duration, "duration", "positive number")}
         `);
       });
 
-      assert(this._.startTime === Infinity, (fmt) => {
+      $assert(this._.startTime === Infinity, (fmt) => {
         throw new Error(fmt.plain `
           ${fmt.form};
           cannot start more than once
@@ -201,22 +201,22 @@ export default class AudioBufferSourceNode extends AudioNode {
       when = 0;
     }
 
-    this._.inspector.describe("stop", [ "when" ], (assert) => {
-      assert(utils.isPositiveNumber(when), (fmt) => {
+    this._.inspector.describe("stop", [ "when" ], ($assert) => {
+      $assert(utils.isPositiveNumber(when), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(when, "when", "positive number")}
         `);
       });
 
-      assert(this._.startTime !== Infinity, (fmt) => {
+      $assert(this._.startTime !== Infinity, (fmt) => {
         throw new Error(fmt.plain `
           ${fmt.form};
           cannot call stop without calling start first
         `);
       });
 
-      assert(this._.stopTime === Infinity, (fmt) => {
+      $assert(this._.stopTime === Infinity, (fmt) => {
         throw new Error(fmt.plain `
           ${fmt.form};
           cannot stop more than once

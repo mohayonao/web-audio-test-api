@@ -42,8 +42,8 @@ export default class DynamicsCompressorNode extends AudioNode {
   }
 
   set threshold(value) {
-    this._.inspector.describe("threshold", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("threshold", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -52,8 +52,8 @@ export default class DynamicsCompressorNode extends AudioNode {
   }
 
   set knee(value) {
-    this._.inspector.describe("knee", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("knee", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -62,8 +62,8 @@ export default class DynamicsCompressorNode extends AudioNode {
   }
 
   set ratio(value) {
-    this._.inspector.describe("ratio", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("ratio", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -72,8 +72,8 @@ export default class DynamicsCompressorNode extends AudioNode {
   }
 
   set reduction(value) {
-    this._.inspector.describe("reduction", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("reduction", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -82,8 +82,8 @@ export default class DynamicsCompressorNode extends AudioNode {
   }
 
   set attack(value) {
-    this._.inspector.describe("attack", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("attack", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -92,8 +92,8 @@ export default class DynamicsCompressorNode extends AudioNode {
   }
 
   set release(value) {
-    this._.inspector.describe("release", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("release", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 }

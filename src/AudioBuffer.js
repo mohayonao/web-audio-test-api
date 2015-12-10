@@ -18,22 +18,22 @@ export default class AudioBuffer {
       },
     });
 
-    this._.inspector.describe("constructor", (assert) => {
-      assert(utils.isPositiveInteger(numberOfChannels), (fmt) => {
+    this._.inspector.describe("constructor", ($assert) => {
+      $assert(utils.isPositiveInteger(numberOfChannels), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(numberOfChannels, "numberOfChannels", "positive integer")}
         `);
       });
 
-      assert(utils.isPositiveInteger(length), (fmt) => {
+      $assert(utils.isPositiveInteger(length), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(length, "length", "positive integer")}
         `);
       });
 
-      assert(utils.isPositiveInteger(sampleRate), (fmt) => {
+      $assert(utils.isPositiveInteger(sampleRate), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(sampleRate, "sampleRate", "positive integer")}
@@ -57,8 +57,8 @@ export default class AudioBuffer {
   }
 
   set sampleRate(value) {
-    this._.inspector.describe("sampleRate", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("sampleRate", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -67,8 +67,8 @@ export default class AudioBuffer {
   }
 
   set length(value) {
-    this._.inspector.describe("length", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("length", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -77,8 +77,8 @@ export default class AudioBuffer {
   }
 
   set duration(value) {
-    this._.inspector.describe("duration", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("duration", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -87,8 +87,8 @@ export default class AudioBuffer {
   }
 
   set numberOfChannels(value) {
-    this._.inspector.describe("numberOfChannels", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("numberOfChannels", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -101,15 +101,15 @@ export default class AudioBuffer {
   }
 
   getChannelData(channel) {
-    this._.inspector.describe("getChannelData", (assert) => {
-      assert(utils.isPositiveInteger(channel), (fmt) => {
+    this._.inspector.describe("getChannelData", ($assert) => {
+      $assert(utils.isPositiveInteger(channel), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(channel, "channel", "positive integer")}
         `);
       });
 
-      assert(channel < this._.data.length, (fmt) => {
+      $assert(channel < this._.data.length, (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           channel index (${channel}) exceeds number of channels (${this._.data.length})
@@ -125,43 +125,43 @@ export default class AudioBuffer {
       startInChannel = 0;
     }
 
-    this._.inspector.describe("copyFromChannel", (assert) => {
-      assert(configuration.getState("AudioBuffer#copyFromChannel") === "enabled", (fmt) => {
+    this._.inspector.describe("copyFromChannel", ($assert) => {
+      $assert(configuration.getState("AudioBuffer#copyFromChannel") === "enabled", (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           not enabled
         `);
       });
 
-      assert(utils.isInstanceOf(destination, Float32Array), (fmt) => {
+      $assert(utils.isInstanceOf(destination, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(destination, "destination", "Float32Array")}
         `);
       });
 
-      assert(utils.isPositiveInteger(channelNumber), (fmt) => {
+      $assert(utils.isPositiveInteger(channelNumber), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(channelNumber, "channelNumber", "positive integer")}
         `);
       });
 
-      assert(utils.isPositiveInteger(startInChannel), (fmt) => {
+      $assert(utils.isPositiveInteger(startInChannel), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(channelNumber, "startInChannel", "positive integer")}
         `);
       });
 
-      assert(0 <= channelNumber && channelNumber < this._.data.length, (fmt) => {
+      $assert(0 <= channelNumber && channelNumber < this._.data.length, (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           The channelNumber provided (${channelNumber}) is outside the range [0, ${this._.data.length})
         `);
       });
 
-      assert(0 <= startInChannel && startInChannel < this._.length, (fmt) => {
+      $assert(0 <= startInChannel && startInChannel < this._.length, (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           The startInChannel provided (${startInChannel}) is outside the range [0, ${this._.length}).
@@ -179,43 +179,43 @@ export default class AudioBuffer {
       startInChannel = 0;
     }
 
-    this._.inspector.describe("copyToChannel", (assert) => {
-      assert(configuration.getState("AudioBuffer#copyToChannel") === "enabled", (fmt) => {
+    this._.inspector.describe("copyToChannel", ($assert) => {
+      $assert(configuration.getState("AudioBuffer#copyToChannel") === "enabled", (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           not enabled
         `);
       });
 
-      assert(utils.isInstanceOf(source, Float32Array), (fmt) => {
+      $assert(utils.isInstanceOf(source, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(source, "destination", "Float32Array")}
         `);
       });
 
-      assert(utils.isPositiveInteger(channelNumber), (fmt) => {
+      $assert(utils.isPositiveInteger(channelNumber), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(channelNumber, "channelNumber", "positive integer")}
         `);
       });
 
-      assert(utils.isPositiveInteger(startInChannel), (fmt) => {
+      $assert(utils.isPositiveInteger(startInChannel), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(channelNumber, "startInChannel", "positive integer")}
         `);
       });
 
-      assert(0 <= channelNumber && channelNumber < this._.data.length, (fmt) => {
+      $assert(0 <= channelNumber && channelNumber < this._.data.length, (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           The channelNumber provided (${channelNumber}) is outside the range [0, ${this._.data.length})
         `);
       });
 
-      assert(0 <= startInChannel && startInChannel < this._.length, (fmt) => {
+      $assert(0 <= startInChannel && startInChannel < this._.length, (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           The startInChannel provided (${startInChannel}) is outside the range [0, ${this._.length}).

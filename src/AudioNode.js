@@ -29,8 +29,8 @@ export default class AudioNode extends EventTarget {
     this._.outputs = utils.fill(new Array(Math.max(0, this._.numberOfOutputs|0)), i => new Junction(this, i));
     this._.tick = -1;
 
-    this._.inspector.describe(`create${this._.name.replace(/Node$/, "")}`, [], (assert) => {
-      assert(this._.context.state !== "closed", (fmt) => {
+    this._.inspector.describe(`create${this._.name.replace(/Node$/, "")}`, [], ($assert) => {
+      $assert(this._.context.state !== "closed", (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           AudioContext has been closed
@@ -44,8 +44,8 @@ export default class AudioNode extends EventTarget {
   }
 
   set context(value) {
-    this._.inspector.describe("context", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("context", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -54,8 +54,8 @@ export default class AudioNode extends EventTarget {
   }
 
   set numberOfInputs(value) {
-    this._.inspector.describe("numberOfInputs", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("numberOfInputs", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -64,8 +64,8 @@ export default class AudioNode extends EventTarget {
   }
 
   set numberOfOutputs(value) {
-    this._.inspector.describe("numberOfOutputs", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("numberOfOutputs", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 
@@ -74,8 +74,8 @@ export default class AudioNode extends EventTarget {
   }
 
   set channelCount(value) {
-    this._.inspector.describe("channelCount", (assert) => {
-      assert(utils.isPositiveInteger(value), (fmt) => {
+    this._.inspector.describe("channelCount", ($assert) => {
+      $assert(utils.isPositiveInteger(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "channelCount", "positive integer")}
@@ -91,12 +91,12 @@ export default class AudioNode extends EventTarget {
   }
 
   set channelCountMode(value) {
-    this._.inspector.describe("channelCountMode", (assert) => {
+    this._.inspector.describe("channelCountMode", ($assert) => {
       let enumChannelCountMode = new Enumerator([
         "max", "clamped-max", "explicit",
       ]);
 
-      assert(enumChannelCountMode.contains(value), (fmt) => {
+      $assert(enumChannelCountMode.contains(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "channelCountMode", enumChannelCountMode.toString())}
@@ -112,12 +112,12 @@ export default class AudioNode extends EventTarget {
   }
 
   set channelInterpretation(value) {
-    this._.inspector.describe("channelInterpretation", (assert) => {
+    this._.inspector.describe("channelInterpretation", ($assert) => {
       let enumChannelInterpretation = new Enumerator([
         "speakers", "discrete",
       ]);
 
-      assert(enumChannelInterpretation.contains(value), (fmt) => {
+      $assert(enumChannelInterpretation.contains(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "channelInterpretation", enumChannelInterpretation.toString())}
@@ -145,43 +145,43 @@ export default class AudioNode extends EventTarget {
   }
 
   connect(destination, output = 0, input = 0) {
-    this._.inspector.describe("connect", (assert) => {
-      assert(utils.isInstanceOf(destination, global.AudioNode) || utils.isInstanceOf(destination, global.AudioParam), (fmt) => {
+    this._.inspector.describe("connect", ($assert) => {
+      $assert(utils.isInstanceOf(destination, global.AudioNode) || utils.isInstanceOf(destination, global.AudioParam), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(destination, "destination", "AudioNode or an AudioParam")}
         `);
       });
 
-      assert(this.$context === destination.$context, (fmt) => {
+      $assert(this.$context === destination.$context, (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           cannot connect to a destination belonging to a different audio context
         `);
       });
 
-      assert(utils.isPositiveInteger(output), (fmt) => {
+      $assert(utils.isPositiveInteger(output), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(output, "output", "positive integer")}
         `);
       });
 
-      assert(utils.isPositiveInteger(input), (fmt) => {
+      $assert(utils.isPositiveInteger(input), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(input, "input", "positive integer")}
         `);
       });
 
-      assert(output < this.numberOfOutputs, (fmt) => {
+      $assert(output < this.numberOfOutputs, (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           output index (${output}) exceeds number of outputs (${this.numberOfOutputs})
         `);
       });
 
-      assert(input < (destination.numberOfInputs || 1), (fmt) => {
+      $assert(input < (destination.numberOfInputs || 1), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           input index (${input}) exceeds number of inputs (${destination.numberOfInputs})

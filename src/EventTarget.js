@@ -21,15 +21,15 @@ export default class EventTarget extends utils.preventSuperCall(global.EventTarg
   }
 
   addEventListener(type, listener) {
-    this._.inspector.describe("addEventListener", (assert) => {
-      assert(utils.isString(type), (fmt) => {
+    this._.inspector.describe("addEventListener", ($assert) => {
+      $assert(utils.isString(type), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(type, "type", "string")}
         `);
       });
 
-      assert(utils.isFunction(listener), (fmt) => {
+      $assert(utils.isFunction(listener), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(listener, "listener", "function")}
@@ -42,15 +42,15 @@ export default class EventTarget extends utils.preventSuperCall(global.EventTarg
   }
 
   removeEventListener(type, listener) {
-    this._.inspector.describe("removeEventListener", (assert) => {
-      assert(utils.isString(type), (fmt) => {
+    this._.inspector.describe("removeEventListener", ($assert) => {
+      $assert(utils.isString(type), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(type, "type", "string")}
         `);
       });
 
-      assert(utils.isFunction(listener), (fmt) => {
+      $assert(utils.isFunction(listener), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(listener, "listener", "function")}
@@ -68,8 +68,8 @@ export default class EventTarget extends utils.preventSuperCall(global.EventTarg
   }
 
   dispatchEvent(event) {
-    this._.inspector.describe("dispatchEvent", (assert) => {
-      assert(utils.isInstanceOf(event, global.Event), (fmt) => {
+    this._.inspector.describe("dispatchEvent", ($assert) => {
+      $assert(utils.isInstanceOf(event, global.Event), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(event, "event", "Event")}

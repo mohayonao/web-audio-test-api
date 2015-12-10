@@ -20,8 +20,8 @@ export default class AudioDestinationNode extends AudioNode {
   }
 
   set maxChannelCount(value) {
-    this._.inspector.describe("maxChannelCount", (assert) => {
-      assert.throwReadOnlyTypeError(value);
+    this._.inspector.describe("maxChannelCount", ($assert) => {
+      $assert.throwReadOnlyTypeError(value);
     });
   }
 }

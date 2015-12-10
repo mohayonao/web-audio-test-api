@@ -24,8 +24,8 @@ export default class WaveShaperNode extends AudioNode {
   }
 
   set curve(value) {
-    this._.inspector.describe("curve", (assert) => {
-      assert(utils.isNullOrInstanceOf(value, Float32Array), (fmt) => {
+    this._.inspector.describe("curve", ($assert) => {
+      $assert(utils.isNullOrInstanceOf(value, Float32Array), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "curve", "Float32Array")}
@@ -41,12 +41,12 @@ export default class WaveShaperNode extends AudioNode {
   }
 
   set oversample(value) {
-    this._.inspector.describe("oversample", (assert) => {
+    this._.inspector.describe("oversample", ($assert) => {
       let enumOverSampleType = new Enumerator([
         "none", "2x", "4x",
       ]);
 
-      assert(enumOverSampleType.contains(value), (fmt) => {
+      $assert(enumOverSampleType.contains(value), (fmt) => {
         throw new TypeError(fmt.plain `
           ${fmt.form};
           ${fmt.butGot(value, "oversample", enumOverSampleType.toString())}
