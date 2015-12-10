@@ -2,7 +2,7 @@ import utils from "./utils";
 import Enumerator from "./utils/Enumerator";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import AudioParam from "./AudioParam";
+import audioparam from "./decorators/audioparam";
 import Event from "./Event";
 
 let immigration = Immigration.getInstance();
@@ -20,12 +20,6 @@ export default class OscillatorNode extends AudioNode {
     });
 
     this._.type = "sine";
-    this._.frequency = immigration.apply(admission =>
-      new AudioParam(admission, this, "frequency", 440, 0, 100000)
-    );
-    this._.detune = immigration.apply(admission =>
-      new AudioParam(admission, this, "detune", 0, -4800, 4800)
-    );
     this._.onended = null;
     this._.custom = null;
     this._.startTime = Infinity;
@@ -55,25 +49,11 @@ export default class OscillatorNode extends AudioNode {
     this._.type = value;
   }
 
-  get frequency() {
-    return this._.frequency;
-  }
+  @audioparam({ defaultValue: 440 })
+  frequency() {}
 
-  set frequency(value) {
-    this._.inspector.describe("frequency", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get detune() {
-    return this._.detune;
-  }
-
-  set detune(value) {
-    this._.inspector.describe("detune", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
+  @audioparam({ defaultValue: 0 })
+  detune() {}
 
   get onended() {
     return this._.onended;

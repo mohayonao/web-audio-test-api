@@ -1,7 +1,7 @@
 import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import AudioParam from "./AudioParam";
+import audioparam from "./decorators/audioparam";
 
 let immigration = Immigration.getInstance();
 
@@ -26,22 +26,12 @@ export default class DelayNode extends AudioNode {
       });
     });
 
-    this._.delayTime = immigration.apply(admission =>
-      new AudioParam(admission, this, "delayTime", 0, 0, maxDelayTime)
-    );
     this._.maxDelayTime = maxDelayTime;
     this._.JSONKeys = DelayNode.$JSONKeys.slice();
   }
 
-  get delayTime() {
-    return this._.delayTime;
-  }
-
-  set delayTime(value) {
-    this._.inspector.describe("delayTime", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
+  @audioparam({ defaultValue: 0 })
+  delayTime() {}
 
   get $maxDelayTime() {
     return this._.maxDelayTime;

@@ -2,7 +2,7 @@ import utils from "./utils";
 import Enumerator from "./utils/Enumerator";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import AudioParam from "./AudioParam";
+import audioparam from "./decorators/audioparam";
 
 let immigration = Immigration.getInstance();
 
@@ -19,18 +19,6 @@ export default class BiquadFilterNode extends AudioNode {
     });
 
     this._.type = "lowpass";
-    this._.frequency = immigration.apply(admission =>
-      new AudioParam(admission, this, "frequency", 350, 10, context.sampleRate / 2)
-    );
-    this._.detune = immigration.apply(admission =>
-      new AudioParam(admission, this, "detune", 0, -4800, 4800)
-    );
-    this._.Q = immigration.apply(admission =>
-      new AudioParam(admission, this, "Q", 1, 0.0001, 1000)
-    );
-    this._.gain = immigration.apply(admission =>
-      new AudioParam(admission, this, "gain", 0, -40, 40)
-    );
     this._.JSONKeys = BiquadFilterNode.$JSONKeys.slice();
   }
 
@@ -55,45 +43,17 @@ export default class BiquadFilterNode extends AudioNode {
     this._.type = value;
   }
 
-  get frequency() {
-    return this._.frequency;
-  }
+  @audioparam({ defaultValue: 350 })
+  frequency() {}
 
-  set frequency(value) {
-    this._.inspector.describe("frequency", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
+  @audioparam({ defaultValue: 0 })
+  detune() {}
 
-  get detune() {
-    return this._.detune;
-  }
+  @audioparam({ defaultValue: 1 })
+  Q() {}
 
-  set detune(value) {
-    this._.inspector.describe("detune", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get Q() {
-    return this._.Q;
-  }
-
-  set Q(value) {
-    this._.inspector.describe("Q", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get gain() {
-    return this._.gain;
-  }
-
-  set gain(value) {
-    this._.inspector.describe("gain", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
+  @audioparam({ defaultValue: 0 })
+  gain() {}
 
   getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
     this._.inspector.describe("getFrequencyResponse", ($assert) => {

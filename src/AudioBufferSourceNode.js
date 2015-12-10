@@ -1,8 +1,8 @@
 import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import AudioParam from "./AudioParam";
 import Event from "./Event";
+import audioparam from "./decorators/audioparam";
 
 let immigration = Immigration.getInstance();
 
@@ -19,12 +19,6 @@ export default class AudioBufferSourceNode extends AudioNode {
     });
 
     this._.buffer = null;
-    this._.playbackRate = immigration.apply(admission =>
-      new AudioParam(admission, this, "playbackRate", 1, 0, 1024)
-    );
-    this._.detune = immigration.apply(admission =>
-      new AudioParam(admission, this, "detune", 0, -4800, 4800)
-    );
     this._.loop = false;
     this._.loopStart = 0;
     this._.loopEnd = 0;
@@ -52,25 +46,11 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.buffer = value;
   }
 
-  get playbackRate() {
-    return this._.playbackRate;
-  }
+  @audioparam({ defaultValue: 1 })
+  playbackRate() {}
 
-  set playbackRate(value) {
-    this._.inspector.describe("playbackRate", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get detune() {
-    return this._.detune;
-  }
-
-  set detune(value) {
-    this._.inspector.describe("detune", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
+  @audioparam({ defaultValue: 0 })
+  detune() {}
 
   get loop() {
     return this._.loop;

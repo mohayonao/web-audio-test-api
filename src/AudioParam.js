@@ -79,7 +79,7 @@ export function setCurveValue(v, t, t0, t1, curve) {
 }
 
 export default class AudioParam {
-  constructor(admission, node, name, defaultValue, minValue, maxValue) {
+  constructor(admission, node, name, defaultValue) {
     immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
@@ -93,8 +93,6 @@ export default class AudioParam {
     this._.value = defaultValue;
     this._.name = name;
     this._.defaultValue = defaultValue;
-    this._.minValue = minValue;
-    this._.maxValue = maxValue;
     this._.context = node.context;
     this._.node = node;
     this._.inputs = [ new Junction(this, 0) ];
