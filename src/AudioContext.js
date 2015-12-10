@@ -25,6 +25,7 @@ import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
 import oncallback from "./decorators/oncallback";
+import readonly from "./decorators/readonly";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -81,44 +82,24 @@ export default class AudioContext extends EventTarget {
     return utils.getAPIVersion();
   }
 
-  get destination() {
+  @readonly()
+  destination() {
     return this._.destination;
   }
 
-  set destination(value) {
-    this._.inspector.describe("destination", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get sampleRate() {
+  @readonly()
+  sampleRate() {
     return this._.sampleRate;
   }
 
-  set sampleRate(value) {
-    this._.inspector.describe("sampleRate", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get currentTime() {
+  @readonly()
+  currentTime() {
     return this._.microCurrentTime / (1000 * 1000);
   }
 
-  set currentTime(value) {
-    this._.inspector.describe("currentTime", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get listener() {
+  @readonly()
+  listener() {
     return this._.listener;
-  }
-
-  set listener(value) {
-    this._.inspector.describe("listener", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
   }
 
   get state() {

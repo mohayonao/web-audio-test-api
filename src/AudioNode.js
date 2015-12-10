@@ -5,6 +5,7 @@ import Junction from "./utils/Junction";
 import EventTarget from "./EventTarget";
 import AudioNodeDisconnectUtils from "./AudioNodeDisconnectUtils";
 import enumerate from "./decorators/enumerate";
+import readonly from "./decorators/readonly";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -39,34 +40,19 @@ export default class AudioNode extends EventTarget {
     });
   }
 
-  get context() {
+  @readonly()
+  context() {
     return this._.context;
   }
 
-  set context(value) {
-    this._.inspector.describe("context", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get numberOfInputs() {
+  @readonly()
+  numberOfInputs() {
     return this._.numberOfInputs;
   }
 
-  set numberOfInputs(value) {
-    this._.inspector.describe("numberOfInputs", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get numberOfOutputs() {
+  @readonly()
+  numberOfOutputs() {
     return this._.numberOfOutputs;
-  }
-
-  set numberOfOutputs(value) {
-    this._.inspector.describe("numberOfOutputs", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
   }
 
   get channelCount() {

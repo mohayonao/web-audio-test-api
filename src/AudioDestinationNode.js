@@ -1,4 +1,5 @@
 import AudioNode from "./AudioNode";
+import readonly from "./decorators/readonly";
 
 export default class AudioDestinationNode extends AudioNode {
   constructor(admission, context) {
@@ -15,13 +16,8 @@ export default class AudioDestinationNode extends AudioNode {
     this._.maxChannelCount = 2;
   }
 
-  get maxChannelCount() {
+  @readonly()
+  maxChannelCount() {
     return this._.maxChannelCount;
-  }
-
-  set maxChannelCount(value) {
-    this._.inspector.describe("maxChannelCount", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
   }
 }

@@ -2,6 +2,7 @@ import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import AudioNode from "./AudioNode";
 import enumerate from "./decorators/enumerate";
+import readonly from "./decorators/readonly";
 
 let configuration = Configuration.getInstance();
 
@@ -26,14 +27,9 @@ export default class AnalyserNode extends AudioNode {
   @enumerate([ 32, 64, 128, 256, 512, 1024, 2048 ], 2048)
   fftSize() {}
 
-  get frequencyBinCount() {
+  @readonly()
+  frequencyBinCount() {
     return this.fftSize >> 1;
-  }
-
-  set frequencyBinCount(value) {
-    this._.inspector.describe("frequencyBinCount", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
   }
 
   get minDecibels() {

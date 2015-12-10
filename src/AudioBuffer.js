@@ -2,6 +2,7 @@ import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Inspector from "./utils/Inspector";
+import readonly from "./decorators/readonly";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
@@ -52,44 +53,24 @@ export default class AudioBuffer {
     }
   }
 
-  get sampleRate() {
+  @readonly()
+  sampleRate() {
     return this._.sampleRate;
   }
 
-  set sampleRate(value) {
-    this._.inspector.describe("sampleRate", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get length() {
+  @readonly()
+  length() {
     return this._.length;
   }
 
-  set length(value) {
-    this._.inspector.describe("length", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get duration() {
+  @readonly()
+  duration() {
     return this.length / this.sampleRate;
   }
 
-  set duration(value) {
-    this._.inspector.describe("duration", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get numberOfChannels() {
+  @readonly()
+  numberOfChannels() {
     return this._.numberOfChannels;
-  }
-
-  set numberOfChannels(value) {
-    this._.inspector.describe("numberOfChannels", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
   }
 
   get $name() {

@@ -2,6 +2,7 @@ import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import Inspector from "./utils/Inspector";
 import Junction from "./utils/Junction";
+import readonly from "./decorators/readonly";
 
 let immigration = Immigration.getInstance();
 
@@ -118,24 +119,14 @@ export default class AudioParam {
     this._.value = value;
   }
 
-  get name() {
+  @readonly()
+  name() {
     return this._.name;
   }
 
-  set name(value) {
-    this._.inspector.describe("name", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get defaultValue() {
+  @readonly()
+  defaultValue() {
     return this._.defaultValue;
-  }
-
-  set defaultValue(value) {
-    this._.inspector.describe("defaultValue", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
   }
 
   get $name() {

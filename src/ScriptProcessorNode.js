@@ -5,6 +5,7 @@ import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import AudioProcessingEvent from "./AudioProcessingEvent";
 import oncallback from "./decorators/oncallback";
+import readonly from "./decorators/readonly";
 
 let immigration = Immigration.getInstance();
 
@@ -53,14 +54,9 @@ export default class ScriptProcessorNode extends AudioNode {
     this._.numSamples = 0;
   }
 
-  get bufferSize() {
+  @readonly()
+  bufferSize() {
     return this._.bufferSize;
-  }
-
-  set bufferSize(value) {
-    this._.inspector.describe("bufferSize", ($assert) => {
-      $assert.throwReadOnlyTypeError(value, "bufferSize");
-    });
   }
 
   @oncallback();
