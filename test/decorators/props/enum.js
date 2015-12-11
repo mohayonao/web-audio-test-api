@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import _eum from "../../../src/decorators/props/enum";
+import * as props from "../../../src/decorators/props";
 
 describe("@props.enum(values: any[], [ defaultValue: any ])", () => {
   it("defines an enum property", () => {
@@ -8,7 +8,7 @@ describe("@props.enum(values: any[], [ defaultValue: any ])", () => {
         this._ = {};
       }
 
-      @_eum([ "a", "b", "c" ])
+      @props.enum([ "a", "b", "c" ])
       bar() {}
     }
 

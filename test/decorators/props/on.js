@@ -1,14 +1,14 @@
 import assert from "power-assert";
-import on from "../../../src/decorators/props/on";
+import * as props from "../../../src/decorators/props";
 
-describe("@on()", () => {
+describe("@props.on()", () => {
   it("defines a callback property", () => {
     class Foo {
       constructor() {
         this._ = {};
       }
 
-      @on("end")
+      @props.on("end")
       onend() {}
     }
 

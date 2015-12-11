@@ -1,14 +1,14 @@
 import assert from "power-assert";
-import readonly from "../../../src/decorators/props/readonly";
+import * as props from "../../../src/decorators/props";
 
-describe("@readonly()", () => {
+describe("@props.readonly()", () => {
   it("defines a readonly property", () => {
     class Foo {
       constructor() {
         this._ = {};
       }
 
-      @readonly()
+      @props.readonly()
       bar() {
         return "bar";
       }

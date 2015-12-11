@@ -1,15 +1,15 @@
 import assert from "power-assert";
-import audioparam from "../../../src/decorators/props/audioparam";
 import AudioParam from "../../../src/AudioParam";
+import * as props from "../../../src/decorators/props";
 
-describe("@audioparam(defaultValue: number)", () => {
+describe("@props.audioparam(defaultValue: number)", () => {
   it("defines an AudioParam property", () => {
     class Foo {
       constructor() {
         this._ = {};
       }
 
-      @audioparam(100)
+      @props.audioparam(100)
       bar() {}
     }
 

@@ -1,7 +1,7 @@
 import assert from "power-assert";
-import typed from "../../../src/decorators/props/typed";
+import * as props from "../../../src/decorators/props";
 
-describe("@typed(validator: object, defaultValue: any)", () => {
+describe("@props.typed(validator: object, defaultValue: any)", () => {
   it("defines a callback property", () => {
     const isNumber = {
       name: "number",
@@ -13,7 +13,7 @@ describe("@typed(validator: object, defaultValue: any)", () => {
         this._ = {};
       }
 
-      @typed(isNumber, 0)
+      @props.typed(isNumber, 0)
       bar() {}
     }
 
