@@ -2,7 +2,7 @@ import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Junction from "./utils/Junction";
-import EventTarget from "./EventTarget";
+import EventTarget from "./dom/EventTarget";
 import AudioNodeDisconnectUtils from "./AudioNodeDisconnectUtils";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";

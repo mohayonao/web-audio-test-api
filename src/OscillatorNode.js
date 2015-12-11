@@ -1,7 +1,7 @@
 import utils from "./utils";
 import AudioNode from "./AudioNode";
 import PeriodicWave from "./PeriodicWave";
-import Event from "./Event";
+import Event from "./dom/Event";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";

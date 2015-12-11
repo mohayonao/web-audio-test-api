@@ -1,4 +1,4 @@
-import utils from "./utils";
+import utils from "../utils";
 
 global.Event = global.Event || class Event {
   constructor() {

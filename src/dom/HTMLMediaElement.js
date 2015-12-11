@@ -1,4 +1,4 @@
-import utils from "./utils";
+import utils from "../utils";
 import HTMLElement from "./HTMLElement";
 
 global.HTMLMediaElement = global.HTMLMediaElement || class HTMLMediaElement extends HTMLElement {

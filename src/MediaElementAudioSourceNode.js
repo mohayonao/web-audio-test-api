@@ -1,5 +1,5 @@
 import AudioNode from "./AudioNode";
-import HTMLMediaElement from "./HTMLMediaElement";
+import HTMLMediaElement from "./dom/HTMLMediaElement";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 

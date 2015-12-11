@@ -1,6 +1,6 @@
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
-import Event from "./Event";
+import Event from "./dom/Event";
 import AudioContext from "./AudioContext";
 import AudioBuffer from "./AudioBuffer";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";

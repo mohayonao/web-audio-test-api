@@ -1,4 +1,4 @@
-import utils from "./utils";
+import utils from "../utils";
 import EventTarget from "./EventTarget";
 
 global.Element = global.Element || class Element extends EventTarget {

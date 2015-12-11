@@ -1,5 +1,5 @@
-import utils from "./utils";
-import Inspector from "./utils/Inspector";
+import utils from "../utils";
+import Inspector from "../utils/Inspector";
 
 global.EventTarget = global.EventTarget || class EventTarget {
   constructor() {

@@ -1,5 +1,5 @@
 import Immigration from "./utils/Immigration";
-import Event from "./Event";
+import Event from "./dom/Event";
 
 let immigration = Immigration.getInstance();
 

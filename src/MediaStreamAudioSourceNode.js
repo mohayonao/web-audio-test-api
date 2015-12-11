@@ -1,5 +1,5 @@
 import AudioNode from "./AudioNode";
-import MediaStream from "./MediaStream";
+import MediaStream from "./dom/MediaStream";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
