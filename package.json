@@ -29,26 +29,30 @@
   "files": [
     "package.json",
     "README.md",
+    "index.js",
+    "lib",
     "build"
   ],
   "homepage": "https://github.com/mohayonao/web-audio-test-api/",
   "keywords": [
-    "webaudioapi",
-    "test"
+    "test",
+    "web audio api"
   ],
   "license": "MIT",
-  "main": "build/web-audio-test-api.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "http://github.com/mohayonao/web-audio-test-api.git"
   },
   "scripts": {
-    "build": "browserify src -t babelify --outfile build/web-audio-test-api.js",
+    "build": "npm run build:to5 && npm run build:browser",
+    "build:browser": "browserify index.js --standalone WebAudioTestAPI -o build/web-audio-test-api.js",
+    "build:to5": "babel src --out-dir lib",
     "cover": "babel-node $(npm bin)/isparta cover --report text --report html --report lcov _mocha",
     "lint": "eslint src test",
+    "mocha": "mocha --compilers js:babel-register",
     "prepublish": "npm run lint && npm run mocha && npm run build",
     "test": "mocha --compilers js:espower-babel/guess",
-    "mocha": "mocha --compilers js:babel-register",
     "travis": "npm run lint && npm run cover"
   }
 }
