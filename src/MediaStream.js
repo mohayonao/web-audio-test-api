@@ -8,5 +8,4 @@ global.MediaStream = global.MediaStream || class MediaStream extends EventTarget
   }
 };
 
-export default class MediaStream extends utils.preventSuperCall(global.MediaStream) {
-}
+export default class MediaStream extends utils.preventSuperCall(global.MediaStream) {}

@@ -6,7 +6,7 @@ import * as validators from "./validators";
 export default class PannerNode extends AudioNode {
   static $JSONKeys = [
     "panningModel", "distanceModel", "refDistance", "maxDistance",
-    "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain",
+    "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
   ];
 
   constructor(admission, context) {
@@ -17,7 +17,7 @@ export default class PannerNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "clamped-max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
   }
 

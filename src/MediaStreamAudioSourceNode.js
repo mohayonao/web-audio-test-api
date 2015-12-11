@@ -14,9 +14,9 @@ export default class MediaStreamAudioSourceNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
-    this.__createMediaStreamSource(mediaStream)
+    this.__createMediaStreamSource(mediaStream);
   }
 
   @methods.param("mediaStream", validators.isInstanceOf(MediaStream))

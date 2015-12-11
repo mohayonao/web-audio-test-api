@@ -122,14 +122,6 @@ export default class AudioContext extends EventTarget {
   @props.on("statechange")
   onstatechange() {}
 
-  get $name() {
-    return "AudioContext";
-  }
-
-  get $context() {
-    return this;
-  }
-
   suspend() {
     return transitionToState.call(this, "suspend", () => {
       if (this._.state === "running") {
@@ -364,6 +356,14 @@ export default class AudioContext extends EventTarget {
 
   toJSON() {
     return this.destination.toJSON([]);
+  }
+
+  get $name() {
+    return "AudioContext";
+  }
+
+  get $context() {
+    return this;
   }
 
   $process(time) {

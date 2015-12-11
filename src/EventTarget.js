@@ -13,8 +13,8 @@ export default class EventTarget extends utils.preventSuperCall(global.EventTarg
 
     Object.defineProperty(this, "_", {
       value: {
-        inspector: new Inspector(this),
-      },
+        inspector: new Inspector(this)
+      }
     });
 
     this._.listeners = {};

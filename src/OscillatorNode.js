@@ -17,7 +17,7 @@ export default class OscillatorNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
     this._.custom = null;
     this._.startTime = Infinity;
@@ -36,22 +36,6 @@ export default class OscillatorNode extends AudioNode {
 
   @props.on("ended")
   onended() {}
-
-  get $state() {
-    return this.$stateAtTime(this.context.currentTime);
-  }
-
-  get $custom() {
-    return this._.custom;
-  }
-
-  get $startTime() {
-    return this._.startTime;
-  }
-
-  get $stopTime() {
-    return this._.stopTime;
-  }
 
   @methods.param("[ when ]", validators.isPositiveNumber)
   @methods.contract({
@@ -84,6 +68,22 @@ export default class OscillatorNode extends AudioNode {
   setPeriodicWave(periodicWave) {
     this._.type = "custom";
     this._.custom = periodicWave;
+  }
+
+  get $state() {
+    return this.$stateAtTime(this.context.currentTime);
+  }
+
+  get $custom() {
+    return this._.custom;
+  }
+
+  get $startTime() {
+    return this._.startTime;
+  }
+
+  get $stopTime() {
+    return this._.stopTime;
   }
 
   $stateAtTime(_time) {

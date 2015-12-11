@@ -19,7 +19,7 @@ export default class ScriptProcessorNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: numberOfInputChannels,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
     this.__createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels);
   }

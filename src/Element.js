@@ -8,5 +8,4 @@ global.Element = global.Element || class Element extends EventTarget {
   }
 };
 
-export default class Element extends utils.preventSuperCall(global.Element) {
-}
+export default class Element extends utils.preventSuperCall(global.Element) {}

@@ -5,7 +5,7 @@ describe("@typed(validator: object, defaultValue: any)", () => {
   it("defines a callback property", () => {
     const isNumber = {
       name: "number",
-      test: value => typeof value === "number",
+      test: value => typeof value === "number"
     };
 
     class Foo {

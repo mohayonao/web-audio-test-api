@@ -1,4 +1,4 @@
 export default {
   name: "number",
-  test: (value) => value === +value,
+  test: (value) => value === +value
 };

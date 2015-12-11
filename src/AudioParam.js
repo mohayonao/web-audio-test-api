@@ -114,33 +114,13 @@ export default class AudioParam {
     return this._.defaultValue;
   }
 
-  get $name() {
-    return "AudioParam";
-  }
-
-  get $context() {
-    return this._.context;
-  }
-
-  get $node() {
-    return this._.node;
-  }
-
-  get $inputs() {
-    return this._.inputs;
-  }
-
-  get $events() {
-    return this._.events;
-  }
-
   @methods.param("value", validators.isNumber)
   @methods.param("startTime", validators.isNumber)
   setValueAtTime(value, startTime) {
     insertEvent(this, {
       type: "SetValue",
       value: value,
-      time: startTime,
+      time: startTime
     });
   }
 
@@ -150,7 +130,7 @@ export default class AudioParam {
     insertEvent(this, {
       type: "LinearRampToValue",
       value: value,
-      time: endTime,
+      time: endTime
     });
   }
 
@@ -160,7 +140,7 @@ export default class AudioParam {
     insertEvent(this, {
       type: "ExponentialRampToValue",
       value: value,
-      time: endTime,
+      time: endTime
     });
   }
 
@@ -172,7 +152,7 @@ export default class AudioParam {
       type: "SetTarget",
       value: target,
       time: startTime,
-      timeConstant: timeConstant,
+      timeConstant: timeConstant
     });
   }
 
@@ -184,7 +164,7 @@ export default class AudioParam {
       type: "SetValueCurve",
       time: startTime,
       duration: duration,
-      curve: values,
+      curve: values
     });
   }
 
@@ -208,6 +188,26 @@ export default class AudioParam {
 
       return json;
     }, memo);
+  }
+
+  get $name() {
+    return "AudioParam";
+  }
+
+  get $context() {
+    return this._.context;
+  }
+
+  get $node() {
+    return this._.node;
+  }
+
+  get $inputs() {
+    return this._.inputs;
+  }
+
+  get $events() {
+    return this._.events;
   }
 
   $valueAtTime(_time) {

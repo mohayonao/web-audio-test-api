@@ -8,5 +8,4 @@ global.HTMLMediaElement = global.HTMLMediaElement || class HTMLMediaElement exte
   }
 };
 
-export default class HTMLMediaElement extends utils.preventSuperCall(global.HTMLMediaElement) {
-}
+export default class HTMLMediaElement extends utils.preventSuperCall(global.HTMLMediaElement) {}

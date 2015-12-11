@@ -27,7 +27,7 @@ export default function contract({ precondition, postcondition }) {
         return res;
       },
       enumerable: true,
-      configurable: true,
+      configurable: true
     };
   };
 }

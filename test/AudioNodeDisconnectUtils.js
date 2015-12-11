@@ -50,20 +50,20 @@ describe("AudioNodeDisconnectUtils", function() {
                 [
                   {
                     name: "ChannelSplitterNode",
-                    inputs: [],
-                  },
-                ],
-              ],
+                    inputs: []
+                  }
+                ]
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
-              inputs: [],
-            },
-          ],
+              inputs: []
+            }
+          ]
         });
       });
     });
@@ -97,18 +97,18 @@ describe("AudioNodeDisconnectUtils", function() {
               name: "ChannelMergerNode",
               inputs: [
                 [],
-                [],
-              ],
+                []
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
-              inputs: [],
-            },
-          ],
+              inputs: []
+            }
+          ]
         });
       });
     });
@@ -151,20 +151,20 @@ describe("AudioNodeDisconnectUtils", function() {
                 [
                   {
                     name: "ChannelSplitterNode",
-                    inputs: [],
-                  },
-                ],
-              ],
+                    inputs: []
+                  }
+                ]
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
-              inputs: [],
-            },
-          ],
+              inputs: []
+            }
+          ]
         });
       });
     });
@@ -205,23 +205,23 @@ describe("AudioNodeDisconnectUtils", function() {
               name: "ChannelMergerNode",
               inputs: [
                 [],
-                [],
-              ],
+                []
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
               inputs: [
                 {
                   name: "ChannelSplitterNode",
-                  inputs: [],
-                },
-              ],
-            },
-          ],
+                  inputs: []
+                }
+              ]
+            }
+          ]
         });
       });
     });
@@ -278,26 +278,26 @@ describe("AudioNodeDisconnectUtils", function() {
                 [
                   {
                     name: "ChannelSplitterNode",
-                    inputs: [],
-                  },
+                    inputs: []
+                  }
                 ],
-                [],
-              ],
+                []
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
               inputs: [
                 {
                   name: "ChannelSplitterNode",
-                  inputs: [],
-                },
-              ],
-            },
-          ],
+                  inputs: []
+                }
+              ]
+            }
+          ]
         });
       });
     });
@@ -366,31 +366,31 @@ describe("AudioNodeDisconnectUtils", function() {
                 [
                   {
                     name: "ChannelSplitterNode",
-                    inputs: [],
-                  },
+                    inputs: []
+                  }
                 ],
                 [
                   {
                     name: "ChannelSplitterNode",
-                    inputs: [],
-                  },
-                ],
-              ],
+                    inputs: []
+                  }
+                ]
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
               inputs: [
                 {
                   name: "ChannelSplitterNode",
-                  inputs: [],
-                },
-              ],
-            },
-          ],
+                  inputs: []
+                }
+              ]
+            }
+          ]
         });
       });
     });

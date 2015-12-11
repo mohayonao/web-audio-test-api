@@ -1,13 +1,10 @@
 import utils from "./utils";
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import Event from "./Event";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
-
-let immigration = Immigration.getInstance();
 
 export default class AudioBufferSourceNode extends AudioNode {
   static $JSONKeys = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
@@ -20,7 +17,7 @@ export default class AudioBufferSourceNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
 
     this._.startTime = Infinity;
@@ -48,18 +45,6 @@ export default class AudioBufferSourceNode extends AudioNode {
 
   @props.on("ended")
   onended() {}
-
-  get $state() {
-    return this.$stateAtTime(this.context.currentTime);
-  }
-
-  get $startTime() {
-    return this._.startTime;
-  }
-
-  get $stopTime() {
-    return this._.stopTime;
-  }
 
   @methods.param("[ when ]", validators.isPositiveNumber)
   @methods.param("[ offset ]", validators.isPositiveNumber)
@@ -90,6 +75,18 @@ export default class AudioBufferSourceNode extends AudioNode {
   })
   stop(when = 0) {
     this._.stopTime = when;
+  }
+
+  get $state() {
+    return this.$stateAtTime(this.context.currentTime);
+  }
+
+  get $startTime() {
+    return this._.startTime;
+  }
+
+  get $stopTime() {
+    return this._.stopTime;
   }
 
   $stateAtTime(_time) {

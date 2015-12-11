@@ -119,7 +119,7 @@ export function preventSuperCall(superClass) {
   }
 
   ctor.prototype = Object.create(superClass.prototype, {
-    constructor: { value: ctor, enumerable: false, writable: true, configurable: true },
+    constructor: { value: ctor, enumerable: false, writable: true, configurable: true }
   });
 
   return ctor;
@@ -195,5 +195,5 @@ export default {
   preventSuperCall,
   toJSON,
   toMicroseconds,
-  toSeconds,
+  toSeconds
 };

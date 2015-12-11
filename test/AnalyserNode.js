@@ -233,7 +233,7 @@ describe("AnalyserNode", function() {
         minDecibels: -100,
         maxDecibels: 30,
         smoothingTimeConstant: 0.8,
-        inputs: [],
+        inputs: []
       });
     });
   });

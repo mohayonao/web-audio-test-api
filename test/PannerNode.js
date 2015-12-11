@@ -282,7 +282,7 @@ describe("PannerNode", function() {
         coneInnerAngle: 360,
         coneOuterAngle: 360,
         coneOuterGain: 0,
-        inputs: [],
+        inputs: []
       });
     });
   });

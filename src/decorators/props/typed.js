@@ -18,7 +18,7 @@ export default function typed(validator, defaultValue) {
       get: descriptor.get || get,
       set: descriptor.set || set,
       enumerable: true,
-      configurable: true,
-    }
+      configurable: true
+    };
   };
 }

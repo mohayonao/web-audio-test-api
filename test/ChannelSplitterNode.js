@@ -33,7 +33,7 @@ describe("ChannelSplitterNode", function() {
 
       assert.deepEqual(node.toJSON(), {
         name: "ChannelSplitterNode",
-        inputs: [],
+        inputs: []
       });
     });
   });

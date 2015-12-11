@@ -14,7 +14,7 @@ export default function oncallback() {
         this._[name] = value;
       },
       enumerable: true,
-      configurable: true,
+      configurable: true
     };
   };
 }

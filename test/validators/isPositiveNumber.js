@@ -20,7 +20,6 @@ describe("validators.isPositiveNumber", () => {
       assert(isPositiveNumber.test(it) === false);
       assert(isPositiveNumber.test(NaN) === false);
       assert(isPositiveNumber.test(null) === false);
-      assert(isPositiveNumber.test(undefined) === false);
     });
   });
 });

@@ -228,13 +228,13 @@ describe("OscillatorNode", function() {
         type: "sine",
         frequency: {
           value: 440,
-          inputs: [],
+          inputs: []
         },
         detune: {
           value: 0,
-          inputs: [],
+          inputs: []
         },
-        inputs: [],
+        inputs: []
       });
     });
   });

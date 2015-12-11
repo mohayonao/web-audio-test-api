@@ -39,7 +39,7 @@ describe("AudioBufferSourceNode", function() {
       assert(node.buffer === null);
 
       assert.throws(function() {
-         node.buffer = "INVALID";
+        node.buffer = "INVALID";
       }, function(e) {
         return e instanceof TypeError && /should be a AudioBuffer/.test(e.message);
       });
@@ -308,12 +308,12 @@ describe("AudioBufferSourceNode", function() {
         buffer: null,
         playbackRate: {
           value: 1,
-          inputs: [],
+          inputs: []
         },
         loop: false,
         loopStart: 0,
         loopEnd: 0,
-        inputs: [],
+        inputs: []
       });
 
       node.buffer = buf;
@@ -326,12 +326,12 @@ describe("AudioBufferSourceNode", function() {
         buffer: buf.toJSON(),
         playbackRate: {
           value: 1,
-          inputs: [],
+          inputs: []
         },
         loop: true,
         loopStart: 1,
         loopEnd: 2,
-        inputs: [],
+        inputs: []
       });
     });
   });

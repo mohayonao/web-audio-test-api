@@ -13,7 +13,7 @@ export default function readonly(value) {
         throw new TypeError(`${this.constructor.name}; Attempt to assign to readonly property: "${name}"`);
       },
       enumerable: true,
-      configurable: true,
+      configurable: true
     };
   };
 }

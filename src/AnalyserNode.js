@@ -17,7 +17,7 @@ export default class AnalyserNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 1,
       channelCountMode: "explicit",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
     this._.fftSize = 2048;
   }

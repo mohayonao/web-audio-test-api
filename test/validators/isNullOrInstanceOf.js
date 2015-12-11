@@ -12,7 +12,6 @@ describe("validators.isNullOrInstanceOf(klass: function): object", () => {
       assert(isNullOrInstanceOf(Float32Array).test(null) === true);
       assert(isNullOrInstanceOf(Float32Array).test(new Float32Array()) === true);
       assert(isNullOrInstanceOf(Float32Array).test(new Uint8Array()) === false);
-      assert(isNullOrInstanceOf(Float32Array).test(undefined) === false);
     });
   });
 });

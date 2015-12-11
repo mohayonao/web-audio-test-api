@@ -12,7 +12,7 @@ export default class AudioDestinationNode extends AudioNode {
       numberOfOutputs: 0,
       channelCount: 2,
       channelCountMode: "explicit",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
   }
 

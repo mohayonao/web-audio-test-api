@@ -7,8 +7,6 @@ import * as validators from "./validators";
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
 
-const CONSTRUCTOR = Symbol("constructor");
-
 export default class AudioBuffer {
   constructor(admission, context, numberOfChannels, length, sampleRate) {
     immigration.check(admission, () => {
@@ -54,21 +52,13 @@ export default class AudioBuffer {
     return this._.numberOfChannels;
   }
 
-  get $name() {
-    return "AudioBuffer";
-  }
-
-  get $context() {
-    return this._.context;
-  }
-
   @methods.param("channel", validators.isPositiveInteger)
   @methods.contract({
     precondition(channel) {
       if (this._.data.length <= channel) {
         throw new TypeError(`channel index (${channel}) exceeds number of channels (${this._.data.length})`);
       }
-    },
+    }
   })
   getChannelData(channel) {
     return this._.data[channel];
@@ -124,7 +114,7 @@ export default class AudioBuffer {
       sampleRate: this.sampleRate,
       length: this.length,
       duration: this.duration,
-      numberOfChannels: this.numberOfChannels,
+      numberOfChannels: this.numberOfChannels
     };
 
     if (this.$context.VERBOSE_JSON) {
@@ -134,5 +124,13 @@ export default class AudioBuffer {
     }
 
     return json;
+  }
+
+  get $name() {
+    return "AudioBuffer";
+  }
+
+  get $context() {
+    return this._.context;
   }
 }

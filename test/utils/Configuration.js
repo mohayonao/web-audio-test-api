@@ -84,7 +84,7 @@ describe("Configuration", () => {
         "AudioContext#resume": "disabled",
         "AudioContext#suspend": "disabled",
         "OfflineAudioContext#startRendering": "void",
-        "AudioNode#disconnect": "channel",
+        "AudioNode#disconnect": "channel"
       });
 
       assert(configuration.getState("AnalyserNode#getFloatTimeDomainData") === "disabled");

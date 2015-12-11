@@ -1,4 +1,4 @@
 export default {
   name: "integer",
-  test: (value) => value === (value|0),
+  test: (value) => value === (value|0)
 };

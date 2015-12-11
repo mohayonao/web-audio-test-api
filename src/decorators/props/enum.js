@@ -14,7 +14,7 @@ export default function _enum(values) {
         this._[name] = value;
       },
       enumerable: true,
-      configurable: true,
+      configurable: true
     };
   };
 }

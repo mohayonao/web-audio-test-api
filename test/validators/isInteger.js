@@ -20,7 +20,6 @@ describe("validators.isInteger", () => {
       assert(isInteger.test(it) === false);
       assert(isInteger.test(NaN) === false);
       assert(isInteger.test(null) === false);
-      assert(isInteger.test(undefined) === false);
     });
   });
 });

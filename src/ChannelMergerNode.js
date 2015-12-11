@@ -13,7 +13,7 @@ export default class ChannelMergerNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
     this.__createChannelMerger(numberOfInputs);
   }

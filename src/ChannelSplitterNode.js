@@ -13,7 +13,7 @@ export default class ChannelSplitterNode extends AudioNode {
       numberOfOutputs: numberOfOutputs,
       channelCount: 2,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
     this.__createChannelSplitter(numberOfOutputs);
   }

@@ -34,7 +34,7 @@ describe("MediaElementAudioSourceNode", function() {
 
       assert.deepEqual(node.toJSON(), {
         name: "MediaElementAudioSourceNode",
-        inputs: [],
+        inputs: []
       });
     });
   });

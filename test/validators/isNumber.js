@@ -20,7 +20,6 @@ describe("validators.isNumber", () => {
       assert(isNumber.test(it) === false);
       assert(isNumber.test(NaN) === false);
       assert(isNumber.test(null) === false);
-      assert(isNumber.test(undefined) === false);
     });
   });
 });

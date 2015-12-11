@@ -20,7 +20,6 @@ describe("validators.isBoolean", () => {
       assert(isBoolean.test(it) === false);
       assert(isBoolean.test(NaN) === false);
       assert(isBoolean.test(null) === false);
-      assert(isBoolean.test(undefined) === false);
     });
   });
 });

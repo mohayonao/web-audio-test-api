@@ -8,5 +8,4 @@ global.HTMLElement = global.HTMLElement || class HTMLElement extends Element {
   }
 };
 
-export default class HTMLElement extends utils.preventSuperCall(global.HTMLElement) {
-}
+export default class HTMLElement extends utils.preventSuperCall(global.HTMLElement) {}

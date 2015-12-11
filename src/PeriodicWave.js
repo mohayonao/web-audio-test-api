@@ -1,5 +1,4 @@
 import Immigration from "./utils/Immigration";
-import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 

@@ -139,7 +139,7 @@ let WebAudioTestAPI = {
     global.ScriptProcessorNode = WebAudioAPI.ScriptProcessorNode;
     global.StereoPannerNode = WebAudioAPI.StereoPannerNode;
     global.WaveShaperNode = WebAudioAPI.WaveShaperNode;
-  },
+  }
 };
 
 export default WebAudioTestAPI;

@@ -25,5 +25,5 @@ export default {
   PeriodicWave: global.PeriodicWave,
   ScriptProcessorNode: global.ScriptProcessorNode,
   StereoPannerNode: global.StereoPannerNode,
-  WaveShaperNode: global.WaveShaperNode,
+  WaveShaperNode: global.WaveShaperNode
 };

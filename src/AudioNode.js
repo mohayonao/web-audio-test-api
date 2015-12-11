@@ -1,7 +1,6 @@
 import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
-import ration from "./utils/Immigration";
 import Junction from "./utils/Junction";
 import EventTarget from "./EventTarget";
 import AudioNodeDisconnectUtils from "./AudioNodeDisconnectUtils";
@@ -68,22 +67,6 @@ export default class AudioNode extends EventTarget {
   @props.enum([ "speakers", "discrete" ])
   channelInterpretation() {}
 
-  get $name() {
-    return this._.name;
-  }
-
-  get $context() {
-    return this._.context;
-  }
-
-  get $inputs() {
-    // TODO: remove v0.4.0
-    if (this._.inputs.length === 0) {
-      return [ new Junction(this, 0) ];
-    }
-    return this._.inputs;
-  }
-
   @methods.param("destination", validators.isAudioSource);
   @methods.param("[ output ]", validators.isPositiveInteger);
   @methods.param("[ input ]", validators.isPositiveInteger);
@@ -117,24 +100,24 @@ export default class AudioNode extends EventTarget {
     }
 
     switch (argNum) {
-      case 0:
-        AudioNodeDisconnectUtils.disconnectAll.call(this);
-        break;
-      case 1:
-        if (utils.isNumber(_destination)) {
-          AudioNodeDisconnectUtils.disconnectChannel.call(this, _destination);
-        } else {
-          AudioNodeDisconnectUtils.disconnectSelective1.call(this, _destination);
-        }
-        break;
-      case 2:
-        AudioNodeDisconnectUtils.disconnectSelective2.call(this, _destination, _output);
-        break;
-      case 3:
-        AudioNodeDisconnectUtils.disconnectSelective3.call(this, _destination, _output, _input);
-        break;
-      default:
-        // no default
+    case 0:
+      AudioNodeDisconnectUtils.disconnectAll.call(this);
+      break;
+    case 1:
+      if (utils.isNumber(_destination)) {
+        AudioNodeDisconnectUtils.disconnectChannel.call(this, _destination);
+      } else {
+        AudioNodeDisconnectUtils.disconnectSelective1.call(this, _destination);
+      }
+      break;
+    case 2:
+      AudioNodeDisconnectUtils.disconnectSelective2.call(this, _destination, _output);
+      break;
+    case 3:
+      AudioNodeDisconnectUtils.disconnectSelective3.call(this, _destination, _output, _input);
+      break;
+    default:
+      // no default
     }
   }
 
@@ -171,6 +154,22 @@ export default class AudioNode extends EventTarget {
 
       return json;
     }, memo);
+  }
+
+  get $name() {
+    return this._.name;
+  }
+
+  get $context() {
+    return this._.context;
+  }
+
+  get $inputs() {
+    // TODO: remove v0.4.0
+    if (this._.inputs.length === 0) {
+      return [ new Junction(this, 0) ];
+    }
+    return this._.inputs;
   }
 
   $process(inNumSamples, tick) {

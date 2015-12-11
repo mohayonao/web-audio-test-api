@@ -12,7 +12,7 @@ export default class StereoPannerNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "clamped-max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
   }
 

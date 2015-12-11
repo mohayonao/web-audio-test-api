@@ -76,7 +76,7 @@ describe("WaveShaperNode", function() {
       assert.deepEqual(node.toJSON(), {
         name: "WaveShaperNode",
         oversample: "none",
-        inputs: [],
+        inputs: []
       });
     });
   });

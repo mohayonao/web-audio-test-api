@@ -21,14 +21,6 @@ export default class AudioListener {
   @props.typed(validators.isNumber, 343.3)
   speedOfSound() {}
 
-  get $name() {
-    return "AudioListener";
-  }
-
-  get $context() {
-    return this._.context;
-  }
-
   @methods.param("x", validators.isNumber)
   @methods.param("y", validators.isNumber)
   @methods.param("z", validators.isNumber)
@@ -46,4 +38,12 @@ export default class AudioListener {
   @methods.param("y", validators.isNumber)
   @methods.param("z", validators.isNumber)
   setVelocity() {}
+
+  get $name() {
+    return "AudioListener";
+  }
+
+  get $context() {
+    return this._.context;
+  }
 }

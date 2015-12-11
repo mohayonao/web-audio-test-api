@@ -12,7 +12,7 @@ export default class DynamicsCompressorNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "explicit",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
   }
 

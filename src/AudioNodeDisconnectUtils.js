@@ -145,5 +145,5 @@ export default {
   disconnectChannel,
   disconnectSelective1,
   disconnectSelective2,
-  disconnectSelective3,
+  disconnectSelective3
 };

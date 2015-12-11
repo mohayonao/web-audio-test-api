@@ -29,13 +29,13 @@ describe("WebAudioTestAPI", function() {
   describe("setState", function() {
     it("(name: string, value: string): string", function() {
       WebAudioTestAPI.setState({
-        "AnalyserNode#getFloatTimeDomainData": "enabled",
+        "AnalyserNode#getFloatTimeDomainData": "enabled"
       });
 
       assert(WebAudioTestAPI.getState("AnalyserNode#getFloatTimeDomainData") === "enabled");
 
       WebAudioTestAPI.setState({
-        "AnalyserNode#getFloatTimeDomainData": "disabled",
+        "AnalyserNode#getFloatTimeDomainData": "disabled"
       });
     });
   });

@@ -273,7 +273,7 @@ describe("AudioParam", function() {
 
       assert.deepEqual(param.toJSON(), {
         value: 0,
-        inputs: [],
+        inputs: []
       });
 
       node.connect(param);
@@ -283,9 +283,9 @@ describe("AudioParam", function() {
         inputs: [
           {
             name: "AudioNode#foo",
-            inputs: [],
-          },
-        ],
+            inputs: []
+          }
+        ]
       });
     });
   });

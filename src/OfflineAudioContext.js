@@ -54,10 +54,6 @@ export default class OfflineAudioContext extends AudioContext {
   @props.on("complete")
   oncomplete() {}
 
-  get $name() {
-    return "OfflineAudioContext";
-  }
-
   suspend() {
     return transitionToState.call(this, "suspend");
   }
@@ -101,6 +97,10 @@ export default class OfflineAudioContext extends AudioContext {
 
     this._.state = "running";
     this.dispatchEvent(new Event("statechange", this));
+  }
+
+  get $name() {
+    return "OfflineAudioContext";
   }
 
   _process(microseconds) {
