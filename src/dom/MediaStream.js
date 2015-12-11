@@ -1,4 +1,4 @@
-import utils from "../utils";
+import inLaws from "../utils/inLaws";
 import EventTarget from "./EventTarget";
 
 global.MediaStream = global.MediaStream || class MediaStream extends EventTarget {
@@ -8,4 +8,4 @@ global.MediaStream = global.MediaStream || class MediaStream extends EventTarget
   }
 };
 
-export default class MediaStream extends utils.preventSuperCall(global.MediaStream) {}
+export default class MediaStream extends inLaws(global.MediaStream) {}

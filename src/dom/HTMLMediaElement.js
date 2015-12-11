@@ -1,4 +1,4 @@
-import utils from "../utils";
+import inLaws from "../utils/inLaws";
 import HTMLElement from "./HTMLElement";
 
 global.HTMLMediaElement = global.HTMLMediaElement || class HTMLMediaElement extends HTMLElement {
@@ -8,4 +8,4 @@ global.HTMLMediaElement = global.HTMLMediaElement || class HTMLMediaElement exte
   }
 };
 
-export default class HTMLMediaElement extends utils.preventSuperCall(global.HTMLMediaElement) {}
+export default class HTMLMediaElement extends inLaws(global.HTMLMediaElement) {}

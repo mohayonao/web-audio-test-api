@@ -1,4 +1,4 @@
-import utils from "../utils";
+import inLaws from "../utils/inLaws";
 import Element from "./Element";
 
 global.HTMLElement = global.HTMLElement || class HTMLElement extends Element {
@@ -8,4 +8,4 @@ global.HTMLElement = global.HTMLElement || class HTMLElement extends Element {
   }
 };
 
-export default class HTMLElement extends utils.preventSuperCall(global.HTMLElement) {}
+export default class HTMLElement extends inLaws(global.HTMLElement) {}

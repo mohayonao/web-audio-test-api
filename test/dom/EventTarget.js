@@ -106,7 +106,7 @@ describe("EventTarget", function() {
       assert.throws(function() {
         target.dispatchEvent({});
       }, function(e) {
-        return e instanceof TypeError && /should be an Event/.test(e.message);
+        return e instanceof TypeError && /should be a Event/.test(e.message);
       });
     });
   });

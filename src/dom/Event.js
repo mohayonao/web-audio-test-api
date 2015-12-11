@@ -1,3 +1,4 @@
+import inLaws from "../utils/inLaws";
 import utils from "../utils";
 
 global.Event = global.Event || class Event {
@@ -6,7 +7,7 @@ global.Event = global.Event || class Event {
   }
 };
 
-export default class Event extends utils.preventSuperCall(global.Event) {
+export default class Event extends inLaws(global.Event) {
   constructor(name, target) {
     super();
 

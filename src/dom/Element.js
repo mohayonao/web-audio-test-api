@@ -1,4 +1,4 @@
-import utils from "../utils";
+import inLaws from "../utils/inLaws";
 import EventTarget from "./EventTarget";
 
 global.Element = global.Element || class Element extends EventTarget {
@@ -8,4 +8,4 @@ global.Element = global.Element || class Element extends EventTarget {
   }
 };
 
-export default class Element extends utils.preventSuperCall(global.Element) {}
+export default class Element extends inLaws(global.Element) {}
