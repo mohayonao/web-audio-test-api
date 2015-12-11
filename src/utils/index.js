@@ -44,24 +44,12 @@ export function getAPIVersion() {
   return version;
 }
 
-export function isBoolean(value) {
-  return typeof value === "boolean";
-}
-
 export function isFunction(value) {
   return typeof value === "function";
 }
 
 export function isInstanceOf(value, klass) {
   return value instanceof klass;
-}
-
-export function isNullOrFunction(value) {
-  return (value === null) || isFunction(value);
-}
-
-export function isNullOrInstanceOf(value, klass) {
-  return (value === null) || isInstanceOf(value, klass);
 }
 
 export function isNumber(value) {
@@ -72,20 +60,12 @@ export function isInteger(value) {
   return isNumber(value) && (value === (value|0));
 }
 
-export function isPositiveNumber(value) {
-  return isNumber(value) && (0 <= value);
-}
-
 export function isPositiveInteger(value) {
-  return isPositiveNumber(value) && isInteger(value);
+  return value === (value|0) && 0 <= value;
 }
 
 export function isString(value) {
   return typeof value === "string";
-}
-
-export function isUndefined(value) {
-  return typeof value === "undefined";
 }
 
 export function removeIfExists(list, value) {
@@ -203,17 +183,12 @@ export default {
   defaults,
   fill,
   getAPIVersion,
-  isBoolean,
   isFunction,
   isInstanceOf,
-  isNullOrFunction,
-  isNullOrInstanceOf,
   isNumber,
   isInteger,
-  isPositiveNumber,
   isPositiveInteger,
   isString,
-  isUndefined,
   removeIfExists,
   toNodeName,
   prettyPrint,

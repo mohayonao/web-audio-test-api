@@ -78,23 +78,6 @@ describe("utils", () => {
     });
   });
 
-  describe("isBoolean", () => {
-    it("(value: any): boolean", () => {
-      assert(utils.isBoolean(-1.5) === false);
-      assert(utils.isBoolean(-1) === false);
-      assert(utils.isBoolean(0) === false);
-      assert(utils.isBoolean(1) === false);
-      assert(utils.isBoolean(1.5) === false);
-      assert(utils.isBoolean(true) === true);
-      assert(utils.isBoolean(false) === true);
-      assert(utils.isBoolean("0") === false);
-      assert(utils.isBoolean(it) === false);
-      assert(utils.isBoolean(NaN) === false);
-      assert(utils.isBoolean(null) === false);
-      assert(utils.isBoolean(undefined) === false);
-    });
-  });
-
   describe("isFunction", () => {
     it("(value: any): boolean", () => {
       assert(utils.isFunction(-1.5) === false);
@@ -140,34 +123,6 @@ describe("utils", () => {
     });
   });
 
-  describe("isNullOrFunction", () => {
-    it("(value: any): boolean", () => {
-      assert(utils.isNullOrFunction(-1.5) === false);
-      assert(utils.isNullOrFunction(-1) === false);
-      assert(utils.isNullOrFunction(0) === false);
-      assert(utils.isNullOrFunction(1) === false);
-      assert(utils.isNullOrFunction(1.5) === false);
-      assert(utils.isNullOrFunction(true) === false);
-      assert(utils.isNullOrFunction(false) === false);
-      assert(utils.isNullOrFunction("0") === false);
-      assert(utils.isNullOrFunction(it) === true);
-      assert(utils.isNullOrFunction(NaN) === false);
-      assert(utils.isNullOrFunction(null) === true);
-      assert(utils.isNullOrFunction(undefined) === false);
-    });
-  });
-
-  describe("isNullOrInstanceOf", () => {
-    it("(value: any, klass: function): boolean", () => {
-      function A() {}
-      function B() {}
-
-      assert(utils.isNullOrInstanceOf(new A(), A) === true);
-      assert(utils.isNullOrInstanceOf(new B(), A) === false);
-      assert(utils.isNullOrInstanceOf(null, A) === true);
-    });
-  });
-
   describe("isNumber", () => {
     it("(value: any): boolean", () => {
       assert(utils.isNumber(-1.5) === true);
@@ -202,23 +157,6 @@ describe("utils", () => {
     });
   });
 
-  describe("isPositiveNumber", () => {
-    it("(value: any): boolean", () => {
-      assert(utils.isPositiveNumber(-1.5) === false);
-      assert(utils.isPositiveNumber(-1) === false);
-      assert(utils.isPositiveNumber(0) === true);
-      assert(utils.isPositiveNumber(1) === true);
-      assert(utils.isPositiveNumber(1.5) === true);
-      assert(utils.isPositiveNumber(true) === false);
-      assert(utils.isPositiveNumber(false) === false);
-      assert(utils.isPositiveNumber("0") === false);
-      assert(utils.isPositiveNumber(it) === false);
-      assert(utils.isPositiveNumber(NaN) === false);
-      assert(utils.isPositiveNumber(null) === false);
-      assert(utils.isPositiveNumber(undefined) === false);
-    });
-  });
-
   describe("isString", () => {
     it("(value: any): boolean", () => {
       assert(utils.isString(-1.5) === false);
@@ -233,23 +171,6 @@ describe("utils", () => {
       assert(utils.isString(NaN) === false);
       assert(utils.isString(null) === false);
       assert(utils.isString(undefined) === false);
-    });
-  });
-
-  describe("isUndefined", () => {
-    it("(value: any): boolean", () => {
-      assert(utils.isUndefined(-1.5) === false);
-      assert(utils.isUndefined(-1) === false);
-      assert(utils.isUndefined(0) === false);
-      assert(utils.isUndefined(1) === false);
-      assert(utils.isUndefined(1.5) === false);
-      assert(utils.isUndefined(true) === false);
-      assert(utils.isUndefined(false) === false);
-      assert(utils.isUndefined("0") === false);
-      assert(utils.isUndefined(it) === false);
-      assert(utils.isUndefined(NaN) === false);
-      assert(utils.isUndefined(null) === false);
-      assert(utils.isUndefined(undefined) === true);
     });
   });
 
