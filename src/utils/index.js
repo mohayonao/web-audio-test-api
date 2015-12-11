@@ -1,8 +1,5 @@
 import Configuration from "./Configuration";
-import Enumerator from "./Enumerator";
-import Formatter from "./Formatter";
 import Immigration from "./Immigration";
-import Inspector from "./Inspector";
 import version from "../version";
 
 const MIN_MICRO_SECONDS = 0;
@@ -42,30 +39,6 @@ export function fill(list, value) {
 
 export function getAPIVersion() {
   return version;
-}
-
-export function isFunction(value) {
-  return typeof value === "function";
-}
-
-export function isInstanceOf(value, klass) {
-  return value instanceof klass;
-}
-
-export function isNumber(value) {
-  return !isNaN(value) && (typeof value === "number");
-}
-
-export function isInteger(value) {
-  return isNumber(value) && (value === (value|0));
-}
-
-export function isPositiveInteger(value) {
-  return value === (value|0) && 0 <= value;
-}
-
-export function isString(value) {
-  return typeof value === "string";
 }
 
 export function removeIfExists(list, value) {
@@ -162,22 +135,13 @@ export function toSeconds(time) {
 
 export default {
   Configuration,
-  Enumerator,
-  Formatter,
   Immigration,
-  Inspector,
   appendIfNotExists,
   article,
   countArguments,
   defaults,
   fill,
   getAPIVersion,
-  isFunction,
-  isInstanceOf,
-  isNumber,
-  isInteger,
-  isPositiveInteger,
-  isString,
   removeIfExists,
   toNodeName,
   prettyPrint,
