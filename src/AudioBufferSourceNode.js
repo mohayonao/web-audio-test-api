@@ -1,7 +1,7 @@
-import utils from "./utils";
 import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import Event from "./dom/Event";
+import toSeconds from "./utils/toSeconds";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
@@ -90,7 +90,7 @@ export default class AudioBufferSourceNode extends AudioNode {
   }
 
   $stateAtTime(_time) {
-    let time = utils.toSeconds(_time);
+    let time = toSeconds(_time);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";

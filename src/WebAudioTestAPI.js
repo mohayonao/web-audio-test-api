@@ -1,5 +1,5 @@
-import utils from "./utils";
 import Configuration from "./utils/Configuration";
+import Immigration from "./utils/Immigration";
 import WebAudioAPI from "./WebAudioAPI";
 import Element from "./dom/Element";
 import Event from "./dom/Event";
@@ -34,13 +34,14 @@ import PeriodicWave from "./PeriodicWave";
 import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
+import getAPIVersion from "./utils/getAPIVersion";
 
 let sampleRate = 44100;
 let configuration = Configuration.getInstance();
 
 let WebAudioTestAPI = {
-  VERSION: utils.getAPIVersion(),
-  utils,
+  VERSION: getAPIVersion(),
+  utils: { Configuration, Immigration },
   sampleRate,
   AnalyserNode,
   AudioBuffer,

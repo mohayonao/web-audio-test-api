@@ -1,7 +1,7 @@
-import utils from "./utils";
 import AudioNode from "./AudioNode";
 import PeriodicWave from "./PeriodicWave";
 import Event from "./dom/Event";
+import toSeconds from "./utils/toSeconds";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
@@ -87,7 +87,7 @@ export default class OscillatorNode extends AudioNode {
   }
 
   $stateAtTime(_time) {
-    let time = utils.toSeconds(_time);
+    let time = toSeconds(_time);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";

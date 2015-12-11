@@ -1,5 +1,5 @@
 import inLaws from "../utils/inLaws";
-import utils from "../utils";
+import defaults from "../utils/defaults";
 
 global.Event = global.Event || class Event {
   constructor() {
@@ -14,7 +14,7 @@ export default class Event extends inLaws(global.Event) {
     Object.defineProperty(this, "_", { value: {} });
 
     this._.type = name;
-    this._.target = utils.defaults(target, null);
+    this._.target = defaults(target, null);
     this._.timestamp = Date.now();
   }
 

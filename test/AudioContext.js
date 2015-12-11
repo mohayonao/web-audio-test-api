@@ -1,6 +1,5 @@
 describe("AudioContext", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
-  var utils = WebAudioTestAPI.utils;
   var audioContext;
 
   function setStateForStateTransitionAPI(state) {
@@ -22,7 +21,7 @@ describe("AudioContext", function() {
 
   describe(".WEB_AUDIO_TEST_API_VERSION", function() {
     it("check", function() {
-      assert(WebAudioTestAPI.AudioContext.WEB_AUDIO_TEST_API_VERSION === utils.getAPIVersion());
+      assert(WebAudioTestAPI.AudioContext.WEB_AUDIO_TEST_API_VERSION === WebAudioTestAPI.VERSION);
     });
   });
 

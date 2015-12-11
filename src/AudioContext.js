@@ -1,4 +1,3 @@
-import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Event from "./dom/Event";
@@ -24,6 +23,9 @@ import PeriodicWave from "./PeriodicWave";
 import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
+import getAPIVersion from "./utils/getAPIVersion";
+import defaults from "./utils/defaults";
+import toMicroseconds from "./utils/toMicroseconds";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
@@ -57,7 +59,7 @@ export default class AudioContext extends EventTarget {
   }
 
   static get WEB_AUDIO_TEST_API_VERSION() {
-    return utils.getAPIVersion();
+    return getAPIVersion();
   }
 
   @props.readonly()
@@ -141,11 +143,11 @@ export default class AudioContext extends EventTarget {
     let successCallback, errorCallback;
 
     if (isPromiseBased) {
-      successCallback = utils.defaults(_successCallback, () => {});
-      errorCallback = utils.defaults(_errorCallback, () => {});
+      successCallback = defaults(_successCallback, () => {});
+      errorCallback = defaults(_errorCallback, () => {});
     } else {
       successCallback = _successCallback;
-      errorCallback = utils.defaults(_errorCallback, () => {});
+      errorCallback = defaults(_errorCallback, () => {});
     }
 
     let promise = new Promise((resolve, reject) => {
@@ -325,11 +327,11 @@ export default class AudioContext extends EventTarget {
   }
 
   $process(time) {
-    this._process(utils.toMicroseconds(time));
+    this._process(toMicroseconds(time));
   }
 
   $processTo(_time) {
-    let time = utils.toMicroseconds(_time);
+    let time = toMicroseconds(_time);
 
     if (this._.microCurrentTime < time) {
       this._process(time - this._.microCurrentTime);

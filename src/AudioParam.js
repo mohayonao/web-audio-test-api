@@ -1,6 +1,8 @@
-import utils from "./utils";
 import Immigration from "./utils/Immigration";
 import Junction from "./utils/Junction";
+import defaults from "./utils/defaults";
+import toJSON from "./utils/toJSON";
+import toSeconds from "./utils/toSeconds";
 import typed from "./decorators/props/typed";
 import readonly from "./decorators/props/readonly";
 import * as methods from "./decorators/methods";
@@ -71,14 +73,14 @@ export function setCurveValue(v, t, t0, t1, curve) {
   let dt = (t - t0) / (t1 - t0);
 
   if (dt <= 0) {
-    return utils.defaults(curve[0], v);
+    return defaults(curve[0], v);
   }
 
   if (1 <= dt) {
-    return utils.defaults(curve[curve.length - 1], v);
+    return defaults(curve[curve.length - 1], v);
   }
 
-  return utils.defaults(curve[(curve.length * dt)|0], v);
+  return defaults(curve[(curve.length * dt)|0], v);
 }
 
 export default class AudioParam {
@@ -180,7 +182,7 @@ export default class AudioParam {
   }
 
   toJSON(memo) {
-    return utils.toJSON(this, (node, memo) => {
+    return toJSON(this, (node, memo) => {
       let json = {};
 
       json.value = node.value;
@@ -211,7 +213,7 @@ export default class AudioParam {
   }
 
   $valueAtTime(_time) {
-    let time = utils.toSeconds(_time);
+    let time = toSeconds(_time);
 
     let value = this._.value;
     let events = this.$events;

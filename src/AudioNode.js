@@ -1,9 +1,11 @@
-import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Junction from "./utils/Junction";
 import EventTarget from "./dom/EventTarget";
 import AudioNodeDisconnectUtils from "./AudioNodeDisconnectUtils";
+import defaults from "./utils/defaults";
+import toJSON from "./utils/toJSON";
+import toNodeName from "./utils/toNodeName";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
@@ -34,14 +36,14 @@ export default class AudioNode extends EventTarget {
     }
   })
   __createAudioNode(spec) {
-    this._.name = utils.defaults(spec.name, "AudioNode");
-    this._.numberOfInputs = utils.defaults(spec.numberOfInputs, 1);
-    this._.numberOfOutputs = utils.defaults(spec.numberOfOutputs, 1);
-    this._.channelCount = utils.defaults(spec.channelCount, 2);
-    this._.channelCountMode = utils.defaults(spec.channelCountMode, "max");
-    this._.channelInterpretation = utils.defaults(spec.channelInterpretation, "speakers");
-    this._.inputs = utils.fill(new Array(Math.max(0, this._.numberOfInputs|0)), i => new Junction(this, i));
-    this._.outputs = utils.fill(new Array(Math.max(0, this._.numberOfOutputs|0)), i => new Junction(this, i));
+    this._.name = defaults(spec.name, "AudioNode");
+    this._.numberOfInputs = defaults(spec.numberOfInputs, 1);
+    this._.numberOfOutputs = defaults(spec.numberOfOutputs, 1);
+    this._.channelCount = defaults(spec.channelCount, 2);
+    this._.channelCountMode = defaults(spec.channelCountMode, "max");
+    this._.channelInterpretation = defaults(spec.channelInterpretation, "speakers");
+    this._.inputs = new Array(this._.numberOfInputs).fill().map(i => new Junction(this, i));
+    this._.outputs = new Array(this._.numberOfOutputs).fill().map(i => new Junction(this, i));
     this._.tick = -1;
   }
 
@@ -93,15 +95,12 @@ export default class AudioNode extends EventTarget {
   // @methods.param("[ output ]", validators.isPositiveInteger);
   // @methods.param("[ input ]", validators.isPositiveInteger);
   disconnect(_destination, _output, _input) {
-    let isSelectiveDisconnect = configuration.getState("AudioNode#disconnect") === "selective";
-    let argNum = utils.countArguments([ _destination, _output, _input ]);
-
-    if (!isSelectiveDisconnect) {
-      AudioNodeDisconnectUtils.disconnectChannel.call(this, utils.defaults(_destination, 0));
+    if (configuration.getState("AudioNode#disconnect") !== "selective") {
+      AudioNodeDisconnectUtils.disconnectChannel.call(this, defaults(_destination, 0));
       return;
     }
 
-    switch (argNum) {
+    switch (arguments.length) {
     case 0:
       AudioNodeDisconnectUtils.disconnectAll.call(this);
       break;
@@ -124,20 +123,20 @@ export default class AudioNode extends EventTarget {
   }
 
   toJSON(memo) {
-    function toJSON(obj, memo) {
+    function _toJSON(obj, memo) {
       if (obj && typeof obj.toJSON === "function") {
         return obj.toJSON(memo);
       }
       return obj;
     }
 
-    return utils.toJSON(this, (node, memo) => {
+    return toJSON(this, (node, memo) => {
       let json = {};
 
-      json.name = utils.toNodeName(node);
+      json.name = toNodeName(node);
 
       node.constructor.$JSONKeys.forEach((key) => {
-        json[key] = toJSON(node[key], memo);
+        json[key] = _toJSON(node[key], memo);
       });
 
       if (node.$context.VERBOSE_JSON) {
