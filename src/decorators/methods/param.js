@@ -38,19 +38,17 @@ export default function param(paramName, validator) {
     validators.unshift({ paramName, validator, optional });
 
     if (validators.length === 1) {
-      return {
-        value(...args) {
-          const errIndex = check(args, validators);
+      descriptor.value = function param(...args) {
+        const errIndex = check(args, validators);
 
-          if (errIndex !== -1) {
-            throw new TypeError(`${this.constructor.name}#${name}(); argument(${errIndex}) should be a ${validators[errIndex].validator.name}, but got: ${args[errIndex]}`);
-          }
+        if (errIndex !== -1) {
+          throw new TypeError(`${this.constructor.name}#${name}(); argument(${errIndex}) should be a ${validators[errIndex].validator.name}, but got: ${args[errIndex]}`);
+        }
 
-          return this::func(...args);
-        },
-        enumerable: true,
-        configurable: true
+        return this::func(...args);
       };
     }
+
+    return descriptor;
   };
 }
