@@ -2,6 +2,8 @@ import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
 
 export default class StereoPannerNode extends AudioNode {
+  static $JSONKeys = [ "pan" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "StereoPannerNode",
@@ -12,13 +14,8 @@ export default class StereoPannerNode extends AudioNode {
       channelCountMode: "clamped-max",
       channelInterpretation: "speakers",
     });
-    this._.JSONKeys = StereoPannerNode.$JSONKeys.slice();
   }
 
   @props.audioparam(0)
   pan() {}
 }
-
-StereoPannerNode.$JSONKeys = [
-  "pan",
-];

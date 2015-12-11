@@ -9,6 +9,8 @@ import * as validators from "./validators";
 let immigration = Immigration.getInstance();
 
 export default class ScriptProcessorNode extends AudioNode {
+  static $JSONKeys = [];
+
   constructor(admission, context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
     super(admission, {
       name: "ScriptProcessorNode",

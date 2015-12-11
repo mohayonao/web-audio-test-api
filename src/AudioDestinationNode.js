@@ -2,6 +2,8 @@ import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
 
 export default class AudioDestinationNode extends AudioNode {
+  static $JSONKeys = [];
+
   constructor(admission, context) {
     super(admission, {
       name: "AudioDestinationNode",

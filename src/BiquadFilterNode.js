@@ -4,6 +4,8 @@ import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
 export default class BiquadFilterNode extends AudioNode {
+  static $JSONKeys = [ "type", "frequency", "detune", "Q", "gain" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "BiquadFilterNode",
@@ -14,8 +16,6 @@ export default class BiquadFilterNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers",
     });
-
-    this._.JSONKeys = BiquadFilterNode.$JSONKeys.slice();
   }
 
   @props.enum([ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass" ])
@@ -38,11 +38,3 @@ export default class BiquadFilterNode extends AudioNode {
   @methods.param("phaseResponse", validators.isInstanceOf(Float32Array))
   getFrequencyResponse() {}
 }
-
-BiquadFilterNode.$JSONKeys = [
-  "type",
-  "frequency",
-  "detune",
-  "Q",
-  "gain",
-];

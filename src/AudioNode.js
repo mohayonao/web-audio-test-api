@@ -13,6 +13,8 @@ let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
 
 export default class AudioNode extends EventTarget {
+  static $JSONKeys = [];
+
   constructor(admission, spec) {
     immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
@@ -26,7 +28,6 @@ export default class AudioNode extends EventTarget {
     this._.channelCount = utils.defaults(spec.channelCount, 2);
     this._.channelCountMode = utils.defaults(spec.channelCountMode, "max");
     this._.channelInterpretation = utils.defaults(spec.channelInterpretation, "speakers");
-    this._.JSONKeys = [];
     this._.inputs = utils.fill(new Array(Math.max(0, this._.numberOfInputs|0)), i => new Junction(this, i));
     this._.outputs = utils.fill(new Array(Math.max(0, this._.numberOfOutputs|0)), i => new Junction(this, i));
     this._.tick = -1;
@@ -150,7 +151,7 @@ export default class AudioNode extends EventTarget {
 
       json.name = utils.toNodeName(node);
 
-      node._.JSONKeys.forEach((key) => {
+      node.constructor.$JSONKeys.forEach((key) => {
         json[key] = toJSON(node[key], memo);
       });
 

@@ -4,6 +4,11 @@ import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
 export default class PannerNode extends AudioNode {
+  static $JSONKeys = [
+    "panningModel", "distanceModel", "refDistance", "maxDistance",
+    "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain",
+  ];
+
   constructor(admission, context) {
     super(admission, {
       name: "PannerNode",
@@ -14,7 +19,6 @@ export default class PannerNode extends AudioNode {
       channelCountMode: "clamped-max",
       channelInterpretation: "speakers",
     });
-    this._.JSONKeys = PannerNode.$JSONKeys.slice();
   }
 
   @props.enum([ "HRTF", "equalpower" ])
@@ -56,14 +60,3 @@ export default class PannerNode extends AudioNode {
   @methods.param("z", validators.isNumber)
   setVelocity() {}
 }
-
-PannerNode.$JSONKeys = [
-  "panningModel",
-  "distanceModel",
-  "refDistance",
-  "maxDistance",
-  "rolloffFactor",
-  "coneInnerAngle",
-  "coneOuterAngle",
-  "coneOuterGain",
-];

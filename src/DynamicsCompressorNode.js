@@ -2,6 +2,8 @@ import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
 
 export default class DynamicsCompressorNode extends AudioNode {
+  static $JSONKeys = [ "threshold", "knee", "ratio", "reduction", "attack", "release" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "DynamicsCompressorNode",
@@ -12,7 +14,6 @@ export default class DynamicsCompressorNode extends AudioNode {
       channelCountMode: "explicit",
       channelInterpretation: "speakers",
     });
-    this._.JSONKeys = DynamicsCompressorNode.$JSONKeys.slice();
   }
 
   @props.audioparam(-24)
@@ -33,12 +34,3 @@ export default class DynamicsCompressorNode extends AudioNode {
   @props.audioparam(0.25)
   release() {}
 }
-
-DynamicsCompressorNode.$JSONKeys = [
-  "threshold",
-  "knee",
-  "ratio",
-  "reduction",
-  "attack",
-  "release",
-];

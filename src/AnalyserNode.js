@@ -7,6 +7,8 @@ import * as validators from "./validators";
 let configuration = Configuration.getInstance();
 
 export default class AnalyserNode extends AudioNode {
+  static $JSONKeys = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "AnalyserNode",
@@ -18,7 +20,6 @@ export default class AnalyserNode extends AudioNode {
       channelInterpretation: "speakers",
     });
     this._.fftSize = 2048;
-    this._.JSONKeys = AnalyserNode.$JSONKeys.slice();
   }
 
   @props.enum([ 32, 64, 128, 256, 512, 1024, 2048 ])
@@ -57,10 +58,3 @@ export default class AnalyserNode extends AudioNode {
   @methods.param("array", validators.isInstanceOf(Uint8Array))
   getByteTimeDomainData() {}
 }
-
-AnalyserNode.$JSONKeys = [
-  "fftSize",
-  "minDecibels",
-  "maxDecibels",
-  "smoothingTimeConstant",
-];

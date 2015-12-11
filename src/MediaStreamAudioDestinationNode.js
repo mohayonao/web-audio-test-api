@@ -1,6 +1,8 @@
 import AudioNode from "./AudioNode";
 
 export default class MediaStreamAudioDestinationNode extends AudioNode {
+  static $JSONKeys = [];
+
   constructor(admission, context) {
     super(admission, {
       name: "MediaStreamAudioDestinationNode",

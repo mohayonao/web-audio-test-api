@@ -4,6 +4,8 @@ import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
 export default class MediaStreamAudioSourceNode extends AudioNode {
+  static $JSONKeys = [];
+
   constructor(admission, context, mediaStream) {
     super(admission, {
       name: "MediaStreamAudioSourceNode",

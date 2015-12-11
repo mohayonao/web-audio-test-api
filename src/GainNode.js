@@ -2,6 +2,8 @@ import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
 
 export default class GainNode extends AudioNode {
+  static $JSONKeys = [ "gain" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "GainNode",
@@ -12,13 +14,8 @@ export default class GainNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers",
     });
-    this._.JSONKeys = GainNode.$JSONKeys.slice();
   }
 
   @props.audioparam(1)
   gain() {}
 }
-
-GainNode.$JSONKeys = [
-  "gain",
-];

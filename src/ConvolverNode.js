@@ -4,6 +4,8 @@ import * as props from "./decorators/props";
 import * as validators from "./validators";
 
 export default class ConvolverNode extends AudioNode {
+  static $JSONKeys = [ "normalize" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "ConvolverNode",
@@ -14,7 +16,6 @@ export default class ConvolverNode extends AudioNode {
       channelCountMode: "clamped-max",
       channelInterpretation: "speakers",
     });
-    this._.JSONKeys = ConvolverNode.$JSONKeys.slice();
   }
 
   @props.typed(validators.isNullOrInstanceOf(AudioBuffer), null)
@@ -23,7 +24,3 @@ export default class ConvolverNode extends AudioNode {
   @props.typed(validators.isBoolean, true)
   normalize() {}
 }
-
-ConvolverNode.$JSONKeys = [
-  "normalize",
-];

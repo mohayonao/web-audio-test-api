@@ -7,6 +7,8 @@ import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
 export default class OscillatorNode extends AudioNode {
+  static $JSONKeys = [ "type", "frequency", "detune" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "OscillatorNode",
@@ -21,7 +23,6 @@ export default class OscillatorNode extends AudioNode {
     this._.startTime = Infinity;
     this._.stopTime = Infinity;
     this._.firedOnEnded = false;
-    this._.JSONKeys = OscillatorNode.$JSONKeys.slice();
   }
 
   @props.enum([ "sine", "square", "sawtooth", "triangle" ])
@@ -108,9 +109,3 @@ export default class OscillatorNode extends AudioNode {
     }
   }
 }
-
-OscillatorNode.$JSONKeys = [
-  "type",
-  "frequency",
-  "detune",
-];

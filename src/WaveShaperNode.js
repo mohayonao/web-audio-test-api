@@ -3,6 +3,8 @@ import * as props from "./decorators/props";
 import * as validators from "./validators";
 
 export default class WaveShaperNode extends AudioNode {
+  static $JSONKeys = [ "oversample" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "WaveShaperNode",
@@ -13,7 +15,6 @@ export default class WaveShaperNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers",
     });
-    this._.JSONKeys = WaveShaperNode.$JSONKeys.slice();
   }
 
   @props.typed(validators.isNullOrInstanceOf(Float32Array), null)
@@ -22,7 +23,3 @@ export default class WaveShaperNode extends AudioNode {
   @props.enum([ "none", "2x", "4x" ])
   oversample() {}
 }
-
-WaveShaperNode.$JSONKeys = [
-  "oversample",
-];

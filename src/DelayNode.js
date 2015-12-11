@@ -4,6 +4,8 @@ import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
 export default class DelayNode extends AudioNode {
+  static $JSONKeys = [ "delayTime" ]
+
   constructor(admission, context, maxDelayTime) {
     super(admission, {
       name: "DelayNode",
@@ -15,7 +17,6 @@ export default class DelayNode extends AudioNode {
       channelInterpretation: "speakers",
     });
     this.__createDelay(maxDelayTime);
-    this._.JSONKeys = DelayNode.$JSONKeys.slice();
   }
 
   @methods.param("maxDelayTime", validators.isPositiveNumber)
@@ -30,7 +31,3 @@ export default class DelayNode extends AudioNode {
     return this._.maxDelayTime;
   }
 }
-
-DelayNode.$JSONKeys = [
-  "delayTime",
-];

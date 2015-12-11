@@ -3,6 +3,8 @@ import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
 export default class ChannelSplitterNode extends AudioNode {
+  static $JSONKeys = [];
+
   constructor(admission, context, numberOfOutputs) {
     super(admission, {
       name: "ChannelSplitterNode",

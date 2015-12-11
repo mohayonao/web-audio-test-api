@@ -10,6 +10,8 @@ import * as validators from "./validators";
 let immigration = Immigration.getInstance();
 
 export default class AudioBufferSourceNode extends AudioNode {
+  static $JSONKeys = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "AudioBufferSourceNode",
@@ -24,7 +26,6 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.startTime = Infinity;
     this._.stopTime = Infinity;
     this._.firedOnEnded = false;
-    this._.JSONKeys = AudioBufferSourceNode.$JSONKeys.slice();
   }
 
   @props.typed(validators.isNullOrInstanceOf(AudioBuffer), null)
@@ -121,11 +122,3 @@ export default class AudioBufferSourceNode extends AudioNode {
     }
   }
 }
-
-AudioBufferSourceNode.$JSONKeys = [
-  "buffer",
-  "playbackRate",
-  "loop",
-  "loopStart",
-  "loopEnd",
-];
