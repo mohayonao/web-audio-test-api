@@ -11,28 +11,6 @@ import * as validators from "./validators";
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
 
-function transitionToState(methodName) {
-  this._.inspector.describe(methodName, [], ($assert) => {
-    $assert(configuration.getState(`AudioContext#${methodName}`) === "enabled", (fmt) => {
-      throw new TypeError(fmt.plain `
-        ${fmt.form};
-        not enabled
-      `);
-    });
-  });
-
-  return new Promise((resolve, reject) => {
-    this._.inspector.describe(methodName, [], ($assert) => {
-      $assert(false, (fmt) => {
-        reject(new Error(fmt.plain `
-          ${fmt.form};
-          Cannot ${methodName} on an OfflineAudioContext
-        `));
-      });
-    });
-  });
-}
-
 export default class OfflineAudioContext extends AudioContext {
   constructor(numberOfChannels, length, sampleRate) {
     super();
@@ -55,48 +33,52 @@ export default class OfflineAudioContext extends AudioContext {
   oncomplete() {}
 
   suspend() {
-    return transitionToState.call(this, "suspend");
+    return this.__transitionToState("suspend");
   }
 
   resume() {
-    return transitionToState.call(this, "resume");
+    return this.__transitionToState("resume");
   }
 
   close() {
-    return transitionToState.call(this, "close");
+    return this.__transitionToState("close");
   }
 
+  @methods.contract({
+    precondition() {
+      if (this._.rendering) {
+        throw new TypeError("cannot call startRendering more than once");
+      }
+    }
+  })
   startRendering() {
     let isPromiseBased = configuration.getState("OfflineAudioContext#startRendering") === "promise";
-    let rendering = this._.rendering;
-
-    function $assertion() {
-      this._.inspector.describe("startRendering", ($assert) => {
-        $assert(!rendering, (fmt) => {
-          throw new Error(fmt.plain `
-            ${fmt.form};
-            cannot call startRendering more than once
-          `);
-        });
-      });
-    }
 
     this._.rendering = true;
 
     if (isPromiseBased) {
       return new Promise((resolve) => {
-        $assertion.call(this);
-
         this._.resolve = resolve;
         this._.state = "running";
         this.dispatchEvent(new Event("statechange", this));
       });
     }
 
-    $assertion.call(this);
-
     this._.state = "running";
     this.dispatchEvent(new Event("statechange", this));
+  }
+
+  @methods.contract({
+    precondition(methodName) {
+      if (configuration.getState(`AudioContext#${methodName}`) !== "enabled") {
+        throw new TypeError("not enabled");
+      }
+    }
+  })
+  __transitionToState(methodName) {
+    return new Promise(() => {
+      throw new TypeError(`Cannot ${methodName} on an OfflineAudioContext`);
+    });
   }
 
   get $name() {

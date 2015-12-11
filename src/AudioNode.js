@@ -20,18 +20,10 @@ export default class AudioNode extends EventTarget {
     });
     super();
 
-    this._.context = spec.context;
-    this._.name = utils.defaults(spec.name, "AudioNode");
-    this._.numberOfInputs = utils.defaults(spec.numberOfInputs, 1);
-    this._.numberOfOutputs = utils.defaults(spec.numberOfOutputs, 1);
-    this._.channelCount = utils.defaults(spec.channelCount, 2);
-    this._.channelCountMode = utils.defaults(spec.channelCountMode, "max");
-    this._.channelInterpretation = utils.defaults(spec.channelInterpretation, "speakers");
-    this._.inputs = utils.fill(new Array(Math.max(0, this._.numberOfInputs|0)), i => new Junction(this, i));
-    this._.outputs = utils.fill(new Array(Math.max(0, this._.numberOfOutputs|0)), i => new Junction(this, i));
-    this._.tick = -1;
+    Object.defineProperty(this, "_", { value: {} });
 
-    this.__createAudioNode();
+    this._.context = spec.context;
+    this.__createAudioNode(spec);
   }
 
   @methods.contract({
@@ -41,7 +33,17 @@ export default class AudioNode extends EventTarget {
       }
     }
   })
-  __createAudioNode() {}
+  __createAudioNode(spec) {
+    this._.name = utils.defaults(spec.name, "AudioNode");
+    this._.numberOfInputs = utils.defaults(spec.numberOfInputs, 1);
+    this._.numberOfOutputs = utils.defaults(spec.numberOfOutputs, 1);
+    this._.channelCount = utils.defaults(spec.channelCount, 2);
+    this._.channelCountMode = utils.defaults(spec.channelCountMode, "max");
+    this._.channelInterpretation = utils.defaults(spec.channelInterpretation, "speakers");
+    this._.inputs = utils.fill(new Array(Math.max(0, this._.numberOfInputs|0)), i => new Junction(this, i));
+    this._.outputs = utils.fill(new Array(Math.max(0, this._.numberOfOutputs|0)), i => new Junction(this, i));
+    this._.tick = -1;
+  }
 
   @props.readonly()
   context() {
@@ -104,7 +106,7 @@ export default class AudioNode extends EventTarget {
       AudioNodeDisconnectUtils.disconnectAll.call(this);
       break;
     case 1:
-      if (utils.isNumber(_destination)) {
+      if (typeof _destination === "number") {
         AudioNodeDisconnectUtils.disconnectChannel.call(this, _destination);
       } else {
         AudioNodeDisconnectUtils.disconnectSelective1.call(this, _destination);

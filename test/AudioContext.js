@@ -329,7 +329,7 @@ describe("AudioContext", function() {
         return Promise.resolve().then(function() {
           return audioContext.decodeAudioData("INVALID");
         }).catch(function(e) {
-          return e instanceof TypeError && /should be an ArrayBuffer/.test(e.message);
+          return e instanceof TypeError && /should be a ArrayBuffer/.test(e.message);
         }).then(function() {
           return audioContext.decodeAudioData(audioData, "INVALID");
         }).catch(function(e) {
@@ -370,7 +370,7 @@ describe("AudioContext", function() {
         assert.throws(function() {
           audioContext.decodeAudioData("INVALID");
         }, function(e) {
-          return e instanceof TypeError && /should be an ArrayBuffer/.test(e.message);
+          return e instanceof TypeError && /should be a ArrayBuffer/.test(e.message);
         });
 
         assert.throws(function() {

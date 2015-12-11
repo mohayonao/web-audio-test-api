@@ -37,34 +37,11 @@ function isEnabledState() {
     || configuration.getState("AudioContext#close") === "enabled";
 }
 
-function transitionToState(methodName, callback) {
-  this._.inspector.describe(methodName, [], ($assert) => {
-    $assert(configuration.getState(`AudioContext#${methodName}`) === "enabled", (fmt) => {
-      throw new TypeError(fmt.plain `
-        ${fmt.form};
-        not enabled
-      `);
-    });
-  });
-
-  return new Promise((resolve, reject) => {
-    this._.inspector.describe(methodName, [], ($assert) => {
-      $assert(this._.state !== "closed", (fmt) => {
-        reject(new Error(fmt.plain `
-          ${fmt.form};
-          Cannot ${methodName} a context that is being closed or has already been closed
-        `));
-      });
-    });
-
-    callback();
-    resolve();
-  });
-}
-
 export default class AudioContext extends EventTarget {
   constructor() {
     super();
+
+    Object.defineProperty(this, "_", { value: {} });
 
     this._.destination = immigration.apply(admission =>
       new AudioDestinationNode(admission, this)
@@ -110,20 +87,17 @@ export default class AudioContext extends EventTarget {
   }
 
   set state(value) {
-    if (!isEnabledState()) {
+    if (!isEnabledState(value)) {
       return;
     }
-
-    this._.inspector.describe("state", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
+    throw new TypeError(`${this.constructor.name}; Attempt to assign to readonly property: "state"`);
   }
 
   @props.on("statechange")
   onstatechange() {}
 
   suspend() {
-    return transitionToState.call(this, "suspend", () => {
+    return this.__transitionToState("suspend", () => {
       if (this._.state === "running") {
         this._.state = "suspended";
         this.dispatchEvent(new Event("statechange", this));
@@ -132,7 +106,7 @@ export default class AudioContext extends EventTarget {
   }
 
   resume() {
-    return transitionToState.call(this, "resume", () => {
+    return this.__transitionToState("resume", () => {
       if (this._.state === "suspended") {
         this._.state = "running";
         this.dispatchEvent(new Event("statechange", this));
@@ -141,7 +115,7 @@ export default class AudioContext extends EventTarget {
   }
 
   close() {
-    return transitionToState.call(this, "close", () => {
+    return this.__transitionToState("close", () => {
       if (this._.state !== "closed") {
         this._.state = "closed";
         this.$reset();
@@ -150,12 +124,18 @@ export default class AudioContext extends EventTarget {
     });
   }
 
+  @methods.param("numberOfChannels", validators.isPositiveInteger)
+  @methods.param("length", validators.isPositiveInteger)
+  @methods.param("sampleRate", validators.isPositiveInteger)
   createBuffer(numberOfChannels, length, sampleRate) {
     return immigration.apply(admission =>
       new AudioBuffer(admission, this, numberOfChannels, length, sampleRate)
     );
   }
 
+  @methods.param("audioData", validators.isInstanceOf(ArrayBuffer))
+  @methods.param("[ successCallback ]", validators.isFunction)
+  @methods.param("[ errorCallback ]", validators.isFunction)
   decodeAudioData(audioData, _successCallback, _errorCallback) {
     let isPromiseBased = configuration.getState("AudioContext#decodeAudioData") === "promise";
     let successCallback, errorCallback;
@@ -168,40 +148,7 @@ export default class AudioContext extends EventTarget {
       errorCallback = utils.defaults(_errorCallback, () => {});
     }
 
-    function $assertion() {
-      if ($assertion.done) {
-        return;
-      }
-
-      this._.inspector.describe("decodeAudioData", [ "audioData", "successCallback", "errorCallback" ], ($assert) => {
-        $assert(utils.isInstanceOf(audioData, global.ArrayBuffer), (fmt) => {
-          throw new TypeError(fmt.plain `
-            ${fmt.form};
-            ${fmt.butGot(audioData, "audioData", "ArrayBuffer")}
-          `);
-        });
-
-        $assert(utils.isFunction(successCallback), (fmt) => {
-          throw new TypeError(fmt.plain `
-            ${fmt.form};
-            ${fmt.butGot(successCallback, "successCallback", "function")}
-          `);
-        });
-
-        $assert(utils.isFunction(errorCallback), (fmt) => {
-          throw new TypeError(fmt.plain `
-            ${fmt.form};
-            ${fmt.butGot(errorCallback, "errorCallback", "function")}
-          `);
-        });
-      });
-
-      $assertion.done = true;
-    }
-
     let promise = new Promise((resolve, reject) => {
-      $assertion.call(this);
-
       if (this.DECODE_AUDIO_DATA_FAILED) {
         reject();
       } else {
@@ -216,8 +163,6 @@ export default class AudioContext extends EventTarget {
     if (isPromiseBased) {
       return promise;
     }
-
-    $assertion.call(this);
   }
 
   createBufferSource() {
@@ -244,16 +189,12 @@ export default class AudioContext extends EventTarget {
     );
   }
 
-  createAudioWorker() {
-    this._.inspector.describe("createAudioWorker", ($assert) => {
-      $assert(false, (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          not enabled
-        `);
-      });
-    });
-  }
+  @methods.contract({
+    precondition() {
+      throw new TypeError("not enabled");
+    }
+  })
+  createAudioWorker() {}
 
   @methods.param("bufferSize", validators.isPositiveInteger)
   @methods.param("[ numberOfInputChannels ]", validators.isPositiveInteger)
@@ -352,6 +293,23 @@ export default class AudioContext extends EventTarget {
     return immigration.apply(admission =>
       new PeriodicWave(admission, this, real, imag)
     );
+  }
+
+  @methods.contract({
+    precondition(methodName) {
+      if (configuration.getState(`AudioContext#${methodName}`) !== "enabled") {
+        throw new TypeError("not enabled");
+      }
+    }
+  })
+  __transitionToState(methodName, callback) {
+    return new Promise((resolve) => {
+      if (this._state === "close") {
+        throw new TypeError(`Cannot ${methodName} a context that is being closed or has already been closed`);
+      }
+      callback();
+      resolve();
+    });
   }
 
   toJSON() {
