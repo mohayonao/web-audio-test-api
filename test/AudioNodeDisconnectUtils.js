@@ -50,20 +50,20 @@ describe("AudioNodeDisconnectUtils", function() {
                 [
                   {
                     name: "ChannelSplitterNode",
-                    inputs: [],
-                  },
-                ],
-              ],
+                    inputs: []
+                  }
+                ]
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
-              inputs: [],
-            },
-          ],
+              inputs: []
+            }
+          ]
         });
       });
     });
@@ -97,18 +97,18 @@ describe("AudioNodeDisconnectUtils", function() {
               name: "ChannelMergerNode",
               inputs: [
                 [],
-                [],
-              ],
+                []
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
-              inputs: [],
-            },
-          ],
+              inputs: []
+            }
+          ]
         });
       });
     });
@@ -151,20 +151,20 @@ describe("AudioNodeDisconnectUtils", function() {
                 [
                   {
                     name: "ChannelSplitterNode",
-                    inputs: [],
-                  },
-                ],
-              ],
+                    inputs: []
+                  }
+                ]
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
-              inputs: [],
-            },
-          ],
+              inputs: []
+            }
+          ]
         });
       });
     });
@@ -176,7 +176,7 @@ describe("AudioNodeDisconnectUtils", function() {
         assert.throws(function() {
           node1.disconnect("INVALID");
         }, function(e) {
-          return e instanceof TypeError && /should be an AudioNode/.test(e.message);
+          return e instanceof TypeError && /should be a AudioNode/.test(e.message);
         });
 
         assert.throws(function() {
@@ -205,23 +205,23 @@ describe("AudioNodeDisconnectUtils", function() {
               name: "ChannelMergerNode",
               inputs: [
                 [],
-                [],
-              ],
+                []
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
               inputs: [
                 {
                   name: "ChannelSplitterNode",
-                  inputs: [],
-                },
-              ],
-            },
-          ],
+                  inputs: []
+                }
+              ]
+            }
+          ]
         });
       });
     });
@@ -233,7 +233,7 @@ describe("AudioNodeDisconnectUtils", function() {
         assert.throws(function() {
           node1.disconnect("INVALID", 0);
         }, function(e) {
-          return e instanceof TypeError && /should be an AudioNode/.test(e.message);
+          return e instanceof TypeError && /should be a AudioNode/.test(e.message);
         });
 
         assert.throws(function() {
@@ -247,7 +247,7 @@ describe("AudioNodeDisconnectUtils", function() {
         assert.throws(function() {
           node1.disconnect(node2, 0.25);
         }, function(e) {
-          return e instanceof TypeError && /should be an integer/.test(e.message);
+          return e instanceof TypeError && /should be a positive integer/.test(e.message);
         });
 
         assert.throws(function() {
@@ -278,26 +278,26 @@ describe("AudioNodeDisconnectUtils", function() {
                 [
                   {
                     name: "ChannelSplitterNode",
-                    inputs: [],
-                  },
+                    inputs: []
+                  }
                 ],
-                [],
-              ],
+                []
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
               inputs: [
                 {
                   name: "ChannelSplitterNode",
-                  inputs: [],
-                },
-              ],
-            },
-          ],
+                  inputs: []
+                }
+              ]
+            }
+          ]
         });
       });
     });
@@ -309,7 +309,7 @@ describe("AudioNodeDisconnectUtils", function() {
         assert.throws(function() {
           node1.disconnect("INVALID", 0, 0);
         }, function(e) {
-          return e instanceof TypeError && /should be an AudioNode/.test(e.message);
+          return e instanceof TypeError && /should be a AudioNode/.test(e.message);
         });
 
         assert.throws(function() {
@@ -323,13 +323,13 @@ describe("AudioNodeDisconnectUtils", function() {
         assert.throws(function() {
           node1.disconnect(node2, 0.25, 0);
         }, function(e) {
-          return e instanceof TypeError && /should be an integer/.test(e.message);
+          return e instanceof TypeError && /should be a positive integer/.test(e.message);
         });
 
         assert.throws(function() {
           node1.disconnect(node2, 0, 0.25);
         }, function(e) {
-          return e instanceof TypeError && /should be an integer/.test(e.message);
+          return e instanceof TypeError && /should be a positive integer/.test(e.message);
         });
 
         assert.throws(function() {
@@ -366,31 +366,31 @@ describe("AudioNodeDisconnectUtils", function() {
                 [
                   {
                     name: "ChannelSplitterNode",
-                    inputs: [],
-                  },
+                    inputs: []
+                  }
                 ],
                 [
                   {
                     name: "ChannelSplitterNode",
-                    inputs: [],
-                  },
-                ],
-              ],
+                    inputs: []
+                  }
+                ]
+              ]
             },
             {
               name: "GainNode",
               gain: {
                 value: 1,
-                inputs: [],
+                inputs: []
               },
               inputs: [
                 {
                   name: "ChannelSplitterNode",
-                  inputs: [],
-                },
-              ],
-            },
-          ],
+                  inputs: []
+                }
+              ]
+            }
+          ]
         });
       });
     });

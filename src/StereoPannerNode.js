@@ -1,10 +1,9 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import AudioParam from "./AudioParam";
-
-let immigration = Immigration.getInstance();
+import * as props from "./decorators/props";
 
 export default class StereoPannerNode extends AudioNode {
+  static $JSONKeys = [ "pan" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "StereoPannerNode",
@@ -13,26 +12,10 @@ export default class StereoPannerNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "clamped-max",
-      channelInterpretation: "speakers",
-    });
-
-    this._.pan = immigration.apply(admission =>
-      new AudioParam(admission, this, "pan", 0.0, -1.0, +1.0)
-    );
-    this._.JSONKeys = StereoPannerNode.$JSONKeys.slice();
-  }
-
-  get pan() {
-    return this._.pan;
-  }
-
-  set pan(value) {
-    this._.inspector.describe("pan", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
+      channelInterpretation: "speakers"
     });
   }
+
+  @props.audioparam(0)
+  pan() {}
 }
-
-StereoPannerNode.$JSONKeys = [
-  "pan",
-];

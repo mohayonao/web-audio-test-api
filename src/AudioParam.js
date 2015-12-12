@@ -1,7 +1,12 @@
-import utils from "./utils";
 import Immigration from "./utils/Immigration";
-import Inspector from "./utils/Inspector";
 import Junction from "./utils/Junction";
+import defaults from "./utils/defaults";
+import toJSON from "./utils/toJSON";
+import toSeconds from "./utils/toSeconds";
+import typed from "./decorators/props/typed";
+import readonly from "./decorators/props/readonly";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 let immigration = Immigration.getInstance();
 
@@ -68,33 +73,26 @@ export function setCurveValue(v, t, t0, t1, curve) {
   let dt = (t - t0) / (t1 - t0);
 
   if (dt <= 0) {
-    return utils.defaults(curve[0], v);
+    return defaults(curve[0], v);
   }
 
   if (1 <= dt) {
-    return utils.defaults(curve[curve.length - 1], v);
+    return defaults(curve[curve.length - 1], v);
   }
 
-  return utils.defaults(curve[(curve.length * dt)|0], v);
+  return defaults(curve[(curve.length * dt)|0], v);
 }
 
 export default class AudioParam {
-  constructor(admission, node, name, defaultValue, minValue, maxValue) {
+  constructor(admission, node, name, defaultValue) {
     immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
-
-    Object.defineProperty(this, "_", {
-      value: {
-        inspector: new Inspector(this),
-      },
-    });
+    Object.defineProperty(this, "_", { value: {} });
 
     this._.value = defaultValue;
     this._.name = name;
     this._.defaultValue = defaultValue;
-    this._.minValue = minValue;
-    this._.maxValue = maxValue;
     this._.context = node.context;
     this._.node = node;
     this._.inputs = [ new Junction(this, 0) ];
@@ -102,42 +100,96 @@ export default class AudioParam {
     this._.tick = -1;
   }
 
+  @typed(validators.isNumber, 0)
   get value() {
     this._.value = this.$valueAtTime(this.$context.currentTime);
     return this._.value;
   }
 
-  set value(value) {
-    this._.inspector.describe("value", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "value", "number")}
-        `);
-      });
-    });
-
-    this._.value = value;
-  }
-
-  get name() {
+  @readonly()
+  name() {
     return this._.name;
   }
 
-  set name(value) {
-    this._.inspector.describe("name", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get defaultValue() {
+  @readonly()
+  defaultValue() {
     return this._.defaultValue;
   }
 
-  set defaultValue(value) {
-    this._.inspector.describe("defaultValue", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
+  @methods.param("value", validators.isNumber)
+  @methods.param("startTime", validators.isNumber)
+  setValueAtTime(value, startTime) {
+    insertEvent(this, {
+      type: "SetValue",
+      value: value,
+      time: startTime
     });
+  }
+
+  @methods.param("value", validators.isNumber)
+  @methods.param("endTime", validators.isNumber)
+  linearRampToValueAtTime(value, endTime) {
+    insertEvent(this, {
+      type: "LinearRampToValue",
+      value: value,
+      time: endTime
+    });
+  }
+
+  @methods.param("value", validators.isNumber)
+  @methods.param("endTime", validators.isNumber)
+  exponentialRampToValueAtTime(value, endTime) {
+    insertEvent(this, {
+      type: "ExponentialRampToValue",
+      value: value,
+      time: endTime
+    });
+  }
+
+  @methods.param("value", validators.isNumber)
+  @methods.param("endTime", validators.isNumber)
+  @methods.param("timeConstant", validators.isNumber)
+  setTargetAtTime(target, startTime, timeConstant) {
+    insertEvent(this, {
+      type: "SetTarget",
+      value: target,
+      time: startTime,
+      timeConstant: timeConstant
+    });
+  }
+
+  @methods.param("values", validators.isInstanceOf(Float32Array))
+  @methods.param("startTime", validators.isNumber)
+  @methods.param("duration", validators.isNumber)
+  setValueCurveAtTime(values, startTime, duration) {
+    insertEvent(this, {
+      type: "SetValueCurve",
+      time: startTime,
+      duration: duration,
+      curve: values
+    });
+  }
+
+  @methods.param("startTime", validators.isNumber)
+  cancelScheduledValues(startTime) {
+    let events = this.$events;
+
+    for (let i = 0, imax = events.length; i < imax; ++i) {
+      if (events[i].time >= startTime) {
+        return events.splice(i);
+      }
+    }
+  }
+
+  toJSON(memo) {
+    return toJSON(this, (node, memo) => {
+      let json = {};
+
+      json.value = node.value;
+      json.inputs = node.$inputs[0].toJSON(memo);
+
+      return json;
+    }, memo);
   }
 
   get $name() {
@@ -160,174 +212,8 @@ export default class AudioParam {
     return this._.events;
   }
 
-  setValueAtTime(value, startTime) {
-    this._.inspector.describe("setValueAtTime", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "value", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(startTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(startTime, "startTime", "number")}
-        `);
-      });
-    });
-
-    insertEvent(this, {
-      type: "SetValue",
-      value: value,
-      time: startTime,
-    });
-  }
-
-  linearRampToValueAtTime(value, endTime) {
-    this._.inspector.describe("linearRampToValueAtTime", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "value", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(endTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(endTime, "endTime", "number")}
-        `);
-      });
-    });
-
-    insertEvent(this, {
-      type: "LinearRampToValue",
-      value: value,
-      time: endTime,
-    });
-  }
-
-  exponentialRampToValueAtTime(value, endTime) {
-    this._.inspector.describe("exponentialRampToValueAtTime", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "value", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(endTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(endTime, "endTime", "number")}
-        `);
-      });
-    });
-
-    insertEvent(this, {
-      type: "ExponentialRampToValue",
-      value: value,
-      time: endTime,
-    });
-  }
-
-  setTargetAtTime(target, startTime, timeConstant) {
-    this._.inspector.describe("setTargetAtTime", ($assert) => {
-      $assert(utils.isNumber(target), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(target, "target", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(startTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(startTime, "startTime", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(timeConstant), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(timeConstant, "timeConstant", "number")}
-        `);
-      });
-    });
-
-    insertEvent(this, {
-      type: "SetTarget",
-      value: target,
-      time: startTime,
-      timeConstant: timeConstant,
-    });
-  }
-
-  setValueCurveAtTime(values, startTime, duration) {
-    this._.inspector.describe("setValueCurveAtTime", ($assert) => {
-      $assert(utils.isInstanceOf(values, Float32Array), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(values, "values", "Float32Array")}
-        `);
-      });
-
-      $assert(utils.isNumber(startTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(startTime, "startTime", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(duration), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(duration, "duration", "number")}
-        `);
-      });
-    });
-
-    insertEvent(this, {
-      type: "SetValueCurve",
-      time: startTime,
-      duration: duration,
-      curve: values,
-    });
-  }
-
-  cancelScheduledValues(startTime) {
-    this._.inspector.describe("cancelScheduledValues", ($assert) => {
-      $assert(utils.isNumber(startTime), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(startTime, "startTime", "number")}
-        `);
-      });
-    });
-
-    let events = this.$events;
-
-    for (let i = 0, imax = events.length; i < imax; ++i) {
-      if (events[i].time >= startTime) {
-        return events.splice(i);
-      }
-    }
-  }
-
-  toJSON(memo) {
-    return utils.toJSON(this, (node, memo) => {
-      let json = {};
-
-      json.value = node.value;
-      json.inputs = node.$inputs[0].toJSON(memo);
-
-      return json;
-    }, memo);
-  }
-
   $valueAtTime(_time) {
-    let time = utils.toSeconds(_time);
+    let time = toSeconds(_time);
 
     let value = this._.value;
     let events = this.$events;

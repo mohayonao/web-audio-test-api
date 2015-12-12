@@ -41,7 +41,7 @@ describe("AudioDestinationNode", function() {
 
       assert.deepEqual(node.toJSON(), {
         name: "AudioDestinationNode",
-        inputs: [],
+        inputs: []
       });
     });
   });

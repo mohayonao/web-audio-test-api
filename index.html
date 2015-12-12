@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>web-audio-test-api.js</title>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mocha/2.2.5/mocha.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mocha/2.3.4/mocha.min.css">
   <style>
     * { font-family: "Monaco", "Consolas", monospace }
     code { font-family: "Monaco", "Consolas", monospace }
     .title { font-size: 3em !important }
     .link { color: #3498db }
   </style>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/mocha/2.2.5/mocha.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/sinon.js/1.7.3/sinon-min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.9.3/lodash.min.js"></script>
-  <script src="test/bootstrap/assert.js"></script>
-  <script src="build/web-audio-test-api.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mocha/2.3.4/mocha.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/sinon.js/1.15.4/sinon.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+  <script src="./test/bootstrap/assert.min.js"></script>
+  <script src="./build/web-audio-test-api.js"></script>
   <script>
     mocha.setup("bdd");
-    window.onload = function() {
-      mocha.run();
-    };
+
     window.global = window;
-    window.closeTo = function(actual, expected, delta) {
+    window.onload = mocha.run;
+
+    function closeTo(actual, expected, delta) {
       return Math.abs(actual - expected) <= delta;
-    };
+    }
   </script>
   <script src="./test/AnalyserNode.js"></script>
   <script src="./test/AudioBuffer.js"></script>
@@ -41,14 +41,8 @@
   <script src="./test/ConvolverNode.js"></script>
   <script src="./test/DelayNode.js"></script>
   <script src="./test/DynamicsCompressorNode.js"></script>
-  <script src="./test/Element.js"></script>
-  <script src="./test/Event.js"></script>
-  <script src="./test/EventTarget.js"></script>
   <script src="./test/GainNode.js"></script>
-  <script src="./test/HTMLElement.js"></script>
-  <script src="./test/HTMLMediaElement.js"></script>
   <script src="./test/MediaElementAudioSourceNode.js"></script>
-  <script src="./test/MediaStream.js"></script>
   <script src="./test/MediaStreamAudioDestinationNode.js"></script>
   <script src="./test/MediaStreamAudioSourceNode.js"></script>
   <script src="./test/OfflineAudioCompletionEvent.js"></script>
@@ -60,6 +54,12 @@
   <script src="./test/StereoPannerNode.js"></script>
   <script src="./test/WaveShaperNode.js"></script>
   <script src="./test/WebAudioTestAPI.js"></script>
+  <script src="./test/dom/Element.js"></script>
+  <script src="./test/dom/Event.js"></script>
+  <script src="./test/dom/EventTarget.js"></script>
+  <script src="./test/dom/HTMLElement.js"></script>
+  <script src="./test/dom/HTMLMediaElement.js"></script>
+  <script src="./test/dom/MediaStream.js"></script>
 </head>
 <body>
   <div id="mocha">

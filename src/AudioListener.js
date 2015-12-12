@@ -1,59 +1,43 @@
-import utils from "./utils";
 import Immigration from "./utils/Immigration";
-import Inspector from "./utils/Inspector";
+import * as props from "./decorators/props";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 let immigration = Immigration.getInstance();
 
 export default class AudioListener {
   constructor(admission, context) {
-    Object.defineProperty(this, "_", {
-      value: {
-        inspector: new Inspector(this),
-      },
-    });
-
-    this._.context = context;
-    this._.dopplerFactor = 1;
-    this._.speedOfSound = 343.3;
-
     immigration.check(admission, () => {
       throw new TypeError("Illegal constructor");
     });
+    Object.defineProperty(this, "_", { value: {} });
+
+    this._.context = context;
   }
 
-  get dopplerFactor() {
-    return this._.dopplerFactor;
-  }
+  @props.typed(validators.isNumber, 1)
+  dopplerFactor() {}
 
-  set dopplerFactor(value) {
-    this._.inspector.describe("dopplerFactor", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "dopplerFactor", "number")}
-        `);
-      });
-    });
+  @props.typed(validators.isNumber, 343.3)
+  speedOfSound() {}
 
-    this._.dopplerFactor = value;
-  }
+  @methods.param("x", validators.isNumber)
+  @methods.param("y", validators.isNumber)
+  @methods.param("z", validators.isNumber)
+  setPosition() {}
 
-  get speedOfSound() {
-    return this._.speedOfSound;
-  }
+  @methods.param("x", validators.isNumber)
+  @methods.param("y", validators.isNumber)
+  @methods.param("z", validators.isNumber)
+  @methods.param("xUp", validators.isNumber)
+  @methods.param("yUp", validators.isNumber)
+  @methods.param("zUp", validators.isNumber)
+  setOrientation() {}
 
-  set speedOfSound(value) {
-    this._.inspector.describe("speedOfSound", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "speedOfSound", "number")}
-        `);
-      });
-    });
-
-    this._.speedOfSound = value;
-  }
+  @methods.param("x", validators.isNumber)
+  @methods.param("y", validators.isNumber)
+  @methods.param("z", validators.isNumber)
+  setVelocity() {}
 
   get $name() {
     return "AudioListener";
@@ -61,101 +45,5 @@ export default class AudioListener {
 
   get $context() {
     return this._.context;
-  }
-
-  setPosition(x, y, z) {
-    this._.inspector.describe("setPosition", ($assert) => {
-      $assert(utils.isNumber(x), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(x, "x", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(y), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(y, "y", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(z), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(z, "z", "number")}
-        `);
-      });
-    });
-  }
-
-  setOrientation(x, y, z, xUp, yUp, zUp) {
-    this._.inspector.describe("setOrientation", ($assert) => {
-      $assert(utils.isNumber(x), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(x, "x", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(y), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(y, "y", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(z), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(z, "z", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(xUp), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(xUp, "xUp", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(yUp), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(yUp, "yUp", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(zUp), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(zUp, "zUp", "number")}
-        `);
-      });
-    });
-  }
-
-  setVelocity(x, y, z) {
-    this._.inspector.describe("setVelocity", ($assert) => {
-      $assert(utils.isNumber(x), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(x, "x", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(y), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(y, "y", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(z), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(z, "z", "number")}
-        `);
-      });
-    });
   }
 }

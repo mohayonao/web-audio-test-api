@@ -51,9 +51,9 @@ describe("StereoPannerNode", function() {
         name: "StereoPannerNode",
         pan: {
           value: 0,
-          inputs: [],
+          inputs: []
         },
-        inputs: [],
+        inputs: []
       });
     });
   });

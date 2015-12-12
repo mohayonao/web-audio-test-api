@@ -103,7 +103,7 @@ describe("ScriptProcessorNode", function() {
 
       assert.deepEqual(node.toJSON(), {
         name: "ScriptProcessorNode",
-        inputs: [],
+        inputs: []
       });
     });
   });

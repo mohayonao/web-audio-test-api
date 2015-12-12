@@ -184,7 +184,7 @@ describe("AudioNode", function() {
       assert.throws(function() {
         node.connect("INVALID");
       }, function(e) {
-        return e instanceof TypeError && /should be an AudioNode/.test(e.message);
+        return e instanceof TypeError && /should be a AudioNode/.test(e.message);
       });
 
       assert.throws(function() {
@@ -242,7 +242,7 @@ describe("AudioNode", function() {
 
       assert.deepEqual(node.toJSON(), {
         name: "AudioNode",
-        inputs: [],
+        inputs: []
       });
 
       audioContext.VERBOSE_JSON = true;
@@ -254,7 +254,7 @@ describe("AudioNode", function() {
         channelCount: 2,
         channelCountMode: "max",
         channelInterpretation: "speakers",
-        inputs: [],
+        inputs: []
       });
     });
   });
@@ -394,12 +394,12 @@ describe("AudioNode", function() {
               {
                 name: "AudioNode#baz",
                 inputs: [
-                  "<circular:AudioNode#foo>",
-                ],
-              },
-            ],
-          },
-        ],
+                  "<circular:AudioNode#foo>"
+                ]
+              }
+            ]
+          }
+        ]
       });
     });
 
@@ -428,9 +428,9 @@ describe("AudioNode", function() {
         inputs: [
           {
             name: "AudioNode#bar",
-            inputs: [],
-          },
-        ],
+            inputs: []
+          }
+        ]
       });
     });
   });

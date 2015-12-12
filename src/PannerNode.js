@@ -1,8 +1,14 @@
-import utils from "./utils";
-import Enumerator from "./utils/Enumerator";
 import AudioNode from "./AudioNode";
+import * as props from "./decorators/props";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 export default class PannerNode extends AudioNode {
+  static $JSONKeys = [
+    "panningModel", "distanceModel", "refDistance", "maxDistance",
+    "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
+  ];
+
   constructor(admission, context) {
     super(admission, {
       name: "PannerNode",
@@ -11,247 +17,46 @@ export default class PannerNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "clamped-max",
-      channelInterpretation: "speakers",
-    });
-
-    this._.panningModel = "HRTF";
-    this._.distanceModel = "inverse";
-    this._.refDistance = 1;
-    this._.maxDistance = 10000;
-    this._.rolloffFactor = 1;
-    this._.coneInnerAngle = 360;
-    this._.coneOuterAngle = 360;
-    this._.coneOuterGain = 0;
-    this._.JSONKeys = PannerNode.$JSONKeys.slice();
-  }
-
-  get panningModel() {
-    return this._.panningModel;
-  }
-
-  set panningModel(value) {
-    this._.inspector.describe("panningModel", ($assert) => {
-      let enumPanningModelType = new Enumerator([
-        "equalpower", "HRTF",
-      ]);
-
-      $assert(enumPanningModelType.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "panningModel", enumPanningModelType.toString())}
-        `);
-      });
-    });
-
-    this._.panningModel = value;
-  }
-
-  get distanceModel() {
-    return this._.distanceModel;
-  }
-
-  set distanceModel(value) {
-    this._.inspector.describe("distanceModel", ($assert) => {
-      let enumDistanceModelType = new Enumerator([
-        "linear", "inverse", "exponential",
-      ]);
-
-      $assert(enumDistanceModelType.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "distanceModel", enumDistanceModelType.toString())}
-        `);
-      });
-    });
-
-    this._.distanceModel = value;
-  }
-
-  get refDistance() {
-    return this._.refDistance;
-  }
-
-  set refDistance(value) {
-    this._.inspector.describe("refDistance", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "refDistance", "number")}
-        `);
-      });
-    });
-
-    this._.refDistance = value;
-  }
-
-  get maxDistance() {
-    return this._.maxDistance;
-  }
-
-  set maxDistance(value) {
-    this._.inspector.describe("maxDistance", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "maxDistance", "number")}
-        `);
-      });
-    });
-
-    this._.maxDistance = value;
-  }
-
-  get rolloffFactor() {
-    return this._.rolloffFactor;
-  }
-
-  set rolloffFactor(value) {
-    this._.inspector.describe("rolloffFactor", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "rolloffFactor", "number")}
-        `);
-      });
-    });
-
-    this._.rolloffFactor = value;
-  }
-
-  get coneInnerAngle() {
-    return this._.coneInnerAngle;
-  }
-
-  set coneInnerAngle(value) {
-    this._.inspector.describe("coneInnerAngle", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "coneInnerAngle", "number")}
-        `);
-      });
-    });
-
-    this._.coneInnerAngle = value;
-  }
-
-  get coneOuterAngle() {
-    return this._.coneOuterAngle;
-  }
-
-  set coneOuterAngle(value) {
-    this._.inspector.describe("coneOuterAngle", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "coneOuterAngle", "number")}
-        `);
-      });
-    });
-
-    this._.coneOuterAngle = value;
-  }
-
-  get coneOuterGain() {
-    return this._.coneOuterGain;
-  }
-
-  set coneOuterGain(value) {
-    this._.inspector.describe("coneOuterGain", ($assert) => {
-      $assert(utils.isNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "coneOuterGain", "number")}
-        `);
-      });
-    });
-
-    this._.coneOuterGain = value;
-  }
-
-  setPosition(x, y, z) {
-    this._.inspector.describe("setPosition", ($assert) => {
-      $assert(utils.isNumber(x), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(x, "x", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(y), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(y, "y", "number")}
-        `);
-      });
-
-      $assert(utils.isNumber(z), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(z, "z", "number")}
-        `);
-      });
+      channelInterpretation: "speakers"
     });
   }
 
-  setOrientation(x, y, z) {
-    this._.inspector.describe("setOrientation", ($assert) => {
-      $assert(utils.isNumber(x), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(x, "x", "number")}
-        `);
-      });
+  @props.enum([ "HRTF", "equalpower" ])
+  panningModel() {}
 
-      $assert(utils.isNumber(y), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(y, "y", "number")}
-        `);
-      });
+  @props.enum([ "inverse", "linear", "exponential" ])
+  distanceModel() {}
 
-      $assert(utils.isNumber(z), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(z, "z", "number")}
-        `);
-      });
-    });
-  }
+  @props.typed(validators.isNumber, 1)
+  refDistance() {}
 
-  setVelocity(x, y, z) {
-    this._.inspector.describe("setVelocity", ($assert) => {
-      $assert(utils.isNumber(x), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(x, "x", "number")}
-        `);
-      });
+  @props.typed(validators.isNumber, 10000)
+  maxDistance() {}
 
-      $assert(utils.isNumber(y), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(y, "y", "number")}
-        `);
-      });
+  @props.typed(validators.isNumber, 1)
+  rolloffFactor() {}
 
-      $assert(utils.isNumber(z), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(z, "z", "number")}
-        `);
-      });
-    });
-  }
+  @props.typed(validators.isNumber, 360)
+  coneInnerAngle() {}
+
+  @props.typed(validators.isNumber, 360)
+  coneOuterAngle() {}
+
+  @props.typed(validators.isNumber, 0)
+  coneOuterGain() {}
+
+  @methods.param("x", validators.isNumber)
+  @methods.param("y", validators.isNumber)
+  @methods.param("z", validators.isNumber)
+  setPosition() {}
+
+  @methods.param("x", validators.isNumber)
+  @methods.param("y", validators.isNumber)
+  @methods.param("z", validators.isNumber)
+  setOrientation() {}
+
+  @methods.param("x", validators.isNumber)
+  @methods.param("y", validators.isNumber)
+  @methods.param("z", validators.isNumber)
+  setVelocity() {}
 }
-
-PannerNode.$JSONKeys = [
-  "panningModel",
-  "distanceModel",
-  "refDistance",
-  "maxDistance",
-  "rolloffFactor",
-  "coneInnerAngle",
-  "coneOuterAngle",
-  "coneOuterGain",
-];

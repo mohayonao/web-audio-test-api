@@ -113,29 +113,29 @@ describe("DynamicsCompressorNode", function() {
         name: "DynamicsCompressorNode",
         threshold: {
           value: -24,
-          inputs: [],
+          inputs: []
         },
         knee: {
           value: 30,
-          inputs: [],
+          inputs: []
         },
         ratio: {
           value: 12,
-          inputs: [],
+          inputs: []
         },
         reduction: {
           value: 0,
-          inputs: [],
+          inputs: []
         },
         attack: {
           value: 0.003,
-          inputs: [],
+          inputs: []
         },
         release: {
           value: 0.25,
-          inputs: [],
+          inputs: []
         },
-        inputs: [],
+        inputs: []
       });
     });
   });

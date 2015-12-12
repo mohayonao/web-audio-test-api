@@ -1,7 +1,10 @@
-import utils from "./utils";
 import AudioNode from "./AudioNode";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 export default class ChannelMergerNode extends AudioNode {
+  static $JSONKeys = [];
+
   constructor(admission, context, numberOfInputs) {
     super(admission, {
       name: "ChannelMergerNode",
@@ -10,16 +13,11 @@ export default class ChannelMergerNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
-
-    this._.inspector.describe("constructor", ($assert) => {
-      $assert(utils.isPositiveInteger(numberOfInputs), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(numberOfInputs, "numberOfInputs", "positive integer")}
-        `);
-      });
-    });
+    this.__createChannelMerger(numberOfInputs);
   }
+
+  @methods.param("numberOfInputs", validators.isPositiveInteger)
+  __createChannelMerger() {}
 }

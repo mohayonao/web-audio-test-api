@@ -1,7 +1,11 @@
-import utils from "./utils";
 import AudioNode from "./AudioNode";
+import AudioBuffer from "./AudioBuffer";
+import * as props from "./decorators/props";
+import * as validators from "./validators";
 
 export default class ConvolverNode extends AudioNode {
+  static $JSONKeys = [ "normalize" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "ConvolverNode",
@@ -10,49 +14,13 @@ export default class ConvolverNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "clamped-max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
-
-    this._.buffer = null;
-    this._.normalize = true;
-    this._.JSONKeys = ConvolverNode.$JSONKeys.slice();
   }
 
-  get buffer() {
-    return this._.buffer;
-  }
+  @props.typed(validators.isNullOrInstanceOf(AudioBuffer), null)
+  buffer() {}
 
-  set buffer(value) {
-    this._.inspector.describe("buffer", ($assert) => {
-      $assert(utils.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "buffer", "AudioBuffer")}
-        `);
-      });
-    });
-
-    this._.buffer = value;
-  }
-
-  get normalize() {
-    return this._.normalize;
-  }
-
-  set normalize(value) {
-    this._.inspector.describe("normalize", ($assert) => {
-      $assert(utils.isBoolean(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "normalize", "boolean")}
-        `);
-      });
-    });
-
-    this._.normalize = value;
-  }
+  @props.typed(validators.isBoolean, true)
+  normalize() {}
 }
-
-ConvolverNode.$JSONKeys = [
-  "normalize",
-];

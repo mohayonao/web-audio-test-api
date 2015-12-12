@@ -1,7 +1,10 @@
-import utils from "./utils";
 import AudioNode from "./AudioNode";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 export default class ChannelSplitterNode extends AudioNode {
+  static $JSONKeys = [];
+
   constructor(admission, context, numberOfOutputs) {
     super(admission, {
       name: "ChannelSplitterNode",
@@ -10,16 +13,11 @@ export default class ChannelSplitterNode extends AudioNode {
       numberOfOutputs: numberOfOutputs,
       channelCount: 2,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
-
-    this._.inspector.describe("constructor", ($assert) => {
-      $assert(utils.isPositiveInteger(numberOfOutputs), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(numberOfOutputs, "numberOfOutputs", "positive integer")}
-        `);
-      });
-    });
+    this.__createChannelSplitter(numberOfOutputs);
   }
+
+  @methods.param("numberOfOutputs", validators.isPositiveInteger)
+  __createChannelSplitter() {}
 }

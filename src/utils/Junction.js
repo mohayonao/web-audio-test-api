@@ -1,4 +1,5 @@
-import utils from "./";
+import appendIfNotExists from "./appendIfNotExists";
+import removeIfExists from "./removeIfExists";
 
 export default class Junction {
   constructor(node, index) {
@@ -9,13 +10,13 @@ export default class Junction {
   }
 
   connect(destination) {
-    utils.appendIfNotExists(this.outputs, destination);
-    utils.appendIfNotExists(destination.inputs, this);
+    appendIfNotExists(this.outputs, destination);
+    appendIfNotExists(destination.inputs, this);
   }
 
   disconnectAll() {
     this.outputs.splice(0).forEach((destination) => {
-      utils.removeIfExists(destination.inputs, this);
+      removeIfExists(destination.inputs, this);
     });
   }
 
@@ -25,7 +26,7 @@ export default class Junction {
 
       if (destination.node === node) {
         this.outputs.splice(i, 1);
-        utils.removeIfExists(destination.inputs, this);
+        removeIfExists(destination.inputs, this);
       }
     }
   }
@@ -36,7 +37,7 @@ export default class Junction {
 
       if (destination.node === node && destination.index === input) {
         this.outputs.splice(i, 1);
-        utils.removeIfExists(destination.inputs, this);
+        removeIfExists(destination.inputs, this);
       }
     }
   }

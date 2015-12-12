@@ -1,10 +1,9 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import AudioParam from "./AudioParam";
-
-let immigration = Immigration.getInstance();
+import * as props from "./decorators/props";
 
 export default class GainNode extends AudioNode {
+  static $JSONKeys = [ "gain" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "GainNode",
@@ -13,26 +12,10 @@ export default class GainNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
-    });
-
-    this._.gain = immigration.apply(admission =>
-      new AudioParam(admission, this, "gain", 1.0, 0.0, 1.0)
-    );
-    this._.JSONKeys = GainNode.$JSONKeys.slice();
-  }
-
-  get gain() {
-    return this._.gain;
-  }
-
-  set gain(value) {
-    this._.inspector.describe("gain", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
+      channelInterpretation: "speakers"
     });
   }
+
+  @props.audioparam(1)
+  gain() {}
 }
-
-GainNode.$JSONKeys = [
-  "gain",
-];

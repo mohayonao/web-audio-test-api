@@ -3,5 +3,8 @@
   "env": {
     "node": true
   },
-  "extend": "mohayonao"
+  "rules": {
+    "comma-dangle": [ 2, "never" ]
+  },
+  "extends": "mohayonao"
 }

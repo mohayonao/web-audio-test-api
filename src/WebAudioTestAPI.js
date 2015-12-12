@@ -1,6 +1,12 @@
-import utils from "./utils";
 import Configuration from "./utils/Configuration";
+import Immigration from "./utils/Immigration";
 import WebAudioAPI from "./WebAudioAPI";
+import Element from "./dom/Element";
+import Event from "./dom/Event";
+import EventTarget from "./dom/EventTarget";
+import HTMLElement from "./dom/HTMLElement";
+import HTMLMediaElement from "./dom/HTMLMediaElement";
+import MediaStream from "./dom/MediaStream";
 import AnalyserNode from "./AnalyserNode";
 import AudioBuffer from "./AudioBuffer";
 import AudioBufferSourceNode from "./AudioBufferSourceNode";
@@ -16,14 +22,8 @@ import ChannelSplitterNode from "./ChannelSplitterNode";
 import ConvolverNode from "./ConvolverNode";
 import DelayNode from "./DelayNode";
 import DynamicsCompressorNode from "./DynamicsCompressorNode";
-import Element from "./Element";
-import Event from "./Event";
-import EventTarget from "./EventTarget";
 import GainNode from "./GainNode";
-import HTMLElement from "./HTMLElement";
-import HTMLMediaElement from "./HTMLMediaElement";
 import MediaElementAudioSourceNode from "./MediaElementAudioSourceNode";
-import MediaStream from "./MediaStream";
 import MediaStreamAudioDestinationNode from "./MediaStreamAudioDestinationNode";
 import MediaStreamAudioSourceNode from "./MediaStreamAudioSourceNode";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
@@ -34,13 +34,14 @@ import PeriodicWave from "./PeriodicWave";
 import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
+import getAPIVersion from "./utils/getAPIVersion";
 
 let sampleRate = 44100;
 let configuration = Configuration.getInstance();
 
 let WebAudioTestAPI = {
-  VERSION: utils.getAPIVersion(),
-  utils,
+  VERSION: getAPIVersion(),
+  utils: { Configuration, Immigration },
   sampleRate,
   AnalyserNode,
   AudioBuffer,
@@ -139,7 +140,7 @@ let WebAudioTestAPI = {
     global.ScriptProcessorNode = WebAudioAPI.ScriptProcessorNode;
     global.StereoPannerNode = WebAudioAPI.StereoPannerNode;
     global.WaveShaperNode = WebAudioAPI.WaveShaperNode;
-  },
+  }
 };
 
 export default WebAudioTestAPI;

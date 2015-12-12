@@ -1,6 +1,9 @@
 import AudioNode from "./AudioNode";
+import * as props from "./decorators/props";
 
 export default class AudioDestinationNode extends AudioNode {
+  static $JSONKeys = [];
+
   constructor(admission, context) {
     super(admission, {
       name: "AudioDestinationNode",
@@ -9,19 +12,10 @@ export default class AudioDestinationNode extends AudioNode {
       numberOfOutputs: 0,
       channelCount: 2,
       channelCountMode: "explicit",
-      channelInterpretation: "speakers",
-    });
-
-    this._.maxChannelCount = 2;
-  }
-
-  get maxChannelCount() {
-    return this._.maxChannelCount;
-  }
-
-  set maxChannelCount(value) {
-    this._.inspector.describe("maxChannelCount", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
+      channelInterpretation: "speakers"
     });
   }
+
+  @props.readonly(2)
+  maxChannelCount() {}
 }

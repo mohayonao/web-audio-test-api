@@ -1,13 +1,14 @@
-import utils from "./utils";
-import Enumerator from "./utils/Enumerator";
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import AudioParam from "./AudioParam";
-import Event from "./Event";
-
-let immigration = Immigration.getInstance();
+import PeriodicWave from "./PeriodicWave";
+import Event from "./dom/Event";
+import toSeconds from "./utils/toSeconds";
+import * as props from "./decorators/props";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 export default class OscillatorNode extends AudioNode {
+  static $JSONKeys = [ "type", "frequency", "detune" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "OscillatorNode",
@@ -16,80 +17,57 @@ export default class OscillatorNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
-
-    this._.type = "sine";
-    this._.frequency = immigration.apply(admission =>
-      new AudioParam(admission, this, "frequency", 440, 0, 100000)
-    );
-    this._.detune = immigration.apply(admission =>
-      new AudioParam(admission, this, "detune", 0, -4800, 4800)
-    );
-    this._.onended = null;
     this._.custom = null;
     this._.startTime = Infinity;
     this._.stopTime = Infinity;
     this._.firedOnEnded = false;
-    this._.JSONKeys = OscillatorNode.$JSONKeys.slice();
   }
 
-  get type() {
-    return this._.custom ? "custom" : this._.type;
+  @props.enum([ "sine", "square", "sawtooth", "triangle" ])
+  type() {}
+
+  @props.audioparam(440)
+  frequency() {}
+
+  @props.audioparam(0)
+  detune() {}
+
+  @props.on("ended")
+  onended() {}
+
+  @methods.param("[ when ]", validators.isPositiveNumber)
+  @methods.contract({
+    precondition() {
+      if (this._.startTime !== Infinity) {
+        throw new Error(`cannot start more than once`);
+      }
+    }
+  })
+  start(when = 0) {
+    this._.startTime = when;
   }
 
-  set type(value) {
-    this._.inspector.describe("type", ($assert) => {
-      let enumOscillatorType = new Enumerator([
-        "sine", "square", "sawtooth", "triangle",
-      ]);
-
-      $assert(enumOscillatorType.contains(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "type", enumOscillatorType.toString())}
-        `);
-      });
-    });
-
-    this._.type = value;
+  @methods.param("[ when ]", validators.isPositiveNumber)
+  @methods.contract({
+    precondition() {
+      if (this._.startTime === Infinity) {
+        throw new Error(`cannot call stop without calling start first`);
+      }
+      if (this._.stopTime !== Infinity) {
+        throw new Error(`cannot stop more than once`);
+      }
+    }
+  })
+  stop(when = 0) {
+    this._.stopTime = when;
   }
 
-  get frequency() {
-    return this._.frequency;
-  }
-
-  set frequency(value) {
-    this._.inspector.describe("frequency", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get detune() {
-    return this._.detune;
-  }
-
-  set detune(value) {
-    this._.inspector.describe("detune", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get onended() {
-    return this._.onended;
-  }
-
-  set onended(value) {
-    this._.inspector.describe("onended", ($assert) => {
-      $assert(utils.isNullOrFunction(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "onended", "function")}
-        `);
-      });
-    });
-
-    this._.onended = value;
+  @methods.param("periodicWave", validators.isInstanceOf(PeriodicWave))
+  setPeriodicWave(periodicWave) {
+    this._.type = "custom";
+    this._.custom = periodicWave;
   }
 
   get $state() {
@@ -108,77 +86,8 @@ export default class OscillatorNode extends AudioNode {
     return this._.stopTime;
   }
 
-  start(when) {
-    if (arguments.length < 1) {
-      when = 0;
-    }
-
-    this._.inspector.describe("start", ($assert) => {
-      $assert(utils.isPositiveNumber(when), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(when, "when", "positive number")}
-        `);
-      });
-
-      $assert(this._.startTime === Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot start more than once
-        `);
-      });
-    });
-
-    this._.startTime = when;
-  }
-
-  stop(when) {
-    if (arguments.length < 1) {
-      when = 0;
-    }
-
-    this._.inspector.describe("stop", ($assert) => {
-      $assert(utils.isPositiveNumber(when), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(when, "when", "positive number")}
-        `);
-      });
-
-      $assert(this._.startTime !== Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot call stop without calling start first
-        `);
-      });
-
-      $assert(this._.stopTime === Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot stop more than once
-        `);
-      });
-    });
-
-    this._.stopTime = when;
-  }
-
-  setPeriodicWave(periodicWave) {
-    this._.inspector.describe("setPeriodicWave", ($assert) => {
-      $assert(utils.isInstanceOf(periodicWave, global.PeriodicWave), (fmt) => {
-        throw new TypeError(fmt.plain`
-          ${fmt.form};
-          ${fmt.butGot(periodicWave, "periodicWave", "PeriodicWave")}
-        `);
-      });
-    });
-
-    this._.type = "custom";
-    this._.custom = periodicWave;
-  }
-
   $stateAtTime(_time) {
-    let time = utils.toSeconds(_time);
+    let time = toSeconds(_time);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";
@@ -200,9 +109,3 @@ export default class OscillatorNode extends AudioNode {
     }
   }
 }
-
-OscillatorNode.$JSONKeys = [
-  "type",
-  "frequency",
-  "detune",
-];

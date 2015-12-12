@@ -1,12 +1,14 @@
-import utils from "./utils";
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import AudioParam from "./AudioParam";
-import Event from "./Event";
-
-let immigration = Immigration.getInstance();
+import AudioBuffer from "./AudioBuffer";
+import Event from "./dom/Event";
+import toSeconds from "./utils/toSeconds";
+import * as props from "./decorators/props";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 export default class AudioBufferSourceNode extends AudioNode {
+  static $JSONKeys = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
+
   constructor(admission, context) {
     super(admission, {
       name: "AudioBufferSourceNode",
@@ -15,129 +17,64 @@ export default class AudioBufferSourceNode extends AudioNode {
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "max",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
 
-    this._.buffer = null;
-    this._.playbackRate = immigration.apply(admission =>
-      new AudioParam(admission, this, "playbackRate", 1, 0, 1024)
-    );
-    this._.detune = immigration.apply(admission =>
-      new AudioParam(admission, this, "detune", 0, -4800, 4800)
-    );
-    this._.loop = false;
-    this._.loopStart = 0;
-    this._.loopEnd = 0;
-    this._.onended = null;
     this._.startTime = Infinity;
     this._.stopTime = Infinity;
     this._.firedOnEnded = false;
-    this._.JSONKeys = AudioBufferSourceNode.$JSONKeys.slice();
   }
 
-  get buffer() {
-    return this._.buffer;
+  @props.typed(validators.isNullOrInstanceOf(AudioBuffer), null)
+  buffer() {}
+
+  @props.audioparam(1)
+  playbackRate() {}
+
+  @props.audioparam(0)
+  detune() {}
+
+  @props.typed(validators.isBoolean, false)
+  loop() {}
+
+  @props.typed(validators.isPositiveNumber, 0)
+  loopStart() {}
+
+  @props.typed(validators.isPositiveNumber, 0)
+  loopEnd() {}
+
+  @props.on("ended")
+  onended() {}
+
+  @methods.param("[ when ]", validators.isPositiveNumber)
+  @methods.param("[ offset ]", validators.isPositiveNumber)
+  @methods.param("[ duration ]", validators.isPositiveNumber)
+  @methods.contract({
+    precondition() {
+      if (this._.startTime !== Infinity) {
+        throw new TypeError("cannot start more than once");
+      }
+    }
+  })
+  start(when = 0, offset = 0, duration = 0) {
+    this._.startTime = when;
+    this._.offset = offset;
+    this._.duration = duration;
   }
 
-  set buffer(value) {
-    this._.inspector.describe("buffer", ($assert) => {
-      $assert(utils.isNullOrInstanceOf(value, global.AudioBuffer), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "buffer", "AudioBuffer")}
-        `);
-      });
-    });
-
-    this._.buffer = value;
-  }
-
-  get playbackRate() {
-    return this._.playbackRate;
-  }
-
-  set playbackRate(value) {
-    this._.inspector.describe("playbackRate", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get detune() {
-    return this._.detune;
-  }
-
-  set detune(value) {
-    this._.inspector.describe("detune", ($assert) => {
-      $assert.throwReadOnlyTypeError(value);
-    });
-  }
-
-  get loop() {
-    return this._.loop;
-  }
-
-  set loop(value) {
-    this._.inspector.describe("loop", ($assert) => {
-      $assert(utils.isBoolean(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "loop", "boolean")}
-        `);
-      });
-    });
-
-    this._.loop = value;
-  }
-
-  get loopStart() {
-    return this._.loopStart;
-  }
-
-  set loopStart(value) {
-    this._.inspector.describe("loopStart", ($assert) => {
-      $assert(utils.isPositiveNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "loopStart", "positive number")}
-        `);
-      });
-    });
-
-    this._.loopStart = value;
-  }
-
-  get loopEnd() {
-    return this._.loopEnd;
-  }
-
-  set loopEnd(value) {
-    this._.inspector.describe("loopEnd", ($assert) => {
-      $assert(utils.isPositiveNumber(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "loopEnd", "positive number")}
-        `);
-      });
-    });
-
-    this._.loopEnd = value;
-  }
-
-  get onended() {
-    return this._.onended;
-  }
-
-  set onended(value) {
-    this._.inspector.describe("onended", ($assert) => {
-      $assert(utils.isNullOrFunction(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "onended", "function")}
-        `);
-      });
-    });
-
-    this._.onended = value;
+  @methods.param("[ when ]", validators.isPositiveNumber)
+  @methods.contract({
+    precondition() {
+      if (this._.startTime === Infinity) {
+        throw new TypeError("cannot call stop without calling start first");
+      }
+      if (this._.stopTime !== Infinity) {
+        throw new TypeError("cannot stop more than once");
+      }
+    }
+  })
+  stop(when = 0) {
+    this._.stopTime = when;
   }
 
   get $state() {
@@ -152,83 +89,8 @@ export default class AudioBufferSourceNode extends AudioNode {
     return this._.stopTime;
   }
 
-  start(when, offset, duration) {
-    if (arguments.length < 3) {
-      duration = 0;
-    }
-    if (arguments.length < 2) {
-      offset = 0;
-    }
-    if (arguments.length < 1) {
-      when = 0;
-    }
-
-    this._.inspector.describe("start", [ "when", "offset", "duration" ], ($assert) => {
-      $assert(utils.isPositiveNumber(when), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(when, "when", "positive number")}
-        `);
-      });
-
-      $assert(utils.isPositiveNumber(offset), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(offset, "offset", "positive number")}
-        `);
-      });
-
-      $assert(utils.isPositiveNumber(duration), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(duration, "duration", "positive number")}
-        `);
-      });
-
-      $assert(this._.startTime === Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot start more than once
-        `);
-      });
-    });
-
-    this._.startTime = when;
-  }
-
-  stop(when) {
-    if (arguments.length < 1) {
-      when = 0;
-    }
-
-    this._.inspector.describe("stop", [ "when" ], ($assert) => {
-      $assert(utils.isPositiveNumber(when), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(when, "when", "positive number")}
-        `);
-      });
-
-      $assert(this._.startTime !== Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot call stop without calling start first
-        `);
-      });
-
-      $assert(this._.stopTime === Infinity, (fmt) => {
-        throw new Error(fmt.plain `
-          ${fmt.form};
-          cannot stop more than once
-        `);
-      });
-    });
-
-    this._.stopTime = when;
-  }
-
   $stateAtTime(_time) {
-    let time = utils.toSeconds(_time);
+    let time = toSeconds(_time);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";
@@ -257,11 +119,3 @@ export default class AudioBufferSourceNode extends AudioNode {
     }
   }
 }
-
-AudioBufferSourceNode.$JSONKeys = [
-  "buffer",
-  "playbackRate",
-  "loop",
-  "loopStart",
-  "loopEnd",
-];

@@ -1,4 +1,4 @@
-import api from "./api.json";
+import api from "./api";
 
 let instance = null;
 

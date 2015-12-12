@@ -1,0 +1,26 @@
+import assert from "power-assert";
+import * as props from "../../../src/decorators/props";
+
+describe("@props.readonly()", () => {
+  it("defines a readonly property", () => {
+    class Foo {
+      constructor() {
+        this._ = {};
+      }
+
+      @props.readonly()
+      bar() {
+        return "bar";
+      }
+    }
+
+    const foo = new Foo();
+
+    assert(foo.bar === "bar");
+    assert.throws(() => {
+      foo.bar = "baz";
+    }, (e) => {
+      return e instanceof TypeError && /readonly property/.test(e.message);
+    });
+  });
+});

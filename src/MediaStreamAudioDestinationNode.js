@@ -1,6 +1,8 @@
 import AudioNode from "./AudioNode";
 
 export default class MediaStreamAudioDestinationNode extends AudioNode {
+  static $JSONKeys = [];
+
   constructor(admission, context) {
     super(admission, {
       name: "MediaStreamAudioDestinationNode",
@@ -9,7 +11,7 @@ export default class MediaStreamAudioDestinationNode extends AudioNode {
       numberOfOutputs: 0,
       channelCount: 2,
       channelCountMode: "explicit",
-      channelInterpretation: "speakers",
+      channelInterpretation: "speakers"
     });
   }
 }

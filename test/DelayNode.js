@@ -59,9 +59,9 @@ describe("DelayNode", function() {
         name: "DelayNode",
         delayTime: {
           value: 0,
-          inputs: [],
+          inputs: []
         },
-        inputs: [],
+        inputs: []
       });
     });
   });

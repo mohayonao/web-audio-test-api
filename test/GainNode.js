@@ -43,9 +43,9 @@ describe("GainNode", function() {
         name: "GainNode",
         gain: {
           value: 1,
-          inputs: [],
+          inputs: []
         },
-        inputs: [],
+        inputs: []
       });
     });
   });

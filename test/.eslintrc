@@ -1,24 +1,13 @@
 {
   "parser": "",
-
-  "rules": {
-    // best practice
-    "dot-notation": 0,
-
-    // variables
-    "no-undefined": 0,
-
-    // es6
-    "no-var": 0,
+  "env": {
+    "mocha": true
   },
-
+  "rules": {
+    "no-undefined": 0,
+    "no-var": 0
+  },
   "globals": {
-    "describe": true,
-    "it": true,
-    "before": true,
-    "beforeEach": true,
-    "afterEach": true,
-    "after": true,
     "assert": true,
     "sinon": true,
     "_": true,

@@ -1,65 +1,27 @@
-import utils from "./utils";
 import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
-import Event from "./Event";
+import Event from "./dom/Event";
 import AudioContext from "./AudioContext";
 import AudioBuffer from "./AudioBuffer";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
+import * as props from "./decorators/props";
+import * as methods from "./decorators/methods";
+import * as validators from "./validators";
 
 let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
 
-function transitionToState(methodName) {
-  this._.inspector.describe(methodName, [], ($assert) => {
-    $assert(configuration.getState(`AudioContext#${methodName}`) === "enabled", (fmt) => {
-      throw new TypeError(fmt.plain `
-        ${fmt.form};
-        not enabled
-      `);
-    });
-  });
-
-  return new Promise((resolve, reject) => {
-    this._.inspector.describe(methodName, [], ($assert) => {
-      $assert(false, (fmt) => {
-        reject(new Error(fmt.plain `
-          ${fmt.form};
-          Cannot ${methodName} on an OfflineAudioContext
-        `));
-      });
-    });
-  });
-}
-
 export default class OfflineAudioContext extends AudioContext {
   constructor(numberOfChannels, length, sampleRate) {
     super();
+    this.__OfflineAudioContext(numberOfChannels, length, sampleRate);
+  }
 
-    this._.inspector.describe("constructor", ($assert) => {
-      $assert(utils.isPositiveInteger(numberOfChannels), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(numberOfChannels, "numberOfChannels", "positive integer")}
-        `);
-      });
-
-      $assert(utils.isPositiveInteger(length), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(length, "length", "positive integer")}
-        `);
-      });
-
-      $assert(utils.isPositiveInteger(sampleRate), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(sampleRate, "sampleRate", "positive integer")}
-        `);
-      });
-    });
-
+  @methods.param("numberOfChannels", validators.isPositiveInteger)
+  @methods.param("length", validators.isPositiveInteger)
+  @methods.param("sampleRate", validators.isPositiveInteger)
+  __OfflineAudioContext(numberOfChannels, length, sampleRate) {
     this._.sampleRate = sampleRate;
-    this._.oncomplete = null;
     this._.numberOfChannels = numberOfChannels;
     this._.length = length;
     this._.rendering = false;
@@ -67,70 +29,60 @@ export default class OfflineAudioContext extends AudioContext {
     this._.state = "suspended";
   }
 
-  get oncomplete() {
-    return this._.oncomplete;
-  }
-
-  set oncomplete(value) {
-    this._.inspector.describe("oncomplete", ($assert) => {
-      $assert(utils.isNullOrFunction(value), (fmt) => {
-        throw new TypeError(fmt.plain `
-          ${fmt.form};
-          ${fmt.butGot(value, "value", "function")}
-        `);
-      });
-    });
-
-    this._.oncomplete = value;
-  }
-
-  get $name() {
-    return "OfflineAudioContext";
-  }
+  @props.on("complete")
+  oncomplete() {}
 
   suspend() {
-    return transitionToState.call(this, "suspend");
+    return this.__transitionToState("suspend");
   }
 
   resume() {
-    return transitionToState.call(this, "resume");
+    return this.__transitionToState("resume");
   }
 
   close() {
-    return transitionToState.call(this, "close");
+    return this.__transitionToState("close");
   }
 
+  @methods.contract({
+    precondition() {
+      if (this._.rendering) {
+        throw new TypeError("cannot call startRendering more than once");
+      }
+    }
+  })
   startRendering() {
     let isPromiseBased = configuration.getState("OfflineAudioContext#startRendering") === "promise";
-    let rendering = this._.rendering;
-
-    function $assertion() {
-      this._.inspector.describe("startRendering", ($assert) => {
-        $assert(!rendering, (fmt) => {
-          throw new Error(fmt.plain `
-            ${fmt.form};
-            cannot call startRendering more than once
-          `);
-        });
-      });
-    }
 
     this._.rendering = true;
 
     if (isPromiseBased) {
       return new Promise((resolve) => {
-        $assertion.call(this);
-
         this._.resolve = resolve;
         this._.state = "running";
         this.dispatchEvent(new Event("statechange", this));
       });
     }
 
-    $assertion.call(this);
-
     this._.state = "running";
     this.dispatchEvent(new Event("statechange", this));
+  }
+
+  @methods.contract({
+    precondition(methodName) {
+      if (configuration.getState(`AudioContext#${methodName}`) !== "enabled") {
+        throw new TypeError("not enabled");
+      }
+    }
+  })
+  __transitionToState(methodName) {
+    return new Promise(() => {
+      throw new TypeError(`Cannot ${methodName} on an OfflineAudioContext`);
+    });
+  }
+
+  get $name() {
+    return "OfflineAudioContext";
   }
 
   _process(microseconds) {

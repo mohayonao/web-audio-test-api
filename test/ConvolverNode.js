@@ -69,7 +69,7 @@ describe("ConvolverNode", function() {
       assert.deepEqual(node.toJSON(), {
         name: "ConvolverNode",
         normalize: true,
-        inputs: [],
+        inputs: []
       });
     });
   });
