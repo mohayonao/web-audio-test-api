@@ -122,8 +122,6 @@ describe("BiquadFilterNode", function() {
       assert.throws(function() {
         node.getFrequencyResponse(f32f, f32p, "INVALID");
       }, TypeError);
-
-      assert(node.getFrequencyResponse === global.BiquadFilterNode.prototype.getFrequencyResponse);
     });
   });
 

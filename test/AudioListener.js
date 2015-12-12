@@ -71,8 +71,6 @@ describe("AudioListener", function() {
       assert.throws(function() {
         listener.setPosition(0, 0, "INVALID");
       }, TypeError);
-
-      assert(listener.setPosition === global.AudioListener.prototype.setPosition);
     });
   });
 
@@ -105,8 +103,6 @@ describe("AudioListener", function() {
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, 0, "INVALID");
       }, TypeError);
-
-      assert(listener.setOrientation === global.AudioListener.prototype.setOrientation);
     });
   });
 
@@ -127,8 +123,6 @@ describe("AudioListener", function() {
       assert.throws(function() {
         listener.setVelocity(0, 0, "INVALID");
       }, TypeError);
-
-      assert(listener.setVelocity === global.AudioListener.prototype.setVelocity);
     });
   });
 

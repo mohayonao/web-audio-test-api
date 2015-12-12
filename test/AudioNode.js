@@ -178,8 +178,6 @@ describe("AudioNode", function() {
       assert.throws(function() {
         node.connect(anotherAudioContext.destination);
       }, TypeError);
-
-      assert(node.connect === global.AudioNode.prototype.connect);
     });
   });
 
@@ -199,8 +197,6 @@ describe("AudioNode", function() {
       assert.throws(function() {
         node.disconnect(2);
       }, TypeError);
-
-      assert(node.disconnect === global.AudioNode.prototype.disconnect);
     });
   });
 

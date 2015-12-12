@@ -100,8 +100,6 @@ describe("OscillatorNode", function() {
       assert.throws(function() {
         node.start();
       }, Error, "call twice");
-
-      assert(node.start === global.OscillatorNode.prototype.start);
     });
     it("works with when", function() {
       var node = audioContext.createOscillator();
@@ -149,8 +147,6 @@ describe("OscillatorNode", function() {
       assert.throws(function() {
         node.start();
       }, Error);
-
-      assert(node.stop === global.OscillatorNode.prototype.stop);
     });
     it("works with", function() {
       var node = audioContext.createOscillator();
@@ -192,8 +188,6 @@ describe("OscillatorNode", function() {
       assert.throws(function() {
         node.setPeriodicWave("INVALID");
       }, TypeError);
-
-      assert(node.setPeriodicWave === global.OscillatorNode.prototype.setPeriodicWave);
     });
   });
 
