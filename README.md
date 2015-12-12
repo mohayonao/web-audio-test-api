@@ -1,19 +1,29 @@
 # web-audio-test-api
 [![Build Status](http://img.shields.io/travis/mohayonao/web-audio-test-api.svg?style=flat-square)](https://travis-ci.org/mohayonao/web-audio-test-api)
 [![NPM Version](http://img.shields.io/npm/v/web-audio-test-api.svg?style=flat-square)](https://www.npmjs.org/package/web-audio-test-api)
-[![Bower](http://img.shields.io/bower/v/web-audio-test-api.svg?style=flat-square)](https://github.com/mohayonao/web-audio-test-api)
-[![Coverage Status](http://img.shields.io/coveralls/mohayonao/web-audio-test-api.svg?style=flat-square)](https://coveralls.io/r/mohayonao/web-audio-test-api?branch=master)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://mohayonao.mit-license.org/)
 
 > Web Audio API test library for CI
 
 ## Installation
 
+### node.js
+
+```
+$ npm install --save-dev web-audio-test-api
+```
+
+Install Web Audio API interfaces to global scope
+
+```javascript
+import "web-audio-test-api";
+```
+
 ### browser
 
-  - [web-audio-test-api.js](http://mohayonao.github.io/web-audio-test-api/build/web-audio-test-api.js)
+- [web-audio-test-api.js](http://mohayonao.github.io/web-audio-test-api/build/web-audio-test-api.js)
 
-replace existing Web Audio API with web-audio-test-api
+Replace existing Web Audio API with web-audio-test-api
 
 ```html
 <script src="/path/to/web-audio-test-api.js"></script>
@@ -23,18 +33,6 @@ if you won't use web-audio-test-api
 
 ```javascript
 WebAudioTestAPI.unuse();
-```
-
-### node.js
-
-```
-npm install web-audio-test-api
-```
-
-install Web Audio API interfaces to global scope
-
-```javascript
-require("web-audio-test-api");
 ```
 
 ## Online Test Suite
