@@ -6,8 +6,8 @@ describe("AudioListener", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       assert(listener instanceof global.AudioListener);
@@ -18,8 +18,8 @@ describe("AudioListener", function() {
     });
   });
 
-  describe("#dopplerFactor", function() {
-    it("get/set: number", function() {
+  describe("#dopplerFactor: number", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       assert(typeof listener.dopplerFactor === "number");
@@ -36,8 +36,8 @@ describe("AudioListener", function() {
     });
   });
 
-  describe("#speedOfSound", function() {
-    it("get/set: number", function() {
+  describe("#speedOfSound: number", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       assert(typeof listener.speedOfSound === "number");
@@ -54,8 +54,8 @@ describe("AudioListener", function() {
     });
   });
 
-  describe("#setPosition", function() {
-    it("(x: number, y: number, z: number): void", function() {
+  describe("#setPosition(x: number, y: number, z: number): void", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       listener.setPosition(0, 0, 0);
@@ -76,8 +76,8 @@ describe("AudioListener", function() {
     });
   });
 
-  describe("#setOrientation", function() {
-    it("(x: number, y: number, z: number, xUp: number, yUp: number, zUp: number): void", function() {
+  describe("#setOrientation(x: number, y: number, z: number, xUp: number, yUp: number, zUp: number): void", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       listener.setOrientation(0, 0, 0, 0, 0, 0);
@@ -110,8 +110,8 @@ describe("AudioListener", function() {
     });
   });
 
-  describe("#setVelocity", function() {
-    it("(x: number, y: number, z: number): void", function() {
+  describe("#setVelocity(x: number, y: number, z: number): void", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       listener.setVelocity(0, 0, 0);
@@ -132,16 +132,16 @@ describe("AudioListener", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       assert(listener.$name === "AudioListener");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       assert(listener.$context === audioContext);

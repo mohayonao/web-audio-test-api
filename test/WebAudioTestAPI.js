@@ -5,8 +5,8 @@ describe("WebAudioTestAPI", function() {
     WebAudioTestAPI.use();
   });
 
-  describe("VERSION", function() {
-    it("get: string", function() {
+  describe("VERSION: string", function() {
+    it("works", function() {
       assert(typeof WebAudioTestAPI.VERSION === "string");
       if (typeof global.WEB_AUDIO_TEST_API_VERSION === "string") {
         assert(WebAudioTestAPI.VERSION === global.WEB_AUDIO_TEST_API_VERSION);
@@ -14,20 +14,20 @@ describe("WebAudioTestAPI", function() {
     });
   });
 
-  describe("sampleRate", function() {
-    it("get/set: number", function() {
+  describe("sampleRate: number", function() {
+    it("works", function() {
       assert(typeof WebAudioTestAPI.sampleRate === "number");
     });
   });
 
-  describe("getState", function() {
-    it("(name: string): string", function() {
+  describe("getState(name: string): string", function() {
+    it("works", function() {
       assert(WebAudioTestAPI.getState("AnalyserNode#getFloatTimeDomainData") === "disabled");
     });
   });
 
-  describe("setState", function() {
-    it("(name: string, value: string): string", function() {
+  describe("setState(name: string, value: string): string", function() {
+    it("works", function() {
       WebAudioTestAPI.setState({
         "AnalyserNode#getFloatTimeDomainData": "enabled"
       });
@@ -40,8 +40,8 @@ describe("WebAudioTestAPI", function() {
     });
   });
 
-  describe("unuse", function() {
-    it("(): void", function() {
+  describe("unuse(): void", function() {
+    it("works", function() {
       WebAudioTestAPI.unuse();
 
       assert(global.AudioContext !== WebAudioTestAPI.AudioContext);
@@ -49,8 +49,8 @@ describe("WebAudioTestAPI", function() {
     });
   });
 
-  describe("use", function() {
-    it("(): void", function() {
+  describe("use(): void", function() {
+    it("works", function() {
       WebAudioTestAPI.use();
 
       assert(global.AudioContext === WebAudioTestAPI.AudioContext);

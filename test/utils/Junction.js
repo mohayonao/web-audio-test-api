@@ -2,16 +2,15 @@ import assert from "power-assert";
 import Junction from "../../src/utils/Junction";
 
 describe("Junction", () => {
-  describe("constructor", () => {
-    it("(node: any, channel: number)", () => {
+  describe("constructor(node: any, channel: number)", () => {
+    it("works", () => {
       let junction = new Junction({}, 0);
 
       assert(junction instanceof Junction);
     });
   });
-
-  describe("#connect", () => {
-    it("(destination: Junction): void", () => {
+  describe("#connect(destination: Junction): void", () => {
+    it("works", () => {
       /**
        *                  +-----------+
        *                  | node1 [0] |
@@ -50,9 +49,8 @@ describe("Junction", () => {
       assert.deepEqual(junction4x0.inputs, [ junction2x0 ]);
     });
   });
-
-  describe("#disconnectAll", () => {
-    it("(): void", () => {
+  describe("#disconnectAll(): void", () => {
+    it("works", () => {
       /**
        *                  +-----------+
        *                  | node1 [0] |
@@ -93,9 +91,8 @@ describe("Junction", () => {
       assert.deepEqual(junction4x0.inputs, []);
     });
   });
-
-  describe("#disconnectNode", () => {
-    it("(destination: any): void", () => {
+  describe("#disconnectNode(destination: any): void", () => {
+    it("works", () => {
       /**
        *                  +-----------+
        *                  | node1 [0] |
@@ -136,9 +133,8 @@ describe("Junction", () => {
       assert.deepEqual(junction4x0.inputs, [ junction2x0 ]);
     });
   });
-
-  describe("#disconnectChannel", () => {
-    it("(destination: any, input: number): void", () => {
+  describe("#disconnectChannel(destination: any, input: number): void", () => {
+    it("works", () => {
       /**
        *                  +-----------+
        *                  | node1 [0] |
@@ -179,9 +175,8 @@ describe("Junction", () => {
       assert.deepEqual(junction4x0.inputs, [ junction2x0 ]);
     });
   });
-
-  describe("#isConnected", () => {
-    it("(destination: any): boolean", () => {
+  describe("#isConnected(destination: any): boolean", () => {
+    it("works", () => {
       /**
        *                  +-----------+
        *                  | node1 [0] |

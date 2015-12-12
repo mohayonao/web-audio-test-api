@@ -8,8 +8,8 @@ describe("PeriodicWave", function() {
     imag = new Float32Array(1024);
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var wave = audioContext.createPeriodicWave(real, imag);
       var f128 = new Float32Array(128);
       var f256 = new Float32Array(256);
@@ -43,32 +43,32 @@ describe("PeriodicWave", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var wave = audioContext.createPeriodicWave(real, imag);
 
       assert(wave.$name === "PeriodicWave");
     });
   });
 
-  describe("#$context", function() {
-    it("get: string", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var wave = audioContext.createPeriodicWave(real, imag);
 
       assert(wave.$context === audioContext);
     });
   });
 
-  describe("#$real", function() {
-    it("get: string", function() {
+  describe("$real: Float32Array", function() {
+    it("works", function() {
       var wave = audioContext.createPeriodicWave(real, imag);
 
       assert(wave.$real === real);
     });
   });
 
-  describe("#$imag", function() {
-    it("get: string", function() {
+  describe("$imag: Float32Array", function() {
+    it("works", function() {
       var wave = audioContext.createPeriodicWave(real, imag);
 
       assert(wave.$imag === imag);

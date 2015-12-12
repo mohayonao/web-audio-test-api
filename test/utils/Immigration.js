@@ -2,16 +2,15 @@ import assert from "power-assert";
 import Immigration from "../../src/utils/Immigration";
 
 describe("Immigration", () => {
-  describe("constructor", () => {
-    it("()", () => {
+  describe("constructor()", () => {
+    it("works", () => {
       let immigration = new Immigration();
 
       assert(immigration instanceof Immigration);
     });
   });
-
-  describe(".getInstance", () => {
-    it("(): Immigration", () => {
+  describe(".getInstance(): Immigration", () => {
+    it("works", () => {
       let immigration1 = Immigration.getInstance();
       let immigration2 = Immigration.getInstance();
 
@@ -20,7 +19,6 @@ describe("Immigration", () => {
       assert(immigration1 === immigration2);
     });
   });
-
   describe("workflow", () => {
     describe("apply -> check", () => {
       it("ok", () => {

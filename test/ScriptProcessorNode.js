@@ -6,8 +6,8 @@ describe("ScriptProcessorNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createScriptProcessor(256, 1, 1);
 
       assert(node instanceof global.ScriptProcessorNode);
@@ -43,8 +43,8 @@ describe("ScriptProcessorNode", function() {
     });
   });
 
-  describe("#bufferSize", function() {
-    it("get: number", function() {
+  describe("#bufferSize: number", function() {
+    it("works", function() {
       var node1 = audioContext.createScriptProcessor(1024, 0, 1);
       var node2 = audioContext.createScriptProcessor(2048, 0, 2);
 
@@ -57,8 +57,8 @@ describe("ScriptProcessorNode", function() {
     });
   });
 
-  describe("#onaudioprocess", function() {
-    it("get/set: function", function() {
+  describe("#onaudioprocess: function", function() {
+    it("works", function() {
       var node = audioContext.createScriptProcessor(1024, 0, 1);
 
       function fn1() {}
@@ -81,8 +81,8 @@ describe("ScriptProcessorNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createScriptProcessor(1024, 0, 1);
 
       assert.deepEqual(node.toJSON(), {
@@ -92,16 +92,16 @@ describe("ScriptProcessorNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createScriptProcessor(256, 1, 1);
 
       assert(node.$name === "ScriptProcessorNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createScriptProcessor(256, 1, 1);
 
       assert(node.$context === audioContext);

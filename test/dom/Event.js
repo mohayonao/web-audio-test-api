@@ -3,8 +3,8 @@ describe("Event", function() {
 
   function Foo() {}
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var foo = new Foo();
       var e = new WebAudioTestAPI.Event("name", foo);
 

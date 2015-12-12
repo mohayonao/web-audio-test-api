@@ -6,8 +6,8 @@ describe("DynamicsCompressorNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node instanceof global.DynamicsCompressorNode);
@@ -19,8 +19,8 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
-  describe("#threshold", function() {
-    it("get: AudioParam", function() {
+  describe("#threshold: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.threshold instanceof WebAudioTestAPI.AudioParam);
@@ -31,8 +31,8 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
-  describe("#knee", function() {
-    it("get: AudioParam", function() {
+  describe("#knee: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.knee instanceof WebAudioTestAPI.AudioParam);
@@ -43,8 +43,8 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
-  describe("#ratio", function() {
-    it("get: AudioParam", function() {
+  describe("#ratio: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.ratio instanceof WebAudioTestAPI.AudioParam);
@@ -55,8 +55,8 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
-  describe("#reduction", function() {
-    it("get: AudioParam", function() {
+  describe("#reduction: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.reduction instanceof WebAudioTestAPI.AudioParam);
@@ -67,8 +67,8 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
-  describe("#attack", function() {
-    it("get: AudioParam", function() {
+  describe("#attack: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.attack instanceof WebAudioTestAPI.AudioParam);
@@ -79,8 +79,8 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
-  describe("#release", function() {
-    it("get: AudioParam", function() {
+  describe("#release: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.release instanceof WebAudioTestAPI.AudioParam);
@@ -91,8 +91,8 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert.deepEqual(node.toJSON(), {
@@ -126,16 +126,16 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.$name === "DynamicsCompressorNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.$context === audioContext);

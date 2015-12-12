@@ -6,8 +6,8 @@ describe("AudioBuffer", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var buf = audioContext.createBuffer(1, 16, 44100);
 
       assert(buf instanceof global.AudioBuffer);
@@ -30,8 +30,8 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#sampleRate", function() {
-    it("get: number", function() {
+  describe("#sampleRate: number", function() {
+    it("works", function() {
       var buf1 = audioContext.createBuffer(1, 16, 44100);
       var buf2 = audioContext.createBuffer(2, 32, 48000);
 
@@ -46,8 +46,8 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#length", function() {
-    it("get: number", function() {
+  describe("#length: number", function() {
+    it("works", function() {
       var buf1 = audioContext.createBuffer(1, 16, 44100);
       var buf2 = audioContext.createBuffer(2, 32, 48000);
 
@@ -62,8 +62,8 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#duration", function() {
-    it("get: number", function() {
+  describe("#duration: number", function() {
+    it("works", function() {
       var buf1 = audioContext.createBuffer(1, 16, 44100);
       var buf2 = audioContext.createBuffer(2, 32, 48000);
 
@@ -78,8 +78,8 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#numberOfChannels", function() {
-    it("get: number", function() {
+  describe("#numberOfChannels: number", function() {
+    it("works", function() {
       var buf1 = audioContext.createBuffer(1, 16, 44100);
       var buf2 = audioContext.createBuffer(2, 32, 48000);
 
@@ -94,8 +94,8 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#getChannelData", function() {
-    it("(channel: number): Float32Array", function() {
+  describe("#getChannelData(channel: number): Float32Array", function() {
+    it("works", function() {
       var buf1 = audioContext.createBuffer(1, 16, 44100);
       var buf2 = audioContext.createBuffer(2, 32, 48000);
 
@@ -125,8 +125,8 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#copyFromChannel", function() {
-    it("(destination: Float32Array, channelNumber: number, startInChannel: number = 0): void", function() {
+  describe("#copyFromChannel(destination: Float32Array, channelNumber: number, startInChannel= 0): void", function() {
+    it("works", function() {
       var buf1 = audioContext.createBuffer(2, 10, 44100);
       var dest = new Float32Array(4);
 
@@ -181,8 +181,8 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#copyToChannel", function() {
-    it("(source: Float32Array, channelNumber: number, startInChannel: number = 0): void", function() {
+  describe("#copyToChannel(source: Float32Array, channelNumber: number, startInChannel= 0): void", function() {
+    it("works", function() {
       var buf1 = audioContext.createBuffer(2, 10, 44100);
       var source = new Float32Array([ 10, 11, 12, 13 ]);
 
@@ -234,8 +234,8 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var buf1 = audioContext.createBuffer(1, 16, 44100);
       var buf2 = audioContext.createBuffer(2, 32, 48000);
       var dat1 = _.toArray(new Float32Array(_.range(16).map(Math.random)));
@@ -281,7 +281,7 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#$name", function() {
+  describe("$name", function() {
     it("get: string", function() {
       var buf = audioContext.createBuffer(1, 16, 44100);
 
@@ -289,7 +289,7 @@ describe("AudioBuffer", function() {
     });
   });
 
-  describe("#$context", function() {
+  describe("$context", function() {
     it("get: AudioContext", function() {
       var buf = audioContext.createBuffer(1, 16, 44100);
 

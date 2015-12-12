@@ -1,8 +1,8 @@
 describe("MediaStream", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var stream = new WebAudioTestAPI.MediaStream();
 
       assert(stream instanceof global.window.MediaStream);

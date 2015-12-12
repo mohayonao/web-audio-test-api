@@ -6,8 +6,8 @@ describe("DelayNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createDelay();
 
       assert(node instanceof global.DelayNode);
@@ -31,8 +31,8 @@ describe("DelayNode", function() {
     });
   });
 
-  describe("#delayTime", function() {
-    it("get: AudioParam", function() {
+  describe("#delayTime: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDelay();
 
       assert(node.delayTime instanceof WebAudioTestAPI.AudioParam);
@@ -43,8 +43,8 @@ describe("DelayNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createDelay();
 
       assert.deepEqual(node.toJSON(), {
@@ -58,24 +58,24 @@ describe("DelayNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createDelay();
 
       assert(node.$name === "DelayNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createDelay();
 
       assert(node.$context === audioContext);
     });
   });
 
-  describe("$maxDelayTime", function() {
-    it("get: number", function() {
+  describe("$maxDelayTime: number", function() {
+    it("works", function() {
       var node = audioContext.createDelay(10);
 
       assert(typeof node.$maxDelayTime === "number");

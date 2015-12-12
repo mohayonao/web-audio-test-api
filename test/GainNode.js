@@ -6,8 +6,8 @@ describe("GainNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createGain();
 
       assert(node instanceof global.GainNode);
@@ -19,8 +19,8 @@ describe("GainNode", function() {
     });
   });
 
-  describe("#gain", function() {
-    it("get: AudioParam", function() {
+  describe("#gain: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createGain();
 
       assert(node.gain instanceof WebAudioTestAPI.AudioParam);
@@ -31,8 +31,8 @@ describe("GainNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createGain();
 
       assert.deepEqual(node.toJSON(), {
@@ -46,16 +46,16 @@ describe("GainNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createGain();
 
       assert(node.$name === "GainNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.$context === audioContext);

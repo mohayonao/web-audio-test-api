@@ -1,8 +1,8 @@
 describe("EventTarget", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var target = new WebAudioTestAPI.EventTarget();
 
       assert(target instanceof global.window.EventTarget);
@@ -13,8 +13,8 @@ describe("EventTarget", function() {
     });
   });
 
-  describe("addEventListener", function() {
-    it("(type: string, listener: function): void", function() {
+  describe("#addEventListener(type: string, listener: function): void", function() {
+    it("works", function() {
       var target = new WebAudioTestAPI.EventTarget();
       var listener1 = sinon.spy();
       var listener2 = sinon.spy();
@@ -37,8 +37,8 @@ describe("EventTarget", function() {
     });
   });
 
-  describe("removeEventListener", function() {
-    it("(type: string, listener: function): void", function() {
+  describe("#removeEventListener(type: string, listener: function): void", function() {
+    it("works", function() {
       var target = new WebAudioTestAPI.EventTarget();
       var listener1 = sinon.spy();
       var listener2 = sinon.spy();
@@ -65,8 +65,8 @@ describe("EventTarget", function() {
     });
   });
 
-  describe("dispatchEvent", function() {
-    it("(event: Event): void", function() {
+  describe("#dispatchEvent(event: Event): void", function() {
+    it("works", function() {
       var target = new WebAudioTestAPI.EventTarget();
       var listener1 = sinon.spy();
       var listener2 = sinon.spy();

@@ -6,8 +6,8 @@ describe("AnalyserNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(node instanceof global.AnalyserNode);
@@ -19,8 +19,8 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#fftSize", function() {
-    it("get/set: FFTSize", function() {
+  describe("#fftSize: number", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.fftSize === "number");
@@ -55,8 +55,8 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#frequencyBinCount", function() {
-    it("get: number", function() {
+  describe("#frequencyBinCount: number", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.frequencyBinCount === "number");
@@ -73,8 +73,8 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#minDecibels", function() {
-    it("get/set: number", function() {
+  describe("#minDecibels: number", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.minDecibels === "number");
@@ -91,8 +91,8 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#maxDecibels", function() {
-    it("get/set: number", function() {
+  describe("#maxDecibels: number", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.maxDecibels === "number");
@@ -109,8 +109,8 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#smoothingTimeConstant", function() {
-    it("get/set: number", function() {
+  describe("#smoothingTimeConstant: number", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.smoothingTimeConstant === "number");
@@ -127,8 +127,8 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#getFloatFrequencyData", function() {
-    it("(array: Float32Array): void", function() {
+  describe("#getFloatFrequencyData(array: Float32Array): void", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
       var f32 = new Float32Array(128);
       var i16 = new Int16Array(128);
@@ -143,8 +143,8 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#getByteFrequencyData", function() {
-    it("(array: Uint8Array): void", function() {
+  describe("#getByteFrequencyData(array: Uint8Array): void", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
       var ui8 = new Uint8Array(128);
       var i16 = new Int16Array(128);
@@ -216,7 +216,7 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#$name", function() {
+  describe("$name", function() {
     it("get: string", function() {
       var node = audioContext.createAnalyser();
 
@@ -224,7 +224,7 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#$context", function() {
+  describe("$context", function() {
     it("get: AudioContext", function() {
       var node = audioContext.createAnalyser();
 

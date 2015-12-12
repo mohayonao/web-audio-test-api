@@ -6,8 +6,8 @@ describe("WaveShaperNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createWaveShaper();
 
       assert(node instanceof global.WaveShaperNode);
@@ -19,8 +19,8 @@ describe("WaveShaperNode", function() {
     });
   });
 
-  describe("#curve", function() {
-    it("get/set: Float32Array", function() {
+  describe("#curve: Float32Array", function() {
+    it("works", function() {
       var node = audioContext.createWaveShaper();
       var f32a = new Float32Array(128);
       var f32b = new Float32Array(128);
@@ -42,8 +42,8 @@ describe("WaveShaperNode", function() {
     });
   });
 
-  describe("#oversample", function() {
-    it("get/set: OverSampleType", function() {
+  describe("#oversample: string", function() {
+    it("works", function() {
       var node = audioContext.createWaveShaper();
 
       assert(typeof node.oversample === "string");
@@ -63,8 +63,8 @@ describe("WaveShaperNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createWaveShaper();
 
       assert.deepEqual(node.toJSON(), {
@@ -75,16 +75,16 @@ describe("WaveShaperNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createWaveShaper();
 
       assert(node.$name === "WaveShaperNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createWaveShaper();
 
       assert(node.$context === audioContext);
