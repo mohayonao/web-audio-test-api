@@ -20,6 +20,6 @@ export default class WaveShaperNode extends AudioNode {
   @props.typed(validators.isNullOrInstanceOf(Float32Array), null)
   curve() {}
 
-  @props.enum([ "none", "2x", "4x" ])
+  @props.enums([ "none", "2x", "4x" ])
   oversample() {}
 }

@@ -3,8 +3,7 @@ import Junction from "./utils/Junction";
 import defaults from "./utils/defaults";
 import toJSON from "./utils/toJSON";
 import toSeconds from "./utils/toSeconds";
-import typed from "./decorators/props/typed";
-import readonly from "./decorators/props/readonly";
+import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
@@ -100,18 +99,18 @@ export default class AudioParam {
     this._.tick = -1;
   }
 
-  @typed(validators.isNumber, 0)
+  @props.typed(validators.isNumber, 0)
   get value() {
     this._.value = this.$valueAtTime(this.$context.currentTime);
     return this._.value;
   }
 
-  @readonly()
+  @props.readonly()
   name() {
     return this._.name;
   }
 
-  @readonly()
+  @props.readonly()
   defaultValue() {
     return this._.defaultValue;
   }

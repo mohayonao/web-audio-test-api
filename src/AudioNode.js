@@ -65,10 +65,10 @@ export default class AudioNode extends EventTarget {
   @props.typed(validators.isPositiveInteger, 2)
   channelCount() {}
 
-  @props.enum([ "max", "clamped-max", "explicit" ])
+  @props.enums([ "max", "clamped-max", "explicit" ])
   channelCountMode() {}
 
-  @props.enum([ "speakers", "discrete" ])
+  @props.enums([ "speakers", "discrete" ])
   channelInterpretation() {}
 
   @methods.param("destination", validators.isAudioSource);

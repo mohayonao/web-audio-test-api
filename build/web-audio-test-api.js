@@ -1,7 +1,7 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.WebAudioTestAPI = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = require("./lib").default;
 
-},{"./lib":48}],2:[function(require,module,exports){
+},{"./lib":46}],2:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -105,7 +105,7 @@ var AnalyserNode = (_dec = props.enum([32, 64, 128, 256, 512, 1024, 2048]), _dec
   return AnalyserNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant"], _temp), (_desc = _dec(_class.prototype, "fftSize", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "fftSize")) || _desc, _desc ? Object.defineProperty(_class.prototype, "fftSize", _desc) : void 0, _desc = _dec2(_class.prototype, "frequencyBinCount", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "frequencyBinCount")) || _desc, _desc ? Object.defineProperty(_class.prototype, "frequencyBinCount", _desc) : void 0, _desc = _dec3(_class.prototype, "minDecibels", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "minDecibels")) || _desc, _desc ? Object.defineProperty(_class.prototype, "minDecibels", _desc) : void 0, _desc = _dec4(_class.prototype, "maxDecibels", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "maxDecibels")) || _desc, _desc ? Object.defineProperty(_class.prototype, "maxDecibels", _desc) : void 0, _desc = _dec5(_class.prototype, "smoothingTimeConstant", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "smoothingTimeConstant")) || _desc, _desc ? Object.defineProperty(_class.prototype, "smoothingTimeConstant", _desc) : void 0, _desc = _dec6(_class.prototype, "getFloatFrequencyData", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "getFloatFrequencyData")) || _desc, _desc ? Object.defineProperty(_class.prototype, "getFloatFrequencyData", _desc) : void 0, _desc = _dec7(_class.prototype, "getByteFrequencyData", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "getByteFrequencyData")) || _desc, _desc ? Object.defineProperty(_class.prototype, "getByteFrequencyData", _desc) : void 0, _desc = _dec8(_class.prototype, "getFloatTimeDomainData", _desc = _dec9(_class.prototype, "getFloatTimeDomainData", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "getFloatTimeDomainData")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "getFloatTimeDomainData", _desc) : void 0, _desc = _dec10(_class.prototype, "getByteTimeDomainData", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "getByteTimeDomainData")) || _desc, _desc ? Object.defineProperty(_class.prototype, "getByteTimeDomainData", _desc) : void 0), _class));
 exports.default = AnalyserNode;
-},{"./AudioNode":8,"./decorators/methods":34,"./decorators/props":38,"./utils/Configuration":49,"./validators":62}],3:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/methods":33,"./decorators/props":36,"./utils/Configuration":47,"./validators":61}],3:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -282,7 +282,7 @@ var AudioBuffer = (_dec = methods.param("numberOfChannels", validators.isPositiv
   return AudioBuffer;
 })(), (_desc = _dec(_class.prototype, "__createAudioBuffer", _desc = _dec2(_class.prototype, "__createAudioBuffer", _desc = _dec3(_class.prototype, "__createAudioBuffer", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__createAudioBuffer")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "__createAudioBuffer", _desc) : void 0, _desc = _dec4(_class.prototype, "sampleRate", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "sampleRate")) || _desc, _desc ? Object.defineProperty(_class.prototype, "sampleRate", _desc) : void 0, _desc = _dec5(_class.prototype, "length", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "length")) || _desc, _desc ? Object.defineProperty(_class.prototype, "length", _desc) : void 0, _desc = _dec6(_class.prototype, "duration", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "duration")) || _desc, _desc ? Object.defineProperty(_class.prototype, "duration", _desc) : void 0, _desc = _dec7(_class.prototype, "numberOfChannels", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "numberOfChannels")) || _desc, _desc ? Object.defineProperty(_class.prototype, "numberOfChannels", _desc) : void 0, _desc = _dec8(_class.prototype, "getChannelData", _desc = _dec9(_class.prototype, "getChannelData", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "getChannelData")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "getChannelData", _desc) : void 0, _desc = _dec10(_class.prototype, "copyFromChannel", _desc = _dec11(_class.prototype, "copyFromChannel", _desc = _dec12(_class.prototype, "copyFromChannel", _desc = _dec13(_class.prototype, "copyFromChannel", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "copyFromChannel")) || _desc) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "copyFromChannel", _desc) : void 0, _desc = _dec14(_class.prototype, "copyToChannel", _desc = _dec15(_class.prototype, "copyToChannel", _desc = _dec16(_class.prototype, "copyToChannel", _desc = _dec17(_class.prototype, "copyToChannel", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "copyToChannel")) || _desc) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "copyToChannel", _desc) : void 0), _class));
 exports.default = AudioBuffer;
-},{"./decorators/methods":34,"./decorators/props":38,"./utils/Configuration":49,"./utils/Immigration":50,"./validators":62}],4:[function(require,module,exports){
+},{"./decorators/methods":33,"./decorators/props":36,"./utils/Configuration":47,"./utils/Immigration":48,"./validators":61}],4:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -460,7 +460,7 @@ var AudioBufferSourceNode = (_dec = props.typed(validators.isNullOrInstanceOf(_A
   return AudioBufferSourceNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["buffer", "playbackRate", "loop", "loopStart", "loopEnd"], _temp), (_desc = _dec(_class.prototype, "buffer", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "buffer")) || _desc, _desc ? Object.defineProperty(_class.prototype, "buffer", _desc) : void 0, _desc = _dec2(_class.prototype, "playbackRate", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "playbackRate")) || _desc, _desc ? Object.defineProperty(_class.prototype, "playbackRate", _desc) : void 0, _desc = _dec3(_class.prototype, "detune", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "detune")) || _desc, _desc ? Object.defineProperty(_class.prototype, "detune", _desc) : void 0, _desc = _dec4(_class.prototype, "loop", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "loop")) || _desc, _desc ? Object.defineProperty(_class.prototype, "loop", _desc) : void 0, _desc = _dec5(_class.prototype, "loopStart", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "loopStart")) || _desc, _desc ? Object.defineProperty(_class.prototype, "loopStart", _desc) : void 0, _desc = _dec6(_class.prototype, "loopEnd", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "loopEnd")) || _desc, _desc ? Object.defineProperty(_class.prototype, "loopEnd", _desc) : void 0, _desc = _dec7(_class.prototype, "onended", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "onended")) || _desc, _desc ? Object.defineProperty(_class.prototype, "onended", _desc) : void 0, _desc = _dec8(_class.prototype, "start", _desc = _dec9(_class.prototype, "start", _desc = _dec10(_class.prototype, "start", _desc = _dec11(_class.prototype, "start", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "start")) || _desc) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "start", _desc) : void 0, _desc = _dec12(_class.prototype, "stop", _desc = _dec13(_class.prototype, "stop", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "stop")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "stop", _desc) : void 0), _class));
 exports.default = AudioBufferSourceNode;
-},{"./AudioBuffer":3,"./AudioNode":8,"./decorators/methods":34,"./decorators/props":38,"./dom/Event":43,"./utils/toSeconds":61,"./validators":62}],5:[function(require,module,exports){
+},{"./AudioBuffer":3,"./AudioNode":8,"./decorators/methods":33,"./decorators/props":36,"./dom/Event":41,"./utils/toSeconds":60,"./validators":61}],5:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1023,7 +1023,7 @@ var AudioContext = (_dec = props.readonly(), _dec2 = props.readonly(), _dec3 = p
 })(_EventTarget3.default), (_desc = _dec(_class.prototype, "destination", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "destination")) || _desc, _desc ? Object.defineProperty(_class.prototype, "destination", _desc) : void 0, _desc = _dec2(_class.prototype, "sampleRate", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "sampleRate")) || _desc, _desc ? Object.defineProperty(_class.prototype, "sampleRate", _desc) : void 0, _desc = _dec3(_class.prototype, "currentTime", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "currentTime")) || _desc, _desc ? Object.defineProperty(_class.prototype, "currentTime", _desc) : void 0, _desc = _dec4(_class.prototype, "listener", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "listener")) || _desc, _desc ? Object.defineProperty(_class.prototype, "listener", _desc) : void 0, _desc = _dec5(_class.prototype, "onstatechange", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "onstatechange")) || _desc, _desc ? Object.defineProperty(_class.prototype, "onstatechange", _desc) : void 0, _desc = _dec6(_class.prototype, "createBuffer", _desc = _dec7(_class.prototype, "createBuffer", _desc = _dec8(_class.prototype, "createBuffer", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "createBuffer")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "createBuffer", _desc) : void 0, _desc = _dec9(_class.prototype, "decodeAudioData", _desc = _dec10(_class.prototype, "decodeAudioData", _desc = _dec11(_class.prototype, "decodeAudioData", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "decodeAudioData")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "decodeAudioData", _desc) : void 0, _desc = _dec12(_class.prototype, "createAudioWorker", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "createAudioWorker")) || _desc, _desc ? Object.defineProperty(_class.prototype, "createAudioWorker", _desc) : void 0, _desc = _dec13(_class.prototype, "createScriptProcessor", _desc = _dec14(_class.prototype, "createScriptProcessor", _desc = _dec15(_class.prototype, "createScriptProcessor", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "createScriptProcessor")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "createScriptProcessor", _desc) : void 0, _desc = _dec16(_class.prototype, "createDelay", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "createDelay")) || _desc, _desc ? Object.defineProperty(_class.prototype, "createDelay", _desc) : void 0, _desc = _dec17(_class.prototype, "createStereoPanner", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "createStereoPanner")) || _desc, _desc ? Object.defineProperty(_class.prototype, "createStereoPanner", _desc) : void 0, _desc = _dec18(_class.prototype, "createChannelSplitter", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "createChannelSplitter")) || _desc, _desc ? Object.defineProperty(_class.prototype, "createChannelSplitter", _desc) : void 0, _desc = _dec19(_class.prototype, "createChannelMerger", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "createChannelMerger")) || _desc, _desc ? Object.defineProperty(_class.prototype, "createChannelMerger", _desc) : void 0, _desc = _dec20(_class.prototype, "createPeriodicWave", _desc = _dec21(_class.prototype, "createPeriodicWave", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "createPeriodicWave")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "createPeriodicWave", _desc) : void 0, _desc = _dec22(_class.prototype, "__transitionToState", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__transitionToState")) || _desc, _desc ? Object.defineProperty(_class.prototype, "__transitionToState", _desc) : void 0), _class));
 exports.default = AudioContext;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AnalyserNode":2,"./AudioBuffer":3,"./AudioBufferSourceNode":4,"./AudioDestinationNode":6,"./AudioListener":7,"./BiquadFilterNode":12,"./ChannelMergerNode":13,"./ChannelSplitterNode":14,"./ConvolverNode":15,"./DelayNode":16,"./DynamicsCompressorNode":17,"./GainNode":18,"./MediaElementAudioSourceNode":19,"./MediaStreamAudioDestinationNode":20,"./MediaStreamAudioSourceNode":21,"./OscillatorNode":24,"./PannerNode":25,"./PeriodicWave":26,"./ScriptProcessorNode":27,"./StereoPannerNode":28,"./WaveShaperNode":29,"./decorators/methods":34,"./decorators/props":38,"./dom/Event":43,"./dom/EventTarget":44,"./utils/Configuration":49,"./utils/Immigration":50,"./utils/defaults":54,"./utils/getAPIVersion":55,"./utils/toMicroseconds":59,"./validators":62}],6:[function(require,module,exports){
+},{"./AnalyserNode":2,"./AudioBuffer":3,"./AudioBufferSourceNode":4,"./AudioDestinationNode":6,"./AudioListener":7,"./BiquadFilterNode":12,"./ChannelMergerNode":13,"./ChannelSplitterNode":14,"./ConvolverNode":15,"./DelayNode":16,"./DynamicsCompressorNode":17,"./GainNode":18,"./MediaElementAudioSourceNode":19,"./MediaStreamAudioDestinationNode":20,"./MediaStreamAudioSourceNode":21,"./OscillatorNode":24,"./PannerNode":25,"./PeriodicWave":26,"./ScriptProcessorNode":27,"./StereoPannerNode":28,"./WaveShaperNode":29,"./decorators/methods":33,"./decorators/props":36,"./dom/Event":41,"./dom/EventTarget":42,"./utils/Configuration":47,"./utils/Immigration":48,"./utils/defaults":52,"./utils/getAPIVersion":54,"./utils/toMicroseconds":58,"./validators":61}],6:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1078,7 +1078,7 @@ var AudioDestinationNode = (_dec = props.readonly(2), (_class = (_temp = _class2
   return AudioDestinationNode;
 })(_AudioNode3.default), _class2.$JSONKeys = [], _temp), (_desc = _dec(_class.prototype, "maxChannelCount", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "maxChannelCount")) || _desc, _desc ? Object.defineProperty(_class.prototype, "maxChannelCount", _desc) : void 0), _class));
 exports.default = AudioDestinationNode;
-},{"./AudioNode":8,"./decorators/props":38}],7:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/props":36}],7:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1156,7 +1156,7 @@ var AudioListener = (_dec = props.typed(validators.isNumber, 1), _dec2 = props.t
   return AudioListener;
 })(), (_desc = _dec(_class.prototype, "dopplerFactor", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "dopplerFactor")) || _desc, _desc ? Object.defineProperty(_class.prototype, "dopplerFactor", _desc) : void 0, _desc = _dec2(_class.prototype, "speedOfSound", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "speedOfSound")) || _desc, _desc ? Object.defineProperty(_class.prototype, "speedOfSound", _desc) : void 0, _desc = _dec3(_class.prototype, "setPosition", _desc = _dec4(_class.prototype, "setPosition", _desc = _dec5(_class.prototype, "setPosition", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "setPosition")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "setPosition", _desc) : void 0, _desc = _dec6(_class.prototype, "setOrientation", _desc = _dec7(_class.prototype, "setOrientation", _desc = _dec8(_class.prototype, "setOrientation", _desc = _dec9(_class.prototype, "setOrientation", _desc = _dec10(_class.prototype, "setOrientation", _desc = _dec11(_class.prototype, "setOrientation", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "setOrientation")) || _desc) || _desc) || _desc) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "setOrientation", _desc) : void 0, _desc = _dec12(_class.prototype, "setVelocity", _desc = _dec13(_class.prototype, "setVelocity", _desc = _dec14(_class.prototype, "setVelocity", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "setVelocity")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "setVelocity", _desc) : void 0), _class));
 exports.default = AudioListener;
-},{"./decorators/methods":34,"./decorators/props":38,"./utils/Immigration":50,"./validators":62}],8:[function(require,module,exports){
+},{"./decorators/methods":33,"./decorators/props":36,"./utils/Immigration":48,"./validators":61}],8:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1476,7 +1476,7 @@ var AudioNode = (_dec = methods.contract({
 })(_EventTarget3.default), _class2.$JSONKeys = [], _temp), (_desc = _dec(_class.prototype, "__createAudioNode", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__createAudioNode")) || _desc, _desc ? Object.defineProperty(_class.prototype, "__createAudioNode", _desc) : void 0, _desc = _dec2(_class.prototype, "context", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "context")) || _desc, _desc ? Object.defineProperty(_class.prototype, "context", _desc) : void 0, _desc = _dec3(_class.prototype, "numberOfInputs", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "numberOfInputs")) || _desc, _desc ? Object.defineProperty(_class.prototype, "numberOfInputs", _desc) : void 0, _desc = _dec4(_class.prototype, "numberOfOutputs", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "numberOfOutputs")) || _desc, _desc ? Object.defineProperty(_class.prototype, "numberOfOutputs", _desc) : void 0, _desc = _dec5(_class.prototype, "channelCount", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "channelCount")) || _desc, _desc ? Object.defineProperty(_class.prototype, "channelCount", _desc) : void 0, _desc = _dec6(_class.prototype, "channelCountMode", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "channelCountMode")) || _desc, _desc ? Object.defineProperty(_class.prototype, "channelCountMode", _desc) : void 0, _desc = _dec7(_class.prototype, "channelInterpretation", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "channelInterpretation")) || _desc, _desc ? Object.defineProperty(_class.prototype, "channelInterpretation", _desc) : void 0, _desc = _dec8(_class.prototype, "connect", _desc = _dec9(_class.prototype, "connect", _desc = _dec10(_class.prototype, "connect", _desc = _dec11(_class.prototype, "connect", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "connect")) || _desc) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "connect", _desc) : void 0), _class));
 exports.default = AudioNode;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AudioNodeDisconnectUtils":9,"./decorators/methods":34,"./decorators/props":38,"./dom/EventTarget":44,"./utils/Configuration":49,"./utils/Immigration":50,"./utils/Junction":51,"./utils/defaults":54,"./utils/toJSON":58,"./utils/toNodeName":60,"./validators":62}],9:[function(require,module,exports){
+},{"./AudioNodeDisconnectUtils":9,"./decorators/methods":33,"./decorators/props":36,"./dom/EventTarget":42,"./utils/Configuration":47,"./utils/Immigration":48,"./utils/Junction":49,"./utils/defaults":52,"./utils/toJSON":57,"./utils/toNodeName":59,"./validators":61}],9:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1578,7 +1578,7 @@ var AudioNodeDisconnectUtils = (_dec = methods.param("output", validators.isPosi
   return AudioNodeDisconnectUtils;
 })(), (_desc = _dec(_class, "disconnectChannel", _desc = _dec2(_class, "disconnectChannel", _desc = Object.getOwnPropertyDescriptor(_class, "disconnectChannel")) || _desc) || _desc, _desc ? Object.defineProperty(_class, "disconnectChannel", _desc) : void 0, _desc = _dec3(_class, "disconnectSelective1", _desc = _dec4(_class, "disconnectSelective1", _desc = Object.getOwnPropertyDescriptor(_class, "disconnectSelective1")) || _desc) || _desc, _desc ? Object.defineProperty(_class, "disconnectSelective1", _desc) : void 0, _desc = _dec5(_class, "disconnectSelective2", _desc = _dec6(_class, "disconnectSelective2", _desc = _dec7(_class, "disconnectSelective2", _desc = Object.getOwnPropertyDescriptor(_class, "disconnectSelective2")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class, "disconnectSelective2", _desc) : void 0, _desc = _dec8(_class, "disconnectSelective3", _desc = _dec9(_class, "disconnectSelective3", _desc = _dec10(_class, "disconnectSelective3", _desc = _dec11(_class, "disconnectSelective3", _desc = Object.getOwnPropertyDescriptor(_class, "disconnectSelective3")) || _desc) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class, "disconnectSelective3", _desc) : void 0), _class));
 exports.default = AudioNodeDisconnectUtils;
-},{"./decorators/methods":34,"./validators":62}],10:[function(require,module,exports){
+},{"./decorators/methods":33,"./validators":61}],10:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1920,7 +1920,7 @@ var AudioParam = (_dec = (0, _typed2.default)(validators.isNumber, 0), _dec2 = (
 })(), (_desc = _dec(_class.prototype, "value", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "value")) || _desc, _desc ? Object.defineProperty(_class.prototype, "value", _desc) : void 0, _desc = _dec2(_class.prototype, "name", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "name")) || _desc, _desc ? Object.defineProperty(_class.prototype, "name", _desc) : void 0, _desc = _dec3(_class.prototype, "defaultValue", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "defaultValue")) || _desc, _desc ? Object.defineProperty(_class.prototype, "defaultValue", _desc) : void 0, _desc = _dec4(_class.prototype, "setValueAtTime", _desc = _dec5(_class.prototype, "setValueAtTime", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "setValueAtTime")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "setValueAtTime", _desc) : void 0, _desc = _dec6(_class.prototype, "linearRampToValueAtTime", _desc = _dec7(_class.prototype, "linearRampToValueAtTime", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "linearRampToValueAtTime")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "linearRampToValueAtTime", _desc) : void 0, _desc = _dec8(_class.prototype, "exponentialRampToValueAtTime", _desc = _dec9(_class.prototype, "exponentialRampToValueAtTime", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "exponentialRampToValueAtTime")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "exponentialRampToValueAtTime", _desc) : void 0, _desc = _dec10(_class.prototype, "setTargetAtTime", _desc = _dec11(_class.prototype, "setTargetAtTime", _desc = _dec12(_class.prototype, "setTargetAtTime", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "setTargetAtTime")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "setTargetAtTime", _desc) : void 0, _desc = _dec13(_class.prototype, "setValueCurveAtTime", _desc = _dec14(_class.prototype, "setValueCurveAtTime", _desc = _dec15(_class.prototype, "setValueCurveAtTime", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "setValueCurveAtTime")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "setValueCurveAtTime", _desc) : void 0, _desc = _dec16(_class.prototype, "cancelScheduledValues", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "cancelScheduledValues")) || _desc, _desc ? Object.defineProperty(_class.prototype, "cancelScheduledValues", _desc) : void 0), _class));
 exports.default = AudioParam;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./decorators/methods":34,"./decorators/props/readonly":40,"./decorators/props/typed":41,"./utils/Immigration":50,"./utils/Junction":51,"./utils/defaults":54,"./utils/toJSON":58,"./utils/toSeconds":61,"./validators":62}],11:[function(require,module,exports){
+},{"./decorators/methods":33,"./decorators/props/readonly":38,"./decorators/props/typed":39,"./utils/Immigration":48,"./utils/Junction":49,"./utils/defaults":52,"./utils/toJSON":57,"./utils/toSeconds":60,"./validators":61}],11:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1980,7 +1980,7 @@ var AudioProcessingEvent = (function (_Event) {
 })(_Event3.default);
 
 exports.default = AudioProcessingEvent;
-},{"./dom/Event":43,"./utils/Immigration":50}],12:[function(require,module,exports){
+},{"./dom/Event":41,"./utils/Immigration":48}],12:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2058,7 +2058,7 @@ var BiquadFilterNode = (_dec = props.enum(["lowpass", "highpass", "bandpass", "l
   return BiquadFilterNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["type", "frequency", "detune", "Q", "gain"], _temp), (_desc = _dec(_class.prototype, "type", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "type")) || _desc, _desc ? Object.defineProperty(_class.prototype, "type", _desc) : void 0, _desc = _dec2(_class.prototype, "frequency", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "frequency")) || _desc, _desc ? Object.defineProperty(_class.prototype, "frequency", _desc) : void 0, _desc = _dec3(_class.prototype, "detune", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "detune")) || _desc, _desc ? Object.defineProperty(_class.prototype, "detune", _desc) : void 0, _desc = _dec4(_class.prototype, "Q", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "Q")) || _desc, _desc ? Object.defineProperty(_class.prototype, "Q", _desc) : void 0, _desc = _dec5(_class.prototype, "gain", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "gain")) || _desc, _desc ? Object.defineProperty(_class.prototype, "gain", _desc) : void 0, _desc = _dec6(_class.prototype, "getFrequencyResponse", _desc = _dec7(_class.prototype, "getFrequencyResponse", _desc = _dec8(_class.prototype, "getFrequencyResponse", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "getFrequencyResponse")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "getFrequencyResponse", _desc) : void 0), _class));
 exports.default = BiquadFilterNode;
-},{"./AudioNode":8,"./decorators/methods":34,"./decorators/props":38,"./validators":62}],13:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/methods":33,"./decorators/props":36,"./validators":61}],13:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2120,7 +2120,7 @@ var ChannelMergerNode = (_dec = methods.param("numberOfInputs", validators.isPos
   return ChannelMergerNode;
 })(_AudioNode3.default), _class2.$JSONKeys = [], _temp), (_desc = _dec(_class.prototype, "__createChannelMerger", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__createChannelMerger")) || _desc, _desc ? Object.defineProperty(_class.prototype, "__createChannelMerger", _desc) : void 0), _class));
 exports.default = ChannelMergerNode;
-},{"./AudioNode":8,"./decorators/methods":34,"./validators":62}],14:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/methods":33,"./validators":61}],14:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2182,7 +2182,7 @@ var ChannelSplitterNode = (_dec = methods.param("numberOfOutputs", validators.is
   return ChannelSplitterNode;
 })(_AudioNode3.default), _class2.$JSONKeys = [], _temp), (_desc = _dec(_class.prototype, "__createChannelSplitter", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__createChannelSplitter")) || _desc, _desc ? Object.defineProperty(_class.prototype, "__createChannelSplitter", _desc) : void 0), _class));
 exports.default = ChannelSplitterNode;
-},{"./AudioNode":8,"./decorators/methods":34,"./validators":62}],15:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/methods":33,"./validators":61}],15:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2248,7 +2248,7 @@ var ConvolverNode = (_dec = props.typed(validators.isNullOrInstanceOf(_AudioBuff
   return ConvolverNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["normalize"], _temp), (_desc = _dec(_class.prototype, "buffer", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "buffer")) || _desc, _desc ? Object.defineProperty(_class.prototype, "buffer", _desc) : void 0, _desc = _dec2(_class.prototype, "normalize", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "normalize")) || _desc, _desc ? Object.defineProperty(_class.prototype, "normalize", _desc) : void 0), _class));
 exports.default = ConvolverNode;
-},{"./AudioBuffer":3,"./AudioNode":8,"./decorators/props":38,"./validators":62}],16:[function(require,module,exports){
+},{"./AudioBuffer":3,"./AudioNode":8,"./decorators/props":36,"./validators":61}],16:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2324,7 +2324,7 @@ var DelayNode = (_dec = methods.param("maxDelayTime", validators.isPositiveNumbe
   return DelayNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["delayTime"], _temp), (_desc = _dec(_class.prototype, "__createDelay", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__createDelay")) || _desc, _desc ? Object.defineProperty(_class.prototype, "__createDelay", _desc) : void 0, _desc = _dec2(_class.prototype, "delayTime", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "delayTime")) || _desc, _desc ? Object.defineProperty(_class.prototype, "delayTime", _desc) : void 0), _class));
 exports.default = DelayNode;
-},{"./AudioNode":8,"./decorators/methods":34,"./decorators/props":38,"./validators":62}],17:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/methods":33,"./decorators/props":36,"./validators":61}],17:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2394,7 +2394,7 @@ var DynamicsCompressorNode = (_dec = props.audioparam(-24), _dec2 = props.audiop
   return DynamicsCompressorNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["threshold", "knee", "ratio", "reduction", "attack", "release"], _temp), (_desc = _dec(_class.prototype, "threshold", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "threshold")) || _desc, _desc ? Object.defineProperty(_class.prototype, "threshold", _desc) : void 0, _desc = _dec2(_class.prototype, "knee", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "knee")) || _desc, _desc ? Object.defineProperty(_class.prototype, "knee", _desc) : void 0, _desc = _dec3(_class.prototype, "ratio", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "ratio")) || _desc, _desc ? Object.defineProperty(_class.prototype, "ratio", _desc) : void 0, _desc = _dec4(_class.prototype, "reduction", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "reduction")) || _desc, _desc ? Object.defineProperty(_class.prototype, "reduction", _desc) : void 0, _desc = _dec5(_class.prototype, "attack", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "attack")) || _desc, _desc ? Object.defineProperty(_class.prototype, "attack", _desc) : void 0, _desc = _dec6(_class.prototype, "release", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "release")) || _desc, _desc ? Object.defineProperty(_class.prototype, "release", _desc) : void 0), _class));
 exports.default = DynamicsCompressorNode;
-},{"./AudioNode":8,"./decorators/props":38}],18:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/props":36}],18:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2449,7 +2449,7 @@ var GainNode = (_dec = props.audioparam(1), (_class = (_temp = _class2 = (functi
   return GainNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["gain"], _temp), (_desc = _dec(_class.prototype, "gain", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "gain")) || _desc, _desc ? Object.defineProperty(_class.prototype, "gain", _desc) : void 0), _class));
 exports.default = GainNode;
-},{"./AudioNode":8,"./decorators/props":38}],19:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/props":36}],19:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2515,7 +2515,7 @@ var MediaElementAudioSourceNode = (_dec = methods.param("mediaElement", validato
   return MediaElementAudioSourceNode;
 })(_AudioNode3.default), _class2.$JSONKeys = [], _temp), (_desc = _dec(_class.prototype, "__createMediaElementSource", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__createMediaElementSource")) || _desc, _desc ? Object.defineProperty(_class.prototype, "__createMediaElementSource", _desc) : void 0), _class));
 exports.default = MediaElementAudioSourceNode;
-},{"./AudioNode":8,"./decorators/methods":34,"./dom/HTMLMediaElement":46,"./validators":62}],20:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/methods":33,"./dom/HTMLMediaElement":44,"./validators":61}],20:[function(require,module,exports){
 "use strict";
 
 var _class, _temp;
@@ -2623,7 +2623,7 @@ var MediaStreamAudioSourceNode = (_dec = methods.param("mediaStream", validators
   return MediaStreamAudioSourceNode;
 })(_AudioNode3.default), _class2.$JSONKeys = [], _temp), (_desc = _dec(_class.prototype, "__createMediaStreamSource", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__createMediaStreamSource")) || _desc, _desc ? Object.defineProperty(_class.prototype, "__createMediaStreamSource", _desc) : void 0), _class));
 exports.default = MediaStreamAudioSourceNode;
-},{"./AudioNode":8,"./decorators/methods":34,"./dom/MediaStream":47,"./validators":62}],22:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/methods":33,"./dom/MediaStream":45,"./validators":61}],22:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2683,7 +2683,7 @@ var OfflineAudioCompletionEvent = (function (_Event) {
 })(_Event3.default);
 
 exports.default = OfflineAudioCompletionEvent;
-},{"./dom/Event":43,"./utils/Immigration":50}],23:[function(require,module,exports){
+},{"./dom/Event":41,"./utils/Immigration":48}],23:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -2880,7 +2880,7 @@ var OfflineAudioContext = (_dec = methods.param("numberOfChannels", validators.i
   return OfflineAudioContext;
 })(_AudioContext3.default), (_desc = _dec(_class.prototype, "__OfflineAudioContext", _desc = _dec2(_class.prototype, "__OfflineAudioContext", _desc = _dec3(_class.prototype, "__OfflineAudioContext", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__OfflineAudioContext")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "__OfflineAudioContext", _desc) : void 0, _desc = _dec4(_class.prototype, "oncomplete", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "oncomplete")) || _desc, _desc ? Object.defineProperty(_class.prototype, "oncomplete", _desc) : void 0, _desc = _dec5(_class.prototype, "startRendering", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "startRendering")) || _desc, _desc ? Object.defineProperty(_class.prototype, "startRendering", _desc) : void 0, _desc = _dec6(_class.prototype, "__transitionToState", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__transitionToState")) || _desc, _desc ? Object.defineProperty(_class.prototype, "__transitionToState", _desc) : void 0), _class));
 exports.default = OfflineAudioContext;
-},{"./AudioBuffer":3,"./AudioContext":5,"./OfflineAudioCompletionEvent":22,"./decorators/methods":34,"./decorators/props":38,"./dom/Event":43,"./utils/Configuration":49,"./utils/Immigration":50,"./validators":62}],24:[function(require,module,exports){
+},{"./AudioBuffer":3,"./AudioContext":5,"./OfflineAudioCompletionEvent":22,"./decorators/methods":33,"./decorators/props":36,"./dom/Event":41,"./utils/Configuration":47,"./utils/Immigration":48,"./validators":61}],24:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -3050,7 +3050,7 @@ var OscillatorNode = (_dec = props.enum(["sine", "square", "sawtooth", "triangle
   return OscillatorNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["type", "frequency", "detune"], _temp), (_desc = _dec(_class.prototype, "type", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "type")) || _desc, _desc ? Object.defineProperty(_class.prototype, "type", _desc) : void 0, _desc = _dec2(_class.prototype, "frequency", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "frequency")) || _desc, _desc ? Object.defineProperty(_class.prototype, "frequency", _desc) : void 0, _desc = _dec3(_class.prototype, "detune", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "detune")) || _desc, _desc ? Object.defineProperty(_class.prototype, "detune", _desc) : void 0, _desc = _dec4(_class.prototype, "onended", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "onended")) || _desc, _desc ? Object.defineProperty(_class.prototype, "onended", _desc) : void 0, _desc = _dec5(_class.prototype, "start", _desc = _dec6(_class.prototype, "start", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "start")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "start", _desc) : void 0, _desc = _dec7(_class.prototype, "stop", _desc = _dec8(_class.prototype, "stop", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "stop")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "stop", _desc) : void 0, _desc = _dec9(_class.prototype, "setPeriodicWave", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "setPeriodicWave")) || _desc, _desc ? Object.defineProperty(_class.prototype, "setPeriodicWave", _desc) : void 0), _class));
 exports.default = OscillatorNode;
-},{"./AudioNode":8,"./PeriodicWave":26,"./decorators/methods":34,"./decorators/props":38,"./dom/Event":43,"./utils/toSeconds":61,"./validators":62}],25:[function(require,module,exports){
+},{"./AudioNode":8,"./PeriodicWave":26,"./decorators/methods":33,"./decorators/props":36,"./dom/Event":41,"./utils/toSeconds":60,"./validators":61}],25:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -3143,7 +3143,7 @@ var PannerNode = (_dec = props.enum(["HRTF", "equalpower"]), _dec2 = props.enum(
   return PannerNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["panningModel", "distanceModel", "refDistance", "maxDistance", "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"], _temp), (_desc = _dec(_class.prototype, "panningModel", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "panningModel")) || _desc, _desc ? Object.defineProperty(_class.prototype, "panningModel", _desc) : void 0, _desc = _dec2(_class.prototype, "distanceModel", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "distanceModel")) || _desc, _desc ? Object.defineProperty(_class.prototype, "distanceModel", _desc) : void 0, _desc = _dec3(_class.prototype, "refDistance", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "refDistance")) || _desc, _desc ? Object.defineProperty(_class.prototype, "refDistance", _desc) : void 0, _desc = _dec4(_class.prototype, "maxDistance", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "maxDistance")) || _desc, _desc ? Object.defineProperty(_class.prototype, "maxDistance", _desc) : void 0, _desc = _dec5(_class.prototype, "rolloffFactor", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "rolloffFactor")) || _desc, _desc ? Object.defineProperty(_class.prototype, "rolloffFactor", _desc) : void 0, _desc = _dec6(_class.prototype, "coneInnerAngle", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "coneInnerAngle")) || _desc, _desc ? Object.defineProperty(_class.prototype, "coneInnerAngle", _desc) : void 0, _desc = _dec7(_class.prototype, "coneOuterAngle", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "coneOuterAngle")) || _desc, _desc ? Object.defineProperty(_class.prototype, "coneOuterAngle", _desc) : void 0, _desc = _dec8(_class.prototype, "coneOuterGain", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "coneOuterGain")) || _desc, _desc ? Object.defineProperty(_class.prototype, "coneOuterGain", _desc) : void 0, _desc = _dec9(_class.prototype, "setPosition", _desc = _dec10(_class.prototype, "setPosition", _desc = _dec11(_class.prototype, "setPosition", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "setPosition")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "setPosition", _desc) : void 0, _desc = _dec12(_class.prototype, "setOrientation", _desc = _dec13(_class.prototype, "setOrientation", _desc = _dec14(_class.prototype, "setOrientation", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "setOrientation")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "setOrientation", _desc) : void 0, _desc = _dec15(_class.prototype, "setVelocity", _desc = _dec16(_class.prototype, "setVelocity", _desc = _dec17(_class.prototype, "setVelocity", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "setVelocity")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "setVelocity", _desc) : void 0), _class));
 exports.default = PannerNode;
-},{"./AudioNode":8,"./decorators/methods":34,"./decorators/props":38,"./validators":62}],26:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/methods":33,"./decorators/props":36,"./validators":61}],26:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -3231,7 +3231,7 @@ var PeriodicWave = (_dec = methods.param("real", validators.isInstanceOf(Float32
   return PeriodicWave;
 })(), (_desc = _dec(_class.prototype, "__createPeriodicWave", _desc = _dec2(_class.prototype, "__createPeriodicWave", _desc = _dec3(_class.prototype, "__createPeriodicWave", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__createPeriodicWave")) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "__createPeriodicWave", _desc) : void 0), _class));
 exports.default = PeriodicWave;
-},{"./decorators/methods":34,"./utils/Immigration":50,"./validators":62}],27:[function(require,module,exports){
+},{"./decorators/methods":33,"./utils/Immigration":48,"./validators":61}],27:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -3355,7 +3355,7 @@ var ScriptProcessorNode = (_dec = methods.param("bufferSize", validators.isPosit
   return ScriptProcessorNode;
 })(_AudioNode3.default), _class2.$JSONKeys = [], _temp), (_desc = _dec(_class.prototype, "__createScriptProcessor", _desc = _dec2(_class.prototype, "__createScriptProcessor", _desc = _dec3(_class.prototype, "__createScriptProcessor", _desc = _dec4(_class.prototype, "__createScriptProcessor", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "__createScriptProcessor")) || _desc) || _desc) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "__createScriptProcessor", _desc) : void 0, _desc = _dec5(_class.prototype, "bufferSize", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "bufferSize")) || _desc, _desc ? Object.defineProperty(_class.prototype, "bufferSize", _desc) : void 0, _desc = _dec6(_class.prototype, "onaudioprocess", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "onaudioprocess")) || _desc, _desc ? Object.defineProperty(_class.prototype, "onaudioprocess", _desc) : void 0), _class));
 exports.default = ScriptProcessorNode;
-},{"./AudioBuffer":3,"./AudioNode":8,"./AudioProcessingEvent":11,"./decorators/methods":34,"./decorators/props":38,"./utils/Immigration":50,"./validators":62}],28:[function(require,module,exports){
+},{"./AudioBuffer":3,"./AudioNode":8,"./AudioProcessingEvent":11,"./decorators/methods":33,"./decorators/props":36,"./utils/Immigration":48,"./validators":61}],28:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -3410,7 +3410,7 @@ var StereoPannerNode = (_dec = props.audioparam(0), (_class = (_temp = _class2 =
   return StereoPannerNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["pan"], _temp), (_desc = _dec(_class.prototype, "pan", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "pan")) || _desc, _desc ? Object.defineProperty(_class.prototype, "pan", _desc) : void 0), _class));
 exports.default = StereoPannerNode;
-},{"./AudioNode":8,"./decorators/props":38}],29:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/props":36}],29:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -3472,7 +3472,7 @@ var WaveShaperNode = (_dec = props.typed(validators.isNullOrInstanceOf(Float32Ar
   return WaveShaperNode;
 })(_AudioNode3.default), _class2.$JSONKeys = ["oversample"], _temp), (_desc = _dec(_class.prototype, "curve", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "curve")) || _desc, _desc ? Object.defineProperty(_class.prototype, "curve", _desc) : void 0, _desc = _dec2(_class.prototype, "oversample", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "oversample")) || _desc, _desc ? Object.defineProperty(_class.prototype, "oversample", _desc) : void 0), _class));
 exports.default = WaveShaperNode;
-},{"./AudioNode":8,"./decorators/props":38,"./validators":62}],30:[function(require,module,exports){
+},{"./AudioNode":8,"./decorators/props":36,"./validators":61}],30:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -3776,7 +3776,7 @@ var WebAudioTestAPI = {
 
 exports.default = WebAudioTestAPI;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AnalyserNode":2,"./AudioBuffer":3,"./AudioBufferSourceNode":4,"./AudioContext":5,"./AudioDestinationNode":6,"./AudioListener":7,"./AudioNode":8,"./AudioParam":10,"./AudioProcessingEvent":11,"./BiquadFilterNode":12,"./ChannelMergerNode":13,"./ChannelSplitterNode":14,"./ConvolverNode":15,"./DelayNode":16,"./DynamicsCompressorNode":17,"./GainNode":18,"./MediaElementAudioSourceNode":19,"./MediaStreamAudioDestinationNode":20,"./MediaStreamAudioSourceNode":21,"./OfflineAudioCompletionEvent":22,"./OfflineAudioContext":23,"./OscillatorNode":24,"./PannerNode":25,"./PeriodicWave":26,"./ScriptProcessorNode":27,"./StereoPannerNode":28,"./WaveShaperNode":29,"./WebAudioAPI":30,"./dom/Element":42,"./dom/Event":43,"./dom/EventTarget":44,"./dom/HTMLElement":45,"./dom/HTMLMediaElement":46,"./dom/MediaStream":47,"./utils/Configuration":49,"./utils/Immigration":50,"./utils/getAPIVersion":55}],32:[function(require,module,exports){
+},{"./AnalyserNode":2,"./AudioBuffer":3,"./AudioBufferSourceNode":4,"./AudioContext":5,"./AudioDestinationNode":6,"./AudioListener":7,"./AudioNode":8,"./AudioParam":10,"./AudioProcessingEvent":11,"./BiquadFilterNode":12,"./ChannelMergerNode":13,"./ChannelSplitterNode":14,"./ConvolverNode":15,"./DelayNode":16,"./DynamicsCompressorNode":17,"./GainNode":18,"./MediaElementAudioSourceNode":19,"./MediaStreamAudioDestinationNode":20,"./MediaStreamAudioSourceNode":21,"./OfflineAudioCompletionEvent":22,"./OfflineAudioContext":23,"./OscillatorNode":24,"./PannerNode":25,"./PeriodicWave":26,"./ScriptProcessorNode":27,"./StereoPannerNode":28,"./WaveShaperNode":29,"./WebAudioAPI":30,"./dom/Element":40,"./dom/Event":41,"./dom/EventTarget":42,"./dom/HTMLElement":43,"./dom/HTMLMediaElement":44,"./dom/MediaStream":45,"./utils/Configuration":47,"./utils/Immigration":48,"./utils/getAPIVersion":54}],32:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3789,83 +3789,71 @@ exports.default = "0.5.0";
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = contract;
-function contract(_ref) {
-  var precondition = _ref.precondition;
-  var postcondition = _ref.postcondition;
+exports.name = name;
+exports.param = param;
+exports.returns = returns;
+exports.contract = contract;
+var repository = new WeakMap();
 
-  return function (target, name, descriptor) {
-    var func = descriptor.value;
+function createValidator(methodname) {
+  var config = {};
 
-    descriptor.value = function contract() {
-      if (typeof precondition === "function") {
-        try {
-          precondition.call.apply(precondition, [this].concat(Array.prototype.slice.call(arguments)));
-        } catch (e) {
-          e.message = this.constructor.name + "#" + name + "; " + e.message;
-          throw e;
-        }
+  function validate() {
+    var _config$methodBody;
+
+    var header = this.constructor.name + "#" + config.methodname + "()";
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    var argErrIndex = argscheck(args, config.parameters);
+
+    if (argErrIndex !== -1) {
+      throw new TypeError(header + "; argument(" + argErrIndex + ") should be a " + config.parameters[argErrIndex].validator.name + ", but got: " + args[argErrIndex]);
+    }
+
+    if (typeof config.precondition === "function") {
+      try {
+        var _config$precondition;
+
+        (_config$precondition = config.precondition).call.apply(_config$precondition, [this].concat(args));
+      } catch (e) {
+        e.message = header + "; " + e.message;
+        throw e;
       }
+    }
 
-      var res = func.call.apply(func, [this].concat(Array.prototype.slice.call(arguments)));
+    var res = (_config$methodBody = config.methodBody).call.apply(_config$methodBody, [this].concat(args));
 
-      if (typeof postcondition === "function") {
-        try {
-          postcondition.call(this, res);
-        } catch (e) {
-          e.message = this.constructor.name + "#" + name + "; " + e.message;
-          throw e;
-        }
+    if (typeof config.postcondition === "function") {
+      try {
+        config.postcondition.call(this, res);
+      } catch (e) {
+        e.message = header + "; " + e.message;
+        throw e;
       }
+    }
 
-      return res;
-    };
+    if (config.returnValue) {
+      if (!config.returnValue.test(res)) {
+        throw new TypeError(header + "; required a " + config.returnValue.name + ", but got " + res);
+      }
+    }
 
-    return descriptor;
-  };
-}
-},{}],34:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.param = exports.contract = undefined;
-
-var _contract2 = require("./contract");
-
-var _contract3 = _interopRequireDefault(_contract2);
-
-var _param2 = require("./param");
-
-var _param3 = _interopRequireDefault(_param2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.contract = _contract3.default;
-exports.param = _param3.default;
-},{"./contract":33,"./param":35}],35:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = param;
-var map = new WeakMap();
-
-function getFromMap(map, key, Container) {
-  if (map.has(key)) {
-    return map.get(key);
+    return res;
   }
 
-  var value = new Container();
+  config.methodname = methodname;
+  config.parameters = [];
+  config.descriptor = {
+    value: validate, enumerable: true, configurable: true
+  };
 
-  map.set(key, value);
-
-  return value;
+  return config;
 }
 
-function check(values, validators) {
+function argscheck(values, validators) {
   for (var i = 0; i < validators.length; i++) {
     if (validators[i].optional === true && values.length <= i) {
       break;
@@ -3877,39 +3865,73 @@ function check(values, validators) {
   return -1;
 }
 
-function param(paramName, validator) {
-  return function (target, name, descriptor) {
-    var func = descriptor.value;
-    var klasses = getFromMap(map, target, Map);
-    var validators = getFromMap(klasses, name, Array);
-    var optional = /^\[\s*\w+?\s*\]$/.test(paramName);
+function getMethodConfig(target, methodname) {
+  var classConfig = repository.get(target);
 
-    if (optional) {
-      paramName = paramName.replace(/^\[|\]$/g, "").trim();
-    }
+  if (!classConfig) {
+    repository.set(target, classConfig = {});
+  }
 
-    validators.unshift({ paramName: paramName, validator: validator, optional: optional });
+  if (!classConfig[methodname]) {
+    classConfig[methodname] = createValidator(methodname);
+  }
 
-    if (validators.length === 1) {
-      descriptor.value = function param() {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
-        }
+  return classConfig[methodname];
+}
 
-        var errIndex = check(args, validators);
+function name($methodname) {
+  return function (target, methodname, descriptor) {
+    var methodConfig = getMethodConfig(target, methodname);
 
-        if (errIndex !== -1) {
-          throw new TypeError(this.constructor.name + "#" + name + "(); argument(" + errIndex + ") should be a " + validators[errIndex].validator.name + ", but got: " + args[errIndex]);
-        }
+    methodConfig.methodname = $methodname;
+    methodConfig.methodBody = methodConfig.methodBody || descriptor.value;
 
-        return func.call.apply(func, [this].concat(args));
-      };
-    }
-
-    return descriptor;
+    return methodConfig.descriptor;
   };
 }
-},{}],36:[function(require,module,exports){
+
+function param(paramname, validator) {
+  return function (target, methodname, descriptor) {
+    var methodConfig = getMethodConfig(target, methodname);
+    var optional = /^\[\s*\w+?\s*\]$/.test(paramname);
+
+    if (optional) {
+      paramname = paramname.replace(/^\[|\]$/g, "").trim();
+    }
+
+    methodConfig.parameters.unshift({ paramname: paramname, validator: validator, optional: optional });
+    methodConfig.methodBody = methodConfig.methodBody || descriptor.value;
+
+    return methodConfig.descriptor;
+  };
+}
+
+function returns(validator) {
+  return function (target, methodname, descriptor) {
+    var methodConfig = getMethodConfig(target, methodname);
+
+    methodConfig.returnValue = validator;
+    methodConfig.methodBody = methodConfig.methodBody || descriptor.value;
+
+    return methodConfig.descriptor;
+  };
+}
+
+function contract(_ref) {
+  var precondition = _ref.precondition;
+  var postcondition = _ref.postcondition;
+
+  return function (target, methodname, descriptor) {
+    var methodConfig = getMethodConfig(target, methodname);
+
+    methodConfig.precondition = precondition;
+    methodConfig.postcondition = postcondition;
+    methodConfig.methodBody = methodConfig.methodBody || descriptor.value;
+
+    return methodConfig.descriptor;
+  };
+}
+},{}],34:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3917,13 +3939,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = audioparam;
 
+var _AudioParam = require("../../AudioParam");
+
+var _AudioParam2 = _interopRequireDefault(_AudioParam);
+
 var _Immigration = require("../../utils/Immigration");
 
 var _Immigration2 = _interopRequireDefault(_Immigration);
 
-var _AudioParam = require("../../AudioParam");
+var _format = require("../../utils/format");
 
-var _AudioParam2 = _interopRequireDefault(_AudioParam);
+var _format2 = _interopRequireDefault(_format);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3942,8 +3968,8 @@ function audioparam(defaultValue) {
       return this._[name];
     };
 
-    descriptor.set = function set() {
-      throw new TypeError(this.constructor.name + "; Attempt to assign to readonly property: \"" + name + "\"");
+    descriptor.set = function set(value) {
+      throw new TypeError((0, _format2.default)("\n        Failed to set the '" + name + "' property on '" + this.constructor.name + "'\n\n        \tAttempt to assign to readonly property. Do you mean this?\n\n        \t\t" + name + ".value = " + value + ";\n      ") + "\n");
     };
 
     return {
@@ -3954,7 +3980,7 @@ function audioparam(defaultValue) {
     };
   };
 }
-},{"../../AudioParam":10,"../../utils/Immigration":50}],37:[function(require,module,exports){
+},{"../../AudioParam":10,"../../utils/Immigration":48,"../../utils/format":53}],35:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3987,7 +4013,7 @@ function _enum(values) {
     };
   };
 }
-},{}],38:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4022,7 +4048,7 @@ exports.enum = _enum3.default;
 exports.on = _on3.default;
 exports.readonly = _readonly3.default;
 exports.typed = _typed3.default;
-},{"./audioparam":36,"./enum":37,"./on":39,"./readonly":40,"./typed":41}],39:[function(require,module,exports){
+},{"./audioparam":34,"./enum":35,"./on":37,"./readonly":38,"./typed":39}],37:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4052,13 +4078,20 @@ function oncallback() {
     };
   };
 }
-},{}],40:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = readonly;
+
+var _format = require("../../utils/format");
+
+var _format2 = _interopRequireDefault(_format);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function readonly(value) {
   return function (target, name, descriptor) {
     var getter = descriptor.get || descriptor.value;
@@ -4075,7 +4108,7 @@ function readonly(value) {
     }
 
     descriptor.set = function set() {
-      throw new TypeError(this.constructor.name + "; Attempt to assign to readonly property: \"" + name + "\"");
+      throw new TypeError((0, _format2.default)("\n        Failed to set the '" + name + "' property on '" + this.constructor.name + "'\n\n        \tAttempt to assign to readonly property.\n      ") + "\n");
     };
 
     return {
@@ -4086,7 +4119,7 @@ function readonly(value) {
     };
   };
 }
-},{}],41:[function(require,module,exports){
+},{"../../utils/format":53}],39:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4121,7 +4154,7 @@ function typed(validator, defaultValue) {
     };
   };
 }
-},{}],42:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4175,7 +4208,7 @@ var Element = (function (_inLaws) {
 
 exports.default = Element;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../utils/inLaws":56,"./EventTarget":44}],43:[function(require,module,exports){
+},{"../utils/inLaws":55,"./EventTarget":42}],41:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4246,7 +4279,7 @@ var Event = (function (_inLaws) {
 
 exports.default = Event;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../utils/defaults":54,"../utils/inLaws":56}],44:[function(require,module,exports){
+},{"../utils/defaults":52,"../utils/inLaws":55}],42:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4400,7 +4433,7 @@ var EventTarget = (_dec = methods.param("type", validators.isString), _dec2 = me
 })((0, _inLaws3.default)(global.EventTarget)), (_desc = _dec(_class.prototype, "addEventListener", _desc = _dec2(_class.prototype, "addEventListener", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "addEventListener")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "addEventListener", _desc) : void 0, _desc = _dec3(_class.prototype, "removeEventListener", _desc = _dec4(_class.prototype, "removeEventListener", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "removeEventListener")) || _desc) || _desc, _desc ? Object.defineProperty(_class.prototype, "removeEventListener", _desc) : void 0, _desc = _dec5(_class.prototype, "dispatchEvent", _desc = Object.getOwnPropertyDescriptor(_class.prototype, "dispatchEvent")) || _desc, _desc ? Object.defineProperty(_class.prototype, "dispatchEvent", _desc) : void 0), _class));
 exports.default = EventTarget;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../decorators/methods":34,"../utils/inLaws":56,"../validators":62,"./Event":43,"events":73}],45:[function(require,module,exports){
+},{"../decorators/methods":33,"../utils/inLaws":55,"../validators":61,"./Event":41,"events":72}],43:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4454,7 +4487,7 @@ var HTMLElement = (function (_inLaws) {
 
 exports.default = HTMLElement;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../utils/inLaws":56,"./Element":42}],46:[function(require,module,exports){
+},{"../utils/inLaws":55,"./Element":40}],44:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4508,7 +4541,7 @@ var HTMLMediaElement = (function (_inLaws) {
 
 exports.default = HTMLMediaElement;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../utils/inLaws":56,"./HTMLElement":45}],47:[function(require,module,exports){
+},{"../utils/inLaws":55,"./HTMLElement":43}],45:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4562,7 +4595,7 @@ var MediaStream = (function (_inLaws) {
 
 exports.default = MediaStream;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../utils/inLaws":56,"./EventTarget":44}],48:[function(require,module,exports){
+},{"../utils/inLaws":55,"./EventTarget":42}],46:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4582,7 +4615,7 @@ if (!global.WEB_AUDIO_TEST_API_IGNORE) {
 
 exports.default = _WebAudioTestAPI2.default;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./WebAudioTestAPI":31}],49:[function(require,module,exports){
+},{"./WebAudioTestAPI":31}],47:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -4665,7 +4698,7 @@ var Configuration = (function () {
 })();
 
 exports.default = Configuration;
-},{"./api":52}],50:[function(require,module,exports){
+},{"./api":50}],48:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -4727,7 +4760,7 @@ var Immigration = (function () {
 })();
 
 exports.default = Immigration;
-},{}],51:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -4825,7 +4858,7 @@ var Junction = (function () {
 })();
 
 exports.default = Junction;
-},{"./appendIfNotExists":53,"./removeIfExists":57}],52:[function(require,module,exports){
+},{"./appendIfNotExists":51,"./removeIfExists":56}],50:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4866,7 +4899,7 @@ exports.default = {
     states: ["channel", "selective"]
   }
 };
-},{}],53:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4880,7 +4913,7 @@ function appendIfNotExists(list, value) {
     list.push(value);
   }
 }
-},{}],54:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4890,7 +4923,25 @@ exports.default = defaults;
 function defaults(value, defaultValue) {
   return typeof value !== "undefined" ? value : defaultValue;
 }
-},{}],55:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = format;
+function format(text) {
+  text = text.trim();
+  text = text.replace(/\$a (\w)/g, function (_, a) {
+    if (/[aiueo]/i.test(a)) {
+      return "an " + a;
+    }
+    return "a " + a;
+  });
+  text = text.replace(/^ +/gm, "");
+  return text;
+}
+},{}],54:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4907,7 +4958,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function getAPIVersion() {
   return _version__2.default;
 }
-},{"../__version__":32}],56:[function(require,module,exports){
+},{"../__version__":32}],55:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4923,7 +4974,7 @@ function inLaws(superClass) {
 
   return ctor;
 }
-},{}],57:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4939,7 +4990,7 @@ function removeIfExists(list, value) {
 
   return null;
 }
-},{}],58:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4969,7 +5020,7 @@ function toJSON(node, func) {
 
   return result;
 }
-},{"./toNodeName":60}],59:[function(require,module,exports){
+},{"./toNodeName":59}],58:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5005,7 +5056,7 @@ function toMicroseconds(time) {
 
   return value;
 }
-},{}],60:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5018,7 +5069,7 @@ function toNodeName(obj) {
   }
   return obj.$name;
 }
-},{}],61:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5035,7 +5086,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function toSeconds(time) {
   return (0, _toMicroseconds2.default)(time) / (1000 * 1000);
 }
-},{"./toMicroseconds":59}],62:[function(require,module,exports){
+},{"./toMicroseconds":58}],61:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5095,7 +5146,7 @@ exports.isNumber = _isNumber3.default;
 exports.isPositiveInteger = _isPositiveInteger3.default;
 exports.isPositiveNumber = _isPositiveNumber3.default;
 exports.isString = _isString3.default;
-},{"./isAudioSource":63,"./isBoolean":64,"./isFunction":65,"./isInstanceOf":66,"./isInteger":67,"./isNullOrInstanceOf":68,"./isNumber":69,"./isPositiveInteger":70,"./isPositiveNumber":71,"./isString":72}],63:[function(require,module,exports){
+},{"./isAudioSource":62,"./isBoolean":63,"./isFunction":64,"./isInstanceOf":65,"./isInteger":66,"./isNullOrInstanceOf":67,"./isNumber":68,"./isPositiveInteger":69,"./isPositiveNumber":70,"./isString":71}],62:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -5109,7 +5160,7 @@ exports.default = {
   }
 };
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],64:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5121,7 +5172,7 @@ exports.default = {
     return typeof value === "boolean";
   }
 };
-},{}],65:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5133,7 +5184,7 @@ exports.default = {
     return typeof value === "function";
   }
 };
-},{}],66:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5148,7 +5199,7 @@ function isInstanceOf(klass) {
     }
   };
 }
-},{}],67:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5160,7 +5211,7 @@ exports.default = {
     return value === (value | 0);
   }
 };
-},{}],68:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5175,7 +5226,7 @@ function isNullOrInstanceOf(klass) {
     }
   };
 }
-},{}],69:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5187,7 +5238,7 @@ exports.default = {
     return value === +value;
   }
 };
-},{}],70:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5199,7 +5250,7 @@ exports.default = {
     return value === (value | 0) && 0 <= value;
   }
 };
-},{}],71:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5211,7 +5262,7 @@ exports.default = {
     return value === +value && 0 <= value;
   }
 };
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5223,7 +5274,7 @@ exports.default = {
     return typeof value === "string";
   }
 };
-},{}],73:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a

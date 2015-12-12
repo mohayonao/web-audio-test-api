@@ -21,10 +21,10 @@ export default class PannerNode extends AudioNode {
     });
   }
 
-  @props.enum([ "HRTF", "equalpower" ])
+  @props.enums([ "HRTF", "equalpower" ])
   panningModel() {}
 
-  @props.enum([ "inverse", "linear", "exponential" ])
+  @props.enums([ "inverse", "linear", "exponential" ])
   distanceModel() {}
 
   @props.typed(validators.isNumber, 1)

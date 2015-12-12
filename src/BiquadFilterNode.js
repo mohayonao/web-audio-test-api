@@ -18,7 +18,7 @@ export default class BiquadFilterNode extends AudioNode {
     });
   }
 
-  @props.enum([ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass" ])
+  @props.enums([ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass" ])
   type() {}
 
   @props.audioparam(350)

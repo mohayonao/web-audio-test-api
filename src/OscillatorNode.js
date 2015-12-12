@@ -25,7 +25,7 @@ export default class OscillatorNode extends AudioNode {
     this._.firedOnEnded = false;
   }
 
-  @props.enum([ "sine", "square", "sawtooth", "triangle" ])
+  @props.enums([ "sine", "square", "sawtooth", "triangle" ])
   type() {}
 
   @props.audioparam(440)

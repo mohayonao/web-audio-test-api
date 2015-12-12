@@ -17,6 +17,5 @@ describe("@props.enums(values: any[], [ defaultValue: any ])", () => {
     assert(foo.bar === "a");
     assert.doesNotThrow(() => { foo.bar = "c"; });
     assert(foo.bar === "c");
-    assert.throws(() => { foo.bar = "d"; }, TypeError);
-  });
+    assert.throws(() => { foo.bar = "d"; }, TypeError); });
 });
