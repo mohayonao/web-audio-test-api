@@ -12,21 +12,21 @@ function createSetterError(klassName, propName, message) {
 }
 
 export function audioparam(defaultValue) {
-  return (target, name, descriptor) => {
+  return (target, propName, descriptor) => {
     descriptor.get = function get() {
-      if (!this._.hasOwnProperty(name)) {
-        this._[name] = immigration.apply(admission =>
-          new global.WebAudioTestAPI.AudioParam(admission, this, name, defaultValue)
+      if (!this._.hasOwnProperty(propName)) {
+        this._[propName] = immigration.apply(admission =>
+          new global.WebAudioTestAPI.AudioParam(admission, this, propName, defaultValue)
         );
       }
-      return this._[name];
+      return this._[propName];
     };
 
     descriptor.set = function set(value) {
-      throw createSetterError(this.constructor.name, name, `
+      throw createSetterError(this.constructor.name, propName, `
         \tAttempt to assign to readonly property. Do you mean this?
 
-        \t\t\t${name}.value = ${toS(value)};
+        \t\t\t${propName}.value = ${toS(value)};
       `);
     };
 
@@ -40,23 +40,23 @@ export function audioparam(defaultValue) {
 }
 
 export function enums(values) {
-  return (target, name, descriptor) => {
+  return (target, propName, descriptor) => {
     if (typeof descriptor.get !== "function") {
       descriptor.get = function get() {
-        if (!this._.hasOwnProperty(name)) {
-          this._[name] = values[0];
+        if (!this._.hasOwnProperty(propName)) {
+          this._[propName] = values[0];
         }
-        return this._[name];
+        return this._[propName];
       };
     }
 
     descriptor.set = function set(value) {
       if (values.indexOf(value) === -1) {
-        throw createSetterError(this.constructor.name, name, `
+        throw createSetterError(this.constructor.name, propName, `
           \tThis property should be one of [ ${values.map(toS).join(", ")} ], but got ${toS(value)}.
         `);
       }
-      this._[name] = value;
+      this._[propName] = value;
     };
 
     return {
@@ -69,20 +69,20 @@ export function enums(values) {
 }
 
 export function on() {
-  return (target, name, descriptor) => {
+  return (target, propName, descriptor) => {
     descriptor.get = function get() {
-      if (!this._.hasOwnProperty(name)) {
-        this._[name] = null;
+      if (!this._.hasOwnProperty(propName)) {
+        this._[propName] = null;
       }
-      return this._[name];
+      return this._[propName];
     };
     descriptor.set = function set(value) {
       if (value !== null && typeof value !== "function") {
-        throw createSetterError(this.constructor.name, name, `
+        throw createSetterError(this.constructor.name, propName, `
           \tA callback should be a function or null, but got ${toS(value)}.
         `);
       }
-      this._[name] = value;
+      this._[propName] = value;
     };
 
     return {
@@ -95,7 +95,7 @@ export function on() {
 }
 
 export function readonly(value) {
-  return (target, name, descriptor) => {
+  return (target, propName, descriptor) => {
     const getter = descriptor.get || descriptor.value;
 
     if (typeof descriptor.get !== "function") {
@@ -110,7 +110,7 @@ export function readonly(value) {
     }
 
     descriptor.set = function set() {
-      throw createSetterError(this.constructor.name, name, `
+      throw createSetterError(this.constructor.name, propName, `
         \tAttempt to assign to readonly property.
       `);
     };
@@ -125,24 +125,24 @@ export function readonly(value) {
 }
 
 export function typed(validator, defaultValue) {
-  return (target, name, descriptor) => {
+  return (target, propName, descriptor) => {
     if (typeof descriptor.get !== "function") {
       descriptor.get = function get() {
-        if (!this._.hasOwnProperty(name)) {
-          this._[name] = defaultValue;
+        if (!this._.hasOwnProperty(propName)) {
+          this._[propName] = defaultValue;
         }
-        return this._[name];
+        return this._[propName];
       };
     }
 
     if (typeof descriptor.set !== "function") {
       descriptor.set = function set(value) {
         if (!validator.test(value)) {
-          throw createSetterError(this.constructor.name, name, `
-            \tThis property should be $a ${validator.name}, but got ${toS(value)}.
+          throw createSetterError(this.constructor.name, propName, `
+            \tThis property should be $a ${validator.description}, but got ${toS(value)}.
           `);
         }
-        this._[name] = value;
+        this._[propName] = value;
       };
     }
 

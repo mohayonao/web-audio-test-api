@@ -2,9 +2,9 @@ import assert from "power-assert";
 import isNullOrInstanceOf from "../../src/validators/isNullOrInstanceOf";
 
 describe("validators.isNullOrInstanceOf(klass: function): object", () => {
-  describe(".name: string", () => {
+  describe(".typeName: string", () => {
     it("works", () => {
-      assert(isNullOrInstanceOf(Float32Array).name === "Float32Array");
+      assert(isNullOrInstanceOf(Float32Array).typeName === "Float32Array|null");
     });
   });
   describe(".test(value: any): boolean", () => {

@@ -30,7 +30,7 @@ export default class ScriptProcessorNode extends AudioNode {
   @methods.contract({
     precondition(bufferSize) {
       if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
-        throw new TypeError(`bufferSize should be an enum [ 256, 512, 1024, 2048, 4096, 8192, 16384 ], but got ${bufferSize}`);
+        throw new TypeError(`The {{bufferSize}} should be one of [ 256, 512, 1024, 2048, 4096, 8192, 16384 ], but got ${bufferSize}.`);
       }
     }
   })

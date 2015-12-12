@@ -52,7 +52,7 @@ export default class AudioBufferSourceNode extends AudioNode {
   @methods.contract({
     precondition() {
       if (this._.startTime !== Infinity) {
-        throw new TypeError("cannot start more than once");
+        throw new TypeError("Cannot start more than once.");
       }
     }
   })
@@ -66,10 +66,10 @@ export default class AudioBufferSourceNode extends AudioNode {
   @methods.contract({
     precondition() {
       if (this._.startTime === Infinity) {
-        throw new TypeError("cannot call stop without calling start first");
+        throw new TypeError("Cannot call stop without calling start first.");
       }
       if (this._.stopTime !== Infinity) {
-        throw new TypeError("cannot stop more than once");
+        throw new TypeError("Cannot stop more than once.");
       }
     }
   })

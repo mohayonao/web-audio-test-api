@@ -2,9 +2,9 @@ import assert from "power-assert";
 import isFunction from "../../src/validators/isFunction";
 
 describe("validators.isFunction", () => {
-  describe(".name: string", () => {
+  describe(".typeName: string", () => {
     it("works", () => {
-      assert(isFunction.name === "function");
+      assert(isFunction.typeName === "function");
     });
   });
   describe(".test(value: any): boolean", () => {

@@ -47,7 +47,7 @@ export default class OfflineAudioContext extends AudioContext {
   @methods.contract({
     precondition() {
       if (this._.rendering) {
-        throw new TypeError("cannot call startRendering more than once");
+        throw new TypeError("Cannot call startRendering more than once.");
       }
     }
   })
@@ -77,7 +77,7 @@ export default class OfflineAudioContext extends AudioContext {
   })
   __transitionToState(methodName) {
     return new Promise(() => {
-      throw new TypeError(`Cannot ${methodName} on an OfflineAudioContext`);
+      throw new TypeError(`Cannot ${methodName} on an OfflineAudioContext.`);
     });
   }
 

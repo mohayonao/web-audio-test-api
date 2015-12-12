@@ -2,9 +2,9 @@ import assert from "power-assert";
 import isNumber from "../../src/validators/isNumber";
 
 describe("validators.isNumber", () => {
-  describe(".name: string", () => {
+  describe(".typeName: string", () => {
     it("works", () => {
-      assert(isNumber.name === "number");
+      assert(isNumber.typeName === "number");
     });
   });
   describe(".test(value: any): boolean", () => {

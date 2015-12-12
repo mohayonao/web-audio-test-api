@@ -2,9 +2,9 @@ import assert from "power-assert";
 import isPositiveInteger from "../../src/validators/isPositiveInteger";
 
 describe("validators.isPositiveInteger", () => {
-  describe(".name: string", () => {
+  describe(".typeName: string", () => {
     it("works", () => {
-      assert(isPositiveInteger.name === "positive integer");
+      assert(isPositiveInteger.typeName === "number");
     });
   });
   describe(".test(value: any): boolean", () => {

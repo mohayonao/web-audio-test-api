@@ -3,10 +3,7 @@ import * as props from "../../../src/decorators/props";
 
 describe("@props.typed(validator: object, defaultValue: any)", () => {
   it("defines a callback property", () => {
-    const isNumber = {
-      name: "number",
-      test: value => typeof value === "number"
-    };
+    const isNumber = { typeName: "number", test: value => typeof value === "number" };
 
     class Foo {
       constructor() {

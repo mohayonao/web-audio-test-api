@@ -6,6 +6,7 @@ export default function format(text) {
     }
     return "a " + a;
   });
+  text = text.replace(/{{(\w+)}}/g, "$1");
   text = text.replace(/^ +/gm, "");
   return text;
 }

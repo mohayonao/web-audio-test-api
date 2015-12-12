@@ -3,8 +3,8 @@ import * as methods from "../../../src/decorators/methods";
 
 describe("@methods.param(name: string, validator: object)", () => {
   it("defines function parameters", () => {
-    const isNumber = { name: "number", test: value => typeof value === "number" };
-    const isString = { name: "string", test: value => typeof value === "string" };
+    const isNumber = { typeName: "number", test: value => typeof value === "number" };
+    const isString = { typeName: "string", test: value => typeof value === "string" };
 
     class Foo {
       constructor() {

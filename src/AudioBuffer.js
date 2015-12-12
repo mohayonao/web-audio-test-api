@@ -56,10 +56,11 @@ export default class AudioBuffer {
   @methods.contract({
     precondition(channel) {
       if (this._.data.length <= channel) {
-        throw new TypeError(`channel index (${channel}) exceeds number of channels (${this._.data.length})`);
+        throw new TypeError(`The {{channel}} index (${channel}) exceeds number of channels (${this._.data.length}).`);
       }
     }
   })
+  @methods.returns(validators.isInstanceOf(Float32Array))
   getChannelData(channel) {
     return this._.data[channel];
   }
@@ -69,11 +70,11 @@ export default class AudioBuffer {
   @methods.param("[ startInChannel ]", validators.isPositiveInteger)
   @methods.contract({
     precondition(destination, channelNumber, startInChannel = 0) {
-      if (channelNumber < 0 || this._.data.length <= channelNumber) {
-        throw new TypeError(`The channelNumber provided (${channelNumber}) is outside the range [0, ${this._.data.length})`);
+      if (this._.data.length <= channelNumber) {
+        throw new TypeError(`The {{channelNumber}} provided (${channelNumber}) is outside the range [0, ${this._.data.length}).`);
       }
-      if (startInChannel < 0 || this._.length <= startInChannel) {
-        throw new TypeError(`The startInChannel provided (${startInChannel}) is outside the range [0, ${this._.length}).`);
+      if (this._.length <= startInChannel) {
+        throw new TypeError(`The {{startInChannel}} provided (${startInChannel}) is outside the range [0, ${this._.length}).`);
       }
       if (configuration.getState("AudioBuffer#copyFromChannel") !== "enabled") {
         throw new TypeError("not enabled");
@@ -91,11 +92,11 @@ export default class AudioBuffer {
   @methods.param("[ startInChannel ]", validators.isPositiveInteger)
   @methods.contract({
     precondition(source, channelNumber, startInChannel = 0) {
-      if (channelNumber < 0 || this._.data.length <= channelNumber) {
-        throw new TypeError(`The channelNumber provided (${channelNumber}) is outside the range [0, ${this._.data.length})`);
+      if (this._.data.length <= channelNumber) {
+        throw new TypeError(`The {{channelNumber}} provided (${channelNumber}) is outside the range [0, ${this._.data.length}).`);
       }
-      if (startInChannel < 0 || this._.length <= startInChannel) {
-        throw new TypeError(`The startInChannel provided (${startInChannel}) is outside the range [0, ${this._.length}).`);
+      if (this._.length <= startInChannel) {
+        throw new TypeError(`The {{startInChannel}} provided (${startInChannel}) is outside the range [0, ${this._.length}).`);
       }
       if (configuration.getState("AudioBuffer#copyToChannel") !== "enabled") {
         throw new TypeError("not enabled");

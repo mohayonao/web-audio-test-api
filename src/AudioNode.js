@@ -76,13 +76,13 @@ export default class AudioNode extends EventTarget {
   @methods.contract({
     precondition(destination, output = 0, input = 0) {
       if (this.$context !== destination.$context) {
-        throw new TypeError(`cannot connect to a destination belonging to a different audio context`);
+        throw new TypeError("Cannot connect to a destination belonging to a different AudioContext.");
       }
       if (this.numberOfOutputs <= output) {
-        throw new TypeError(`output index (${output}) exceeds number of outputs (${this.numberOfOutputs})`);
+        throw new TypeError(`The {{output}} index (${output}) exceeds number of outputs (${this.numberOfOutputs}).`);
       }
       if ((destination.numberOfInputs || 1) <= input) {
-        throw new TypeError(`input index (${input}) exceeds number of inputs (${destination.numberOfInputs})`);
+        throw new TypeError(`The {{input}} index (${input}) exceeds number of inputs (${destination.numberOfInputs}).`);
       }
     }
   })
@@ -122,7 +122,7 @@ export default class AudioNode extends EventTarget {
   @methods.contract({
     precondition(output) {
       if (this.numberOfOutputs <= output) {
-        throw new TypeError(`output index (${output}) exceeds number of outputs (${this.numberOfOutputs})`);
+        throw new TypeError(`The {{output}} index (${output}) exceeds number of outputs (${this.numberOfOutputs}).`);
       }
     }
   })
@@ -134,7 +134,7 @@ export default class AudioNode extends EventTarget {
   @methods.contract({
     precondition(destination) {
       if (!this._.outputs.some(junction => junction.isConnected(destination))) {
-        throw new TypeError("the given destination is not connected");
+        throw new TypeError("The given {{destination}} is not connected.");
       }
     }
   })
@@ -149,10 +149,10 @@ export default class AudioNode extends EventTarget {
   @methods.contract({
     precondition(destination, output) {
       if (!this._.outputs.some(junction => junction.isConnected(destination))) {
-        throw new TypeError("the given destination is not connected");
+        throw new TypeError("The given {{destination}} is not connected.");
       }
-      if (output < 0 || this.numberOfOutputs <= output) {
-        throw new TypeError(`output provided (${output}) is outside the range [0, ${this.numberOfOutputs})`);
+      if (this.numberOfOutputs <= output) {
+        throw new TypeError(`The {{output}} provided (${output}) is outside the range [0, ${this.numberOfOutputs}).`);
       }
     }
   })
@@ -166,13 +166,13 @@ export default class AudioNode extends EventTarget {
   @methods.contract({
     precondition(destination, output, input) {
       if (!this._.outputs.some(junction => junction.isConnected(destination))) {
-        throw new TypeError("the given destination is not connected");
+        throw new TypeError("The given {{destination}} is not connected.");
       }
       if (output < 0 || this.numberOfOutputs <= output) {
-        throw new TypeError(`output provided (${output}) is outside the range [0, ${this.numberOfOutputs})`);
+        throw new TypeError(`The {{output}} provided (${output}) is outside the range [0, ${this.numberOfOutputs}).`);
       }
       if (input < 0 || destination.numberOfInputs <= input) {
-        throw new TypeError(`input provided (${input}) is outside the range [0, ${this.numberOfInputs})`);
+        throw new TypeError(`The {{input}} provided (${input}) is outside the range [0, ${this.numberOfInputs}).`);
       }
     }
   })
