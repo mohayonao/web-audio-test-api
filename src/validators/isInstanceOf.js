@@ -1,6 +1,7 @@
 export default function isInstanceOf(klass) {
   return {
-    name: klass.name,
+    description: klass.name,
+    typeName: klass.name,
     test: (value) => value instanceof klass
   };
 }

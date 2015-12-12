@@ -6,8 +6,8 @@ describe("ChannelSplitterNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createChannelSplitter();
 
       assert(node instanceof global.ChannelSplitterNode);
@@ -15,20 +15,16 @@ describe("ChannelSplitterNode", function() {
 
       assert.throws(function() {
         audioContext.createChannelSplitter(5.1);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         return new global.ChannelSplitterNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createChannelSplitter();
 
       assert.deepEqual(node.toJSON(), {
@@ -38,16 +34,16 @@ describe("ChannelSplitterNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createChannelSplitter();
 
       assert(node.$name === "ChannelSplitterNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createChannelSplitter();
 
       assert(node.$context === audioContext);

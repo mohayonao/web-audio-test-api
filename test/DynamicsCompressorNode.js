@@ -6,8 +6,8 @@ describe("DynamicsCompressorNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node instanceof global.DynamicsCompressorNode);
@@ -15,98 +15,84 @@ describe("DynamicsCompressorNode", function() {
 
       assert.throws(function() {
         return new global.DynamicsCompressorNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#threshold", function() {
-    it("get: AudioParam", function() {
+  describe("#threshold: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.threshold instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.threshold = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#knee", function() {
-    it("get: AudioParam", function() {
+  describe("#knee: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.knee instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.knee = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#ratio", function() {
-    it("get: AudioParam", function() {
+  describe("#ratio: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.ratio instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.ratio = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#reduction", function() {
-    it("get: AudioParam", function() {
+  describe("#reduction: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.reduction instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.reduction = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#attack", function() {
-    it("get: AudioParam", function() {
+  describe("#attack: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.attack instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.attack = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#release", function() {
-    it("get: AudioParam", function() {
+  describe("#release: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.release instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.release = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert.deepEqual(node.toJSON(), {
@@ -140,16 +126,16 @@ describe("DynamicsCompressorNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.$name === "DynamicsCompressorNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createDynamicsCompressor();
 
       assert(node.$context === audioContext);

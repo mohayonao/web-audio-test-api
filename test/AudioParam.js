@@ -8,8 +8,8 @@ describe("AudioParam", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -21,17 +21,15 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         return new global.AudioParam();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
 
       // test api
       assert(param.$node === node);
     });
   });
 
-  describe("#name", function() {
-    it("get: string", function() {
+  describe("#name: string", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -43,14 +41,12 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.name = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#defaultValue", function() {
-    it("get: number", function() {
+  describe("#defaultValue: number", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -62,14 +58,12 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.defaultValue = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#value", function() {
-    it("get/set: number", function() {
+  describe("#value: number", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -85,14 +79,12 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.value = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#setValueAtTime", function() {
-    it("(value: number, startTime: number): void", function() {
+  describe("#setValueAtTime(value: number, startTime: number): void", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -104,22 +96,18 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.setValueAtTime("INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.setValueAtTime(0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.setValueAtTime === global.AudioParam.prototype.setValueAtTime);
     });
   });
 
-  describe("#linearRampToValueAtTime", function() {
-    it("(value: number, endTime: number): void", function() {
+  describe("#linearRampToValueAtTime(value: number, endTime: number): void", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -131,22 +119,18 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.linearRampToValueAtTime("INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.linearRampToValueAtTime(0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.linearRampToValueAtTime === global.AudioParam.prototype.linearRampToValueAtTime);
     });
   });
 
-  describe("#exponentialRampToValueAtTime", function() {
-    it("(value: number, endTime: number): void", function() {
+  describe("#exponentialRampToValueAtTime(value: number, endTime: number): void", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -158,22 +142,18 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.exponentialRampToValueAtTime("INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.exponentialRampToValueAtTime(0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.exponentialRampToValueAtTime === global.AudioParam.prototype.exponentialRampToValueAtTime);
     });
   });
 
-  describe("#setTargetAtTime", function() {
-    it("(target: number, startTime: number, timeConstant: number): void", function() {
+  describe("#setTargetAtTime(target: number, startTime: number, timeConstant: number): void", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -185,28 +165,22 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.setTargetAtTime("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.setTargetAtTime(0, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.setTargetAtTime(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.setTargetAtTime === global.AudioParam.prototype.setTargetAtTime);
     });
   });
 
-  describe("#setValueCurveAtTime", function() {
-    it("(values: Float32Array, startTime: number, duration: number): void", function() {
+  describe("#setValueCurveAtTime(values: Float32Array, startTime: number, duration: number): void", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -219,28 +193,22 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.setValueCurveAtTime("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.setValueCurveAtTime(values, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.setValueCurveAtTime(values, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.setValueCurveAtTime === global.AudioParam.prototype.setValueCurveAtTime);
     });
   });
 
-  describe("#cancelScheduledValues", function() {
-    it("(startTime: number): void", function() {
+  describe("#cancelScheduledValues(startTime: number): void", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -252,16 +220,14 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.cancelScheduledValues("INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.cancelScheduledValues === global.AudioParam.prototype.cancelScheduledValues);
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -290,8 +256,8 @@ describe("AudioParam", function() {
     });
   });
 
-  describe("$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -316,8 +282,8 @@ describe("AudioParam", function() {
     });
   });
 
-  describe("$valueAtTime", function() {
-    it("(time: number|string): number", function() {
+  describe("$valueAtTime(time: number|string): number", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -329,8 +295,8 @@ describe("AudioParam", function() {
     });
   });
 
-  describe("$process", function() {
-    it("(inNumSamples, tick): void", function() {
+  describe("$process(inNumSamples, tick): void", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -358,8 +324,8 @@ describe("AudioParam", function() {
     });
   });
 
-  describe("$isConnectedFrom", function() {
-    it("(destination, output = 0): boolean", function() {
+  describe("$isConnectedFrom(destination, output = 0): boolean", function() {
+    it("works", function() {
       var node1 = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext, numberOfOutputs: 3 });
       });
@@ -384,6 +350,139 @@ describe("AudioParam", function() {
       assert(param.$isConnectedFrom(node2, 2) === false);
       assert(param.$isConnectedFrom(node2, 3) === false);
       assert(param.$isConnectedFrom({}) === false);
+    });
+  });
+
+  describe("$linearRampToValueAtTime(v, v0, v1, t, t0, t1): number", function() {
+    it("works", function() {
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, -10, +10, 0.800, 1.000, 2.000), -10, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, -10, +10, 1.000, 1.000, 2.000), -10, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, -10, +10, 1.200, 1.000, 2.000), -6, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, -10, +10, 1.400, 1.000, 2.000), -2, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, -10, +10, 1.600, 1.000, 2.000), +2, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, -10, +10, 1.800, 1.000, 2.000), +6, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, -10, +10, 2.000, 1.000, 2.000), +10, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, -10, +10, 2.200, 1.000, 2.000), +10, 1e-6));
+
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, +10, -10, 0.800, 1.000, 2.000), +10, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, +10, -10, 1.000, 1.000, 2.000), +10, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, +10, -10, 1.200, 1.000, 2.000), +6, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, +10, -10, 1.400, 1.000, 2.000), +2, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, +10, -10, 1.600, 1.000, 2.000), -2, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, +10, -10, 1.800, 1.000, 2.000), -6, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, +10, -10, 2.000, 1.000, 2.000), -10, 1e-6));
+      assert(closeTo(AudioParam.$linearRampToValueAtTime(0, +10, -10, 2.200, 1.000, 2.000), -10, 1e-6));
+    });
+  });
+  describe("$exponentialRampToValueAtTime(v, v0, v1, t, t0, t1): number", function() {
+    it("works", function() {
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 0, 0, 0.800, 1.000, 2.000), 0, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 0, 0, 1.000, 1.000, 2.000), 0, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 0, 0, 1.200, 1.000, 2.000), 0, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 0, 0, 1.400, 1.000, 2.000), 0, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 0, 0, 1.600, 1.000, 2.000), 0, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 0, 0, 1.800, 1.000, 2.000), 0, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 0, 0, 2.000, 1.000, 2.000), 0, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 0, 0, 2.200, 1.000, 2.000), 0, 1e-6));
+
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 1e-3, 10, 0.800, 1.000, 2.000), 1e-3, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 1e-3, 10, 1.000, 1.000, 2.000), 1e-3, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 1e-3, 10, 1.200, 1.000, 2.000), 0.0063095735386013, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 1e-3, 10, 1.400, 1.000, 2.000), 0.0398107171058654, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 1e-3, 10, 1.600, 1.000, 2.000), 0.2511886358261108, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 1e-3, 10, 1.800, 1.000, 2.000), 1.5848932266235352, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 1e-3, 10, 2.000, 1.000, 2.000), 10, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 1e-3, 10, 2.200, 1.000, 2.000), 10, 1e-6));
+
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 10, 1e-3, 0.800, 1.000, 2.000), 10, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 10, 1e-3, 1.000, 1.000, 2.000), 10, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 10, 1e-3, 1.200, 1.000, 2.000), 1.5848932266235352, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 10, 1e-3, 1.400, 1.000, 2.000), 0.2511886358261108, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 10, 1e-3, 1.600, 1.000, 2.000), 0.0398107171058654, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 10, 1e-3, 1.800, 1.000, 2.000), 0.0063095735386013, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 10, 1e-3, 2.000, 1.000, 2.000), 1e-3, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, 10, 1e-3, 2.200, 1.000, 2.000), 1e-3, 1e-6));
+
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -1e-3, -10, 0.800, 1.000, 2.000), -1e-3, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -1e-3, -10, 1.000, 1.000, 2.000), -1e-3, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -1e-3, -10, 1.200, 1.000, 2.000), -0.0063095735386013, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -1e-3, -10, 1.400, 1.000, 2.000), -0.0398107171058654, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -1e-3, -10, 1.600, 1.000, 2.000), -0.2511886358261108, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -1e-3, -10, 1.800, 1.000, 2.000), -1.5848932266235352, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -1e-3, -10, 2.000, 1.000, 2.000), -10, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -1e-3, -10, 2.200, 1.000, 2.000), -10, 1e-6));
+
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -10, -1e-3, 0.800, 1.000, 2.000), -10, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -10, -1e-3, 1.000, 1.000, 2.000), -10, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -10, -1e-3, 1.200, 1.000, 2.000), -1.5848932266235352, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -10, -1e-3, 1.400, 1.000, 2.000), -0.2511886358261108, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -10, -1e-3, 1.600, 1.000, 2.000), -0.0398107171058654, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -10, -1e-3, 1.800, 1.000, 2.000), -0.0063095735386013, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -10, -1e-3, 2.000, 1.000, 2.000), -1e-3, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -10, -1e-3, 2.200, 1.000, 2.000), -1e-3, 1e-6));
+
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, -10, +10, 1.500, 1.000, 2.000), 0, 1e-6));
+      assert(closeTo(AudioParam.$exponentialRampToValueAtTime(0, +10, -10, 1.500, 1.000, 2.000), 0, 1e-6));
+    });
+  });
+  describe("$setTargetAtTime(v0, v1, t, t0, tau): number", function() {
+    it("works", function() {
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 0.000, 1.000, 1.0), 0, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 0.200, 1.000, 1.0), 0, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 0.400, 1.000, 1.0), 0, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 0.600, 1.000, 1.0), 0, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 0.800, 1.000, 1.0), 0, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 1.000, 1.000, 1.0), 0, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 1.200, 1.000, 1.0), 1.81269252300262, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 1.400, 1.000, 1.0), 3.29679942131042, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 1.600, 1.000, 1.0), 4.51188373565673, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 1.800, 1.000, 1.0), 5.50671052932739, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 2.000, 1.000, 1.0), 6.32120561599731, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 2.200, 1.000, 1.0), 6.98805809020996, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 2.400, 1.000, 1.0), 7.53403043746948, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 2.600, 1.000, 1.0), 7.98103475570678, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 2.800, 1.000, 1.0), 8.34701156616211, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 3.000, 1.000, 1.0), 8.64664745330810, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 3.200, 1.000, 1.0), 8.89196872711181, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 3.400, 1.000, 1.0), 9.09282016754150, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 3.800, 1.000, 1.0), 9.39189910888671, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 4.000, 1.000, 1.0), 9.50212955474853, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 4.200, 1.000, 1.0), 9.59237766265869, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 4.400, 1.000, 1.0), 9.66626739501953, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 4.800, 1.000, 1.0), 9.77629184722900, 1e-6));
+      assert(closeTo(AudioParam.$setTargetAtTime(0, 10, 5.000, 1.000, 1.0), 9.81684398651123, 1e-6));
+    });
+  });
+  describe("$setValueCurveAtTime(v, t, t0, t1, curve): number", function() {
+    it("works", function() {
+      var curve = new Float32Array([ 440, 660, 880, 220 ]);
+
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 0.000, 1.000, 4.000, curve), 440, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 0.200, 1.000, 4.000, curve), 440, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 0.400, 1.000, 4.000, curve), 440, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 0.600, 1.000, 4.000, curve), 440, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 0.800, 1.000, 4.000, curve), 440, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 1.000, 1.000, 4.000, curve), 440, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 1.200, 1.000, 4.000, curve), 440, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 1.400, 1.000, 4.000, curve), 440, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 1.600, 1.000, 4.000, curve), 440, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 1.800, 1.000, 4.000, curve), 660, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 2.000, 1.000, 4.000, curve), 660, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 2.200, 1.000, 4.000, curve), 660, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 2.400, 1.000, 4.000, curve), 660, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 2.600, 1.000, 4.000, curve), 880, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 2.800, 1.000, 4.000, curve), 880, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 3.000, 1.000, 4.000, curve), 880, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 3.200, 1.000, 4.000, curve), 880, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 3.400, 1.000, 4.000, curve), 220, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 3.600, 1.000, 4.000, curve), 220, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 3.800, 1.000, 4.000, curve), 220, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 4.000, 1.000, 4.000, curve), 220, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 4.200, 1.000, 4.000, curve), 220, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 4.400, 1.000, 4.000, curve), 220, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 4.600, 1.000, 4.000, curve), 220, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 4.800, 1.000, 4.000, curve), 220, 1e-6));
+      assert(closeTo(AudioParam.$setValueCurveAtTime(0, 5.000, 1.000, 4.000, curve), 220, 1e-6));
     });
   });
 

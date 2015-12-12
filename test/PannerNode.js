@@ -6,8 +6,8 @@ describe("PannerNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(node instanceof global.PannerNode);
@@ -15,14 +15,12 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         return new global.PannerNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#panningModel", function() {
-    it("get/set: PanningModelType", function() {
+  describe("#panningModel: string", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(typeof node.panningModel === "string");
@@ -35,14 +33,12 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.panningModel = "custom";
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#distanceModel", function() {
-    it("get/set: DistanceModelType", function() {
+  describe("#distanceModel: string", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(typeof node.distanceModel === "string");
@@ -58,14 +54,12 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.distanceModel = "custom";
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#refDistance", function() {
-    it("get/set: number", function() {
+  describe("#refDistance: number", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(typeof node.refDistance === "number");
@@ -78,14 +72,12 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.refDistance = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#maxDistance", function() {
-    it("get/set: number", function() {
+  describe("#maxDistance: number", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(typeof node.maxDistance === "number");
@@ -98,14 +90,12 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.maxDistance = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#rolloffFactor", function() {
-    it("get/set: number", function() {
+  describe("#rolloffFactor: number", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(typeof node.rolloffFactor === "number");
@@ -118,14 +108,12 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.rolloffFactor = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#coneInnerAngle", function() {
-    it("get/set: number", function() {
+  describe("#coneInnerAngle: number", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(typeof node.coneInnerAngle === "number");
@@ -138,14 +126,12 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.coneInnerAngle = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#coneOuterAngle", function() {
-    it("get/set: number", function() {
+  describe("#coneOuterAngle: number", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(typeof node.coneOuterAngle === "number");
@@ -158,14 +144,12 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.coneOuterAngle = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#coneOuterGain", function() {
-    it("get/set: number", function() {
+  describe("#coneOuterGain: number", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(typeof node.coneOuterGain === "number");
@@ -178,98 +162,78 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.coneOuterGain = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#setPosition", function() {
-    it("(x: number, y: number, z: number): void", function() {
+  describe("#setPosition(x: number, y: number, z: number): void", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       node.setPosition(0, 0, 0);
 
       assert.throws(function() {
         node.setPosition("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setPosition(0, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setPosition(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.setPosition === global.PannerNode.prototype.setPosition);
     });
   });
 
-  describe("#setOrientation", function() {
-    it("(x: number, y: number, z: number): void", function() {
+  describe("#setOrientation(x: number, y: number, z: number): void", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       node.setOrientation(0, 0, 0);
 
       assert.throws(function() {
         node.setOrientation("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setOrientation(0, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setOrientation(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.setOrientation === global.PannerNode.prototype.setOrientation);
     });
   });
 
-  describe("#setVelocity", function() {
-    it("(x: number, y: number, z: number): void", function() {
+  describe("#setVelocity(x: number, y: number, z: number): void", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       node.setVelocity(0, 0, 0);
 
       assert.throws(function() {
         node.setVelocity("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setVelocity(0, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setVelocity(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.setVelocity === global.PannerNode.prototype.setVelocity);
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert.deepEqual(node.toJSON(), {
@@ -287,16 +251,16 @@ describe("PannerNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(node.$name === "PannerNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createPanner();
 
       assert(node.$context === audioContext);

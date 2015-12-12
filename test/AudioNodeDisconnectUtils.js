@@ -17,15 +17,11 @@ describe("AudioNodeDisconnectUtils", function() {
 
         assert.throws(function() {
           node.disconnect(1.5);
-        }, function(e) {
-          return e instanceof TypeError && /should be a positive integer/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           node.disconnect(2);
-        }, function(e) {
-          return e instanceof TypeError && /exceeds number of outputs/.test(e.message);
-        });
+        }, TypeError);
       });
       it("works", function() {
         var splitter = audioContext.createChannelSplitter(2);
@@ -118,15 +114,11 @@ describe("AudioNodeDisconnectUtils", function() {
 
         assert.throws(function() {
           node.disconnect(1.5);
-        }, function(e) {
-          return e instanceof TypeError && /should be a positive integer/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           node.disconnect(2);
-        }, function(e) {
-          return e instanceof TypeError && /exceeds number of outputs/.test(e.message);
-        });
+        }, TypeError);
       });
       it("works", function() {
         var splitter = audioContext.createChannelSplitter(2);
@@ -175,15 +167,11 @@ describe("AudioNodeDisconnectUtils", function() {
 
         assert.throws(function() {
           node1.disconnect("INVALID");
-        }, function(e) {
-          return e instanceof TypeError && /should be a AudioNode/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           node1.disconnect(node2);
-        }, function(e) {
-          return e instanceof TypeError && /not connected/.test(e.message);
-        });
+        }, TypeError);
       });
       it("works", function() {
         var splitter = audioContext.createChannelSplitter(2);
@@ -232,29 +220,21 @@ describe("AudioNodeDisconnectUtils", function() {
 
         assert.throws(function() {
           node1.disconnect("INVALID", 0);
-        }, function(e) {
-          return e instanceof TypeError && /should be a AudioNode/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           node1.disconnect(node2, 0);
-        }, function(e) {
-          return e instanceof TypeError && /not connected/.test(e.message);
-        });
+        }, TypeError);
 
         node1.connect(node2);
 
         assert.throws(function() {
           node1.disconnect(node2, 0.25);
-        }, function(e) {
-          return e instanceof TypeError && /should be a positive integer/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           node1.disconnect(node2, 1);
-        }, function(e) {
-          return e instanceof TypeError && /outside the range/.test(e.message);
-        });
+        }, TypeError);
       });
       it("works", function() {
         var splitter = audioContext.createChannelSplitter(2);
@@ -308,41 +288,29 @@ describe("AudioNodeDisconnectUtils", function() {
 
         assert.throws(function() {
           node1.disconnect("INVALID", 0, 0);
-        }, function(e) {
-          return e instanceof TypeError && /should be a AudioNode/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           node1.disconnect(node2, 0, 0);
-        }, function(e) {
-          return e instanceof TypeError && /not connected/.test(e.message);
-        });
+        }, TypeError);
 
         node1.connect(node2);
 
         assert.throws(function() {
           node1.disconnect(node2, 0.25, 0);
-        }, function(e) {
-          return e instanceof TypeError && /should be a positive integer/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           node1.disconnect(node2, 0, 0.25);
-        }, function(e) {
-          return e instanceof TypeError && /should be a positive integer/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           node1.disconnect(node2, 1, 0);
-        }, function(e) {
-          return e instanceof TypeError && /outside the range/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           node1.disconnect(node2, 0, 1);
-        }, function(e) {
-          return e instanceof TypeError && /outside the range/.test(e.message);
-        });
+        }, TypeError);
       });
       it("works", function() {
         var splitter = audioContext.createChannelSplitter(2);

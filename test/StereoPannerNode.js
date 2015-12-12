@@ -14,8 +14,8 @@ describe("StereoPannerNode", function() {
     WebAudioTestAPI.setState("AudioContext#createStereoPanner", "disabled");
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createStereoPanner();
 
       assert(node instanceof global.StereoPannerNode);
@@ -23,28 +23,24 @@ describe("StereoPannerNode", function() {
 
       assert.throws(function() {
         return new global.StereoPannerNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#pan", function() {
-    it("get: AudioParam", function() {
+  describe("#pan: AudioParam", function() {
+    it("works", function() {
       var node = audioContext.createStereoPanner();
 
       assert(node.pan instanceof WebAudioTestAPI.AudioParam);
 
       assert.throws(function() {
         node.pan = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createStereoPanner();
 
       assert.deepEqual(node.toJSON(), {
@@ -58,16 +54,16 @@ describe("StereoPannerNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createStereoPanner();
 
       assert(node.$name === "StereoPannerNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createStereoPanner();
 
       assert(node.$context === audioContext);

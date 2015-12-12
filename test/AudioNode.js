@@ -8,14 +8,14 @@ describe("AudioNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
+  describe("constructor()", function() {
     before(function() {
       WebAudioTestAPI.setState("AudioContext#close", "enabled");
     });
     after(function() {
       WebAudioTestAPI.setState("AudioContext#close", "disabled");
     });
-    it("()", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -25,9 +25,7 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         return new global.AudioNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
 
       return audioContext.close().then(function() {
         return immigration.apply(function(admission) {
@@ -41,8 +39,8 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("#context", function() {
-    it("get: AudioContext", function() {
+  describe("#context: AudioContext", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -51,14 +49,12 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.context = null;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#numberOfInputs", function() {
-    it("get: number", function() {
+  describe("#numberOfInputs: number", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -67,14 +63,12 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.numberOfInputs = 1;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#numberOfOutputs", function() {
-    it("get: number", function() {
+  describe("#numberOfOutputs: number", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -83,14 +77,12 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.numberOfOutputs = 1;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#channelCount", function() {
-    it("get/set: number", function() {
+  describe("#channelCount: number", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -105,14 +97,12 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.channelCount = 1.5;
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#channelCountMode", function() {
-    it("get/set: ChannelCountMode", function() {
+  describe("#channelCountMode: string", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -130,14 +120,12 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.channelCountMode = "custom";
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#channelInterpretation", function() {
-    it("get/set: ChannelInterpretation", function() {
+  describe("#channelInterpretation: string", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -152,14 +140,12 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.channelInterpretation = "custom";
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#connect", function() {
-    it("(destination: AudioNode, [output: number], [input: number]): void", function() {
+  describe("#connect(destination: AudioNode, [ output: number, input: number ]): void", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -171,46 +157,34 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.connect(audioContext.destination, 2);
-      }, function(e) {
-        return e instanceof TypeError && /exceeds number of outputs/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.connect(audioContext.destination, 0, 2);
-      }, function(e) {
-        return e instanceof TypeError && /exceeds number of inputs/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.connect("INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a AudioNode/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.connect(audioContext.destination, 1.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.connect(audioContext.destination, 0, 1.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.connect(anotherAudioContext.destination);
-      }, function(e) {
-        return e instanceof TypeError && /different audio context/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.connect === global.AudioNode.prototype.connect);
     });
   });
 
-  describe("#disconnect", function() {
-    it("([output: number]): void", function() {
+  describe("#disconnect([ output: number ]): void", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -220,22 +194,18 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.disconnect(1.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.disconnect(2);
-      }, function(e) {
-        return e instanceof TypeError && /exceeds number of outputs/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.disconnect === global.AudioNode.prototype.disconnect);
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -259,8 +229,8 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -269,8 +239,8 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -279,8 +249,8 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("$process", function() {
-    it("(inNumSamples, tick): void", function() {
+  describe("$process(inNumSamples, tick): void", function() {
+    it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
       });
@@ -305,8 +275,8 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("$isConnectedTo", function() {
-    it("(destination, output = 0, input = 0): boolean", function() {
+  describe("$isConnectedTo(destination, output = 0, input = 0): boolean", function() {
+    it("works", function() {
       var node1 = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext, numberOfOutputs: 3 });
       });
@@ -335,8 +305,8 @@ describe("AudioNode", function() {
     });
   });
 
-  describe("$isConnectedFrom", function() {
-    it("(destination, output = 0, input = 0): boolean", function() {
+  describe("$isConnectedFrom(destination, output = 0, input = 0): boolean", function() {
+    it("works", function() {
       var node1 = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext, numberOfOutputs: 3 });
       });

@@ -2,16 +2,15 @@ import assert from "power-assert";
 import Configuration from "../../src/utils/Configuration";
 
 describe("Configuration", () => {
-  describe("constructor", () => {
-    it("()", () => {
+  describe("constructor()", () => {
+    it("works", () => {
       let configuration = new Configuration();
 
       assert(configuration instanceof Configuration);
     });
   });
-
-  describe(".getInstance", () => {
-    it("(): Configuration", () => {
+  describe(".getInstance(): Configuration", () => {
+    it("works", () => {
       let configuration1 = Configuration.getInstance();
       let configuration2 = Configuration.getInstance();
 
@@ -20,9 +19,8 @@ describe("Configuration", () => {
       assert(configuration1 === configuration2);
     });
   });
-
-  describe("#getState", () => {
-    it("(name: string): string", () => {
+  describe("#getState(name: string): string", () => {
+    it("works", () => {
       let configuration = new Configuration();
 
       assert(configuration.getState("AnalyserNode#getFloatTimeDomainData") === "disabled");
@@ -44,9 +42,8 @@ describe("Configuration", () => {
       });
     });
   });
-
-  describe("#setState", () => {
-    it("(name: string, value: string): void", () => {
+  describe("#setState(name: string, value: string): void", () => {
+    it("works", () => {
       let configuration = new Configuration();
 
       configuration.setState("AnalyserNode#getFloatTimeDomainData", "enabled");

@@ -6,22 +6,20 @@ describe("AudioListener", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       assert(listener instanceof global.AudioListener);
 
       assert.throws(function() {
         return new global.AudioListener();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#dopplerFactor", function() {
-    it("get/set: number", function() {
+  describe("#dopplerFactor: number", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       assert(typeof listener.dopplerFactor === "number");
@@ -34,14 +32,12 @@ describe("AudioListener", function() {
 
       assert.throws(function() {
         listener.dopplerFactor = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#speedOfSound", function() {
-    it("get/set: number", function() {
+  describe("#speedOfSound: number", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       assert(typeof listener.speedOfSound === "number");
@@ -54,124 +50,98 @@ describe("AudioListener", function() {
 
       assert.throws(function() {
         listener.speedOfSound = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#setPosition", function() {
-    it("(x: number, y: number, z: number): void", function() {
+  describe("#setPosition(x: number, y: number, z: number): void", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       listener.setPosition(0, 0, 0);
 
       assert.throws(function() {
         listener.setPosition("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setPosition(0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setPosition(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(listener.setPosition === global.AudioListener.prototype.setPosition);
     });
   });
 
-  describe("#setOrientation", function() {
-    it("(x: number, y: number, z: number, xUp: number, yUp: number, zUp: number): void", function() {
+  describe("#setOrientation(x: number, y: number, z: number, xUp: number, yUp: number, zUp: number): void", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       listener.setOrientation(0, 0, 0, 0, 0, 0);
 
       assert.throws(function() {
         listener.setOrientation("INVALID", 0, 0, 0, 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setOrientation(0, "INVALID", 0, 0, 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setOrientation(0, 0, "INVALID", 0, 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, "INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(listener.setOrientation === global.AudioListener.prototype.setOrientation);
     });
   });
 
-  describe("#setVelocity", function() {
-    it("(x: number, y: number, z: number): void", function() {
+  describe("#setVelocity(x: number, y: number, z: number): void", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       listener.setVelocity(0, 0, 0);
 
       assert.throws(function() {
         listener.setVelocity("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setVelocity(0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setVelocity(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(listener.setVelocity === global.AudioListener.prototype.setVelocity);
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       assert(listener.$name === "AudioListener");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var listener = audioContext.listener;
 
       assert(listener.$context === audioContext);

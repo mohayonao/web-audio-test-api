@@ -20,13 +20,13 @@ export default class PeriodicWave {
   @methods.contract({
     precondition(real, imag) {
       if (4096 < real.length) {
-        throw new TypeError(`length of "real" array (${real.length}) exceeds allow maximum of 4096`);
+        throw new TypeError(`The length of "{{real}}" array (${real.length}) exceeds allow maximum of 4096.`);
       }
       if (4096 < imag.length) {
-        throw new TypeError(`length of "imag" array (${imag.length}) exceeds allow maximum of 4096`);
+        throw new TypeError(`The length of "{{imag}}" array (${imag.length}) exceeds allow maximum of 4096.`);
       }
       if (real.length !== imag.length) {
-        throw new TypeError(`length of real array (${real.length}) and length of imaginary array (${imag.length}) must match`);
+        throw new TypeError(`The length of "{{real}}" array (${real.length}) and length of "imag" array (${imag.length}) must match.`);
       }
     }
   })

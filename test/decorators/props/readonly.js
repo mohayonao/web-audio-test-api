@@ -17,10 +17,6 @@ describe("@props.readonly()", () => {
     const foo = new Foo();
 
     assert(foo.bar === "bar");
-    assert.throws(() => {
-      foo.bar = "baz";
-    }, (e) => {
-      return e instanceof TypeError && /readonly property/.test(e.message);
-    });
+    assert.throws(() => { foo.bar = "baz"; }, TypeError);
   });
 });

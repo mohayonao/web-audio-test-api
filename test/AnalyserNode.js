@@ -6,8 +6,8 @@ describe("AnalyserNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(node instanceof global.AnalyserNode);
@@ -15,14 +15,12 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         return new global.AnalyserNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#fftSize", function() {
-    it("get/set: FFTSize", function() {
+  describe("#fftSize: number", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.fftSize === "number");
@@ -53,14 +51,12 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.fftSize = 4096;
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#frequencyBinCount", function() {
-    it("get: number", function() {
+  describe("#frequencyBinCount: number", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.frequencyBinCount === "number");
@@ -73,14 +69,12 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.frequencyBinCount = 256;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#minDecibels", function() {
-    it("get/set: number", function() {
+  describe("#minDecibels: number", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.minDecibels === "number");
@@ -93,14 +87,12 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.minDecibels = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#maxDecibels", function() {
-    it("get/set: number", function() {
+  describe("#maxDecibels: number", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.maxDecibels === "number");
@@ -113,14 +105,12 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.maxDecibels = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#smoothingTimeConstant", function() {
-    it("get/set: number", function() {
+  describe("#smoothingTimeConstant: number", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
 
       assert(typeof node.smoothingTimeConstant === "number");
@@ -133,14 +123,12 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.smoothingTimeConstant = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#getFloatFrequencyData", function() {
-    it("(array: Float32Array): void", function() {
+  describe("#getFloatFrequencyData(array: Float32Array): void", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
       var f32 = new Float32Array(128);
       var i16 = new Int16Array(128);
@@ -149,16 +137,14 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.getFloatFrequencyData(i16);
-      }, function(e) {
-        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.getFloatFrequencyData === global.AnalyserNode.prototype.getFloatFrequencyData);
     });
   });
 
-  describe("#getByteFrequencyData", function() {
-    it("(array: Uint8Array): void", function() {
+  describe("#getByteFrequencyData(array: Uint8Array): void", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
       var ui8 = new Uint8Array(128);
       var i16 = new Int16Array(128);
@@ -167,9 +153,7 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.getByteFrequencyData(i16);
-      }, function(e) {
-        return e instanceof TypeError && /should be a Uint8Array/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.getByteFrequencyData === global.AnalyserNode.prototype.getByteFrequencyData);
     });
@@ -183,9 +167,7 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.getFloatTimeDomainData(f32);
-      }, function(e) {
-        return e instanceof TypeError && /not enabled/.test(e.message);
-      });
+      }, TypeError);
 
       WebAudioTestAPI.setState("AnalyserNode#getFloatTimeDomainData", "enabled");
 
@@ -195,9 +177,7 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.getFloatTimeDomainData(i16);
-      }, function(e) {
-        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
-      });
+      }, TypeError);
 
       WebAudioTestAPI.setState("AnalyserNode#getFloatTimeDomainData", "disabled");
 
@@ -215,9 +195,7 @@ describe("AnalyserNode", function() {
 
       assert.throws(function() {
         node.getByteTimeDomainData(i16);
-      }, function(e) {
-        return e instanceof TypeError && /should be a Uint8Array/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.getByteTimeDomainData === global.AnalyserNode.prototype.getByteTimeDomainData);
     });
@@ -238,7 +216,7 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#$name", function() {
+  describe("$name", function() {
     it("get: string", function() {
       var node = audioContext.createAnalyser();
 
@@ -246,7 +224,7 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#$context", function() {
+  describe("$context", function() {
     it("get: AudioContext", function() {
       var node = audioContext.createAnalyser();
 

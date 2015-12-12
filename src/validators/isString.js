@@ -1,4 +1,5 @@
 export default {
-  name: "string",
+  description: "string",
+  typeName: "string",
   test: (value) => typeof value === "string"
 };

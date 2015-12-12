@@ -1,7 +1,7 @@
 import inLaws from "../../src/utils/inLaws";
 
-describe("inLaws", () => {
-  it("(superClass: Class): Class", () => {
+describe("inLaws(superClass: Class): Class", () => {
+  it("works", () => {
     class Foo {
       constructor() {
         throw new Error("Illegal constructor");

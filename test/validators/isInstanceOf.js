@@ -2,9 +2,9 @@ import assert from "power-assert";
 import isInstanceOf from "../../src/validators/isInstanceOf";
 
 describe("validators.isInstanceOf(klass: function): object", () => {
-  describe(".name: string", () => {
+  describe(".typeName: string", () => {
     it("works", () => {
-      assert(isInstanceOf(Float32Array).name === "Float32Array");
+      assert(isInstanceOf(Float32Array).typeName === "Float32Array");
     });
   });
   describe(".test(value: any): boolean", () => {

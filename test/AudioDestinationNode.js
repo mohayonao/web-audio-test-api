@@ -6,8 +6,8 @@ describe("AudioDestinationNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.destination;
 
       assert(node instanceof global.AudioDestinationNode);
@@ -15,28 +15,24 @@ describe("AudioDestinationNode", function() {
 
       assert.throws(function() {
         return new global.AudioDestinationNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#maxChannelCount", function() {
-    it("get: number", function() {
+  describe("#maxChannelCount: number", function() {
+    it("works", function() {
       var node = audioContext.destination;
 
       assert(typeof node.maxChannelCount === "number");
 
       assert.throws(function() {
         node.maxChannelCount = 256;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.destination;
 
       assert.deepEqual(node.toJSON(), {
@@ -46,16 +42,16 @@ describe("AudioDestinationNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.destination;
 
       assert(node.$name === "AudioDestinationNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.destination;
 
       assert(node.$context === audioContext);

@@ -1,4 +1,5 @@
 export default {
-  name: "positive number",
+  description: "positive number",
+  typeName: "number",
   test: (value) => value === +value && 0 <= value
 };

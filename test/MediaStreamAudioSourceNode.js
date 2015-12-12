@@ -7,8 +7,8 @@ describe("MediaStreamAudioSourceNode", function() {
     mediaStream = new WebAudioTestAPI.MediaStream();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createMediaStreamSource(mediaStream);
 
       assert(node instanceof global.MediaStreamAudioSourceNode);
@@ -16,20 +16,16 @@ describe("MediaStreamAudioSourceNode", function() {
 
       assert.throws(function() {
         audioContext.createMediaStreamSource("INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a MediaStream/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         return new global.MediaStreamAudioSourceNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createMediaStreamSource(mediaStream);
 
       assert.deepEqual(node.toJSON(), {
@@ -39,16 +35,16 @@ describe("MediaStreamAudioSourceNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createMediaStreamSource(mediaStream);
 
       assert(node.$name === "MediaStreamAudioSourceNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createMediaStreamSource(mediaStream);
 
       assert(node.$context === audioContext);

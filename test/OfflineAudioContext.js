@@ -12,80 +12,66 @@ describe("OfflineAudioContext", function() {
     audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441, 44100);
   });
 
-  describe("constructor", function() {
-    it("(numberOfChannels: number, length: number, sampleRate: number)", function() {
+  describe("constructor(numberOfChannels: number, length: number, sampleRate: number)", function() {
+    it("works", function() {
       assert(audioContext instanceof global.OfflineAudioContext);
       assert(audioContext instanceof global.AudioContext);
 
       assert.throws(function() {
         audioContext = new WebAudioTestAPI.OfflineAudioContext(2.5, 441, 44100);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441.5, 44100);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441, 44100.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#destination", function() {
-    it("get: AudioDestinationNode", function() {
+  describe("#destination: AudioDestinationNode", function() {
+    it("works", function() {
       assert(audioContext.destination instanceof WebAudioTestAPI.AudioDestinationNode);
 
       assert.throws(function() {
         audioContext.destination = null;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#sampleRate", function() {
-    it("get: number", function() {
+  describe("#sampleRate: number", function() {
+    it("works", function() {
       assert(typeof audioContext.sampleRate === "number");
 
       assert.throws(function() {
         audioContext.sampleRate = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#currentTime", function() {
-    it("get: number", function() {
+  describe("#currentTime: number", function() {
+    it("works", function() {
       assert(typeof audioContext.currentTime === "number");
 
       assert.throws(function() {
         audioContext.currentTime = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#listener", function() {
-    it("get: AudioListener", function() {
+  describe("#listener: AudioListener", function() {
+    it("works", function() {
       assert(audioContext.listener instanceof WebAudioTestAPI.AudioListener);
 
       assert.throws(function() {
         audioContext.listener = null;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#suspend", function() {
+  describe("#suspend(): Promise<void>", function() {
     describe("disabled", function() {
       before(function() {
         setStateForStateTransitionAPI("disabled");
@@ -93,12 +79,10 @@ describe("OfflineAudioContext", function() {
       after(function() {
         setStateForStateTransitionAPI("disabled");
       });
-      it("() throws TypeError", function() {
+      it("throws TypeError", function() {
         assert.throws(function() {
           audioContext.suspend();
-        }, function(e) {
-          return e instanceof TypeError && /not enabled/.test(e.message);
-        });
+        }, TypeError);
       });
     });
     describe("enabled", function() {
@@ -108,7 +92,7 @@ describe("OfflineAudioContext", function() {
       after(function() {
         setStateForStateTransitionAPI("disabled");
       });
-      it("(): Promise<void>", function() {
+      it("works", function() {
         audioContext.onstatechange = sinon.spy();
 
         return Promise.resolve().then(function() {
@@ -126,7 +110,7 @@ describe("OfflineAudioContext", function() {
     });
   });
 
-  describe("#resume", function() {
+  describe("#resume(): Promise<void>", function() {
     describe("disabled", function() {
       before(function() {
         setStateForStateTransitionAPI("disabled");
@@ -134,12 +118,10 @@ describe("OfflineAudioContext", function() {
       after(function() {
         setStateForStateTransitionAPI("disabled");
       });
-      it("() throws TypeError", function() {
+      it("throws TypeError", function() {
         assert.throws(function() {
           audioContext.resume();
-        }, function(e) {
-          return e instanceof TypeError && /not enabled/.test(e.message);
-        });
+        }, TypeError);
       });
     });
     describe("enabled", function() {
@@ -149,7 +131,7 @@ describe("OfflineAudioContext", function() {
       after(function() {
         setStateForStateTransitionAPI("disabled");
       });
-      it("(): Promise<void>", function() {
+      it("works", function() {
         audioContext.onstatechange = sinon.spy();
 
         return Promise.resolve().then(function() {
@@ -167,7 +149,7 @@ describe("OfflineAudioContext", function() {
     });
   });
 
-  describe("#close", function() {
+  describe("#close(): Promise<void>", function() {
     describe("disabled", function() {
       before(function() {
         setStateForStateTransitionAPI("disabled");
@@ -175,12 +157,10 @@ describe("OfflineAudioContext", function() {
       after(function() {
         setStateForStateTransitionAPI("disabled");
       });
-      it("() throws TypeError", function() {
+      it("throws TypeError", function() {
         assert.throws(function() {
           audioContext.close();
-        }, function(e) {
-          return e instanceof TypeError && /not enabled/.test(e.message);
-        });
+        }, TypeError);
       });
     });
     describe("enabled", function() {
@@ -190,7 +170,7 @@ describe("OfflineAudioContext", function() {
       after(function() {
         setStateForStateTransitionAPI("disabled");
       });
-      it("(): Promise<void>", function() {
+      it("works", function() {
         audioContext.onstatechange = sinon.spy();
 
         return Promise.resolve().then(function() {
@@ -226,9 +206,7 @@ describe("OfflineAudioContext", function() {
           assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
         }).then(function() {
           return audioContext.startRendering();
-        }).catch(function(e) {
-          return e instanceof Error && /cannot call startRendering more than once/.test(e.message);
-        });
+        }).catch(Error);
       });
     });
     describe("void-based", function() {
@@ -242,8 +220,8 @@ describe("OfflineAudioContext", function() {
     });
   });
 
-  describe("#oncomplete", function() {
-    it("get/set: function", function() {
+  describe("#oncomplete: function", function() {
+    it("works", function() {
       function fn1() {}
       function fn2() {}
 
@@ -260,20 +238,18 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext.oncomplete = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a function/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       assert(audioContext.$name === "OfflineAudioContext");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       assert(audioContext.$context === audioContext);
     });
   });

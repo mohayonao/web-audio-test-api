@@ -6,8 +6,8 @@ describe("ConvolverNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createConvolver();
 
       assert(node instanceof global.ConvolverNode);
@@ -15,14 +15,12 @@ describe("ConvolverNode", function() {
 
       assert.throws(function() {
         return new global.ConvolverNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#buffer", function() {
-    it("get/set: AudioBuffer", function() {
+  describe("#buffer: AudioBuffer", function() {
+    it("works", function() {
       var node = audioContext.createConvolver();
       var buf1 = audioContext.createBuffer(1, 16, 44100);
       var buf2 = audioContext.createBuffer(2, 32, 44100);
@@ -44,8 +42,8 @@ describe("ConvolverNode", function() {
     });
   });
 
-  describe("#normalize", function() {
-    it("get/set: boolean", function() {
+  describe("#normalize: boolean", function() {
+    it("works", function() {
       var node = audioContext.createConvolver();
 
       assert(typeof node.normalize === "boolean");
@@ -62,8 +60,8 @@ describe("ConvolverNode", function() {
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createConvolver();
 
       assert.deepEqual(node.toJSON(), {
@@ -74,16 +72,16 @@ describe("ConvolverNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createConvolver();
 
       assert(node.$name === "ConvolverNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createConvolver();
 
       assert(node.$context === audioContext);

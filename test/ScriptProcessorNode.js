@@ -6,8 +6,8 @@ describe("ScriptProcessorNode", function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var node = audioContext.createScriptProcessor(256, 1, 1);
 
       assert(node instanceof global.ScriptProcessorNode);
@@ -15,21 +15,15 @@ describe("ScriptProcessorNode", function() {
 
       assert.throws(function() {
         audioContext.createScriptProcessor(0, 1, 1);
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         audioContext.createScriptProcessor(1024, 1.5, 1);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         audioContext.createScriptProcessor(1024, 1, 1.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.doesNotThrow(function() {
         audioContext.createScriptProcessor(1024);
@@ -37,26 +31,20 @@ describe("ScriptProcessorNode", function() {
 
       assert.throws(function() {
         audioContext.createScriptProcessor(1024, undefined);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         audioContext.createScriptProcessor(1024, 1, undefined);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         return new global.ScriptProcessorNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#bufferSize", function() {
-    it("get: number", function() {
+  describe("#bufferSize: number", function() {
+    it("works", function() {
       var node1 = audioContext.createScriptProcessor(1024, 0, 1);
       var node2 = audioContext.createScriptProcessor(2048, 0, 2);
 
@@ -65,14 +53,12 @@ describe("ScriptProcessorNode", function() {
 
       assert.throws(function() {
         node1.bufferSize = 2048;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#onaudioprocess", function() {
-    it("get/set: function", function() {
+  describe("#onaudioprocess: function", function() {
+    it("works", function() {
       var node = audioContext.createScriptProcessor(1024, 0, 1);
 
       function fn1() {}
@@ -91,14 +77,12 @@ describe("ScriptProcessorNode", function() {
 
       assert.throws(function() {
         node.onaudioprocess = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a function/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
-  describe("#toJSON", function() {
-    it("(): object", function() {
+  describe("#toJSON(): object", function() {
+    it("works", function() {
       var node = audioContext.createScriptProcessor(1024, 0, 1);
 
       assert.deepEqual(node.toJSON(), {
@@ -108,16 +92,16 @@ describe("ScriptProcessorNode", function() {
     });
   });
 
-  describe("#$name", function() {
-    it("get: string", function() {
+  describe("$name: string", function() {
+    it("works", function() {
       var node = audioContext.createScriptProcessor(256, 1, 1);
 
       assert(node.$name === "ScriptProcessorNode");
     });
   });
 
-  describe("#$context", function() {
-    it("get: AudioContext", function() {
+  describe("$context: AudioContext", function() {
+    it("works", function() {
       var node = audioContext.createScriptProcessor(256, 1, 1);
 
       assert(node.$context === audioContext);

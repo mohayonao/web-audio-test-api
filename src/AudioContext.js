@@ -2,6 +2,8 @@ import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Event from "./dom/Event";
 import EventTarget from "./dom/EventTarget";
+import HTMLMediaElement from "./dom/HTMLMediaElement";
+import MediaStream from "./dom/MediaStream";
 import AudioBuffer from "./AudioBuffer";
 import AnalyserNode from "./AnalyserNode";
 import AudioBufferSourceNode from "./AudioBufferSourceNode";
@@ -98,6 +100,7 @@ export default class AudioContext extends EventTarget {
   @props.on("statechange")
   onstatechange() {}
 
+  @methods.returns(validators.isInstanceOf(Promise))
   suspend() {
     return this.__transitionToState("suspend", () => {
       if (this._.state === "running") {
@@ -107,6 +110,7 @@ export default class AudioContext extends EventTarget {
     });
   }
 
+  @methods.returns(validators.isInstanceOf(Promise))
   resume() {
     return this.__transitionToState("resume", () => {
       if (this._.state === "suspended") {
@@ -116,6 +120,7 @@ export default class AudioContext extends EventTarget {
     });
   }
 
+  @methods.returns(validators.isInstanceOf(Promise))
   close() {
     return this.__transitionToState("close", () => {
       if (this._.state !== "closed") {
@@ -129,6 +134,7 @@ export default class AudioContext extends EventTarget {
   @methods.param("numberOfChannels", validators.isPositiveInteger)
   @methods.param("length", validators.isPositiveInteger)
   @methods.param("sampleRate", validators.isPositiveInteger)
+  @methods.returns(validators.isInstanceOf(AudioBuffer))
   createBuffer(numberOfChannels, length, sampleRate) {
     return immigration.apply(admission =>
       new AudioBuffer(admission, this, numberOfChannels, length, sampleRate)
@@ -138,16 +144,14 @@ export default class AudioContext extends EventTarget {
   @methods.param("audioData", validators.isInstanceOf(ArrayBuffer))
   @methods.param("[ successCallback ]", validators.isFunction)
   @methods.param("[ errorCallback ]", validators.isFunction)
-  decodeAudioData(audioData, _successCallback, _errorCallback) {
+  decodeAudioData(audioData, successCallback, errorCallback) {
     let isPromiseBased = configuration.getState("AudioContext#decodeAudioData") === "promise";
-    let successCallback, errorCallback;
 
     if (isPromiseBased) {
-      successCallback = defaults(_successCallback, () => {});
-      errorCallback = defaults(_errorCallback, () => {});
+      successCallback = defaults(successCallback, () => {});
+      errorCallback = defaults(errorCallback, () => {});
     } else {
-      successCallback = _successCallback;
-      errorCallback = defaults(_errorCallback, () => {});
+      errorCallback = defaults(errorCallback, () => {});
     }
 
     let promise = new Promise((resolve, reject) => {
@@ -167,24 +171,30 @@ export default class AudioContext extends EventTarget {
     }
   }
 
+  @methods.returns(validators.isInstanceOf(AudioBufferSourceNode))
   createBufferSource() {
     return immigration.apply(admission =>
       new AudioBufferSourceNode(admission, this)
     );
   }
 
+  @methods.param("mediaElement", validators.isInstanceOf(HTMLMediaElement))
+  @methods.returns(validators.isInstanceOf(MediaElementAudioSourceNode))
   createMediaElementSource(mediaElement) {
     return immigration.apply(admission =>
       new MediaElementAudioSourceNode(admission, this, mediaElement)
     );
   }
 
+  @methods.param("mediaStream", validators.isInstanceOf(MediaStream))
+  @methods.returns(validators.isInstanceOf(MediaStreamAudioSourceNode))
   createMediaStreamSource(mediaStream) {
     return immigration.apply(admission =>
       new MediaStreamAudioSourceNode(admission, this, mediaStream)
     );
   }
 
+  @methods.returns(validators.isInstanceOf(MediaStreamAudioDestinationNode))
   createMediaStreamDestination() {
     return immigration.apply(admission =>
       new MediaStreamAudioDestinationNode(admission, this)
@@ -201,18 +211,21 @@ export default class AudioContext extends EventTarget {
   @methods.param("bufferSize", validators.isPositiveInteger)
   @methods.param("[ numberOfInputChannels ]", validators.isPositiveInteger)
   @methods.param("[ numberOfOutputChannels ]", validators.isPositiveInteger)
+  @methods.returns(validators.isInstanceOf(ScriptProcessorNode))
   createScriptProcessor(bufferSize, numberOfInputChannels = 2, numberOfOutputChannels = 2) {
     return immigration.apply(admission =>
       new ScriptProcessorNode(admission, this, bufferSize, numberOfInputChannels, numberOfOutputChannels)
     );
   }
 
+  @methods.returns(validators.isInstanceOf(AnalyserNode))
   createAnalyser() {
     return immigration.apply(admission =>
       new AnalyserNode(admission, this)
     );
   }
 
+  @methods.returns(validators.isInstanceOf(GainNode))
   createGain() {
     return immigration.apply(admission =>
       new GainNode(admission, this)
@@ -220,24 +233,28 @@ export default class AudioContext extends EventTarget {
   }
 
   @methods.param("[ maxDelayTime ]", validators.isPositiveNumber)
+  @methods.returns(validators.isInstanceOf(DelayNode))
   createDelay(maxDelayTime = 1) {
     return immigration.apply(admission =>
       new DelayNode(admission, this, maxDelayTime)
     );
   }
 
+  @methods.returns(validators.isInstanceOf(BiquadFilterNode))
   createBiquadFilter() {
     return immigration.apply(admission =>
       new BiquadFilterNode(admission, this)
     );
   }
 
+  @methods.returns(validators.isInstanceOf(WaveShaperNode))
   createWaveShaper() {
     return immigration.apply(admission =>
       new WaveShaperNode(admission, this)
     );
   }
 
+  @methods.returns(validators.isInstanceOf(PannerNode))
   createPanner() {
     return immigration.apply(admission =>
       new PannerNode(admission, this)
@@ -251,12 +268,14 @@ export default class AudioContext extends EventTarget {
       }
     }
   })
+  @methods.returns(validators.isInstanceOf(StereoPannerNode))
   createStereoPanner() {
     return immigration.apply(admission =>
       new StereoPannerNode(admission, this)
     );
   }
 
+  @methods.returns(validators.isInstanceOf(ConvolverNode))
   createConvolver() {
     return immigration.apply(admission =>
       new ConvolverNode(admission, this)
@@ -264,6 +283,7 @@ export default class AudioContext extends EventTarget {
   }
 
   @methods.param("[ numberOfOutputs ]", validators.isPositiveInteger)
+  @methods.returns(validators.isInstanceOf(ChannelSplitterNode))
   createChannelSplitter(numberOfOutputs = 6) {
     return immigration.apply(admission =>
       new ChannelSplitterNode(admission, this, numberOfOutputs)
@@ -271,18 +291,21 @@ export default class AudioContext extends EventTarget {
   }
 
   @methods.param("[ numberOfInputs ]", validators.isPositiveInteger)
+  @methods.returns(validators.isInstanceOf(ChannelMergerNode))
   createChannelMerger(numberOfInputs = 6) {
     return immigration.apply(admission =>
       new ChannelMergerNode(admission, this, numberOfInputs)
     );
   }
 
+  @methods.returns(validators.isInstanceOf(DynamicsCompressorNode))
   createDynamicsCompressor() {
     return immigration.apply(admission =>
       new DynamicsCompressorNode(admission, this)
     );
   }
 
+  @methods.returns(validators.isInstanceOf(OscillatorNode))
   createOscillator() {
     return immigration.apply(admission =>
       new OscillatorNode(admission, this)
@@ -291,6 +314,7 @@ export default class AudioContext extends EventTarget {
 
   @methods.param("real", validators.isInstanceOf(Float32Array))
   @methods.param("imag", validators.isInstanceOf(Float32Array))
+  @methods.returns(validators.isInstanceOf(PeriodicWave))
   createPeriodicWave(real, imag) {
     return immigration.apply(admission =>
       new PeriodicWave(admission, this, real, imag)
@@ -306,8 +330,8 @@ export default class AudioContext extends EventTarget {
   })
   __transitionToState(methodName, callback) {
     return new Promise((resolve) => {
-      if (this._state === "close") {
-        throw new TypeError(`Cannot ${methodName} a context that is being closed or has already been closed`);
+      if (this._.state === "close") {
+        throw new TypeError(`Cannot ${methodName} a context that is being closed or has already been closed.`);
       }
       callback();
       resolve();
@@ -326,15 +350,15 @@ export default class AudioContext extends EventTarget {
     return this;
   }
 
-  $process(time) {
-    this._process(toMicroseconds(time));
+  $process(when) {
+    this.__process(toMicroseconds(when));
   }
 
-  $processTo(_time) {
-    let time = toMicroseconds(_time);
+  $processTo(when) {
+    let time = toMicroseconds(when);
 
     if (this._.microCurrentTime < time) {
-      this._process(time - this._.microCurrentTime);
+      this.__process(time - this._.microCurrentTime);
     }
   }
 
@@ -348,16 +372,16 @@ export default class AudioContext extends EventTarget {
     });
   }
 
-  _process(microseconds) {
+  __process(microseconds) {
     let nextMicroCurrentTime = this._.microCurrentTime + microseconds;
 
     while (this._.state === "running" && this._.microCurrentTime < nextMicroCurrentTime) {
-      let _nextMicroCurrentTime = Math.min(this._.microCurrentTime + 1000, nextMicroCurrentTime);
-      let _nextProcessedSamples = Math.floor(_nextMicroCurrentTime / (1000 * 1000) * this.sampleRate);
-      let inNumSamples = _nextProcessedSamples - this._.processedSamples;
+      let microCurrentTime = Math.min(this._.microCurrentTime + 1000, nextMicroCurrentTime);
+      let processedSamples = Math.floor(microCurrentTime / (1000 * 1000) * this.sampleRate);
+      let inNumSamples = processedSamples - this._.processedSamples;
 
-      this._.microCurrentTime = _nextMicroCurrentTime;
-      this._.processedSamples = _nextProcessedSamples;
+      this._.microCurrentTime = microCurrentTime;
+      this._.processedSamples = processedSamples;
 
       this.destination.$process(inNumSamples, ++this._.tick);
     }

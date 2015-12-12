@@ -22,7 +22,7 @@ export default class AnalyserNode extends AudioNode {
     this._.fftSize = 2048;
   }
 
-  @props.enum([ 32, 64, 128, 256, 512, 1024, 2048 ])
+  @props.enums([ 32, 64, 128, 256, 512, 1024, 2048 ])
   fftSize() {}
 
   @props.readonly()

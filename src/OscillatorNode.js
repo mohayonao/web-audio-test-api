@@ -25,7 +25,7 @@ export default class OscillatorNode extends AudioNode {
     this._.firedOnEnded = false;
   }
 
-  @props.enum([ "sine", "square", "sawtooth", "triangle" ])
+  @props.enums([ "sine", "square", "sawtooth", "triangle" ])
   type() {}
 
   @props.audioparam(440)
@@ -41,7 +41,7 @@ export default class OscillatorNode extends AudioNode {
   @methods.contract({
     precondition() {
       if (this._.startTime !== Infinity) {
-        throw new Error(`cannot start more than once`);
+        throw new Error("Cannot start more than once.");
       }
     }
   })
@@ -53,10 +53,10 @@ export default class OscillatorNode extends AudioNode {
   @methods.contract({
     precondition() {
       if (this._.startTime === Infinity) {
-        throw new Error(`cannot call stop without calling start first`);
+        throw new Error("Cannot call stop without calling start first.");
       }
       if (this._.stopTime !== Infinity) {
-        throw new Error(`cannot stop more than once`);
+        throw new Error("Cannot stop more than once.");
       }
     }
   })
@@ -86,23 +86,23 @@ export default class OscillatorNode extends AudioNode {
     return this._.stopTime;
   }
 
-  $stateAtTime(_time) {
-    let time = toSeconds(_time);
+  $stateAtTime(when) {
+    const playbackTime = toSeconds(when);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";
     }
-    if (time < this._.startTime) {
+    if (playbackTime < this._.startTime) {
       return "SCHEDULED";
     }
-    if (time < this._.stopTime) {
+    if (playbackTime < this._.stopTime) {
       return "PLAYING";
     }
 
     return "FINISHED";
   }
 
-  _process() {
+  __process() {
     if (!this._.firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
       this.dispatchEvent(new Event("ended", this));
       this._.firedOnEnded = true;

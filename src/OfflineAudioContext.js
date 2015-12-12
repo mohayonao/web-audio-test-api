@@ -47,7 +47,7 @@ export default class OfflineAudioContext extends AudioContext {
   @methods.contract({
     precondition() {
       if (this._.rendering) {
-        throw new TypeError("cannot call startRendering more than once");
+        throw new TypeError("Cannot call startRendering more than once.");
       }
     }
   })
@@ -77,7 +77,7 @@ export default class OfflineAudioContext extends AudioContext {
   })
   __transitionToState(methodName) {
     return new Promise(() => {
-      throw new TypeError(`Cannot ${methodName} on an OfflineAudioContext`);
+      throw new TypeError(`Cannot ${methodName} on an OfflineAudioContext.`);
     });
   }
 
@@ -85,7 +85,7 @@ export default class OfflineAudioContext extends AudioContext {
     return "OfflineAudioContext";
   }
 
-  _process(microseconds) {
+  __process(microseconds) {
     if (!this._.rendering || this._.length <= this._.processedSamples) {
       return;
     }
@@ -93,14 +93,14 @@ export default class OfflineAudioContext extends AudioContext {
     let nextMicroCurrentTime = this._.microCurrentTime + microseconds;
 
     while (this._.microCurrentTime < nextMicroCurrentTime) {
-      let _nextMicroCurrentTime = Math.min(this._.microCurrentTime + 1000, nextMicroCurrentTime);
-      let _nextProcessedSamples = Math.floor(_nextMicroCurrentTime / (1000 * 1000) * this.sampleRate);
-      let inNumSamples = _nextProcessedSamples - this._.processedSamples;
+      let microCurrentTime = Math.min(this._.microCurrentTime + 1000, nextMicroCurrentTime);
+      let processedSamples = Math.floor(microCurrentTime / (1000 * 1000) * this.sampleRate);
+      let inNumSamples = processedSamples - this._.processedSamples;
 
       this.destination.$process(inNumSamples, ++this._.tick);
 
-      this._.microCurrentTime = _nextMicroCurrentTime;
-      this._.processedSamples = _nextProcessedSamples;
+      this._.microCurrentTime = microCurrentTime;
+      this._.processedSamples = processedSamples;
 
       if (this._.length <= this._.processedSamples) {
         break;

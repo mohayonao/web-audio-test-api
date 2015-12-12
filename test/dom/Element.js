@@ -1,8 +1,8 @@
 describe("Element", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
 
-  describe("constructor", function() {
-    it("()", function() {
+  describe("constructor()", function() {
+    it("works", function() {
       var element = new WebAudioTestAPI.Element();
 
       assert(element instanceof global.window.Element);

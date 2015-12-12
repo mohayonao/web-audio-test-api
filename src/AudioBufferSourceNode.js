@@ -52,7 +52,7 @@ export default class AudioBufferSourceNode extends AudioNode {
   @methods.contract({
     precondition() {
       if (this._.startTime !== Infinity) {
-        throw new TypeError("cannot start more than once");
+        throw new TypeError("Cannot start more than once.");
       }
     }
   })
@@ -66,10 +66,10 @@ export default class AudioBufferSourceNode extends AudioNode {
   @methods.contract({
     precondition() {
       if (this._.startTime === Infinity) {
-        throw new TypeError("cannot call stop without calling start first");
+        throw new TypeError("Cannot call stop without calling start first.");
       }
       if (this._.stopTime !== Infinity) {
-        throw new TypeError("cannot stop more than once");
+        throw new TypeError("Cannot stop more than once.");
       }
     }
   })
@@ -89,13 +89,13 @@ export default class AudioBufferSourceNode extends AudioNode {
     return this._.stopTime;
   }
 
-  $stateAtTime(_time) {
-    let time = toSeconds(_time);
+  $stateAtTime(when) {
+    const playbackTime = toSeconds(when);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";
     }
-    if (time < this._.startTime) {
+    if (playbackTime < this._.startTime) {
       return "SCHEDULED";
     }
 
@@ -105,14 +105,14 @@ export default class AudioBufferSourceNode extends AudioNode {
       stopTime = Math.min(stopTime, this._.startTime + this.buffer.duration);
     }
 
-    if (time < stopTime) {
+    if (playbackTime < stopTime) {
       return "PLAYING";
     }
 
     return "FINISHED";
   }
 
-  _process() {
+  __process() {
     if (!this._.firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
       this.dispatchEvent(new Event("ended", this));
       this._.firedOnEnded = true;

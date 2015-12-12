@@ -1,4 +1,5 @@
 export default {
-  name: "boolean",
+  description: "boolean",
+  typeName: "boolean",
   test: (value) => typeof value === "boolean"
 };
