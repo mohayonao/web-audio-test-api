@@ -49,7 +49,7 @@ export default class ScriptProcessorNode extends AudioNode {
   @props.on("audioprocess");
   onaudioprocess() {}
 
-  _process(inNumSamples) {
+  __process(inNumSamples) {
     this._.numSamples -= inNumSamples;
 
     if (this._.numSamples <= 0) {

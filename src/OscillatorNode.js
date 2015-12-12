@@ -86,23 +86,23 @@ export default class OscillatorNode extends AudioNode {
     return this._.stopTime;
   }
 
-  $stateAtTime(_time) {
-    let time = toSeconds(_time);
+  $stateAtTime(when) {
+    const playbackTime = toSeconds(when);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";
     }
-    if (time < this._.startTime) {
+    if (playbackTime < this._.startTime) {
       return "SCHEDULED";
     }
-    if (time < this._.stopTime) {
+    if (playbackTime < this._.stopTime) {
       return "PLAYING";
     }
 
     return "FINISHED";
   }
 
-  _process() {
+  __process() {
     if (!this._.firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
       this.dispatchEvent(new Event("ended", this));
       this._.firedOnEnded = true;

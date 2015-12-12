@@ -2,7 +2,6 @@ import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Junction from "./utils/Junction";
 import EventTarget from "./dom/EventTarget";
-import AudioNodeDisconnectUtils from "./AudioNodeDisconnectUtils";
 import defaults from "./utils/defaults";
 import toJSON from "./utils/toJSON";
 import toNodeName from "./utils/toNodeName";
@@ -91,39 +90,98 @@ export default class AudioNode extends EventTarget {
     this._.outputs[output].connect(destination.$inputs[input]);
   }
 
-  // @methods.param("[ destination ]", validators.isAudioSource);
-  // @methods.param("[ output ]", validators.isPositiveInteger);
-  // @methods.param("[ input ]", validators.isPositiveInteger);
-  disconnect(_destination, _output, _input) {
+  disconnect(destination, output, input) {
     if (configuration.getState("AudioNode#disconnect") !== "selective") {
-      AudioNodeDisconnectUtils.disconnectChannel.call(this, defaults(_destination, 0));
-      return;
+      return this.__disconnect$$Channel(defaults(destination, 0));
     }
 
     switch (arguments.length) {
     case 0:
-      AudioNodeDisconnectUtils.disconnectAll.call(this);
-      break;
+      return this.__disconnect$$All();
     case 1:
-      if (typeof _destination === "number") {
-        AudioNodeDisconnectUtils.disconnectChannel.call(this, _destination);
-      } else {
-        AudioNodeDisconnectUtils.disconnectSelective1.call(this, _destination);
+      if (typeof destination === "number") {
+        return this.__disconnect$$Channel(destination);
       }
-      break;
+      return this.__disconnect$$Selective1(destination);
     case 2:
-      AudioNodeDisconnectUtils.disconnectSelective2.call(this, _destination, _output);
-      break;
+      return this.__disconnect$$Selective2(destination, output);
     case 3:
-      AudioNodeDisconnectUtils.disconnectSelective3.call(this, _destination, _output, _input);
-      break;
+      return this.__disconnect$$Selective3(destination, output, input);
     default:
       // no default
     }
   }
 
+  __disconnect$$All() {
+    this._.outputs.forEach((junction) => {
+      junction.disconnectAll();
+    });
+  }
+
+  @methods.param("output", validators.isPositiveInteger)
+  @methods.contract({
+    precondition(output) {
+      if (this.numberOfOutputs <= output) {
+        throw new TypeError(`output index (${output}) exceeds number of outputs (${this.numberOfOutputs})`);
+      }
+    }
+  })
+  __disconnect$$Channel(output) {
+    this._.outputs[output].disconnectAll();
+  }
+
+  @methods.param("destination", validators.isAudioSource)
+  @methods.contract({
+    precondition(destination) {
+      if (!this._.outputs.some(junction => junction.isConnected(destination))) {
+        throw new TypeError("the given destination is not connected");
+      }
+    }
+  })
+  __disconnect$$Selective1(destination) {
+    this._.outputs.forEach((junction) => {
+      junction.disconnectNode(destination);
+    });
+  }
+
+  @methods.param("destination", validators.isAudioSource)
+  @methods.param("output", validators.isPositiveInteger)
+  @methods.contract({
+    precondition(destination, output) {
+      if (!this._.outputs.some(junction => junction.isConnected(destination))) {
+        throw new TypeError("the given destination is not connected");
+      }
+      if (output < 0 || this.numberOfOutputs <= output) {
+        throw new TypeError(`output provided (${output}) is outside the range [0, ${this.numberOfOutputs})`);
+      }
+    }
+  })
+  __disconnect$$Selective2(destination, output) {
+    this._.outputs[output].disconnectNode(destination);
+  }
+
+  @methods.param("destination", validators.isAudioSource)
+  @methods.param("output", validators.isPositiveInteger)
+  @methods.param("input", validators.isPositiveInteger)
+  @methods.contract({
+    precondition(destination, output, input) {
+      if (!this._.outputs.some(junction => junction.isConnected(destination))) {
+        throw new TypeError("the given destination is not connected");
+      }
+      if (output < 0 || this.numberOfOutputs <= output) {
+        throw new TypeError(`output provided (${output}) is outside the range [0, ${this.numberOfOutputs})`);
+      }
+      if (input < 0 || destination.numberOfInputs <= input) {
+        throw new TypeError(`input provided (${input}) is outside the range [0, ${this.numberOfInputs})`);
+      }
+    }
+  })
+  __disconnect$$Selective3(destination, output, input) {
+    this._.outputs[output].disconnectChannel(destination, input);
+  }
+
   toJSON(memo) {
-    function _toJSON(obj, memo) {
+    function __toJSON(obj, memo) {
       if (obj && typeof obj.toJSON === "function") {
         return obj.toJSON(memo);
       }
@@ -136,7 +194,7 @@ export default class AudioNode extends EventTarget {
       json.name = toNodeName(node);
 
       node.constructor.$JSONKeys.forEach((key) => {
-        json[key] = _toJSON(node[key], memo);
+        json[key] = __toJSON(node[key], memo);
       });
 
       if (node.$context.VERBOSE_JSON) {
@@ -184,8 +242,8 @@ export default class AudioNode extends EventTarget {
           this[key].$process(inNumSamples, tick);
         }
       });
-      if (this._process) {
-        this._process(inNumSamples);
+      if (this.__process) {
+        this.__process(inNumSamples);
       }
     }
   }

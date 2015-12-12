@@ -9,79 +9,6 @@ import * as validators from "./validators";
 
 let immigration = Immigration.getInstance();
 
-function insertEvent(that, event) {
-  let time = event.time;
-  let events = that.$events;
-  let replace = 0;
-  let i, imax = events.length;
-
-  for (i = 0; i < imax; ++i) {
-    if (events[i].time === time && events[i].type === event.type) {
-      replace = 1;
-      break;
-    }
-
-    if (events[i].time > time) {
-      break;
-    }
-  }
-
-  events.splice(i, replace, event);
-}
-
-export function linTo(v, v0, v1, t, t0, t1) {
-  if (t <= t0) {
-    return v0;
-  }
-  if (t1 <= t) {
-    return v1;
-  }
-  let dt = (t - t0) / (t1 - t0);
-
-  return (1 - dt) * v0 + dt * v1;
-}
-
-export function expTo(v, v0, v1, t, t0, t1) {
-  if (t <= t0) {
-    return v0;
-  }
-  if (t1 <= t) {
-    return v1;
-  }
-  if (v0 === v1) {
-    return v0;
-  }
-
-  let dt = (t - t0) / (t1 - t0);
-
-  if ((0 < v0 && 0 < v1) || (v0 < 0 && v1 < 0)) {
-    return v0 * Math.pow(v1 / v0, dt);
-  }
-
-  return v;
-}
-
-export function setTarget(v0, v1, t, t0, timeConstant) {
-  if (t <= t0) {
-    return v0;
-  }
-  return v1 + (v0 - v1) * Math.exp((t0 - t) / timeConstant);
-}
-
-export function setCurveValue(v, t, t0, t1, curve) {
-  let dt = (t - t0) / (t1 - t0);
-
-  if (dt <= 0) {
-    return defaults(curve[0], v);
-  }
-
-  if (1 <= dt) {
-    return defaults(curve[curve.length - 1], v);
-  }
-
-  return defaults(curve[(curve.length * dt)|0], v);
-}
-
 export default class AudioParam {
   constructor(admission, node, name, defaultValue) {
     immigration.check(admission, () => {
@@ -118,55 +45,33 @@ export default class AudioParam {
   @methods.param("value", validators.isNumber)
   @methods.param("startTime", validators.isNumber)
   setValueAtTime(value, startTime) {
-    insertEvent(this, {
-      type: "SetValue",
-      value: value,
-      time: startTime
-    });
+    this.__insertEvent({ type: "SetValue", value: value, time: startTime });
   }
 
   @methods.param("value", validators.isNumber)
   @methods.param("endTime", validators.isNumber)
   linearRampToValueAtTime(value, endTime) {
-    insertEvent(this, {
-      type: "LinearRampToValue",
-      value: value,
-      time: endTime
-    });
+    this.__insertEvent({ type: "LinearRampToValue", value: value, time: endTime });
   }
 
   @methods.param("value", validators.isNumber)
   @methods.param("endTime", validators.isNumber)
   exponentialRampToValueAtTime(value, endTime) {
-    insertEvent(this, {
-      type: "ExponentialRampToValue",
-      value: value,
-      time: endTime
-    });
+    this.__insertEvent({ type: "ExponentialRampToValue", value: value, time: endTime });
   }
 
   @methods.param("value", validators.isNumber)
   @methods.param("endTime", validators.isNumber)
   @methods.param("timeConstant", validators.isNumber)
   setTargetAtTime(target, startTime, timeConstant) {
-    insertEvent(this, {
-      type: "SetTarget",
-      value: target,
-      time: startTime,
-      timeConstant: timeConstant
-    });
+    this.__insertEvent({ type: "SetTarget", value: target, time: startTime, timeConstant: timeConstant });
   }
 
   @methods.param("values", validators.isInstanceOf(Float32Array))
   @methods.param("startTime", validators.isNumber)
   @methods.param("duration", validators.isNumber)
   setValueCurveAtTime(values, startTime, duration) {
-    insertEvent(this, {
-      type: "SetValueCurve",
-      time: startTime,
-      duration: duration,
-      curve: values
-    });
+    this.__insertEvent({ type: "SetValueCurve", time: startTime, duration: duration, curve: values });
   }
 
   @methods.param("startTime", validators.isNumber)
@@ -211,9 +116,8 @@ export default class AudioParam {
     return this._.events;
   }
 
-  $valueAtTime(_time) {
-    let time = toSeconds(_time);
-
+  $valueAtTime(when) {
+    let time = toSeconds(when);
     let value = this._.value;
     let events = this.$events;
     let t0;
@@ -228,9 +132,9 @@ export default class AudioParam {
       t0 = Math.min(time, e1 ? e1.time : time);
 
       if (e1 && e1.type === "LinearRampToValue") {
-        value = linTo(value, e0.value, e1.value, t0, e0.time, e1.time);
+        value = AudioParam.$linearRampToValueAtTime(value, e0.value, e1.value, t0, e0.time, e1.time);
       } else if (e1 && e1.type === "ExponentialRampToValue") {
-        value = expTo(value, e0.value, e1.value, t0, e0.time, e1.time);
+        value = AudioParam.$exponentialRampToValueAtTime(value, e0.value, e1.value, t0, e0.time, e1.time);
       } else {
         switch (e0.type) {
         case "SetValue":
@@ -239,10 +143,10 @@ export default class AudioParam {
           value = e0.value;
           break;
         case "SetTarget":
-          value = setTarget(value, e0.value, t0, e0.time, e0.timeConstant);
+          value = AudioParam.$setTargetAtTime(value, e0.value, t0, e0.time, e0.timeConstant);
           break;
         case "SetValueCurve":
-          value = setCurveValue(value, t0, e0.time, e0.time + e0.duration, e0.curve);
+          value = AudioParam.$setValueCurveAtTime(value, t0, e0.time, e0.time + e0.duration, e0.curve);
           break;
         default:
         // no default
@@ -273,5 +177,78 @@ export default class AudioParam {
     }
 
     return inputJunction.inputs.some(junction => junction === outputJunction);
+  }
+
+  __insertEvent(event) {
+    let time = event.time;
+    let events = this.$events;
+    let replace = 0;
+    let i, imax = events.length;
+
+    for (i = 0; i < imax; ++i) {
+      if (events[i].time === time && events[i].type === event.type) {
+        replace = 1;
+        break;
+      }
+
+      if (events[i].time > time) {
+        break;
+      }
+    }
+
+    events.splice(i, replace, event);
+  }
+
+  static $linearRampToValueAtTime(v, v0, v1, t, t0, t1) {
+    if (t <= t0) {
+      return v0;
+    }
+    if (t1 <= t) {
+      return v1;
+    }
+    let dt = (t - t0) / (t1 - t0);
+
+    return (1 - dt) * v0 + dt * v1;
+  }
+
+  static $exponentialRampToValueAtTime(v, v0, v1, t, t0, t1) {
+    if (t <= t0) {
+      return v0;
+    }
+    if (t1 <= t) {
+      return v1;
+    }
+    if (v0 === v1) {
+      return v0;
+    }
+
+    let dt = (t - t0) / (t1 - t0);
+
+    if ((0 < v0 && 0 < v1) || (v0 < 0 && v1 < 0)) {
+      return v0 * Math.pow(v1 / v0, dt);
+    }
+
+    return v;
+  }
+
+  static $setTargetAtTime(v0, v1, t, t0, tau) {
+    if (t <= t0) {
+      return v0;
+    }
+    return v1 + (v0 - v1) * Math.exp((t0 - t) / tau);
+  }
+
+  static $setValueCurveAtTime(v, t, t0, t1, curve) {
+    let dt = (t - t0) / (t1 - t0);
+
+    if (dt <= 0) {
+      return defaults(curve[0], v);
+    }
+
+    if (1 <= dt) {
+      return defaults(curve[curve.length - 1], v);
+    }
+
+    return defaults(curve[(curve.length * dt)|0], v);
   }
 }

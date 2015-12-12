@@ -138,16 +138,14 @@ export default class AudioContext extends EventTarget {
   @methods.param("audioData", validators.isInstanceOf(ArrayBuffer))
   @methods.param("[ successCallback ]", validators.isFunction)
   @methods.param("[ errorCallback ]", validators.isFunction)
-  decodeAudioData(audioData, _successCallback, _errorCallback) {
+  decodeAudioData(audioData, successCallback, errorCallback) {
     let isPromiseBased = configuration.getState("AudioContext#decodeAudioData") === "promise";
-    let successCallback, errorCallback;
 
     if (isPromiseBased) {
-      successCallback = defaults(_successCallback, () => {});
-      errorCallback = defaults(_errorCallback, () => {});
+      successCallback = defaults(successCallback, () => {});
+      errorCallback = defaults(errorCallback, () => {});
     } else {
-      successCallback = _successCallback;
-      errorCallback = defaults(_errorCallback, () => {});
+      errorCallback = defaults(errorCallback, () => {});
     }
 
     let promise = new Promise((resolve, reject) => {
@@ -306,7 +304,7 @@ export default class AudioContext extends EventTarget {
   })
   __transitionToState(methodName, callback) {
     return new Promise((resolve) => {
-      if (this._state === "close") {
+      if (this._.state === "close") {
         throw new TypeError(`Cannot ${methodName} a context that is being closed or has already been closed`);
       }
       callback();
@@ -326,15 +324,15 @@ export default class AudioContext extends EventTarget {
     return this;
   }
 
-  $process(time) {
-    this._process(toMicroseconds(time));
+  $process(when) {
+    this.__process(toMicroseconds(when));
   }
 
-  $processTo(_time) {
-    let time = toMicroseconds(_time);
+  $processTo(when) {
+    let time = toMicroseconds(when);
 
     if (this._.microCurrentTime < time) {
-      this._process(time - this._.microCurrentTime);
+      this.__process(time - this._.microCurrentTime);
     }
   }
 
@@ -348,16 +346,16 @@ export default class AudioContext extends EventTarget {
     });
   }
 
-  _process(microseconds) {
+  __process(microseconds) {
     let nextMicroCurrentTime = this._.microCurrentTime + microseconds;
 
     while (this._.state === "running" && this._.microCurrentTime < nextMicroCurrentTime) {
-      let _nextMicroCurrentTime = Math.min(this._.microCurrentTime + 1000, nextMicroCurrentTime);
-      let _nextProcessedSamples = Math.floor(_nextMicroCurrentTime / (1000 * 1000) * this.sampleRate);
-      let inNumSamples = _nextProcessedSamples - this._.processedSamples;
+      let microCurrentTime = Math.min(this._.microCurrentTime + 1000, nextMicroCurrentTime);
+      let processedSamples = Math.floor(microCurrentTime / (1000 * 1000) * this.sampleRate);
+      let inNumSamples = processedSamples - this._.processedSamples;
 
-      this._.microCurrentTime = _nextMicroCurrentTime;
-      this._.processedSamples = _nextProcessedSamples;
+      this._.microCurrentTime = microCurrentTime;
+      this._.processedSamples = processedSamples;
 
       this.destination.$process(inNumSamples, ++this._.tick);
     }
