@@ -4,6 +4,7 @@
     "mocha": true
   },
   "rules": {
+    "no-new": 0,
     "no-undefined": 0,
     "no-var": 0
   },
