@@ -9,9 +9,7 @@ describe("EventTarget", function() {
 
       assert.throws(function() {
         return new global.EventTarget();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -31,15 +29,11 @@ describe("EventTarget", function() {
 
       assert.throws(function() {
         target.addEventListener(null, sinon.spy());
-      }, function(e) {
-        return e instanceof TypeError && /should be a string/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         target.addEventListener("baz", "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a function/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -63,15 +57,11 @@ describe("EventTarget", function() {
 
       assert.throws(function() {
         target.removeEventListener(null, sinon.spy());
-      }, function(e) {
-        return e instanceof TypeError && /should be a string/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         target.removeEventListener("baz", "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a function/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -105,9 +95,7 @@ describe("EventTarget", function() {
 
       assert.throws(function() {
         target.dispatchEvent({});
-      }, function(e) {
-        return e instanceof TypeError && /should be a Event/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 });
