@@ -25,9 +25,7 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         return new global.AudioNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
 
       return audioContext.close().then(function() {
         return immigration.apply(function(admission) {
@@ -51,9 +49,7 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.context = null;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -67,9 +63,7 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.numberOfInputs = 1;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -83,9 +77,7 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.numberOfOutputs = 1;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -105,9 +97,7 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.channelCount = 1.5;
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -130,9 +120,7 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.channelCountMode = "custom";
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -152,9 +140,7 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.channelInterpretation = "custom";
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -171,39 +157,27 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.connect(audioContext.destination, 2);
-      }, function(e) {
-        return e instanceof TypeError && /exceeds number of outputs/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.connect(audioContext.destination, 0, 2);
-      }, function(e) {
-        return e instanceof TypeError && /exceeds number of inputs/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.connect("INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a AudioNode/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.connect(audioContext.destination, 1.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.connect(audioContext.destination, 0, 1.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.connect(anotherAudioContext.destination);
-      }, function(e) {
-        return e instanceof TypeError && /different audio context/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.connect === global.AudioNode.prototype.connect);
     });
@@ -220,15 +194,11 @@ describe("AudioNode", function() {
 
       assert.throws(function() {
         node.disconnect(1.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.disconnect(2);
-      }, function(e) {
-        return e instanceof TypeError && /exceeds number of outputs/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.disconnect === global.AudioNode.prototype.disconnect);
     });

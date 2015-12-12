@@ -15,9 +15,7 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         return new global.AudioBufferSourceNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -40,9 +38,7 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.buffer = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a AudioBuffer/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -54,9 +50,7 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.playbackRate = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -68,9 +62,7 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.detune = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -88,9 +80,7 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.loop = 0;
-      }, function(e) {
-        return e instanceof TypeError && /should be a boolean/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -108,9 +98,7 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.loopStart = -0.5;
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -128,9 +116,7 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.loopEnd = -0.5;
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -154,9 +140,7 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.onended = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a function/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -177,15 +161,11 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.start(-0.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.start(undefined);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       node.start(0);
 
@@ -198,15 +178,11 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.start(0, -0.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.start(0, undefined);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       node.start(0, 0);
 
@@ -219,15 +195,11 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.start(0, 0, -0.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.start(0, 0, undefined);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       node.start(0, 0, 0);
 
@@ -249,9 +221,7 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.stop(-0.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       node.stop();
 
@@ -276,15 +246,11 @@ describe("AudioBufferSourceNode", function() {
 
       assert.throws(function() {
         node.stop(-0.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.stop(undefined);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       node.stop(0);
 

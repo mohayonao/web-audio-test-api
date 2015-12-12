@@ -15,15 +15,11 @@ describe("ChannelSplitterNode", function() {
 
       assert.throws(function() {
         audioContext.createChannelSplitter(5.1);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         return new global.ChannelSplitterNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 

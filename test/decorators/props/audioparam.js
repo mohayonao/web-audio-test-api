@@ -17,11 +17,6 @@ describe("@props.audioparam(defaultValue: number)", () => {
 
     assert(foo.bar instanceof AudioParam);
     assert(foo.bar.defaultValue === 100);
-
-    assert.throws(() => {
-      foo.bar = 0;
-    }, (e) => {
-      return e instanceof TypeError && /readonly property/.test(e.message);
-    });
+    assert.throws(() => { foo.bar = 0; }, TypeError);
   });
 });

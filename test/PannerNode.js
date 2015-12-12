@@ -15,9 +15,7 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         return new global.PannerNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -35,9 +33,7 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.panningModel = "custom";
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -58,9 +54,7 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.distanceModel = "custom";
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -78,9 +72,7 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.refDistance = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -98,9 +90,7 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.maxDistance = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -118,9 +108,7 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.rolloffFactor = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -138,9 +126,7 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.coneInnerAngle = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -158,9 +144,7 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.coneOuterAngle = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -178,9 +162,7 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.coneOuterGain = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -192,21 +174,15 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.setPosition("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setPosition(0, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setPosition(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.setPosition === global.PannerNode.prototype.setPosition);
     });
@@ -220,21 +196,15 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.setOrientation("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setOrientation(0, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setOrientation(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.setOrientation === global.PannerNode.prototype.setOrientation);
     });
@@ -248,21 +218,15 @@ describe("PannerNode", function() {
 
       assert.throws(function() {
         node.setVelocity("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setVelocity(0, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.setVelocity(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.setVelocity === global.PannerNode.prototype.setVelocity);
     });

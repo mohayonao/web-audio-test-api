@@ -16,15 +16,11 @@ describe("MediaElementAudioSourceNode", function() {
 
       assert.throws(function() {
         audioContext.createMediaElementSource("INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a HTMLMediaElement/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         return new global.MediaElementAudioSourceNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 

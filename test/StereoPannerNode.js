@@ -23,9 +23,7 @@ describe("StereoPannerNode", function() {
 
       assert.throws(function() {
         return new global.StereoPannerNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -37,9 +35,7 @@ describe("StereoPannerNode", function() {
 
       assert.throws(function() {
         node.pan = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 

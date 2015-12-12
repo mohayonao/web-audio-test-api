@@ -15,9 +15,7 @@ describe("AudioDestinationNode", function() {
 
       assert.throws(function() {
         return new global.AudioDestinationNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -29,9 +27,7 @@ describe("AudioDestinationNode", function() {
 
       assert.throws(function() {
         node.maxChannelCount = 256;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 

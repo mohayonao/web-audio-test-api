@@ -14,9 +14,7 @@ describe("AudioListener", function() {
 
       assert.throws(function() {
         return new global.AudioListener();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -34,9 +32,7 @@ describe("AudioListener", function() {
 
       assert.throws(function() {
         listener.dopplerFactor = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -54,9 +50,7 @@ describe("AudioListener", function() {
 
       assert.throws(function() {
         listener.speedOfSound = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -68,21 +62,15 @@ describe("AudioListener", function() {
 
       assert.throws(function() {
         listener.setPosition("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setPosition(0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setPosition(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(listener.setPosition === global.AudioListener.prototype.setPosition);
     });
@@ -96,39 +84,27 @@ describe("AudioListener", function() {
 
       assert.throws(function() {
         listener.setOrientation("INVALID", 0, 0, 0, 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setOrientation(0, "INVALID", 0, 0, 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setOrientation(0, 0, "INVALID", 0, 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, "INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(listener.setOrientation === global.AudioListener.prototype.setOrientation);
     });
@@ -142,21 +118,15 @@ describe("AudioListener", function() {
 
       assert.throws(function() {
         listener.setVelocity("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setVelocity(0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         listener.setVelocity(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(listener.setVelocity === global.AudioListener.prototype.setVelocity);
     });

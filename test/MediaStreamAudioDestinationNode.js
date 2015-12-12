@@ -15,9 +15,7 @@ describe("MediaStreamAudioDestinationNode", function() {
 
       assert.throws(function() {
         return new global.MediaStreamAudioDestinationNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 

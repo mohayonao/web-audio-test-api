@@ -15,9 +15,7 @@ describe("GainNode", function() {
 
       assert.throws(function() {
         return new global.GainNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -29,9 +27,7 @@ describe("GainNode", function() {
 
       assert.throws(function() {
         node.gain = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 

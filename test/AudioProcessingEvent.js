@@ -22,9 +22,7 @@ describe("AudioProcessingEvent", function() {
 
       assert.throws(function() {
         return new global.AudioProcessingEvent();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
 
       // test api
       assert(event.$name === "AudioProcessingEvent");

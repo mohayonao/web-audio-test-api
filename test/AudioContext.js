@@ -31,9 +31,7 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.destination = null;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -43,9 +41,7 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.sampleRate = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -55,9 +51,7 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.currentTime = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -67,9 +61,7 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.listener = null;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -107,9 +99,7 @@ describe("AudioContext", function() {
 
         assert.throws(function() {
           audioContext.state = 0;
-        }, function(e) {
-          return e instanceof TypeError && /readonly/.test(e.message);
-        });
+        }, TypeError);
       });
     });
   });
@@ -138,9 +128,7 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.onstatechange = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a function/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -155,9 +143,7 @@ describe("AudioContext", function() {
       it("() throws TypeError", function() {
         assert.throws(function() {
           audioContext.suspend();
-        }, function(e) {
-          return e instanceof TypeError && /not enabled/.test(e.message);
-        });
+        }, TypeError);
       });
     });
     describe("enabled", function() {
@@ -202,9 +188,7 @@ describe("AudioContext", function() {
       it("() throws TypeError", function() {
         assert.throws(function() {
           audioContext.resume();
-        }, function(e) {
-          return e instanceof TypeError && /not enabled/.test(e.message);
-        });
+        }, TypeError);
       });
     });
     describe("enabled", function() {
@@ -251,9 +235,7 @@ describe("AudioContext", function() {
       it("() throws TypeError", function() {
         assert.throws(function() {
           audioContext.close();
-        }, function(e) {
-          return e instanceof TypeError && /not enabled/.test(e.message);
-        });
+        }, TypeError);
       });
     });
     describe("enabled", function() {
@@ -327,17 +309,11 @@ describe("AudioContext", function() {
 
         return Promise.resolve().then(function() {
           return audioContext.decodeAudioData("INVALID");
-        }).catch(function(e) {
-          return e instanceof TypeError && /should be a ArrayBuffer/.test(e.message);
-        }).then(function() {
+        }).catch(TypeError).then(function() {
           return audioContext.decodeAudioData(audioData, "INVALID");
-        }).catch(function(e) {
-          return e instanceof TypeError && /should be a function/.test(e.message);
-        }).then(function() {
+        }).catch(TypeError).then(function() {
           return audioContext.decodeAudioData(audioData, function() {}, "INVALID");
-        }).catch(function(e) {
-          return e instanceof TypeError && /should be a function/.test(e.message);
-        }).then(function() {
+        }).catch(TypeError).then(function() {
           return audioContext.decodeAudioData(audioData);
         }).then(function(buffer) {
           assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
@@ -368,21 +344,15 @@ describe("AudioContext", function() {
 
         assert.throws(function() {
           audioContext.decodeAudioData("INVALID");
-        }, function(e) {
-          return e instanceof TypeError && /should be a ArrayBuffer/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           audioContext.decodeAudioData(audioData, "INVALID");
-        }, function(e) {
-          return e instanceof TypeError && /should be a function/.test(e.message);
-        });
+        }, TypeError);
 
         assert.throws(function() {
           audioContext.decodeAudioData(audioData, function() {}, "INVALID");
-        }, function(e) {
-          return e instanceof TypeError && /should be a function/.test(e.message);
-        });
+        }, TypeError);
 
         audioContext.decodeAudioData(audioData, function(buffer) {
           assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
@@ -432,9 +402,7 @@ describe("AudioContext", function() {
     it("(): Promise<AudioWorker>", function() {
       assert.throws(function() {
         audioContext.createAudioWorker();
-      }, function(e) {
-        return e instanceof TypeError && /not enabled/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -500,9 +468,7 @@ describe("AudioContext", function() {
 
       assert.throws(function() {
         audioContext.createStereoPanner();
-      }, function(e) {
-        return e instanceof TypeError && /not enabled/.test(e.message);
-      });
+      }, TypeError);
 
       WebAudioTestAPI.setState("AudioContext#createStereoPanner", "enabled");
 

@@ -21,9 +21,7 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         return new global.AudioParam();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
 
       // test api
       assert(param.$node === node);
@@ -43,9 +41,7 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.name = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -62,9 +58,7 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.defaultValue = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -85,9 +79,7 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.value = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -104,15 +96,11 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.setValueAtTime("INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.setValueAtTime(0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.setValueAtTime === global.AudioParam.prototype.setValueAtTime);
     });
@@ -131,15 +119,11 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.linearRampToValueAtTime("INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.linearRampToValueAtTime(0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.linearRampToValueAtTime === global.AudioParam.prototype.linearRampToValueAtTime);
     });
@@ -158,15 +142,11 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.exponentialRampToValueAtTime("INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.exponentialRampToValueAtTime(0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.exponentialRampToValueAtTime === global.AudioParam.prototype.exponentialRampToValueAtTime);
     });
@@ -185,21 +165,15 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.setTargetAtTime("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.setTargetAtTime(0, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.setTargetAtTime(0, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.setTargetAtTime === global.AudioParam.prototype.setTargetAtTime);
     });
@@ -219,21 +193,15 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.setValueCurveAtTime("INVALID", 0, 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.setValueCurveAtTime(values, "INVALID", 0);
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         param.setValueCurveAtTime(values, 0, "INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.setValueCurveAtTime === global.AudioParam.prototype.setValueCurveAtTime);
     });
@@ -252,9 +220,7 @@ describe("AudioParam", function() {
 
       assert.throws(function() {
         param.cancelScheduledValues("INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a number/.test(e.message);
-      });
+      }, TypeError);
 
       assert(param.cancelScheduledValues === global.AudioParam.prototype.cancelScheduledValues);
     });

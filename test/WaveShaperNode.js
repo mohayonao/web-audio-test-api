@@ -15,9 +15,7 @@ describe("WaveShaperNode", function() {
 
       assert.throws(function() {
         return new global.WaveShaperNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -40,9 +38,7 @@ describe("WaveShaperNode", function() {
 
       assert.throws(function() {
         node.curve = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a Float32Array/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -63,9 +59,7 @@ describe("WaveShaperNode", function() {
 
       assert.throws(function() {
         node.oversample = "custom";
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 

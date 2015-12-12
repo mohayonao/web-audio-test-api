@@ -15,9 +15,7 @@ describe("ConvolverNode", function() {
 
       assert.throws(function() {
         return new global.ConvolverNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 

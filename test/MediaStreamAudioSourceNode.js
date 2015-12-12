@@ -16,15 +16,11 @@ describe("MediaStreamAudioSourceNode", function() {
 
       assert.throws(function() {
         audioContext.createMediaStreamSource("INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a MediaStream/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         return new global.MediaStreamAudioSourceNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 

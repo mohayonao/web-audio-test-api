@@ -19,21 +19,15 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext = new WebAudioTestAPI.OfflineAudioContext(2.5, 441, 44100);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441.5, 44100);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441, 44100.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive integer/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -43,9 +37,7 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext.destination = null;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -55,9 +47,7 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext.sampleRate = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -67,9 +57,7 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext.currentTime = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -79,9 +67,7 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext.listener = null;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -96,9 +82,7 @@ describe("OfflineAudioContext", function() {
       it("() throws TypeError", function() {
         assert.throws(function() {
           audioContext.suspend();
-        }, function(e) {
-          return e instanceof TypeError && /not enabled/.test(e.message);
-        });
+        }, TypeError);
       });
     });
     describe("enabled", function() {
@@ -137,9 +121,7 @@ describe("OfflineAudioContext", function() {
       it("() throws TypeError", function() {
         assert.throws(function() {
           audioContext.resume();
-        }, function(e) {
-          return e instanceof TypeError && /not enabled/.test(e.message);
-        });
+        }, TypeError);
       });
     });
     describe("enabled", function() {
@@ -178,9 +160,7 @@ describe("OfflineAudioContext", function() {
       it("() throws TypeError", function() {
         assert.throws(function() {
           audioContext.close();
-        }, function(e) {
-          return e instanceof TypeError && /not enabled/.test(e.message);
-        });
+        }, TypeError);
       });
     });
     describe("enabled", function() {
@@ -226,9 +206,7 @@ describe("OfflineAudioContext", function() {
           assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
         }).then(function() {
           return audioContext.startRendering();
-        }).catch(function(e) {
-          return e instanceof Error && /cannot call startRendering more than once/.test(e.message);
-        });
+        }).catch(Error);
       });
     });
     describe("void-based", function() {
@@ -260,9 +238,7 @@ describe("OfflineAudioContext", function() {
 
       assert.throws(function() {
         audioContext.oncomplete = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a function/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 

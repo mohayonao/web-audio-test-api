@@ -15,9 +15,7 @@ describe("OscillatorNode", function() {
 
       assert.throws(function() {
         return new global.OscillatorNode();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -41,9 +39,7 @@ describe("OscillatorNode", function() {
 
       assert.throws(function() {
         node.type = "custom";
-      }, function(e) {
-        return e instanceof TypeError && /should be an enum/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -55,9 +51,7 @@ describe("OscillatorNode", function() {
 
       assert.throws(function() {
         node.frequency = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -69,9 +63,7 @@ describe("OscillatorNode", function() {
 
       assert.throws(function() {
         node.detune = 0;
-      }, function(e) {
-        return e instanceof TypeError && /readonly/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -95,9 +87,7 @@ describe("OscillatorNode", function() {
 
       assert.throws(function() {
         node.onended = "INVALID";
-      }, function(e) {
-        return e instanceof TypeError && /should be a function/.test(e.message);
-      });
+      }, TypeError);
     });
   });
 
@@ -118,15 +108,11 @@ describe("OscillatorNode", function() {
 
       assert.throws(function() {
         node.start(-0.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.start(undefined);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       node.start(0);
 
@@ -148,15 +134,11 @@ describe("OscillatorNode", function() {
 
       assert.throws(function() {
         node.stop(-0.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       assert.throws(function() {
         node.stop(undefined);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       node.stop();
 
@@ -181,9 +163,7 @@ describe("OscillatorNode", function() {
 
       assert.throws(function() {
         node.stop(-0.5);
-      }, function(e) {
-        return e instanceof TypeError && /should be a positive number/.test(e.message);
-      });
+      }, TypeError);
 
       node.stop(0);
 
@@ -211,9 +191,7 @@ describe("OscillatorNode", function() {
 
       assert.throws(function() {
         node.setPeriodicWave("INVALID");
-      }, function(e) {
-        return e instanceof TypeError && /should be a PeriodicWave/.test(e.message);
-      });
+      }, TypeError);
 
       assert(node.setPeriodicWave === global.OscillatorNode.prototype.setPeriodicWave);
     });
