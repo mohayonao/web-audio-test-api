@@ -69,6 +69,7 @@ function createValidator(methodName) {
   const config = {};
 
   function validate(...args) {
+    const methodName = config.methodName;
     const parameters = config.parameters;
     const returnValue = config.returnValue;
     const errArgIndex = validateArguments(args, parameters);
@@ -77,7 +78,7 @@ function createValidator(methodName) {
       const errParamName = parameters[errArgIndex].paramName;
       const expectedType = parameters[errArgIndex].validator.description;
       const actualValue = toS(args[errArgIndex]);
-      const errMessage = `{{${errParamName}}} require $a ${expectedType}, but got ${actualValue}.`;
+      const errMessage = `'{{${errParamName}}}' require $a ${expectedType}, but got ${actualValue}.`;
 
       throw createExecuteError(this.constructor.name, methodName, parameters, returnValue, errMessage);
     }
