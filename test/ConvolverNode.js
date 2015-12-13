@@ -12,10 +12,9 @@ describe("ConvolverNode", function() {
 
       assert(node instanceof global.ConvolverNode);
       assert(node instanceof global.AudioNode);
-
-      assert.throws(function() {
-        return new global.ConvolverNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.ConvolverNode(); }, TypeError);
     });
   });
 

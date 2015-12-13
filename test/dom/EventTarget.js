@@ -6,10 +6,9 @@ describe("EventTarget", function() {
       var target = new WebAudioTestAPI.EventTarget();
 
       assert(target instanceof global.window.EventTarget);
-
-      assert.throws(function() {
-        return new global.EventTarget();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.EventTarget(); }, TypeError);
     });
   });
 

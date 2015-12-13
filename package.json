@@ -1,7 +1,7 @@
 {
   "name": "web-audio-test-api",
   "description": "Web Audio API test library for CI",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": "Nao Yonamine <mohayonao@gmail.com>",
   "bugs": {
     "url": "https://github.com/mohayonao/web-audio-test-api/issues"
@@ -50,9 +50,9 @@
     "build:to5": "babel src --out-dir lib",
     "cover": "babel-node $(npm bin)/isparta cover --report text --report html --report lcov _mocha",
     "lint": "eslint src test",
-    "mocha": "mocha --compilers js:babel-register",
-    "prepublish": "npm run lint && npm run mocha && npm run build",
-    "test": "mocha --compilers js:espower-babel/guess",
-    "travis": "npm run lint && npm run cover"
+    "prepublish": "npm run lint && npm run test && npm run build",
+    "test": "mocha --compilers js:babel-register",
+    "test:pow": "mocha --compilers js:espower-babel/guess",
+    "travis": "npm run lint && npm run test"
   }
 }

@@ -17,10 +17,9 @@ describe("MediaElementAudioSourceNode", function() {
       assert.throws(function() {
         audioContext.createMediaElementSource("INVALID");
       }, TypeError);
-
-      assert.throws(function() {
-        return new global.MediaElementAudioSourceNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.MediaElementAudioSourceNode(); }, TypeError);
     });
   });
 

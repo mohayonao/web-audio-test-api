@@ -12,10 +12,9 @@ describe("AudioDestinationNode", function() {
 
       assert(node instanceof global.AudioDestinationNode);
       assert(node instanceof global.AudioNode);
-
-      assert.throws(function() {
-        return new global.AudioDestinationNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioDestinationNode(); }, TypeError);
     });
   });
 

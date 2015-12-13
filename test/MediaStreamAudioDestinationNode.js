@@ -12,10 +12,9 @@ describe("MediaStreamAudioDestinationNode", function() {
 
       assert(node instanceof global.MediaStreamAudioDestinationNode);
       assert(node instanceof global.AudioNode);
-
-      assert.throws(function() {
-        return new global.MediaStreamAudioDestinationNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.MediaStreamAudioDestinationNode(); }, TypeError);
     });
   });
 

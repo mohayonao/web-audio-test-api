@@ -12,10 +12,9 @@ describe("PannerNode", function() {
 
       assert(node instanceof global.PannerNode);
       assert(node instanceof global.AudioNode);
-
-      assert.throws(function() {
-        return new global.PannerNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.PannerNode(); }, TypeError);
     });
   });
 
@@ -183,8 +182,6 @@ describe("PannerNode", function() {
       assert.throws(function() {
         node.setPosition(0, 0, "INVALID");
       }, TypeError);
-
-      assert(node.setPosition === global.PannerNode.prototype.setPosition);
     });
   });
 
@@ -205,8 +202,6 @@ describe("PannerNode", function() {
       assert.throws(function() {
         node.setOrientation(0, 0, "INVALID");
       }, TypeError);
-
-      assert(node.setOrientation === global.PannerNode.prototype.setOrientation);
     });
   });
 
@@ -227,8 +222,6 @@ describe("PannerNode", function() {
       assert.throws(function() {
         node.setVelocity(0, 0, "INVALID");
       }, TypeError);
-
-      assert(node.setVelocity === global.PannerNode.prototype.setVelocity);
     });
   });
 

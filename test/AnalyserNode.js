@@ -12,10 +12,9 @@ describe("AnalyserNode", function() {
 
       assert(node instanceof global.AnalyserNode);
       assert(node instanceof global.AudioNode);
-
-      assert.throws(function() {
-        return new global.AnalyserNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AnalyserNode(); }, TypeError);
     });
   });
 
@@ -138,8 +137,6 @@ describe("AnalyserNode", function() {
       assert.throws(function() {
         node.getFloatFrequencyData(i16);
       }, TypeError);
-
-      assert(node.getFloatFrequencyData === global.AnalyserNode.prototype.getFloatFrequencyData);
     });
   });
 
@@ -154,8 +151,6 @@ describe("AnalyserNode", function() {
       assert.throws(function() {
         node.getByteFrequencyData(i16);
       }, TypeError);
-
-      assert(node.getByteFrequencyData === global.AnalyserNode.prototype.getByteFrequencyData);
     });
   });
 
@@ -180,8 +175,6 @@ describe("AnalyserNode", function() {
       }, TypeError);
 
       WebAudioTestAPI.setState("AnalyserNode#getFloatTimeDomainData", "disabled");
-
-      assert(node.getFloatTimeDomainData === global.AnalyserNode.prototype.getFloatTimeDomainData);
     });
   });
 
@@ -196,8 +189,6 @@ describe("AnalyserNode", function() {
       assert.throws(function() {
         node.getByteTimeDomainData(i16);
       }, TypeError);
-
-      assert(node.getByteTimeDomainData === global.AnalyserNode.prototype.getByteTimeDomainData);
     });
   });
 

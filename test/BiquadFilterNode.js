@@ -12,10 +12,9 @@ describe("BiquadFilterNode", function() {
 
       assert(node instanceof global.BiquadFilterNode);
       assert(node instanceof global.AudioNode);
-
-      assert.throws(function() {
-        return new global.BiquadFilterNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.BiquadFilterNode(); }, TypeError);
     });
   });
 
@@ -122,8 +121,6 @@ describe("BiquadFilterNode", function() {
       assert.throws(function() {
         node.getFrequencyResponse(f32f, f32p, "INVALID");
       }, TypeError);
-
-      assert(node.getFrequencyResponse === global.BiquadFilterNode.prototype.getFrequencyResponse);
     });
   });
 

@@ -3712,7 +3712,7 @@ exports.default = WebAudioTestAPI;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = "0.5.1";
+exports.default = "0.5.2";
 },{}],32:[function(require,module,exports){
 "use strict";
 
@@ -3802,6 +3802,7 @@ function createValidator(methodName) {
   function validate() {
     var _config$methodBody;
 
+    var methodName = config.methodName;
     var parameters = config.parameters;
     var returnValue = config.returnValue;
 
@@ -3815,7 +3816,7 @@ function createValidator(methodName) {
       var errParamName = parameters[errArgIndex].paramName;
       var expectedType = parameters[errArgIndex].validator.description;
       var actualValue = (0, _toS2.default)(args[errArgIndex]);
-      var errMessage = "{{" + errParamName + "}} require $a " + expectedType + ", but got " + actualValue + ".";
+      var errMessage = "'{{" + errParamName + "}}' require $a " + expectedType + ", but got " + actualValue + ".";
 
       throw createExecuteError(this.constructor.name, methodName, parameters, returnValue, errMessage);
     }

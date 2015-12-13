@@ -19,12 +19,11 @@ describe("AudioParam", function() {
 
       assert(param instanceof global.AudioParam);
 
-      assert.throws(function() {
-        return new global.AudioParam();
-      }, TypeError);
-
       // test api
       assert(param.$node === node);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioParam(); }, TypeError);
     });
   });
 
@@ -101,8 +100,6 @@ describe("AudioParam", function() {
       assert.throws(function() {
         param.setValueAtTime(0, "INVALID");
       }, TypeError);
-
-      assert(param.setValueAtTime === global.AudioParam.prototype.setValueAtTime);
     });
   });
 
@@ -124,8 +121,6 @@ describe("AudioParam", function() {
       assert.throws(function() {
         param.linearRampToValueAtTime(0, "INVALID");
       }, TypeError);
-
-      assert(param.linearRampToValueAtTime === global.AudioParam.prototype.linearRampToValueAtTime);
     });
   });
 
@@ -147,8 +142,6 @@ describe("AudioParam", function() {
       assert.throws(function() {
         param.exponentialRampToValueAtTime(0, "INVALID");
       }, TypeError);
-
-      assert(param.exponentialRampToValueAtTime === global.AudioParam.prototype.exponentialRampToValueAtTime);
     });
   });
 
@@ -174,8 +167,6 @@ describe("AudioParam", function() {
       assert.throws(function() {
         param.setTargetAtTime(0, 0, "INVALID");
       }, TypeError);
-
-      assert(param.setTargetAtTime === global.AudioParam.prototype.setTargetAtTime);
     });
   });
 
@@ -202,8 +193,6 @@ describe("AudioParam", function() {
       assert.throws(function() {
         param.setValueCurveAtTime(values, 0, "INVALID");
       }, TypeError);
-
-      assert(param.setValueCurveAtTime === global.AudioParam.prototype.setValueCurveAtTime);
     });
   });
 
@@ -221,8 +210,6 @@ describe("AudioParam", function() {
       assert.throws(function() {
         param.cancelScheduledValues("INVALID");
       }, TypeError);
-
-      assert(param.cancelScheduledValues === global.AudioParam.prototype.cancelScheduledValues);
     });
   });
 

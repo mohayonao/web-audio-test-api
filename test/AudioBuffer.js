@@ -23,10 +23,9 @@ describe("AudioBuffer", function() {
       assert.throws(function() {
         audioContext.createBuffer(2, 128, 44100.5);
       }, TypeError);
-
-      assert.throws(function() {
-        return new global.AudioBuffer();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioBuffer(); }, TypeError);
     });
   });
 
@@ -120,8 +119,6 @@ describe("AudioBuffer", function() {
       assert.throws(function() {
         buf1.getChannelData(2.5);
       }, TypeError);
-
-      assert(buf1.getChannelData === global.AudioBuffer.prototype.getChannelData);
     });
   });
 
@@ -176,8 +173,6 @@ describe("AudioBuffer", function() {
       }, TypeError);
 
       WebAudioTestAPI.setState("AudioBuffer#copyFromChannel", "disabled");
-
-      assert(buf1.copyFromChannel === global.AudioBuffer.prototype.copyFromChannel);
     });
   });
 
@@ -229,8 +224,6 @@ describe("AudioBuffer", function() {
       }, TypeError);
 
       WebAudioTestAPI.setState("AudioBuffer#copyToChannel", "disabled");
-
-      assert(buf1.copyToChannel === global.AudioBuffer.prototype.copyToChannel);
     });
   });
 

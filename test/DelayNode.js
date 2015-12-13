@@ -24,10 +24,9 @@ describe("DelayNode", function() {
       assert.throws(function() {
         audioContext.createDelay(undefined);
       }, TypeError);
-
-      assert.throws(function() {
-        return new global.DelayNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.DelayNode(); }, TypeError);
     });
   });
 

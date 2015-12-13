@@ -12,10 +12,9 @@ describe("AudioBufferSourceNode", function() {
 
       assert(node instanceof global.AudioBufferSourceNode);
       assert(node instanceof global.AudioNode);
-
-      assert.throws(function() {
-        return new global.AudioBufferSourceNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioBufferSourceNode(); }, TypeError);
     });
   });
 
@@ -153,8 +152,6 @@ describe("AudioBufferSourceNode", function() {
       assert.throws(function() {
         node.start();
       }, Error, "call twice");
-
-      assert(node.start === global.AudioBufferSourceNode.prototype.start);
     });
     it("works with when", function() {
       var node = audioContext.createBufferSource();
@@ -232,8 +229,6 @@ describe("AudioBufferSourceNode", function() {
       assert.throws(function() {
         node.start();
       }, Error);
-
-      assert(node.stop === global.AudioBufferSourceNode.prototype.stop);
     });
     it("works with when", function() {
       var node = audioContext.createBufferSource();

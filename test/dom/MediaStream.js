@@ -7,12 +7,9 @@ describe("MediaStream", function() {
 
       assert(stream instanceof global.window.MediaStream);
       assert(stream instanceof global.window.EventTarget);
-
-      assert.throws(function() {
-        return new global.MediaStream();
-      }, function(e) {
-        return e instanceof TypeError && /Illegal constructor/.test(e.message);
-      });
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.MediaStream(); }, TypeError);
     });
   });
 });

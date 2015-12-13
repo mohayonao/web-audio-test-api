@@ -11,10 +11,9 @@ describe("AudioListener", function() {
       var listener = audioContext.listener;
 
       assert(listener instanceof global.AudioListener);
-
-      assert.throws(function() {
-        return new global.AudioListener();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioListener(); }, TypeError);
     });
   });
 
@@ -71,8 +70,6 @@ describe("AudioListener", function() {
       assert.throws(function() {
         listener.setPosition(0, 0, "INVALID");
       }, TypeError);
-
-      assert(listener.setPosition === global.AudioListener.prototype.setPosition);
     });
   });
 
@@ -105,8 +102,6 @@ describe("AudioListener", function() {
       assert.throws(function() {
         listener.setOrientation(0, 0, 0, 0, 0, "INVALID");
       }, TypeError);
-
-      assert(listener.setOrientation === global.AudioListener.prototype.setOrientation);
     });
   });
 
@@ -127,8 +122,6 @@ describe("AudioListener", function() {
       assert.throws(function() {
         listener.setVelocity(0, 0, "INVALID");
       }, TypeError);
-
-      assert(listener.setVelocity === global.AudioListener.prototype.setVelocity);
     });
   });
 
