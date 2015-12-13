@@ -1,4 +1,3 @@
-import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Event from "./dom/Event";
 import EventTarget from "./dom/EventTarget";
@@ -25,21 +24,19 @@ import PeriodicWave from "./PeriodicWave";
 import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
+import caniuse from "./utils/caniuse";
 import getAPIVersion from "./utils/getAPIVersion";
-import defaults from "./utils/defaults";
 import toMicroseconds from "./utils/toMicroseconds";
+import versions from "./decorators/versions";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
-let configuration = Configuration.getInstance();
-let immigration = Immigration.getInstance();
+const PROMISE_BASED_DECODE_AUDIO_DATA = { chrome: "none", firefox: "36-", safari: "none" };
+const AUDIOCONTEXT_STATE = { chrome: "41-", firefox: "40-", safari: "9-" };
+const NOOP = () => {};
 
-function isEnabledState() {
-  return configuration.getState("AudioContext#suspend") === "enabled"
-    || configuration.getState("AudioContext#resume") === "enabled"
-    || configuration.getState("AudioContext#close") === "enabled";
-}
+let immigration = Immigration.getInstance();
 
 export default class AudioContext extends EventTarget {
   constructor() {
@@ -84,50 +81,51 @@ export default class AudioContext extends EventTarget {
     return this._.listener;
   }
 
-  get state() {
-    if (isEnabledState()) {
+  @props.readonly()
+  state() {
+    if (caniuse(AUDIOCONTEXT_STATE, versions.targetVersions)) {
       return this._.state;
     }
   }
 
-  set state(value) {
-    if (!isEnabledState(value)) {
-      return;
-    }
-    throw new TypeError(`${this.constructor.name}; Attempt to assign to readonly property: "state"`);
-  }
-
   @props.on("statechange")
+  // @versions({ chrome: "41-", firefox: "40-", safari: "9-" })
   onstatechange() {}
 
   @methods.returns(validators.isInstanceOf(Promise))
+  @versions({ chrome: "41-", firefox: "40-", safari: "9-" })
   suspend() {
-    return this.__transitionToState("suspend", () => {
+    return this.__transitionToState("suspend", (resolve) => {
       if (this._.state === "running") {
         this._.state = "suspended";
         this.dispatchEvent(new Event("statechange", this));
       }
+      resolve();
     });
   }
 
   @methods.returns(validators.isInstanceOf(Promise))
+  @versions({ chrome: "41-", firefox: "40-", safari: "9-" })
   resume() {
-    return this.__transitionToState("resume", () => {
+    return this.__transitionToState("resume", (resolve) => {
       if (this._.state === "suspended") {
         this._.state = "running";
         this.dispatchEvent(new Event("statechange", this));
       }
+      resolve();
     });
   }
 
   @methods.returns(validators.isInstanceOf(Promise))
+  @versions({ chrome: "42-", firefox: "40-", safari: "9-" })
   close() {
-    return this.__transitionToState("close", () => {
+    return this.__transitionToState("close", (resolve) => {
       if (this._.state !== "closed") {
         this._.state = "closed";
         this.$reset();
         this.dispatchEvent(new Event("statechange", this));
       }
+      resolve();
     });
   }
 
@@ -141,20 +139,34 @@ export default class AudioContext extends EventTarget {
     );
   }
 
+
+  decodeAudioData() {
+    if (caniuse(PROMISE_BASED_DECODE_AUDIO_DATA, versions.targetVersions)) {
+      return this.__decodeAudioData$$Promise.apply(this, arguments);
+    }
+    return this.__decodeAudioData$$Void.apply(this, arguments);
+  }
+
   @methods.param("audioData", validators.isInstanceOf(ArrayBuffer))
   @methods.param("[ successCallback ]", validators.isFunction)
   @methods.param("[ errorCallback ]", validators.isFunction)
-  decodeAudioData(audioData, successCallback, errorCallback) {
-    let isPromiseBased = configuration.getState("AudioContext#decodeAudioData") === "promise";
+  @methods.returns(validators.isInstanceOf(Promise))
+  __decodeAudioData$$Promise(audioData, successCallback, errorCallback) {
+    return this.__decodeAudioData(audioData, successCallback, errorCallback);
+  }
 
-    if (isPromiseBased) {
-      successCallback = defaults(successCallback, () => {});
-      errorCallback = defaults(errorCallback, () => {});
-    } else {
-      errorCallback = defaults(errorCallback, () => {});
-    }
+  @methods.param("audioData", validators.isInstanceOf(ArrayBuffer))
+  @methods.param("successCallback", validators.isFunction)
+  @methods.param("[ errorCallback ]", validators.isFunction)
+  __decodeAudioData$$Void(audioData, successCallback, errorCallback) {
+    this.__decodeAudioData(audioData, successCallback, errorCallback);
+  }
 
-    let promise = new Promise((resolve, reject) => {
+  __decodeAudioData(audioData, successCallback, errorCallback) {
+    successCallback = successCallback || NOOP;
+    errorCallback = errorCallback || NOOP;
+
+    const promise = new Promise((resolve, reject) => {
       if (this.DECODE_AUDIO_DATA_FAILED) {
         reject();
       } else {
@@ -166,9 +178,7 @@ export default class AudioContext extends EventTarget {
 
     promise.then(successCallback, errorCallback);
 
-    if (isPromiseBased) {
-      return promise;
-    }
+    return promise;
   }
 
   @methods.returns(validators.isInstanceOf(AudioBufferSourceNode))
@@ -206,6 +216,7 @@ export default class AudioContext extends EventTarget {
       throw new TypeError("not enabled");
     }
   })
+  @versions({ chrome: "", firefox: "", safari: "" })
   createAudioWorker() {}
 
   @methods.param("bufferSize", validators.isPositiveInteger)
@@ -261,14 +272,8 @@ export default class AudioContext extends EventTarget {
     );
   }
 
-  @methods.contract({
-    precondition() {
-      if (configuration.getState("AudioContext#createStereoPanner") !== "enabled") {
-        throw new TypeError("not enabled");
-      }
-    }
-  })
   @methods.returns(validators.isInstanceOf(StereoPannerNode))
+  @versions({ chrome: "41-", firefox: "37-", safari: "none" })
   createStereoPanner() {
     return immigration.apply(admission =>
       new StereoPannerNode(admission, this)
@@ -321,20 +326,12 @@ export default class AudioContext extends EventTarget {
     );
   }
 
-  @methods.contract({
-    precondition(methodName) {
-      if (configuration.getState(`AudioContext#${methodName}`) !== "enabled") {
-        throw new TypeError("not enabled");
-      }
-    }
-  })
   __transitionToState(methodName, callback) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (this._.state === "close") {
         throw new TypeError(`Cannot ${methodName} a context that is being closed or has already been closed.`);
       }
-      callback();
-      resolve();
+      callback(resolve, reject);
     });
   }
 

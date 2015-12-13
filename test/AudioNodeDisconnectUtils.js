@@ -1,6 +1,7 @@
 describe("AudioNodeDisconnectUtils", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
+  var versions;
 
   beforeEach(function() {
     audioContext = new WebAudioTestAPI.AudioContext();
@@ -8,7 +9,11 @@ describe("AudioNodeDisconnectUtils", function() {
 
   describe("channel disconnect", function() {
     before(function() {
-      WebAudioTestAPI.setState("AudioNode#disconnect", "channel");
+      versions = WebAudioTestAPI.getTargetVersions();
+      WebAudioTestAPI.setTargetVersions(0);
+    });
+    after(function() {
+      WebAudioTestAPI.setTargetVersions(versions);
     });
 
     describe("disconnect(output = 0): void", function() {
@@ -66,10 +71,11 @@ describe("AudioNodeDisconnectUtils", function() {
   });
   describe("selective disconnect", function() {
     before(function() {
-      WebAudioTestAPI.setState("AudioNode#disconnect", "selective");
+      versions = WebAudioTestAPI.getTargetVersions();
+      WebAudioTestAPI.setTargetVersions(Infinity);
     });
     after(function() {
-      WebAudioTestAPI.setState("AudioNode#disconnect", "channel");
+      WebAudioTestAPI.setTargetVersions(versions);
     });
 
     describe("disconnect(): void", function() {

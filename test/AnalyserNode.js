@@ -1,9 +1,14 @@
 describe("AnalyserNode", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
+  var versions;
 
   beforeEach(function() {
+    versions = WebAudioTestAPI.getTargetVersions();
     audioContext = new WebAudioTestAPI.AudioContext();
+  });
+  afterEach(function() {
+    WebAudioTestAPI.setTargetVersions(versions);
   });
 
   describe("constructor()", function() {
@@ -154,17 +159,13 @@ describe("AnalyserNode", function() {
     });
   });
 
-  describe("#getFloatTimeDomainData", function() {
-    it("(array: Float32Array): void", function() {
+  describe("#getFloatTimeDomainData(array: Float32Array): void", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
       var f32 = new Float32Array(128);
       var i16 = new Int16Array(128);
 
-      assert.throws(function() {
-        node.getFloatTimeDomainData(f32);
-      }, TypeError);
-
-      WebAudioTestAPI.setState("AnalyserNode#getFloatTimeDomainData", "enabled");
+      WebAudioTestAPI.setTargetVersions(Infinity);
 
       assert.doesNotThrow(function() {
         node.getFloatTimeDomainData(f32);
@@ -173,13 +174,21 @@ describe("AnalyserNode", function() {
       assert.throws(function() {
         node.getFloatTimeDomainData(i16);
       }, TypeError);
+    });
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-      WebAudioTestAPI.setState("AnalyserNode#getFloatTimeDomainData", "disabled");
+      var node = audioContext.createAnalyser();
+      var f32 = new Float32Array(128);
+
+      assert.throws(function() {
+        node.getFloatTimeDomainData(f32);
+      }, TypeError);
     });
   });
 
-  describe("#getByteTimeDomainData", function() {
-    it("(array: Uint8Array): void", function() {
+  describe("#getByteTimeDomainData(array: Uint8Array): void", function() {
+    it("works", function() {
       var node = audioContext.createAnalyser();
       var ui8 = new Uint8Array(128);
       var i16 = new Int16Array(128);

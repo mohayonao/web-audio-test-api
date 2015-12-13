@@ -1,10 +1,9 @@
-import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
+import versions from "./decorators/versions";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
-let configuration = Configuration.getInstance();
 let immigration = Immigration.getInstance();
 
 export default class AudioBuffer {
@@ -56,7 +55,9 @@ export default class AudioBuffer {
   @methods.contract({
     precondition(channel) {
       if (this._.data.length <= channel) {
-        throw new TypeError(`The {{channel}} index (${channel}) exceeds number of channels (${this._.data.length}).`);
+        throw new TypeError(`
+          The {{channel}} index (${channel}) exceeds number of channels (${this._.data.length}).`
+        );
       }
     }
   })
@@ -71,16 +72,18 @@ export default class AudioBuffer {
   @methods.contract({
     precondition(destination, channelNumber, startInChannel = 0) {
       if (this._.data.length <= channelNumber) {
-        throw new TypeError(`The {{channelNumber}} provided (${channelNumber}) is outside the range [0, ${this._.data.length}).`);
+        throw new TypeError(`
+          The {{channelNumber}} provided (${channelNumber}) is outside the range [0, ${this._.data.length}).`
+        );
       }
       if (this._.length <= startInChannel) {
-        throw new TypeError(`The {{startInChannel}} provided (${startInChannel}) is outside the range [0, ${this._.length}).`);
-      }
-      if (configuration.getState("AudioBuffer#copyFromChannel") !== "enabled") {
-        throw new TypeError("not enabled");
+        throw new TypeError(`
+          The {{startInChannel}} provided (${startInChannel}) is outside the range [0, ${this._.length}).`
+        );
       }
     }
   })
+  @versions({ chrome: "43-", firefox: "27-", safari: "none" })
   copyFromChannel(destination, channelNumber, startInChannel = 0) {
     let source = this._.data[channelNumber].subarray(startInChannel);
 
@@ -93,16 +96,18 @@ export default class AudioBuffer {
   @methods.contract({
     precondition(source, channelNumber, startInChannel = 0) {
       if (this._.data.length <= channelNumber) {
-        throw new TypeError(`The {{channelNumber}} provided (${channelNumber}) is outside the range [0, ${this._.data.length}).`);
+        throw new TypeError(
+          `The {{channelNumber}} provided (${channelNumber}) is outside the range [0, ${this._.data.length}).`
+        );
       }
       if (this._.length <= startInChannel) {
-        throw new TypeError(`The {{startInChannel}} provided (${startInChannel}) is outside the range [0, ${this._.length}).`);
-      }
-      if (configuration.getState("AudioBuffer#copyToChannel") !== "enabled") {
-        throw new TypeError("not enabled");
+        throw new TypeError(
+          `The {{startInChannel}} provided (${startInChannel}) is outside the range [0, ${this._.length}).`
+        );
       }
     }
   })
+  @versions({ chrome: "43-", firefox: "27-", safari: "none" })
   copyToChannel(source, channelNumber, startInChannel = 0) {
     let clipped = source.subarray(0, Math.min(source.length, this._.length - startInChannel));
 

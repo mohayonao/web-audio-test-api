@@ -1,14 +1,16 @@
-import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Event from "./dom/Event";
 import AudioContext from "./AudioContext";
 import AudioBuffer from "./AudioBuffer";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
+import caniuse from "./utils/caniuse";
+import versions from "./decorators/versions";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
-let configuration = Configuration.getInstance();
+const PROMISE_BASED_START_RENDERING = { chrome: "42-", firefox: "37-", safari: "none" };
+
 let immigration = Immigration.getInstance();
 
 export default class OfflineAudioContext extends AudioContext {
@@ -32,16 +34,19 @@ export default class OfflineAudioContext extends AudioContext {
   @props.on("complete")
   oncomplete() {}
 
+  @versions({ chrome: "41-", firefox: "40-", safari: "9-" })
   suspend() {
-    return this.__transitionToState("suspend");
+    return Promise.reject(new TypeError(`Failed to execute 'suspend' on 'OfflineAudioContext'.`));
   }
 
+  @versions({ chrome: "41-", firefox: "40-", safari: "9-" })
   resume() {
-    return this.__transitionToState("resume");
+    return Promise.reject(new TypeError(`Failed to execute 'resume' on 'OfflineAudioContext'.`));
   }
 
+  @versions({ chrome: "42-", firefox: "40-", safari: "9-" })
   close() {
-    return this.__transitionToState("close");
+    return Promise.reject(new TypeError(`Failed to execute 'close' on 'OfflineAudioContext'.`));
   }
 
   @methods.contract({
@@ -52,32 +57,23 @@ export default class OfflineAudioContext extends AudioContext {
     }
   })
   startRendering() {
-    let isPromiseBased = configuration.getState("OfflineAudioContext#startRendering") === "promise";
-
     this._.rendering = true;
-
-    if (isPromiseBased) {
-      return new Promise((resolve) => {
-        this._.resolve = resolve;
-        this._.state = "running";
-        this.dispatchEvent(new Event("statechange", this));
-      });
+    if (caniuse(PROMISE_BASED_START_RENDERING, versions.targetVersions)) {
+      return this.__startRendering$$Promise.apply(this, arguments);
     }
+    return this.__startRendering$$Void.apply(this, arguments);
+  }
 
+  __startRendering$$Void() {
     this._.state = "running";
     this.dispatchEvent(new Event("statechange", this));
   }
 
-  @methods.contract({
-    precondition(methodName) {
-      if (configuration.getState(`AudioContext#${methodName}`) !== "enabled") {
-        throw new TypeError("not enabled");
-      }
-    }
-  })
-  __transitionToState(methodName) {
-    return new Promise(() => {
-      throw new TypeError(`Cannot ${methodName} on an OfflineAudioContext.`);
+  __startRendering$$Promise() {
+    return new Promise((resolve) => {
+      this._.resolve = resolve;
+      this._.state = "running";
+      this.dispatchEvent(new Event("statechange", this));
     });
   }
 

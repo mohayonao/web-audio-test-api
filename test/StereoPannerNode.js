@@ -1,17 +1,17 @@
 describe("StereoPannerNode", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
+  var versions;
 
   before(function() {
-    WebAudioTestAPI.setState("AudioContext#createStereoPanner", "enabled");
+    versions = WebAudioTestAPI.getTargetVersions();
+    WebAudioTestAPI.setTargetVersions(Infinity);
   });
-
   beforeEach(function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
-
   after(function() {
-    WebAudioTestAPI.setState("AudioContext#createStereoPanner", "disabled");
+    WebAudioTestAPI.setTargetVersions(versions);
   });
 
   describe("constructor()", function() {

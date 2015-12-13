@@ -2,6 +2,7 @@ import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import Event from "./dom/Event";
 import toSeconds from "./utils/toSeconds";
+import versions from "./decorators/versions";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
@@ -32,6 +33,7 @@ export default class AudioBufferSourceNode extends AudioNode {
   playbackRate() {}
 
   @props.audioparam(0)
+  @versions({ chrome: "", firefox: "", safari: "" })
   detune() {}
 
   @props.typed(validators.isBoolean, false)

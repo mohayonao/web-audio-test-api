@@ -1,15 +1,18 @@
-import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import Junction from "./utils/Junction";
 import EventTarget from "./dom/EventTarget";
+import caniuse from "./utils/caniuse";
 import defaults from "./utils/defaults";
 import toJSON from "./utils/toJSON";
 import toNodeName from "./utils/toNodeName";
+import versions from "./decorators/versions";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
-let configuration = Configuration.getInstance();
+const SELECTIVE_DISCONNECT = { chrome: "43-", firefox: "none", safari: "none" };
+const AUDIOCONTEXT_STATE = { chrome: "41-", firefox: "40-", safari: "9-" };
+
 let immigration = Immigration.getInstance();
 
 export default class AudioNode extends EventTarget {
@@ -29,8 +32,10 @@ export default class AudioNode extends EventTarget {
 
   @methods.contract({
     precondition() {
-      if (this._.context.state === "closed") {
-        throw new TypeError(`AudioContext has been closed`);
+      if (caniuse(AUDIOCONTEXT_STATE, versions.targetVersions)) {
+        if (this._.context.state === "closed") {
+          throw new TypeError(`AudioContext has been closed.`);
+        }
       }
     }
   })
@@ -91,7 +96,7 @@ export default class AudioNode extends EventTarget {
   }
 
   disconnect(destination, output, input) {
-    if (configuration.getState("AudioNode#disconnect") !== "selective") {
+    if (!caniuse(SELECTIVE_DISCONNECT, versions.targetVersions)) {
       return this.__disconnect$$Channel(defaults(destination, 0));
     }
 

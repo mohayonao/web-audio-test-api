@@ -1,10 +1,8 @@
-import Configuration from "./utils/Configuration";
 import AudioNode from "./AudioNode";
+import versions from "./decorators/versions";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
-
-let configuration = Configuration.getInstance();
 
 export default class AnalyserNode extends AudioNode {
   static $JSONKeys = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
@@ -46,13 +44,7 @@ export default class AnalyserNode extends AudioNode {
   getByteFrequencyData() {}
 
   @methods.param("array", validators.isInstanceOf(Float32Array))
-  @methods.contract({
-    precondition() {
-      if (configuration.getState("AnalyserNode#getFloatTimeDomainData") !== "enabled") {
-        throw new TypeError("not enabled");
-      }
-    }
-  })
+  @versions({ chrome: "37-", firefox: "30-", safari: "none" })
   getFloatTimeDomainData() {}
 
   @methods.param("array", validators.isInstanceOf(Uint8Array))

@@ -1,15 +1,14 @@
 describe("AudioContext", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
-
-  function setStateForStateTransitionAPI(state) {
-    WebAudioTestAPI.setState("AudioContext#suspend", state);
-    WebAudioTestAPI.setState("AudioContext#resume", state);
-    WebAudioTestAPI.setState("AudioContext#close", state);
-  }
+  var versions;
 
   beforeEach(function() {
+    versions = WebAudioTestAPI.getTargetVersions();
     audioContext = new WebAudioTestAPI.AudioContext();
+  });
+  afterEach(function() {
+    WebAudioTestAPI.setTargetVersions(versions);
   });
 
   describe("constructor()", function() {
@@ -66,51 +65,19 @@ describe("AudioContext", function() {
   });
 
   describe("#state: string", function() {
-    describe("disabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("get: undefined", function() {
-        var undef;
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
 
-        assert(audioContext.state === undef);
-      });
-      it("set: nothing to do", function() {
-        var undef;
-
-        assert.doesNotThrow(function() {
-          audioContext.state = "closed";
-        });
-        assert(audioContext.state === undef);
-      });
+      assert(audioContext.state === "running");
     });
-    describe("enabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("enabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("get: string", function() {
-        assert(audioContext.state === "running");
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-        assert.throws(function() {
-          audioContext.state = 0;
-        }, TypeError);
-      });
+      assert(typeof audioContext.state === "undefined");
     });
   });
 
   describe("#onstatechange: function", function() {
-    before(function() {
-      setStateForStateTransitionAPI("enabled");
-    });
-    after(function() {
-      setStateForStateTransitionAPI("disabled");
-    });
     it("works", function() {
       function fn1() {}
       function fn2() {}
@@ -133,148 +100,99 @@ describe("AudioContext", function() {
   });
 
   describe("#suspend(): Promise<void", function() {
-    describe("disabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("throws TypeError", function() {
-        assert.throws(function() {
-          audioContext.suspend();
-        }, TypeError);
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
+      audioContext.onstatechange = sinon.spy();
+
+      assert(audioContext.state === "running");
+
+      return Promise.resolve().then(function() {
+        return audioContext.suspend();
+      }).then(function() {
+        assert(audioContext.state === "suspended");
+        assert(audioContext.onstatechange.calledOnce);
+        assert(audioContext.onstatechange.args[0][0] instanceof global.Event);
+        assert(audioContext.currentTime === 0);
+
+        audioContext.$processTo("00:01.000");
+        assert(audioContext.currentTime === 0);
       });
     });
-    describe("enabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("enabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("works", function() {
-        audioContext.onstatechange = sinon.spy();
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-        return Promise.resolve().then(function() {
-          assert(audioContext.state === "running");
-        }).then(function() {
-          audioContext.onstatechange.reset();
-          return audioContext.suspend();
-        }).then(function() {
-          assert(audioContext.state === "suspended");
-          assert(audioContext.onstatechange.calledOnce);
-          assert(audioContext.onstatechange.args[0][0] instanceof global.Event);
-        }).then(function() {
-          audioContext.$processTo("00:00:01.000");
-          assert(audioContext.currentTime === 0);
-        }).then(function() {
-          return audioContext.suspend();
-        }).then(function() {
-          assert(audioContext.onstatechange.calledOnce);
-        });
+      return Promise.resolve().then(function() {
+        return audioContext.suspend();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
       });
     });
   });
 
   describe("#resume(): Promise<void>", function() {
-    describe("disabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("throws TypeError", function() {
-        assert.throws(function() {
-          audioContext.resume();
-        }, TypeError);
-      });
-    });
-    describe("enabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("enabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("works", function() {
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
+      assert(audioContext.state === "running");
+
+      return audioContext.suspend().then(function() {
+        assert(audioContext.state === "suspended");
+
         audioContext.onstatechange = sinon.spy();
 
-        return Promise.resolve().then(function() {
-          assert(audioContext.state === "running");
-        }).then(function() {
-          return audioContext.suspend();
-        }).then(function() {
-          audioContext.onstatechange.reset();
-          return audioContext.resume();
-        }).then(function() {
-          assert(audioContext.state === "running");
-          assert(audioContext.onstatechange.calledOnce);
-          assert(audioContext.onstatechange.args[0][0] instanceof global.Event);
-        }).then(function() {
-          audioContext.$processTo("00:01.000");
-          assert(audioContext.currentTime === 1);
-        }).then(function() {
-          return audioContext.resume();
-        }).then(function() {
-          assert(audioContext.onstatechange.calledOnce);
-        });
+        return audioContext.resume();
+      }).then(function() {
+        assert(audioContext.state === "running");
+        assert(audioContext.onstatechange.calledOnce);
+        assert(audioContext.onstatechange.args[0][0] instanceof global.Event);
+
+        audioContext.$processTo("00:01.000");
+        assert(audioContext.currentTime === 1.000);
+      });
+    });
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
+
+      return Promise.resolve().then(function() {
+        return audioContext.resume();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
       });
     });
   });
 
   describe("#close(): Promise<void>", function() {
-    describe("disabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("throws TypeError", function() {
-        assert.throws(function() {
-          audioContext.close();
-        }, TypeError);
-      });
-    });
-    describe("enabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("enabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("works", function() {
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
+      assert(audioContext.state === "running");
+
+      return audioContext.suspend().then(function() {
+        assert(audioContext.state === "suspended");
+
         audioContext.onstatechange = sinon.spy();
 
-        return Promise.resolve().then(function() {
-          assert(audioContext.state === "running");
-        }).then(function() {
-          audioContext.onstatechange.reset();
-          return audioContext.close();
-        }).then(function() {
-          assert(audioContext.state === "closed");
-          assert(audioContext.onstatechange.calledOnce);
-          assert(audioContext.onstatechange.args[0][0] instanceof global.Event);
-        }).then(function() {
-          return audioContext.suspend();
-        }).catch(function(e) {
-          assert(audioContext.state === "closed");
-          assert(e instanceof Error && /cannot suspend/i.test(e.message));
-        }).then(function() {
-          return audioContext.resume();
-        }).catch(function(e) {
-          assert(audioContext.state === "closed");
-          assert(e instanceof Error && /cannot resume/i.test(e.message));
-        }).then(function() {
-          return audioContext.close();
-        }).catch(function(e) {
-          assert(audioContext.state === "closed");
-          assert(e instanceof Error && /cannot close/i.test(e.message));
-        }).then(function() {
-          assert(audioContext.onstatechange.calledOnce);
-        });
+        return audioContext.close();
+      }).then(function() {
+        assert(audioContext.state === "closed");
+
+        return audioContext.close();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
+
+        return audioContext.createGain();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
+      });
+    });
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
+
+      return Promise.resolve().then(function() {
+        return audioContext.close();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
       });
     });
   });
@@ -287,79 +205,41 @@ describe("AudioContext", function() {
     });
   });
 
-  describe("#decodeAudioData", function() {
-    beforeEach(function() {
-      audioContext.DECODE_AUDIO_DATA_RESULT = null;
-      audioContext.DECODE_AUDIO_DATA_FAILED = false;
-    });
-    afterEach(function() {
-      audioContext.DECODE_AUDIO_DATA_RESULT = null;
-      audioContext.DECODE_AUDIO_DATA_FAILED = false;
-    });
+  describe("#decodeAudioData(audioData: ArrayBuffer, successCallback: function, [ errorCallback: function ]): void", function() {
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-    describe("promise-based", function() {
-      before(function() {
-        WebAudioTestAPI.setState("AudioContext#decodeAudioData", "promise");
-      });
-      after(function() {
-        WebAudioTestAPI.setState("AudioContext#decodeAudioData", "void");
-      });
-      it("(audioData: ArrayBuffer): Promise<AudioBuffer>", function() {
-        var audioData = new Uint8Array(128).buffer;
+      var audioData = new Uint8Array(128).buffer;
 
-        return Promise.resolve().then(function() {
-          return audioContext.decodeAudioData("INVALID");
-        }).catch(TypeError).then(function() {
-          return audioContext.decodeAudioData(audioData, "INVALID");
-        }).catch(TypeError).then(function() {
-          return audioContext.decodeAudioData(audioData, function() {}, "INVALID");
-        }).catch(TypeError).then(function() {
-          return audioContext.decodeAudioData(audioData);
-        }).then(function(buffer) {
-          assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
-        });
-      });
-      it(".DECODE_AUDIO_DATA_FAILED", function() {
-        var audioData = new Uint8Array(128).buffer;
+      return new Promise(function(resolve, reject) {
+        var res = audioContext.decodeAudioData(audioData, resolve, reject);
 
-        audioContext.DECODE_AUDIO_DATA_FAILED = true;
-
-        return audioContext.decodeAudioData(audioData).catch(function() {
-        });
-      });
-      it(".DECODE_AUDIO_DATA_RESULT", function() {
-        var audioData = new Uint8Array(128).buffer;
-        var result = audioContext.createBuffer(2, 256, 44100);
-
-        audioContext.DECODE_AUDIO_DATA_RESULT = result;
-
-        audioContext.decodeAudioData(audioData).then(function(buffer) {
-          assert(buffer === result);
-        });
+        assert(typeof res === "undefined");
+      }).then(function(buffer) {
+        assert(buffer instanceof global.AudioBuffer);
       });
     });
-    describe("void-based", function() {
-      it("(audioData: ArrayBuffer, successCallback: function, errorCallback: function): void", function(done) {
-        var audioData = new Uint8Array(128).buffer;
+    it("not work without successCallback", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-        assert.throws(function() {
-          audioContext.decodeAudioData("INVALID");
-        }, TypeError);
+      var audioData = new Uint8Array(128).buffer;
 
-        assert.throws(function() {
-          audioContext.decodeAudioData(audioData, "INVALID");
-        }, TypeError);
+      return new Promise(function() {
+        audioContext.decodeAudioData(audioData);
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
+      });
+    });
+  });
 
-        assert.throws(function() {
-          audioContext.decodeAudioData(audioData, function() {}, "INVALID");
-        }, TypeError);
+  describe("#decodeAudioData(audioData: ArrayBuffer, [ successCallback: function, errorCallback: function ]): Promise<AudioBuffer>", function() {
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
 
-        audioContext.decodeAudioData(audioData, function(buffer) {
-          assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
-          done();
-        }, function() {
-          throw new Error("NOT REACHED");
-        });
+      var audioData = new Uint8Array(128).buffer;
+
+      return audioContext.decodeAudioData(audioData).then(function(buffer) {
+        assert(buffer instanceof global.AudioBuffer);
       });
     });
   });
@@ -399,7 +279,7 @@ describe("AudioContext", function() {
   });
 
   describe("#createAudioWorker(): Promise<AudioWorker>", function() {
-    it("works", function() {
+    it("not work in not unsupported version", function() {
       assert.throws(function() {
         audioContext.createAudioWorker();
       }, TypeError);
@@ -464,19 +344,18 @@ describe("AudioContext", function() {
 
   describe("#createStereoPanner(): StereoPannerNode", function() {
     it("works", function() {
-      var node;
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
+      var node = audioContext.createStereoPanner();
+
+      assert(node instanceof global.StereoPannerNode);
+    });
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
       assert.throws(function() {
         audioContext.createStereoPanner();
       }, TypeError);
-
-      WebAudioTestAPI.setState("AudioContext#createStereoPanner", "enabled");
-
-      node = audioContext.createStereoPanner();
-
-      assert(node instanceof global.StereoPannerNode);
-
-      WebAudioTestAPI.setState("AudioContext#createStereoPanner", "disabled");
     });
   });
 

@@ -1,9 +1,14 @@
 describe("AudioBuffer", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
+  var versions;
 
   beforeEach(function() {
+    versions = WebAudioTestAPI.getTargetVersions();
     audioContext = new WebAudioTestAPI.AudioContext();
+  });
+  afterEach(function() {
+    WebAudioTestAPI.setTargetVersions(versions);
   });
 
   describe("constructor()", function() {
@@ -124,17 +129,13 @@ describe("AudioBuffer", function() {
 
   describe("#copyFromChannel(destination: Float32Array, channelNumber: number, startInChannel= 0): void", function() {
     it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
       var buf1 = audioContext.createBuffer(2, 10, 44100);
       var dest = new Float32Array(4);
 
       buf1.getChannelData(0).set([ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]);
       buf1.getChannelData(1).set([ 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]);
-
-      assert.throws(function() {
-        buf1.copyFromChannel(dest, 0, 0);
-      }, TypeError);
-
-      WebAudioTestAPI.setState("AudioBuffer#copyFromChannel", "enabled");
 
       buf1.copyFromChannel(dest, 0);
       assert.deepEqual(dest, new Float32Array([ 10, 11, 12, 13 ]));
@@ -171,21 +172,25 @@ describe("AudioBuffer", function() {
       assert.throws(function() {
         buf1.copyFromChannel(dest, 0, undefined);
       }, TypeError);
+    });
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-      WebAudioTestAPI.setState("AudioBuffer#copyFromChannel", "disabled");
+      var buf1 = audioContext.createBuffer(2, 10, 44100);
+      var dest = new Float32Array(4);
+
+      assert.throws(function() {
+        buf1.copyFromChannel(dest, 0, 0);
+      }, TypeError);
     });
   });
 
   describe("#copyToChannel(source: Float32Array, channelNumber: number, startInChannel= 0): void", function() {
     it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
       var buf1 = audioContext.createBuffer(2, 10, 44100);
       var source = new Float32Array([ 10, 11, 12, 13 ]);
-
-      assert.throws(function() {
-        buf1.copyToChannel(source, 0, 0);
-      }, TypeError);
-
-      WebAudioTestAPI.setState("AudioBuffer#copyToChannel", "enabled");
 
       buf1.copyToChannel(source, 0);
       assert.deepEqual(buf1.getChannelData(0), new Float32Array([ 10, 11, 12, 13, 0, 0, 0, 0, 0, 0 ]));
@@ -222,8 +227,16 @@ describe("AudioBuffer", function() {
       assert.throws(function() {
         buf1.copyToChannel(source, 0, undefined);
       }, TypeError);
+    });
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-      WebAudioTestAPI.setState("AudioBuffer#copyToChannel", "disabled");
+      var buf1 = audioContext.createBuffer(2, 10, 44100);
+      var source = new Float32Array([ 10, 11, 12, 13 ]);
+
+      assert.throws(function() {
+        buf1.copyToChannel(source, 0, 0);
+      }, TypeError);
     });
   });
 

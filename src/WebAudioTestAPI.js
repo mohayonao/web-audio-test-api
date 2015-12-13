@@ -36,12 +36,35 @@ import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
 import getAPIVersion from "./utils/getAPIVersion";
 
+// TODO: fix
+import versions from "./decorators/versions";
+
+versions.targetVersions = { chrome: 47, firefox: 42, safari: Infinity };
+
+let saved = {};
+
 let sampleRate = 44100;
 let configuration = Configuration.getInstance();
 
 let WebAudioTestAPI = {
   VERSION: getAPIVersion(),
   utils: { Configuration, Immigration },
+  setTargetVersions(spec) {
+    // TODO: fix
+    if (spec === Infinity) {
+      versions.targetVersions = { chrome: Infinity, firefox: Infinity, safari: Infinity };
+    } else if (spec === 0) {
+      versions.targetVersions = { chrome: 0, firefox: 0, safari: 0 };
+    } else if (spec === "recent") {
+      versions.targetVersions = { chrome: 47, firefox: 42, safari: 9 };
+    } else {
+      versions.targetVersions = spec;
+    }
+  },
+  getTargetVersions() {
+    // TODO: fix
+    return saved;
+  },
   sampleRate,
   AnalyserNode,
   AudioBuffer,

@@ -1,15 +1,14 @@
 describe("OfflineAudioContext", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
   var audioContext;
-
-  function setStateForStateTransitionAPI(state) {
-    WebAudioTestAPI.setState("AudioContext#suspend", state);
-    WebAudioTestAPI.setState("AudioContext#resume", state);
-    WebAudioTestAPI.setState("AudioContext#close", state);
-  }
+  var versions;
 
   beforeEach(function() {
+    versions = WebAudioTestAPI.getTargetVersions();
     audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441, 44100);
+  });
+  afterEach(function() {
+    WebAudioTestAPI.setTargetVersions(versions);
   });
 
   describe("constructor(numberOfChannels: number, length: number, sampleRate: number)", function() {
@@ -72,150 +71,98 @@ describe("OfflineAudioContext", function() {
   });
 
   describe("#suspend(): Promise<void>", function() {
-    describe("disabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("throws TypeError", function() {
-        assert.throws(function() {
-          audioContext.suspend();
-        }, TypeError);
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
+      return Promise.resolve().then(function() {
+        return audioContext.suspend();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
       });
     });
-    describe("enabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("enabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("works", function() {
-        audioContext.onstatechange = sinon.spy();
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-        return Promise.resolve().then(function() {
-          assert(audioContext.state === "suspended");
-        }).then(function() {
-          audioContext.onstatechange.reset();
-          return audioContext.suspend();
-        }).catch(function(e) {
-          assert(e instanceof Error && /cannot suspend/i.test(e.message));
-        }).then(function() {
-          assert(audioContext.state === "suspended");
-          assert(!audioContext.onstatechange.called);
-        });
+      return Promise.resolve().then(function() {
+        return audioContext.suspend();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
       });
     });
   });
 
   describe("#resume(): Promise<void>", function() {
-    describe("disabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("throws TypeError", function() {
-        assert.throws(function() {
-          audioContext.resume();
-        }, TypeError);
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
+      return Promise.resolve().then(function() {
+        return audioContext.resume();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
       });
     });
-    describe("enabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("enabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("works", function() {
-        audioContext.onstatechange = sinon.spy();
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-        return Promise.resolve().then(function() {
-          assert(audioContext.state === "suspended");
-        }).then(function() {
-          audioContext.onstatechange.reset();
-          return audioContext.resume();
-        }).catch(function(e) {
-          assert(e instanceof Error && /cannot resume/i.test(e.message));
-        }).then(function() {
-          assert(audioContext.state === "suspended");
-          assert(!audioContext.onstatechange.called);
-        });
+      return Promise.resolve().then(function() {
+        return audioContext.resume();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
       });
     });
   });
 
   describe("#close(): Promise<void>", function() {
-    describe("disabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("throws TypeError", function() {
-        assert.throws(function() {
-          audioContext.close();
-        }, TypeError);
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
+      return Promise.resolve().then(function() {
+        return audioContext.close();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
       });
     });
-    describe("enabled", function() {
-      before(function() {
-        setStateForStateTransitionAPI("enabled");
-      });
-      after(function() {
-        setStateForStateTransitionAPI("disabled");
-      });
-      it("works", function() {
-        audioContext.onstatechange = sinon.spy();
+    it("not work in unsupported version", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-        return Promise.resolve().then(function() {
-          assert(audioContext.state === "suspended");
-        }).then(function() {
-          audioContext.onstatechange.reset();
-          return audioContext.close();
-        }).catch(function(e) {
-          assert(e instanceof Error && /cannot close/i.test(e.message));
-        }).then(function() {
-          assert(audioContext.state === "suspended");
-          assert(!audioContext.onstatechange.called);
-        });
+      return Promise.resolve().then(function() {
+        return audioContext.close();
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
       });
     });
   });
 
-  describe("#startRendering", function() {
-    describe("promise-based", function() {
-      before(function() {
-        WebAudioTestAPI.setState("OfflineAudioContext#startRendering", "promise");
-      });
-      after(function() {
-        WebAudioTestAPI.setState("OfflineAudioContext#startRendering", "void");
-      });
-      it("(): Promise<AudioBuffer>", function() {
-        return Promise.resolve().then(function() {
-          setTimeout(function() {
-            audioContext.$processTo("00:00.100");
-          }, 0);
-          return audioContext.startRendering();
-        }).then(function(buffer) {
-          assert(buffer instanceof WebAudioTestAPI.AudioBuffer);
-        }).then(function() {
-          return audioContext.startRendering();
-        }).catch(Error);
-      });
-    });
-    describe("void-based", function() {
-      it("(): void", function() {
-        audioContext.startRendering();
+  describe("#startRendering(): void", function() {
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(0);
 
-        assert.throws(function() {
-          audioContext.startRendering();
-        }, Error);
+      audioContext.startRendering();
+
+      assert.throws(function() {
+        audioContext.startRendering();
+      }, Error);
+    });
+  });
+
+  describe("#startRendering(): Promise<AudioBuffer>", function() {
+    it("works", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
+      audioContext.oncomplete = sinon.spy();
+
+      setTimeout(() => {
+        assert(audioContext.state === "running");
+
+        audioContext.$processTo("00:00.100");
+      }, 5);
+
+      return audioContext.startRendering().then(function(audioBuffer) {
+        assert(audioContext.oncomplete.callCount === 1);
+        assert(audioContext.oncomplete.args[0][0] instanceof global.Event);
+        assert(audioContext.oncomplete.args[0][0].renderedBuffer === audioBuffer);
+
+        assert(audioContext.state === "closed");
       });
     });
   });
@@ -255,13 +202,9 @@ describe("OfflineAudioContext", function() {
   });
 
   describe("works", function() {
-    before(function() {
-      setStateForStateTransitionAPI("enabled");
-    });
-    after(function() {
-      setStateForStateTransitionAPI("disabled");
-    });
     it("oncomplete", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
+
       var oncomplete = sinon.spy();
       var event;
 

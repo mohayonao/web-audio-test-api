@@ -3,18 +3,17 @@ describe("AudioNode", function() {
   var utils = WebAudioTestAPI.utils;
   var immigration = utils.Immigration.getInstance();
   var audioContext;
+  var versions;
 
   beforeEach(function() {
+    versions = WebAudioTestAPI.getTargetVersions();
     audioContext = new WebAudioTestAPI.AudioContext();
+  });
+  afterEach(function() {
+    WebAudioTestAPI.setTargetVersions(versions);
   });
 
   describe("constructor()", function() {
-    before(function() {
-      WebAudioTestAPI.setState("AudioContext#close", "enabled");
-    });
-    after(function() {
-      WebAudioTestAPI.setState("AudioContext#close", "disabled");
-    });
     it("works", function() {
       var node = immigration.apply(function(admission) {
         return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
@@ -22,19 +21,20 @@ describe("AudioNode", function() {
 
       assert(node instanceof global.AudioNode);
       assert(node instanceof global.EventTarget);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioNode(); }, TypeError);
+    });
+    it("not work with closed context", function() {
+      WebAudioTestAPI.setTargetVersions(Infinity);
 
       return audioContext.close().then(function() {
         return immigration.apply(function(admission) {
           return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
         });
-      }).then(function() {
-        throw new Error("NOT REACHED");
-      }, function(e) {
-        assert(e instanceof TypeError && /audioContext has been closed/i.test(e.message));
+      }).catch(function(e) {
+        assert(e instanceof TypeError);
       });
-    });
-    it("not work when 'new' directly", function() {
-      assert.throws(function() { new global.AudioNode(); }, TypeError);
     });
   });
 
