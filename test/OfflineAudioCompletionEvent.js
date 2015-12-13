@@ -1,7 +1,5 @@
 describe("OfflineAudioCompletionEvent", function() {
   var WebAudioTestAPI = global.WebAudioTestAPI;
-  var utils = WebAudioTestAPI.utils;
-  var immigration = utils.Immigration.getInstance();
   var audioContext;
 
   beforeEach(function() {
@@ -10,12 +8,8 @@ describe("OfflineAudioCompletionEvent", function() {
 
   describe("constructor()", function() {
     it("works", function() {
-      var node = immigration.apply(function(admission) {
-        return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
-      });
-      var event = immigration.apply(function(admission) {
-        return new WebAudioTestAPI.OfflineAudioCompletionEvent(admission, node);
-      });
+      var node = WebAudioTestAPI.AudioNode.$new({ context: audioContext });
+      var event = WebAudioTestAPI.OfflineAudioCompletionEvent.$new(node);
 
       assert(event instanceof global.OfflineAudioCompletionEvent);
       assert(event instanceof global.Event);

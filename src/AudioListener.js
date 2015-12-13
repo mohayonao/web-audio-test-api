@@ -3,13 +3,15 @@ import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
-let immigration = Immigration.getInstance();
-
 export default class AudioListener {
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new AudioListener(admission, ...args));
+  }
+
   constructor(admission, context) {
-    immigration.check(admission, () => {
-      throw new TypeError("Illegal constructor");
-    });
+    Immigration.getInstance().
+      check(admission, () => { throw new TypeError("Illegal constructor"); });
     Object.defineProperty(this, "_", { value: {} });
 
     this._.context = context;

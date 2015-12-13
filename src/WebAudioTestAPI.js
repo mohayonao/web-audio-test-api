@@ -1,4 +1,3 @@
-import Immigration from "./utils/Immigration";
 import WebAudioAPI from "./WebAudioAPI";
 import versions from "./decorators/versions";
 import * as utils from "./utils";
@@ -77,7 +76,6 @@ const WebAudioTestAPI = {
     return sampleRate;
   },
   DOM,
-  utils: { Immigration },
   setTargetVersions,
   getTargetVersions,
   use,

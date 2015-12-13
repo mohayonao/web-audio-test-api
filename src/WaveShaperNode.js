@@ -1,9 +1,15 @@
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
 import * as validators from "./validators";
 
 export default class WaveShaperNode extends AudioNode {
   static $JSONKeys = [ "oversample" ];
+
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new WaveShaperNode(admission, ...args));
+  }
 
   constructor(admission, context) {
     super(admission, {

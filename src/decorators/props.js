@@ -1,8 +1,5 @@
-import Immigration from "../utils/Immigration";
 import format from "../utils/format";
 import toS from "../utils/toS";
-
-const immigration = Immigration.getInstance();
 
 function createSetterError(klassName, propName, message) {
   return new TypeError(format(`
@@ -15,9 +12,7 @@ export function audioparam(defaultValue) {
   return (target, propName, descriptor) => {
     descriptor.get = function get() {
       if (!this._.hasOwnProperty(propName)) {
-        this._[propName] = immigration.apply(admission =>
-          new global.WebAudioTestAPI.AudioParam(admission, this, propName, defaultValue)
-        );
+        this._[propName] = global.WebAudioTestAPI.AudioParam.$new(this, propName, defaultValue);
       }
       return this._[propName];
     };

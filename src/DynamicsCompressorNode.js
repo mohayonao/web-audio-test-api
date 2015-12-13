@@ -1,8 +1,14 @@
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
 
 export default class DynamicsCompressorNode extends AudioNode {
   static $JSONKeys = [ "threshold", "knee", "ratio", "reduction", "attack", "release" ];
+
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new DynamicsCompressorNode(admission, ...args));
+  }
 
   constructor(admission, context) {
     super(admission, {

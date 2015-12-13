@@ -1,3 +1,4 @@
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import PeriodicWave from "./PeriodicWave";
 import Event from "./dom/Event";
@@ -8,6 +9,11 @@ import * as validators from "./validators";
 
 export default class OscillatorNode extends AudioNode {
   static $JSONKeys = [ "type", "frequency", "detune" ];
+
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new OscillatorNode(admission, ...args));
+  }
 
   constructor(admission, context) {
     super(admission, {

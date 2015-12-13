@@ -1,23 +1,23 @@
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
 
 export default class ChannelMergerNode extends AudioNode {
   static $JSONKeys = [];
 
-  constructor(admission, context, numberOfInputs) {
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new ChannelMergerNode(admission, ...args));
+  }
+
+  constructor(admission, context, numberOfInputs = 6) {
     super(admission, {
       name: "ChannelMergerNode",
       context: context,
-      numberOfInputs: numberOfInputs,
+      numberOfInputs: +numberOfInputs|0,
       numberOfOutputs: 1,
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
     });
-    this.__createChannelMerger(numberOfInputs);
   }
-
-  @methods.param("numberOfInputs", validators.isPositiveInteger)
-  __createChannelMerger() {}
 }

@@ -1,3 +1,4 @@
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
@@ -8,6 +9,11 @@ export default class PannerNode extends AudioNode {
     "panningModel", "distanceModel", "refDistance", "maxDistance",
     "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
   ];
+
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new PannerNode(admission, ...args));
+  }
 
   constructor(admission, context) {
     super(admission, {

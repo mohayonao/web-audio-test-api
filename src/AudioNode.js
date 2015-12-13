@@ -11,35 +11,23 @@ import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
 const SELECTIVE_DISCONNECT = { chrome: "43-", firefox: "none", safari: "none" };
-const AUDIOCONTEXT_STATE = { chrome: "41-", firefox: "40-", safari: "9-" };
-
-let immigration = Immigration.getInstance();
 
 export default class AudioNode extends EventTarget {
   static $JSONKeys = [];
 
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new AudioNode(admission, ...args));
+  }
+
   constructor(admission, spec) {
-    immigration.check(admission, () => {
-      throw new TypeError("Illegal constructor");
-    });
     super();
 
+    Immigration.getInstance().
+      check(admission, () => { throw new TypeError("Illegal constructor"); });
     Object.defineProperty(this, "_", { value: {} });
 
     this._.context = spec.context;
-    this.__createAudioNode(spec);
-  }
-
-  @methods.contract({
-    precondition() {
-      if (caniuse(AUDIOCONTEXT_STATE, versions.targetVersions)) {
-        if (this._.context.state === "closed") {
-          throw new TypeError(`AudioContext has been closed.`);
-        }
-      }
-    }
-  })
-  __createAudioNode(spec) {
     this._.name = defaults(spec.name, "AudioNode");
     this._.numberOfInputs = defaults(spec.numberOfInputs, 1);
     this._.numberOfOutputs = defaults(spec.numberOfOutputs, 1);

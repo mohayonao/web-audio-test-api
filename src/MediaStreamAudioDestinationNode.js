@@ -1,7 +1,13 @@
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 
 export default class MediaStreamAudioDestinationNode extends AudioNode {
   static $JSONKeys = [];
+
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new MediaStreamAudioDestinationNode(admission, ...args));
+  }
 
   constructor(admission, context) {
     super(admission, {

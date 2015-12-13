@@ -3,15 +3,16 @@ import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import AudioProcessingEvent from "./AudioProcessingEvent";
 import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
-
-let immigration = Immigration.getInstance();
 
 export default class ScriptProcessorNode extends AudioNode {
   static $JSONKeys = [];
 
-  constructor(admission, context, bufferSize, numberOfInputChannels, numberOfOutputChannels) {
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new ScriptProcessorNode(admission, ...args));
+  }
+
+  constructor(admission, context, bufferSize = 1024, numberOfInputChannels = 2, numberOfOutputChannels = 2) {
     super(admission, {
       name: "ScriptProcessorNode",
       context: context,
@@ -21,20 +22,6 @@ export default class ScriptProcessorNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers"
     });
-    this.__createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels);
-  }
-
-  @methods.param("bufferSize", validators.isPositiveInteger)
-  @methods.param("numberOfInputChannels", validators.isPositiveInteger)
-  @methods.param("numberOfOutputChannels", validators.isPositiveInteger)
-  @methods.contract({
-    precondition(bufferSize) {
-      if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
-        throw new TypeError(`The {{bufferSize}} should be one of [ 256, 512, 1024, 2048, 4096, 8192, 16384 ], but got ${bufferSize}.`);
-      }
-    }
-  })
-  __createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
     this._.bufferSize = bufferSize;
     this._.numberOfInputChannels = numberOfInputChannels;
     this._.numberOfOutputChannels = numberOfOutputChannels;
@@ -55,17 +42,11 @@ export default class ScriptProcessorNode extends AudioNode {
     if (this._.numSamples <= 0) {
       this._.numSamples += this.bufferSize;
 
-      let event = immigration.apply(admission =>
-        new AudioProcessingEvent(admission, this)
-      );
+      let event = AudioProcessingEvent.$new(this);
 
       event.playbackTime = this.context.currentTime + this.bufferSize / this.context.sampleRate;
-      event.inputBuffer = immigration.apply(admission =>
-        new AudioBuffer(admission, this.context, this._.numberOfInputChannels, this.bufferSize, this.context.sampleRate)
-      );
-      event.outputBuffer = immigration.apply(admission =>
-        new AudioBuffer(admission, this.context, this._.numberOfOutputChannels, this.bufferSize, this.context.sampleRate)
-      );
+      event.inputBuffer = AudioBuffer.$new(this.context, this._.numberOfInputChannels, this.bufferSize, this.context.sampleRate);
+      event.outputBuffer = AudioBuffer.$new(this.context, this._.numberOfOutputChannels, this.bufferSize, this.context.sampleRate);
 
       this.dispatchEvent(event);
     }

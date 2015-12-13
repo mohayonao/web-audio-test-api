@@ -1,23 +1,23 @@
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
 
 export default class ChannelSplitterNode extends AudioNode {
   static $JSONKeys = [];
 
-  constructor(admission, context, numberOfOutputs) {
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new ChannelSplitterNode(admission, ...args));
+  }
+
+  constructor(admission, context, numberOfOutputs = 6) {
     super(admission, {
       name: "ChannelSplitterNode",
       context: context,
       numberOfInputs: 1,
-      numberOfOutputs: numberOfOutputs,
+      numberOfOutputs: +numberOfOutputs|0,
       channelCount: 2,
       channelCountMode: "max",
       channelInterpretation: "speakers"
     });
-    this.__createChannelSplitter(numberOfOutputs);
   }
-
-  @methods.param("numberOfOutputs", validators.isPositiveInteger)
-  __createChannelSplitter() {}
 }

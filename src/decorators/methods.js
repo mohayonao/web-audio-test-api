@@ -3,11 +3,17 @@ import toS from "../utils/toS";
 
 const repository = new WeakMap();
 
-function createMethodForm(methodName, parameters, returnValue, errParamName) {
+function createMethodForm(klassName, methodName, parameters, returnValue, errParamName) {
   const retType = returnValue ? returnValue.typeName : "void";
-  let result = methodName + "(";
+  let result = "";
   let optional = false;
   let errArgIndex = -1;
+
+  if (klassName === methodName) {
+    result += "new ";
+  }
+
+  result += methodName + "(";
 
   for (let i = 0; i < parameters.length; i++) {
     if (!optional && parameters[i].optional) {
@@ -47,19 +53,27 @@ function createExecuteError(klassName, methodName, parameters, returnValue, mess
   const matches = /{{(\w+)}}/.exec(message);
 
   if (matches) {
-    const [ errArgIndex, methodForm ] = createMethodForm(methodName, parameters, returnValue, matches[1]);
+    const [ errArgIndex, methodForm ] = createMethodForm(klassName, methodName, parameters, returnValue, matches[1]);
 
     if (errArgIndex !== -1) {
       message = [
         "\t" + methodForm,
         "\t" + repeat(" ", errArgIndex) + "|",
-        "\t" + repeat(" ", errArgIndex) + message
+        "\t" + repeat(" ", errArgIndex - 1) + message
       ].join("\n");
     }
   }
 
+  let header;
+
+  if (klassName === methodName) {
+    header = `Failed to construct '${klassName}'`;
+  } else {
+    header = `Failed to execute the '${methodName}' on '${klassName}'`;
+  }
+
   return new TypeError(format(`
-    Failed to execute the '${methodName}' on '${klassName}'
+    ${header}
 
     ${message}
   `) + "\n");

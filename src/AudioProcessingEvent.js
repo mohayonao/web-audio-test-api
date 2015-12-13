@@ -1,14 +1,17 @@
 import Immigration from "./utils/Immigration";
 import Event from "./dom/Event";
 
-let immigration = Immigration.getInstance();
-
 export default class AudioProcessingEvent extends Event {
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new AudioProcessingEvent(admission, ...args));
+  }
+
   constructor(admission, node) {
-    immigration.check(admission, () => {
-      throw new TypeError("Illegal constructor");
-    });
     super("audioprocess", node);
+
+    Immigration.getInstance().
+      check(admission, () => { throw new TypeError("Illegal constructor"); });
 
     this._.node = node;
   }

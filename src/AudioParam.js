@@ -7,18 +7,20 @@ import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
 
-let immigration = Immigration.getInstance();
-
 export default class AudioParam {
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new AudioParam(admission, ...args));
+  }
+
   constructor(admission, node, name, defaultValue) {
-    immigration.check(admission, () => {
-      throw new TypeError("Illegal constructor");
-    });
+    Immigration.getInstance().
+      check(admission, () => { throw new TypeError("Illegal constructor"); });
     Object.defineProperty(this, "_", { value: {} });
 
     this._.value = defaultValue;
-    this._.name = name;
-    this._.defaultValue = defaultValue;
+    this._.name = "" + name;
+    this._.defaultValue = +defaultValue || 0;
     this._.context = node.context;
     this._.node = node;
     this._.inputs = [ new Junction(this, 0) ];

@@ -1,4 +1,3 @@
-import Immigration from "./utils/Immigration";
 import Event from "./dom/Event";
 import EventTarget from "./dom/EventTarget";
 import HTMLMediaElement from "./dom/HTMLMediaElement";
@@ -35,30 +34,33 @@ import * as validators from "./validators";
 const PROMISE_BASED_DECODE_AUDIO_DATA = { chrome: "none", firefox: "36-", safari: "none" };
 const AUDIOCONTEXT_STATE = { chrome: "41-", firefox: "40-", safari: "9-" };
 const NOOP = () => {};
-
-let immigration = Immigration.getInstance();
+const createAudioNodeContract = {
+  precondition() {
+    if (caniuse(AUDIOCONTEXT_STATE, versions.targetVersions)) {
+      if (this._.state === "closed") {
+        throw new TypeError(`AudioContext has been closed.`);
+      }
+    }
+  }
+};
 
 export default class AudioContext extends EventTarget {
+  static get WEB_AUDIO_TEST_API_VERSION() {
+    return getAPIVersion();
+  }
+
   constructor() {
     super();
 
     Object.defineProperty(this, "_", { value: {} });
 
-    this._.destination = immigration.apply(admission =>
-      new AudioDestinationNode(admission, this)
-    );
     this._.sampleRate = global.WebAudioTestAPI.sampleRate;
-    this._.listener = immigration.apply(admission =>
-      new AudioListener(admission, this)
-    );
+    this._.destination = AudioDestinationNode.$new(this);
+    this._.listener = AudioListener.$new(this);
     this._.microCurrentTime = 0;
     this._.processedSamples = 0;
     this._.tick = 0;
     this._.state = "running";
-  }
-
-  static get WEB_AUDIO_TEST_API_VERSION() {
-    return getAPIVersion();
   }
 
   @props.readonly()
@@ -89,7 +91,6 @@ export default class AudioContext extends EventTarget {
   }
 
   @props.on("statechange")
-  // @versions({ chrome: "41-", firefox: "40-", safari: "9-" })
   onstatechange() {}
 
   @methods.returns(validators.isInstanceOf(Promise))
@@ -134,9 +135,7 @@ export default class AudioContext extends EventTarget {
   @methods.param("sampleRate", validators.isPositiveInteger)
   @methods.returns(validators.isInstanceOf(AudioBuffer))
   createBuffer(numberOfChannels, length, sampleRate) {
-    return immigration.apply(admission =>
-      new AudioBuffer(admission, this, numberOfChannels, length, sampleRate)
-    );
+    return global.WebAudioTestAPI.AudioBuffer.$new(this, numberOfChannels, length, sampleRate);
   }
 
 
@@ -170,9 +169,9 @@ export default class AudioContext extends EventTarget {
       if (this.DECODE_AUDIO_DATA_FAILED) {
         reject();
       } else {
-        resolve(this.DECODE_AUDIO_DATA_RESULT || immigration.apply(admission =>
-          new AudioBuffer(admission, this, 2, 1024, this.sampleRate)
-        ));
+        resolve(this.DECODE_AUDIO_DATA_RESULT
+          || global.WebAudioTestAPI.AudioBuffer.$new(this, 2, 1024, this.sampleRate)
+        );
       }
     });
 
@@ -181,149 +180,146 @@ export default class AudioContext extends EventTarget {
     return promise;
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(AudioBufferSourceNode))
   createBufferSource() {
-    return immigration.apply(admission =>
-      new AudioBufferSourceNode(admission, this)
-    );
+    return global.WebAudioTestAPI.AudioBufferSourceNode.$new(this);
   }
 
   @methods.param("mediaElement", validators.isInstanceOf(HTMLMediaElement))
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(MediaElementAudioSourceNode))
   createMediaElementSource(mediaElement) {
-    return immigration.apply(admission =>
-      new MediaElementAudioSourceNode(admission, this, mediaElement)
-    );
+    return global.WebAudioTestAPI.MediaElementAudioSourceNode.$new(this, mediaElement);
   }
 
   @methods.param("mediaStream", validators.isInstanceOf(MediaStream))
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(MediaStreamAudioSourceNode))
   createMediaStreamSource(mediaStream) {
-    return immigration.apply(admission =>
-      new MediaStreamAudioSourceNode(admission, this, mediaStream)
-    );
+    return global.WebAudioTestAPI.MediaStreamAudioSourceNode.$new(this, mediaStream);
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(MediaStreamAudioDestinationNode))
   createMediaStreamDestination() {
-    return immigration.apply(admission =>
-      new MediaStreamAudioDestinationNode(admission, this)
-    );
+    return global.WebAudioTestAPI.MediaStreamAudioDestinationNode.$new(this);
   }
 
-  @methods.contract({
-    precondition() {
-      throw new TypeError("not enabled");
-    }
-  })
+  @methods.contract(createAudioNodeContract)
   @versions({ chrome: "", firefox: "", safari: "" })
   createAudioWorker() {}
 
   @methods.param("bufferSize", validators.isPositiveInteger)
   @methods.param("[ numberOfInputChannels ]", validators.isPositiveInteger)
   @methods.param("[ numberOfOutputChannels ]", validators.isPositiveInteger)
+  @methods.contract({
+    precondition(bufferSize) {
+      if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
+        throw new TypeError(`The {{bufferSize}} should be one of [ 256, 512, 1024, 2048, 4096, 8192, 16384 ], but got ${bufferSize}.`);
+      }
+      this::createAudioNodeContract.precondition();
+    }
+  })
   @methods.returns(validators.isInstanceOf(ScriptProcessorNode))
-  createScriptProcessor(bufferSize, numberOfInputChannels = 2, numberOfOutputChannels = 2) {
-    return immigration.apply(admission =>
-      new ScriptProcessorNode(admission, this, bufferSize, numberOfInputChannels, numberOfOutputChannels)
-    );
+  createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
+    return global.WebAudioTestAPI.ScriptProcessorNode.$new(this, bufferSize, numberOfInputChannels, numberOfOutputChannels);
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(AnalyserNode))
   createAnalyser() {
-    return immigration.apply(admission =>
-      new AnalyserNode(admission, this)
-    );
+    return global.WebAudioTestAPI.AnalyserNode.$new(this);
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(GainNode))
   createGain() {
-    return immigration.apply(admission =>
-      new GainNode(admission, this)
-    );
+    return global.WebAudioTestAPI.GainNode.$new(this);
   }
 
   @methods.param("[ maxDelayTime ]", validators.isPositiveNumber)
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(DelayNode))
-  createDelay(maxDelayTime = 1) {
-    return immigration.apply(admission =>
-      new DelayNode(admission, this, maxDelayTime)
-    );
+  createDelay(maxDelayTime) {
+    return global.WebAudioTestAPI.DelayNode.$new(this, maxDelayTime);
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(BiquadFilterNode))
   createBiquadFilter() {
-    return immigration.apply(admission =>
-      new BiquadFilterNode(admission, this)
-    );
+    return BiquadFilterNode.$new(this);
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(WaveShaperNode))
   createWaveShaper() {
-    return immigration.apply(admission =>
-      new WaveShaperNode(admission, this)
-    );
+    return global.WebAudioTestAPI.WaveShaperNode.$new(this);
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(PannerNode))
   createPanner() {
-    return immigration.apply(admission =>
-      new PannerNode(admission, this)
-    );
+    return global.WebAudioTestAPI.PannerNode.$new(this);
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(StereoPannerNode))
   @versions({ chrome: "41-", firefox: "37-", safari: "none" })
   createStereoPanner() {
-    return immigration.apply(admission =>
-      new StereoPannerNode(admission, this)
-    );
+    return global.WebAudioTestAPI.StereoPannerNode.$new(this);
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(ConvolverNode))
   createConvolver() {
-    return immigration.apply(admission =>
-      new ConvolverNode(admission, this)
-    );
+    return global.WebAudioTestAPI.ConvolverNode.$new(this);
   }
 
   @methods.param("[ numberOfOutputs ]", validators.isPositiveInteger)
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(ChannelSplitterNode))
-  createChannelSplitter(numberOfOutputs = 6) {
-    return immigration.apply(admission =>
-      new ChannelSplitterNode(admission, this, numberOfOutputs)
-    );
+  createChannelSplitter(numberOfOutputs) {
+    return global.WebAudioTestAPI.ChannelSplitterNode.$new(this, numberOfOutputs);
   }
 
   @methods.param("[ numberOfInputs ]", validators.isPositiveInteger)
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(ChannelMergerNode))
-  createChannelMerger(numberOfInputs = 6) {
-    return immigration.apply(admission =>
-      new ChannelMergerNode(admission, this, numberOfInputs)
-    );
+  createChannelMerger(numberOfInputs) {
+    return global.WebAudioTestAPI.ChannelMergerNode.$new(this, numberOfInputs);
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(DynamicsCompressorNode))
   createDynamicsCompressor() {
-    return immigration.apply(admission =>
-      new DynamicsCompressorNode(admission, this)
-    );
+    return global.WebAudioTestAPI.DynamicsCompressorNode.$new(this);
   }
 
+  @methods.contract(createAudioNodeContract)
   @methods.returns(validators.isInstanceOf(OscillatorNode))
   createOscillator() {
-    return immigration.apply(admission =>
-      new OscillatorNode(admission, this)
-    );
+    return global.WebAudioTestAPI.OscillatorNode.$new(this);
   }
 
   @methods.param("real", validators.isInstanceOf(Float32Array))
   @methods.param("imag", validators.isInstanceOf(Float32Array))
+  @methods.contract({
+    precondition(real, imag) {
+      if (4096 < real.length) {
+        throw new TypeError(`The length of "{{real}}" array (${real.length}) exceeds allow maximum of 4096.`);
+      }
+      if (4096 < imag.length) {
+        throw new TypeError(`The length of "{{imag}}" array (${imag.length}) exceeds allow maximum of 4096.`);
+      }
+      if (real.length !== imag.length) {
+        throw new TypeError(`The length of "{{real}}" array (${real.length}) and length of "imag" array (${imag.length}) must match.`);
+      }
+    }
+  })
   @methods.returns(validators.isInstanceOf(PeriodicWave))
   createPeriodicWave(real, imag) {
-    return immigration.apply(admission =>
-      new PeriodicWave(admission, this, real, imag)
-    );
+    return global.WebAudioTestAPI.PeriodicWave.$new(this, real, imag);
   }
 
   __transitionToState(methodName, callback) {

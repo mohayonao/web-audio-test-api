@@ -1,3 +1,4 @@
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import Event from "./dom/Event";
@@ -10,6 +11,11 @@ import * as validators from "./validators";
 export default class AudioBufferSourceNode extends AudioNode {
   static $JSONKeys = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
 
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new AudioBufferSourceNode(admission, ...args));
+  }
+
   constructor(admission, context) {
     super(admission, {
       name: "AudioBufferSourceNode",
@@ -20,7 +26,6 @@ export default class AudioBufferSourceNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers"
     });
-
     this._.startTime = Infinity;
     this._.stopTime = Infinity;
     this._.firedOnEnded = false;

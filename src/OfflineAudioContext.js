@@ -1,4 +1,3 @@
-import Immigration from "./utils/Immigration";
 import Event from "./dom/Event";
 import AudioContext from "./AudioContext";
 import AudioBuffer from "./AudioBuffer";
@@ -11,11 +10,10 @@ import * as validators from "./validators";
 
 const PROMISE_BASED_START_RENDERING = { chrome: "42-", firefox: "37-", safari: "none" };
 
-let immigration = Immigration.getInstance();
-
 export default class OfflineAudioContext extends AudioContext {
   constructor(numberOfChannels, length, sampleRate) {
     super();
+
     this.__OfflineAudioContext(numberOfChannels, length, sampleRate);
   }
 
@@ -104,12 +102,8 @@ export default class OfflineAudioContext extends AudioContext {
     }
 
     if (this._.length <= this._.processedSamples) {
-      let renderedBuffer = immigration.apply(admission =>
-        new AudioBuffer(admission, this, this._.numberOfChannels, this._.length, this.sampleRate)
-      );
-      let event = immigration.apply(admission =>
-        new OfflineAudioCompletionEvent(admission, this)
-      );
+      let renderedBuffer = AudioBuffer.$new(this, this._.numberOfChannels, this._.length, this.sampleRate);
+      let event = OfflineAudioCompletionEvent.$new(this);
 
       event.renderedBuffer = renderedBuffer;
 

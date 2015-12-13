@@ -1,10 +1,13 @@
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
-import MediaStream from "./dom/MediaStream";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
 
 export default class MediaStreamAudioSourceNode extends AudioNode {
   static $JSONKeys = [];
+
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new MediaStreamAudioSourceNode(admission, ...args));
+  }
 
   constructor(admission, context, mediaStream) {
     super(admission, {
@@ -16,9 +19,10 @@ export default class MediaStreamAudioSourceNode extends AudioNode {
       channelCountMode: "max",
       channelInterpretation: "speakers"
     });
-    this.__createMediaStreamSource(mediaStream);
+    this._.mediaStream = mediaStream;
   }
 
-  @methods.param("mediaStream", validators.isInstanceOf(MediaStream))
-  __createMediaStreamSource() {}
+  get $mediaStream() {
+    return this._.mediaStream;
+  }
 }

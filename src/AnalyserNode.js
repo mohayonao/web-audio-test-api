@@ -1,3 +1,4 @@
+import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import versions from "./decorators/versions";
 import * as props from "./decorators/props";
@@ -6,6 +7,11 @@ import * as validators from "./validators";
 
 export default class AnalyserNode extends AudioNode {
   static $JSONKeys = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
+
+  static $new(...args) {
+    return Immigration.getInstance().
+      apply(admission => new AnalyserNode(admission, ...args));
+  }
 
   constructor(admission, context) {
     super(admission, {
