@@ -20,26 +20,6 @@ describe("WebAudioTestAPI", function() {
     });
   });
 
-  describe("getState(name: string): string", function() {
-    it("works", function() {
-      assert(WebAudioTestAPI.getState("AnalyserNode#getFloatTimeDomainData") === "disabled");
-    });
-  });
-
-  describe("setState(name: string, value: string): string", function() {
-    it("works", function() {
-      WebAudioTestAPI.setState({
-        "AnalyserNode#getFloatTimeDomainData": "enabled"
-      });
-
-      assert(WebAudioTestAPI.getState("AnalyserNode#getFloatTimeDomainData") === "enabled");
-
-      WebAudioTestAPI.setState({
-        "AnalyserNode#getFloatTimeDomainData": "disabled"
-      });
-    });
-  });
-
   describe("unuse(): void", function() {
     it("works", function() {
       WebAudioTestAPI.unuse();

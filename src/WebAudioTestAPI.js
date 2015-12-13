@@ -1,4 +1,3 @@
-import Configuration from "./utils/Configuration";
 import Immigration from "./utils/Immigration";
 import WebAudioAPI from "./WebAudioAPI";
 import Element from "./dom/Element";
@@ -34,6 +33,7 @@ import PeriodicWave from "./PeriodicWave";
 import ScriptProcessorNode from "./ScriptProcessorNode";
 import StereoPannerNode from "./StereoPannerNode";
 import WaveShaperNode from "./WaveShaperNode";
+import format from "./utils/format";
 import getAPIVersion from "./utils/getAPIVersion";
 
 // TODO: fix
@@ -44,11 +44,10 @@ versions.targetVersions = { chrome: 47, firefox: 42, safari: Infinity };
 let saved = {};
 
 let sampleRate = 44100;
-let configuration = Configuration.getInstance();
 
 let WebAudioTestAPI = {
   VERSION: getAPIVersion(),
-  utils: { Configuration, Immigration },
+  utils: { Immigration },
   setTargetVersions(spec) {
     // TODO: fix
     if (spec === Infinity) {
@@ -99,12 +98,6 @@ let WebAudioTestAPI = {
   ScriptProcessorNode,
   StereoPannerNode,
   WaveShaperNode,
-  getState(name) {
-    return configuration.getState(name);
-  },
-  setState(name, value) {
-    configuration.setState(name, value);
-  },
   use() {
     global.AnalyserNode = WebAudioTestAPI.AnalyserNode;
     global.AudioBuffer = WebAudioTestAPI.AudioBuffer;
@@ -163,6 +156,21 @@ let WebAudioTestAPI = {
     global.ScriptProcessorNode = WebAudioAPI.ScriptProcessorNode;
     global.StereoPannerNode = WebAudioAPI.StereoPannerNode;
     global.WaveShaperNode = WebAudioAPI.WaveShaperNode;
+  },
+  /* DEPRECATED */
+  getState() {
+    throw new Error(format(`
+      Failed to execute 'getState' on 'WebAudioTestAPI'
+
+      \tThis API is removed. Please use WebAudioTestAPI.setTargetVersions();
+    `) + "\n");
+  },
+  setState() {
+    throw new Error(format(`
+      Failed to execute 'setState' on 'WebAudioTestAPI'
+
+      \tThis API is removed. Please use WebAudioTestAPI.getTargetVersions();
+    `) + "\n");
   }
 };
 
