@@ -36,10 +36,9 @@ describe("ScriptProcessorNode", function() {
       assert.throws(function() {
         audioContext.createScriptProcessor(1024, 1, undefined);
       }, TypeError);
-
-      assert.throws(function() {
-        return new global.ScriptProcessorNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.ScriptProcessorNode(256, 1, 1); }, TypeError);
     });
   });
 

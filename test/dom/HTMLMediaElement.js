@@ -7,12 +7,9 @@ describe("HTMLMediaElement", function() {
 
       assert(element instanceof global.window.HTMLMediaElement);
       assert(element instanceof global.window.HTMLElement);
-
-      assert.throws(function() {
-        return new global.HTMLMediaElement();
-      }, function(e) {
-        return e instanceof TypeError;
-      });
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.HTMLMediaElement(); }, TypeError);
     });
   });
 });

@@ -36,10 +36,9 @@ describe("PeriodicWave", function() {
       assert.throws(function() {
         audioContext.createPeriodicWave(f128, f8192);
       }, TypeError);
-
-      assert.throws(function() {
-        return new global.PeriodicWave();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.PeriodicWave(); }, TypeError);
     });
   });
 

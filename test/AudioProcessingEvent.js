@@ -20,13 +20,12 @@ describe("AudioProcessingEvent", function() {
       assert(event instanceof global.AudioProcessingEvent);
       assert(event instanceof global.Event);
 
-      assert.throws(function() {
-        return new global.AudioProcessingEvent();
-      }, TypeError);
-
       // test api
       assert(event.$name === "AudioProcessingEvent");
       assert(event.$node === node);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioProcessingEvent(); }, TypeError);
     });
   });
 });

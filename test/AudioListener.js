@@ -11,10 +11,9 @@ describe("AudioListener", function() {
       var listener = audioContext.listener;
 
       assert(listener instanceof global.AudioListener);
-
-      assert.throws(function() {
-        return new global.AudioListener();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioListener(); }, TypeError);
     });
   });
 

@@ -6,12 +6,9 @@ describe("Element", function() {
       var element = new WebAudioTestAPI.Element();
 
       assert(element instanceof global.window.Element);
-
-      assert.throws(function() {
-        return new global.Element();
-      }, function(e) {
-        return e instanceof TypeError;
-      });
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.Element(); }, TypeError);
     });
   });
 });

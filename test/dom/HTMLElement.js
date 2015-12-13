@@ -7,12 +7,9 @@ describe("HTMLElement", function() {
 
       assert(element instanceof global.window.HTMLElement);
       assert(element instanceof global.window.Element);
-
-      assert.throws(function() {
-        return new global.HTMLElement();
-      }, function(e) {
-        return e instanceof TypeError;
-      });
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.HTMLElement(); }, TypeError);
     });
   });
 });

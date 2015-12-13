@@ -12,10 +12,9 @@ describe("PannerNode", function() {
 
       assert(node instanceof global.PannerNode);
       assert(node instanceof global.AudioNode);
-
-      assert.throws(function() {
-        return new global.PannerNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.PannerNode(); }, TypeError);
     });
   });
 

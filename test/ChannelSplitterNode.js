@@ -16,10 +16,9 @@ describe("ChannelSplitterNode", function() {
       assert.throws(function() {
         audioContext.createChannelSplitter(5.1);
       }, TypeError);
-
-      assert.throws(function() {
-        return new global.ChannelSplitterNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.ChannelSplitterNode(); }, TypeError);
     });
   });
 

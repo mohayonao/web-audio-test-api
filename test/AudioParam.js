@@ -19,12 +19,11 @@ describe("AudioParam", function() {
 
       assert(param instanceof global.AudioParam);
 
-      assert.throws(function() {
-        return new global.AudioParam();
-      }, TypeError);
-
       // test api
       assert(param.$node === node);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioParam(); }, TypeError);
     });
   });
 

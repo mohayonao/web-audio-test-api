@@ -12,10 +12,9 @@ describe("GainNode", function() {
 
       assert(node instanceof global.GainNode);
       assert(node instanceof global.AudioNode);
-
-      assert.throws(function() {
-        return new global.GainNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.GainNode(); }, TypeError);
     });
   });
 

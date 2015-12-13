@@ -23,10 +23,9 @@ describe("AudioBuffer", function() {
       assert.throws(function() {
         audioContext.createBuffer(2, 128, 44100.5);
       }, TypeError);
-
-      assert.throws(function() {
-        return new global.AudioBuffer();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioBuffer(); }, TypeError);
     });
   });
 

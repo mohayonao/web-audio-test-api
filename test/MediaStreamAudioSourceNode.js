@@ -17,10 +17,9 @@ describe("MediaStreamAudioSourceNode", function() {
       assert.throws(function() {
         audioContext.createMediaStreamSource("INVALID");
       }, TypeError);
-
-      assert.throws(function() {
-        return new global.MediaStreamAudioSourceNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.MediaStreamAudioSourceNode(); }, TypeError);
     });
   });
 

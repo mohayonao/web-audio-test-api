@@ -16,10 +16,9 @@ describe("ChannelMergerNode", function() {
       assert.throws(function() {
         audioContext.createChannelMerger(5.1);
       }, TypeError);
-
-      assert.throws(function() {
-        return new global.ChannelMergerNode();
-      }, TypeError);
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.ChannelMergerNode(); }, TypeError);
     });
   });
 

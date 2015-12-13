@@ -23,10 +23,6 @@ describe("AudioNode", function() {
       assert(node instanceof global.AudioNode);
       assert(node instanceof global.EventTarget);
 
-      assert.throws(function() {
-        return new global.AudioNode();
-      }, TypeError);
-
       return audioContext.close().then(function() {
         return immigration.apply(function(admission) {
           return new WebAudioTestAPI.AudioNode(admission, { context: audioContext });
@@ -36,6 +32,9 @@ describe("AudioNode", function() {
       }, function(e) {
         assert(e instanceof TypeError && /audioContext has been closed/i.test(e.message));
       });
+    });
+    it("not work when 'new' directly", function() {
+      assert.throws(function() { new global.AudioNode(); }, TypeError);
     });
   });
 
