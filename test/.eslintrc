@@ -6,7 +6,8 @@
   "rules": {
     "no-new": 0,
     "no-undefined": 0,
-    "no-var": 0
+    "no-var": 0,
+    "vars-on-top": 0
   },
   "globals": {
     "assert": true,
