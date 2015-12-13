@@ -3,7 +3,7 @@ describe("HTMLElement", function() {
 
   describe("constructor()", function() {
     it("works", function() {
-      var element = new WebAudioTestAPI.HTMLElement();
+      var element = new WebAudioTestAPI.DOM.HTMLElement();
 
       assert(element instanceof global.window.HTMLElement);
       assert(element instanceof global.window.Element);

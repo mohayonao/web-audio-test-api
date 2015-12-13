@@ -3,7 +3,7 @@ describe("EventTarget", function() {
 
   describe("constructor()", function() {
     it("works", function() {
-      var target = new WebAudioTestAPI.EventTarget();
+      var target = new WebAudioTestAPI.DOM.EventTarget();
 
       assert(target instanceof global.window.EventTarget);
     });
@@ -14,7 +14,7 @@ describe("EventTarget", function() {
 
   describe("#addEventListener(type: string, listener: function): void", function() {
     it("works", function() {
-      var target = new WebAudioTestAPI.EventTarget();
+      var target = new WebAudioTestAPI.DOM.EventTarget();
       var listener1 = sinon.spy();
       var listener2 = sinon.spy();
       var listener3 = sinon.spy();
@@ -38,7 +38,7 @@ describe("EventTarget", function() {
 
   describe("#removeEventListener(type: string, listener: function): void", function() {
     it("works", function() {
-      var target = new WebAudioTestAPI.EventTarget();
+      var target = new WebAudioTestAPI.DOM.EventTarget();
       var listener1 = sinon.spy();
       var listener2 = sinon.spy();
       var listener3 = sinon.spy();
@@ -66,12 +66,12 @@ describe("EventTarget", function() {
 
   describe("#dispatchEvent(event: Event): void", function() {
     it("works", function() {
-      var target = new WebAudioTestAPI.EventTarget();
+      var target = new WebAudioTestAPI.DOM.EventTarget();
       var listener1 = sinon.spy();
       var listener2 = sinon.spy();
       var listener3 = sinon.spy();
       var listener4 = sinon.spy();
-      var event = new WebAudioTestAPI.Event("foo");
+      var event = new WebAudioTestAPI.DOM.Event("foo");
 
       target.addEventListener("foo", listener1);
       target.addEventListener("foo", listener2);

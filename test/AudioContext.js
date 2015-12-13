@@ -254,7 +254,7 @@ describe("AudioContext", function() {
 
   describe("#createMediaElementSource(mediaElement: HTMLMediaElement): MediaElementAudioSourceNode", function() {
     it("works", function() {
-      var element = new WebAudioTestAPI.HTMLMediaElement();
+      var element = new WebAudioTestAPI.DOM.HTMLMediaElement();
       var node = audioContext.createMediaElementSource(element);
 
       assert(node instanceof global.MediaElementAudioSourceNode);
@@ -263,7 +263,7 @@ describe("AudioContext", function() {
 
   describe("#createMediaStreamSource(mediaStream: MediaStream): MediaStreamAudioSourceNode", function() {
     it("works", function() {
-      var stream = new WebAudioTestAPI.MediaStream();
+      var stream = new WebAudioTestAPI.DOM.MediaStream();
       var node = audioContext.createMediaStreamSource(stream);
 
       assert(node instanceof global.MediaStreamAudioSourceNode);
@@ -552,7 +552,7 @@ describe("AudioContext", function() {
 
       event = onended.args[0][0];
 
-      assert(event instanceof WebAudioTestAPI.Event);
+      assert(event instanceof global.Event);
       assert(event.type === "ended");
       assert(event.target === bufSrc);
     });

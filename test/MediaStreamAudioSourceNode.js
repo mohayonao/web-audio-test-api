@@ -4,7 +4,7 @@ describe("MediaStreamAudioSourceNode", function() {
 
   beforeEach(function() {
     audioContext = new WebAudioTestAPI.AudioContext();
-    mediaStream = new WebAudioTestAPI.MediaStream();
+    mediaStream = new WebAudioTestAPI.DOM.MediaStream();
   });
 
   describe("constructor()", function() {

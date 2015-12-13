@@ -6,7 +6,7 @@ describe("Event", function() {
   describe("constructor()", function() {
     it("works", function() {
       var foo = new Foo();
-      var e = new WebAudioTestAPI.Event("name", foo);
+      var e = new WebAudioTestAPI.DOM.Event("name", foo);
 
       assert(e instanceof global.window.Event);
       assert(e.type === "name");

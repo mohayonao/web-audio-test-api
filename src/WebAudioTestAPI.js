@@ -1,177 +1,96 @@
 import Immigration from "./utils/Immigration";
 import WebAudioAPI from "./WebAudioAPI";
-import Element from "./dom/Element";
-import Event from "./dom/Event";
-import EventTarget from "./dom/EventTarget";
-import HTMLElement from "./dom/HTMLElement";
-import HTMLMediaElement from "./dom/HTMLMediaElement";
-import MediaStream from "./dom/MediaStream";
-import AnalyserNode from "./AnalyserNode";
-import AudioBuffer from "./AudioBuffer";
-import AudioBufferSourceNode from "./AudioBufferSourceNode";
-import AudioContext from "./AudioContext";
-import AudioDestinationNode from "./AudioDestinationNode";
-import AudioListener from "./AudioListener";
-import AudioNode from "./AudioNode";
-import AudioParam from "./AudioParam";
-import AudioProcessingEvent from "./AudioProcessingEvent";
-import BiquadFilterNode from "./BiquadFilterNode";
-import ChannelMergerNode from "./ChannelMergerNode";
-import ChannelSplitterNode from "./ChannelSplitterNode";
-import ConvolverNode from "./ConvolverNode";
-import DelayNode from "./DelayNode";
-import DynamicsCompressorNode from "./DynamicsCompressorNode";
-import GainNode from "./GainNode";
-import MediaElementAudioSourceNode from "./MediaElementAudioSourceNode";
-import MediaStreamAudioDestinationNode from "./MediaStreamAudioDestinationNode";
-import MediaStreamAudioSourceNode from "./MediaStreamAudioSourceNode";
-import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
-import OfflineAudioContext from "./OfflineAudioContext";
-import OscillatorNode from "./OscillatorNode";
-import PannerNode from "./PannerNode";
-import PeriodicWave from "./PeriodicWave";
-import ScriptProcessorNode from "./ScriptProcessorNode";
-import StereoPannerNode from "./StereoPannerNode";
-import WaveShaperNode from "./WaveShaperNode";
-import format from "./utils/format";
-import getAPIVersion from "./utils/getAPIVersion";
-
-// TODO: fix
 import versions from "./decorators/versions";
+import * as utils from "./utils";
+import * as DOM from "./dom";
 
-versions.targetVersions = { chrome: 47, firefox: 42, safari: Infinity };
+const sampleRate = 44100;
+const recentTargetVersions = { chrome: 47, firefox: 42, safari: 9 };
 
-let saved = {};
+versions.targetVersions = recentTargetVersions;
 
-let sampleRate = 44100;
+function setTargetVersions(spec) {
+  switch (spec) {
+  case Infinity:
+    versions.targetVersions = { chrome: Infinity, firefox: Infinity, safari: Infinity };
+    break;
+  case 0:
+    versions.targetVersions = { chrome: 0, firefox: 0, safari: 0 };
+    break;
+  case "recent":
+    versions.targetVersions = recentTargetVersions;
+    break;
+  default:
+    const targetVersions = {};
 
-let WebAudioTestAPI = {
-  VERSION: getAPIVersion(),
-  utils: { Immigration },
-  setTargetVersions(spec) {
-    // TODO: fix
-    if (spec === Infinity) {
-      versions.targetVersions = { chrome: Infinity, firefox: Infinity, safari: Infinity };
-    } else if (spec === 0) {
-      versions.targetVersions = { chrome: 0, firefox: 0, safari: 0 };
-    } else if (spec === "recent") {
-      versions.targetVersions = { chrome: 47, firefox: 42, safari: 9 };
-    } else {
-      versions.targetVersions = spec;
-    }
-  },
-  getTargetVersions() {
-    // TODO: fix
-    return saved;
-  },
-  sampleRate,
-  AnalyserNode,
-  AudioBuffer,
-  AudioBufferSourceNode,
-  AudioContext,
-  AudioDestinationNode,
-  AudioListener,
-  AudioNode,
-  AudioParam,
-  AudioProcessingEvent,
-  BiquadFilterNode,
-  ChannelMergerNode,
-  ChannelSplitterNode,
-  ConvolverNode,
-  DelayNode,
-  DynamicsCompressorNode,
-  Element,
-  Event,
-  EventTarget,
-  GainNode,
-  HTMLElement,
-  HTMLMediaElement,
-  MediaElementAudioSourceNode,
-  MediaStream,
-  MediaStreamAudioDestinationNode,
-  MediaStreamAudioSourceNode,
-  OfflineAudioCompletionEvent,
-  OfflineAudioContext,
-  OscillatorNode,
-  PannerNode,
-  PeriodicWave,
-  ScriptProcessorNode,
-  StereoPannerNode,
-  WaveShaperNode,
-  use() {
-    global.AnalyserNode = WebAudioTestAPI.AnalyserNode;
-    global.AudioBuffer = WebAudioTestAPI.AudioBuffer;
-    global.AudioBufferSourceNode = WebAudioTestAPI.AudioBufferSourceNode;
-    global.AudioContext = WebAudioTestAPI.AudioContext;
-    global.AudioDestinationNode = WebAudioTestAPI.AudioDestinationNode;
-    global.AudioListener = WebAudioTestAPI.AudioListener;
-    global.AudioNode = WebAudioTestAPI.AudioNode;
-    global.AudioParam = WebAudioTestAPI.AudioParam;
-    global.AudioProcessingEvent = WebAudioTestAPI.AudioProcessingEvent;
-    global.BiquadFilterNode = WebAudioTestAPI.BiquadFilterNode;
-    global.ChannelMergerNode = WebAudioTestAPI.ChannelMergerNode;
-    global.ChannelSplitterNode = WebAudioTestAPI.ChannelSplitterNode;
-    global.ConvolverNode = WebAudioTestAPI.ConvolverNode;
-    global.DelayNode = WebAudioTestAPI.DelayNode;
-    global.DynamicsCompressorNode = WebAudioTestAPI.DynamicsCompressorNode;
-    global.GainNode = WebAudioTestAPI.GainNode;
-    global.MediaElementAudioSourceNode = WebAudioTestAPI.MediaElementAudioSourceNode;
-    global.MediaStreamAudioDestinationNode = WebAudioTestAPI.MediaStreamAudioDestinationNode;
-    global.MediaStreamAudioSourceNode = WebAudioTestAPI.MediaStreamAudioSourceNode;
-    global.OfflineAudioCompletionEvent = WebAudioTestAPI.OfflineAudioCompletionEvent;
-    global.OfflineAudioContext = WebAudioTestAPI.OfflineAudioContext;
-    global.OscillatorNode = WebAudioTestAPI.OscillatorNode;
-    global.PannerNode = WebAudioTestAPI.PannerNode;
-    global.PeriodicWave = WebAudioTestAPI.PeriodicWave;
-    global.ScriptProcessorNode = WebAudioTestAPI.ScriptProcessorNode;
-    global.StereoPannerNode = WebAudioTestAPI.StereoPannerNode;
-    global.WaveShaperNode = WebAudioTestAPI.WaveShaperNode;
-    global.WebAudioTestAPI = WebAudioTestAPI;
-  },
-  unuse() {
-    global.AnalyserNode = WebAudioAPI.AnalyserNode;
-    global.AudioBuffer = WebAudioAPI.AudioBuffer;
-    global.AudioBufferSourceNode = WebAudioAPI.AudioBufferSourceNode;
-    global.AudioContext = WebAudioAPI.AudioContext;
-    global.AudioDestinationNode = WebAudioAPI.AudioDestinationNode;
-    global.AudioListener = WebAudioAPI.AudioListener;
-    global.AudioNode = WebAudioAPI.AudioNode;
-    global.AudioParam = WebAudioAPI.AudioParam;
-    global.AudioProcessingEvent = WebAudioAPI.AudioProcessingEvent;
-    global.BiquadFilterNode = WebAudioAPI.BiquadFilterNode;
-    global.ChannelMergerNode = WebAudioAPI.ChannelMergerNode;
-    global.ChannelSplitterNode = WebAudioAPI.ChannelSplitterNode;
-    global.ConvolverNode = WebAudioAPI.ConvolverNode;
-    global.DelayNode = WebAudioAPI.DelayNode;
-    global.DynamicsCompressorNode = WebAudioAPI.DynamicsCompressorNode;
-    global.GainNode = WebAudioAPI.GainNode;
-    global.MediaElementAudioSourceNode = WebAudioAPI.MediaElementAudioSourceNode;
-    global.MediaStreamAudioDestinationNode = WebAudioAPI.MediaStreamAudioDestinationNode;
-    global.MediaStreamAudioSourceNode = WebAudioAPI.MediaStreamAudioSourceNode;
-    global.OfflineAudioCompletionEvent = WebAudioAPI.OfflineAudioCompletionEvent;
-    global.OfflineAudioContext = WebAudioAPI.OfflineAudioContext;
-    global.OscillatorNode = WebAudioAPI.OscillatorNode;
-    global.PannerNode = WebAudioAPI.PannerNode;
-    global.PeriodicWave = WebAudioAPI.PeriodicWave;
-    global.ScriptProcessorNode = WebAudioAPI.ScriptProcessorNode;
-    global.StereoPannerNode = WebAudioAPI.StereoPannerNode;
-    global.WaveShaperNode = WebAudioAPI.WaveShaperNode;
-  },
-  /* DEPRECATED */
-  getState() {
-    throw new Error(format(`
-      Failed to execute 'getState' on 'WebAudioTestAPI'
+    Object.keys(recentTargetVersions).forEach((key) => {
+      let version = spec[key];
 
-      \tThis API is removed. Please use WebAudioTestAPI.setTargetVersions();
-    `) + "\n");
-  },
-  setState() {
-    throw new Error(format(`
-      Failed to execute 'setState' on 'WebAudioTestAPI'
+      if (version === "recent") {
+        version = recentTargetVersions[key];
+      }
 
-      \tThis API is removed. Please use WebAudioTestAPI.getTargetVersions();
-    `) + "\n");
+      targetVersions[key] = +version;
+    });
+
+    versions.targetVersions = targetVersions;
   }
+}
+
+function getTargetVersions() {
+  return versions.targetVersions;
+}
+
+function use() {
+  Object.keys(WebAudioAPI.testAPI).forEach((key) => {
+    global[key] = WebAudioAPI.testAPI[key];
+  });
+}
+
+function unuse() {
+  Object.keys(WebAudioAPI.originalAPI).forEach((key) => {
+    global[key] = WebAudioAPI.originalAPI[key];
+  });
+}
+
+function getState() {
+  throw new Error(utils.format(`
+    Failed to execute 'getState' on 'WebAudioTestAPI'
+
+    \tThis API is removed. Please use WebAudioTestAPI.setTargetVersions();
+  `) + "\n");
+}
+
+function setState() {
+  throw new Error(utils.format(`
+    Failed to execute 'setState' on 'WebAudioTestAPI'
+
+    \tThis API is removed. Please use WebAudioTestAPI.getTargetVersions();
+  `) + "\n");
+}
+
+const WebAudioTestAPI = {
+  get VERSION() {
+    return utils.getAPIVersion();
+  },
+  get sampleRate() {
+    return sampleRate;
+  },
+  DOM,
+  utils: { Immigration },
+  setTargetVersions,
+  getTargetVersions,
+  use,
+  unuse,
+  /* DEPRECATED */
+  getState,
+  setState
 };
+
+Object.keys(WebAudioAPI.testAPI).forEach((key) => {
+  WebAudioTestAPI[key] = WebAudioAPI.testAPI[key];
+});
+
+global.WebAudioTestAPI = WebAudioTestAPI;
 
 export default WebAudioTestAPI;

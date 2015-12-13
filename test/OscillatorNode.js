@@ -317,7 +317,7 @@ describe("OscillatorNode", function() {
 
       event = onended.args[0][0];
 
-      assert(event instanceof WebAudioTestAPI.Event);
+      assert(event instanceof global.Event);
       assert(event.type === "ended");
       assert(event.target === node);
 
