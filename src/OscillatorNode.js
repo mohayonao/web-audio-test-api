@@ -3,9 +3,7 @@ import PeriodicWave from "./PeriodicWave";
 import Event from "./dom/Event";
 import auth from "./utils/auth";
 import toSeconds from "./utils/toSeconds";
-import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 export default class OscillatorNode extends AudioNode {
   static $JSONKeys = [ "type", "frequency", "detune" ];
@@ -32,20 +30,20 @@ export default class OscillatorNode extends AudioNode {
     this._.firedOnEnded = false;
   }
 
-  @props.enums([ "sine", "square", "sawtooth", "triangle" ])
+  @testapi.props.enums([ "sine", "square", "sawtooth", "triangle" ])
   type() {}
 
-  @props.audioparam(440)
+  @testapi.props.audioparam(440)
   frequency() {}
 
-  @props.audioparam(0)
+  @testapi.props.audioparam(0)
   detune() {}
 
-  @props.on("ended")
+  @testapi.props.on("ended")
   onended() {}
 
-  @methods.param("[ when ]", validators.isPositiveNumber)
-  @methods.contract({
+  @testapi.methods.param("[ when ]", testapi.isPositiveNumber)
+  @testapi.methods.contract({
     precondition() {
       if (this._.startTime !== Infinity) {
         throw new Error("Cannot start more than once.");
@@ -56,8 +54,8 @@ export default class OscillatorNode extends AudioNode {
     this._.startTime = when;
   }
 
-  @methods.param("[ when ]", validators.isPositiveNumber)
-  @methods.contract({
+  @testapi.methods.param("[ when ]", testapi.isPositiveNumber)
+  @testapi.methods.contract({
     precondition() {
       if (this._.startTime === Infinity) {
         throw new Error("Cannot call stop without calling start first.");
@@ -71,7 +69,7 @@ export default class OscillatorNode extends AudioNode {
     this._.stopTime = when;
   }
 
-  @methods.param("periodicWave", validators.isInstanceOf(PeriodicWave))
+  @testapi.methods.param("periodicWave", testapi.isInstanceOf(PeriodicWave))
   setPeriodicWave(periodicWave) {
     this._.type = "custom";
     this._.custom = periodicWave;

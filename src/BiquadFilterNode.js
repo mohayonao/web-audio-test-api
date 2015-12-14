@@ -1,8 +1,6 @@
 import AudioNode from "./AudioNode";
 import auth from "./utils/auth";
-import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 export default class BiquadFilterNode extends AudioNode {
   static $JSONKeys = [ "type", "frequency", "detune", "Q", "gain" ];
@@ -25,23 +23,23 @@ export default class BiquadFilterNode extends AudioNode {
     });
   }
 
-  @props.enums([ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass" ])
+  @testapi.props.enums([ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass" ])
   type() {}
 
-  @props.audioparam(350)
+  @testapi.props.audioparam(350)
   frequency() {}
 
-  @props.audioparam(0)
+  @testapi.props.audioparam(0)
   detune() {}
 
-  @props.audioparam(1)
+  @testapi.props.audioparam(1)
   Q() {}
 
-  @props.audioparam(0)
+  @testapi.props.audioparam(0)
   gain() {}
 
-  @methods.param("frequencyHz", validators.isInstanceOf(Float32Array))
-  @methods.param("magResponse", validators.isInstanceOf(Float32Array))
-  @methods.param("phaseResponse", validators.isInstanceOf(Float32Array))
+  @testapi.methods.param("frequencyHz", testapi.isInstanceOf(Float32Array))
+  @testapi.methods.param("magResponse", testapi.isInstanceOf(Float32Array))
+  @testapi.methods.param("phaseResponse", testapi.isInstanceOf(Float32Array))
   getFrequencyResponse() {}
 }

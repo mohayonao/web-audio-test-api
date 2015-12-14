@@ -6,9 +6,7 @@ import defaults from "./utils/defaults";
 import toJSON from "./utils/toJSON";
 import toNodeName from "./utils/toNodeName";
 import versions from "./decorators/versions";
-import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 const SELECTIVE_DISCONNECT = { chrome: "43-", firefox: "none", safari: "none" };
 
@@ -41,34 +39,34 @@ export default class AudioNode extends EventTarget {
     this._.tick = -1;
   }
 
-  @props.readonly()
+  @testapi.props.readonly()
   context() {
     return this._.context;
   }
 
-  @props.readonly()
+  @testapi.props.readonly()
   numberOfInputs() {
     return this._.numberOfInputs;
   }
 
-  @props.readonly()
+  @testapi.props.readonly()
   numberOfOutputs() {
     return this._.numberOfOutputs;
   }
 
-  @props.typed(validators.isPositiveInteger, 2)
+  @testapi.props.typed(testapi.isPositiveInteger, 2)
   channelCount() {}
 
-  @props.enums([ "max", "clamped-max", "explicit" ])
+  @testapi.props.enums([ "max", "clamped-max", "explicit" ])
   channelCountMode() {}
 
-  @props.enums([ "speakers", "discrete" ])
+  @testapi.props.enums([ "speakers", "discrete" ])
   channelInterpretation() {}
 
-  @methods.param("destination", validators.isAudioSource);
-  @methods.param("[ output ]", validators.isPositiveInteger);
-  @methods.param("[ input ]", validators.isPositiveInteger);
-  @methods.contract({
+  @testapi.methods.param("destination", testapi.isAudioSource);
+  @testapi.methods.param("[ output ]", testapi.isPositiveInteger);
+  @testapi.methods.param("[ input ]", testapi.isPositiveInteger);
+  @testapi.methods.contract({
     precondition(destination, output = 0, input = 0) {
       if (this.$context !== destination.$context) {
         throw new TypeError("Cannot connect to a destination belonging to a different AudioContext.");
@@ -113,8 +111,8 @@ export default class AudioNode extends EventTarget {
     });
   }
 
-  @methods.param("output", validators.isPositiveInteger)
-  @methods.contract({
+  @testapi.methods.param("output", testapi.isPositiveInteger)
+  @testapi.methods.contract({
     precondition(output) {
       if (this.numberOfOutputs <= output) {
         throw new TypeError(`The {{output}} index (${output}) exceeds number of outputs (${this.numberOfOutputs}).`);
@@ -125,8 +123,8 @@ export default class AudioNode extends EventTarget {
     this._.outputs[output].disconnectAll();
   }
 
-  @methods.param("destination", validators.isAudioSource)
-  @methods.contract({
+  @testapi.methods.param("destination", testapi.isAudioSource)
+  @testapi.methods.contract({
     precondition(destination) {
       if (!this._.outputs.some(junction => junction.isConnected(destination))) {
         throw new TypeError("The given {{destination}} is not connected.");
@@ -139,9 +137,9 @@ export default class AudioNode extends EventTarget {
     });
   }
 
-  @methods.param("destination", validators.isAudioSource)
-  @methods.param("output", validators.isPositiveInteger)
-  @methods.contract({
+  @testapi.methods.param("destination", testapi.isAudioSource)
+  @testapi.methods.param("output", testapi.isPositiveInteger)
+  @testapi.methods.contract({
     precondition(destination, output) {
       if (!this._.outputs.some(junction => junction.isConnected(destination))) {
         throw new TypeError("The given {{destination}} is not connected.");
@@ -155,10 +153,10 @@ export default class AudioNode extends EventTarget {
     this._.outputs[output].disconnectNode(destination);
   }
 
-  @methods.param("destination", validators.isAudioSource)
-  @methods.param("output", validators.isPositiveInteger)
-  @methods.param("input", validators.isPositiveInteger)
-  @methods.contract({
+  @testapi.methods.param("destination", testapi.isAudioSource)
+  @testapi.methods.param("output", testapi.isPositiveInteger)
+  @testapi.methods.param("input", testapi.isPositiveInteger)
+  @testapi.methods.contract({
     precondition(destination, output, input) {
       if (!this._.outputs.some(junction => junction.isConnected(destination))) {
         throw new TypeError("The given {{destination}} is not connected.");

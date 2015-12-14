@@ -1,7 +1,6 @@
 import AudioNode from "./AudioNode";
 import auth from "./utils/auth";
-import * as props from "./decorators/props";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 export default class WaveShaperNode extends AudioNode {
   static $JSONKeys = [ "oversample" ];
@@ -24,9 +23,9 @@ export default class WaveShaperNode extends AudioNode {
     });
   }
 
-  @props.typed(validators.isNullOrInstanceOf(Float32Array), null)
+  @testapi.props.typed(testapi.isNullOrInstanceOf(Float32Array), null)
   curve() {}
 
-  @props.enums([ "none", "2x", "4x" ])
+  @testapi.props.enums([ "none", "2x", "4x" ])
   oversample() {}
 }

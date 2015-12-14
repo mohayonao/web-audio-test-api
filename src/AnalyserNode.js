@@ -1,9 +1,6 @@
 import AudioNode from "./AudioNode";
 import auth from "./utils/auth";
-import versions from "./decorators/versions";
-import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 export default class AnalyserNode extends AudioNode {
   static $JSONKeys = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
@@ -27,33 +24,33 @@ export default class AnalyserNode extends AudioNode {
     this._.fftSize = 2048;
   }
 
-  @props.enums([ 32, 64, 128, 256, 512, 1024, 2048 ])
+  @testapi.props.enums([ 32, 64, 128, 256, 512, 1024, 2048 ])
   fftSize() {}
 
-  @props.readonly()
+  @testapi.props.readonly()
   frequencyBinCount() {
     return this.fftSize >> 1;
   }
 
-  @props.typed(validators.isNumber, -100)
+  @testapi.props.typed(testapi.isNumber, -100)
   minDecibels() {}
 
-  @props.typed(validators.isNumber, 30)
+  @testapi.props.typed(testapi.isNumber, 30)
   maxDecibels() {}
 
-  @props.typed(validators.isNumber, 0.8)
+  @testapi.props.typed(testapi.isNumber, 0.8)
   smoothingTimeConstant() {}
 
-  @methods.param("array", validators.isInstanceOf(Float32Array))
+  @testapi.methods.param("array", testapi.isInstanceOf(Float32Array))
   getFloatFrequencyData() {}
 
-  @methods.param("array", validators.isInstanceOf(Uint8Array))
+  @testapi.methods.param("array", testapi.isInstanceOf(Uint8Array))
   getByteFrequencyData() {}
 
-  @methods.param("array", validators.isInstanceOf(Float32Array))
-  @versions({ chrome: "37-", firefox: "30-", safari: "none" })
+  @testapi.methods.param("array", testapi.isInstanceOf(Float32Array))
+  @testapi.versions({ chrome: "37-", firefox: "30-", safari: "none" })
   getFloatTimeDomainData() {}
 
-  @methods.param("array", validators.isInstanceOf(Uint8Array))
+  @testapi.methods.param("array", testapi.isInstanceOf(Uint8Array))
   getByteTimeDomainData() {}
 }

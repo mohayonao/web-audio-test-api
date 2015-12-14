@@ -1,6 +1,6 @@
 import AudioNode from "./AudioNode";
 import auth from "./utils/auth";
-import * as props from "./decorators/props";
+import testapi from "./testapi";
 
 export default class AudioDestinationNode extends AudioNode {
   static $JSONKeys = [];
@@ -23,6 +23,6 @@ export default class AudioDestinationNode extends AudioNode {
     });
   }
 
-  @props.readonly(2)
+  @testapi.props.readonly(2)
   maxChannelCount() {}
 }

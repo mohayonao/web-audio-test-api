@@ -3,9 +3,7 @@ import auth from "./utils/auth";
 import defaults from "./utils/defaults";
 import toJSON from "./utils/toJSON";
 import toSeconds from "./utils/toSeconds";
-import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 export default class AudioParam {
   static $new(...args) {
@@ -30,55 +28,55 @@ export default class AudioParam {
     this._.tick = -1;
   }
 
-  @props.typed(validators.isNumber, 0)
+  @testapi.props.typed(testapi.isNumber, 0)
   get value() {
     this._.value = this.$valueAtTime(this.$context.currentTime);
     return this._.value;
   }
 
-  @props.readonly()
+  @testapi.props.readonly()
   name() {
     return this._.name;
   }
 
-  @props.readonly()
+  @testapi.props.readonly()
   defaultValue() {
     return this._.defaultValue;
   }
 
-  @methods.param("value", validators.isNumber)
-  @methods.param("startTime", validators.isNumber)
+  @testapi.methods.param("value", testapi.isNumber)
+  @testapi.methods.param("startTime", testapi.isNumber)
   setValueAtTime(value, startTime) {
     this.__insertEvent({ type: "SetValue", value: value, time: startTime });
   }
 
-  @methods.param("value", validators.isNumber)
-  @methods.param("endTime", validators.isNumber)
+  @testapi.methods.param("value", testapi.isNumber)
+  @testapi.methods.param("endTime", testapi.isNumber)
   linearRampToValueAtTime(value, endTime) {
     this.__insertEvent({ type: "LinearRampToValue", value: value, time: endTime });
   }
 
-  @methods.param("value", validators.isNumber)
-  @methods.param("endTime", validators.isNumber)
+  @testapi.methods.param("value", testapi.isNumber)
+  @testapi.methods.param("endTime", testapi.isNumber)
   exponentialRampToValueAtTime(value, endTime) {
     this.__insertEvent({ type: "ExponentialRampToValue", value: value, time: endTime });
   }
 
-  @methods.param("value", validators.isNumber)
-  @methods.param("endTime", validators.isNumber)
-  @methods.param("timeConstant", validators.isNumber)
+  @testapi.methods.param("value", testapi.isNumber)
+  @testapi.methods.param("endTime", testapi.isNumber)
+  @testapi.methods.param("timeConstant", testapi.isNumber)
   setTargetAtTime(target, startTime, timeConstant) {
     this.__insertEvent({ type: "SetTarget", value: target, time: startTime, timeConstant: timeConstant });
   }
 
-  @methods.param("values", validators.isInstanceOf(Float32Array))
-  @methods.param("startTime", validators.isNumber)
-  @methods.param("duration", validators.isNumber)
+  @testapi.methods.param("values", testapi.isInstanceOf(Float32Array))
+  @testapi.methods.param("startTime", testapi.isNumber)
+  @testapi.methods.param("duration", testapi.isNumber)
   setValueCurveAtTime(values, startTime, duration) {
     this.__insertEvent({ type: "SetValueCurve", time: startTime, duration: duration, curve: values });
   }
 
-  @methods.param("startTime", validators.isNumber)
+  @testapi.methods.param("startTime", testapi.isNumber)
   cancelScheduledValues(startTime) {
     let events = this.$events;
 

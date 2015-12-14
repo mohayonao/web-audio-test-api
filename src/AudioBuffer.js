@@ -1,8 +1,5 @@
 import auth from "./utils/auth";
-import versions from "./decorators/versions";
-import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 export default class AudioBuffer {
   static $new(...args) {
@@ -28,28 +25,28 @@ export default class AudioBuffer {
     }
   }
 
-  @props.readonly()
+  @testapi.props.readonly()
   sampleRate() {
     return this._.sampleRate;
   }
 
-  @props.readonly()
+  @testapi.props.readonly()
   length() {
     return this._.length;
   }
 
-  @props.readonly()
+  @testapi.props.readonly()
   duration() {
     return this.length / this.sampleRate;
   }
 
-  @props.readonly()
+  @testapi.props.readonly()
   numberOfChannels() {
     return this._.numberOfChannels;
   }
 
-  @methods.param("channel", validators.isPositiveInteger)
-  @methods.contract({
+  @testapi.methods.param("channel", testapi.isPositiveInteger)
+  @testapi.methods.contract({
     precondition(channel) {
       if (this._.data.length <= channel) {
         throw new TypeError(`
@@ -58,15 +55,15 @@ export default class AudioBuffer {
       }
     }
   })
-  @methods.returns(validators.isInstanceOf(Float32Array))
+  @testapi.methods.returns(testapi.isInstanceOf(Float32Array))
   getChannelData(channel) {
     return this._.data[channel];
   }
 
-  @methods.param("destination", validators.isInstanceOf(Float32Array))
-  @methods.param("channelNumber", validators.isPositiveInteger)
-  @methods.param("[ startInChannel ]", validators.isPositiveInteger)
-  @methods.contract({
+  @testapi.methods.param("destination", testapi.isInstanceOf(Float32Array))
+  @testapi.methods.param("channelNumber", testapi.isPositiveInteger)
+  @testapi.methods.param("[ startInChannel ]", testapi.isPositiveInteger)
+  @testapi.methods.contract({
     precondition(destination, channelNumber, startInChannel = 0) {
       if (this._.data.length <= channelNumber) {
         throw new TypeError(`
@@ -80,17 +77,17 @@ export default class AudioBuffer {
       }
     }
   })
-  @versions({ chrome: "43-", firefox: "27-", safari: "none" })
+  @testapi.versions({ chrome: "43-", firefox: "27-", safari: "none" })
   copyFromChannel(destination, channelNumber, startInChannel = 0) {
     let source = this._.data[channelNumber].subarray(startInChannel);
 
     destination.set(source.subarray(0, Math.min(source.length, destination.length)));
   }
 
-  @methods.param("source", validators.isInstanceOf(Float32Array))
-  @methods.param("channelNumber", validators.isPositiveInteger)
-  @methods.param("[ startInChannel ]", validators.isPositiveInteger)
-  @methods.contract({
+  @testapi.methods.param("source", testapi.isInstanceOf(Float32Array))
+  @testapi.methods.param("channelNumber", testapi.isPositiveInteger)
+  @testapi.methods.param("[ startInChannel ]", testapi.isPositiveInteger)
+  @testapi.methods.contract({
     precondition(source, channelNumber, startInChannel = 0) {
       if (this._.data.length <= channelNumber) {
         throw new TypeError(
@@ -104,7 +101,7 @@ export default class AudioBuffer {
       }
     }
   })
-  @versions({ chrome: "43-", firefox: "27-", safari: "none" })
+  @testapi.versions({ chrome: "43-", firefox: "27-", safari: "none" })
   copyToChannel(source, channelNumber, startInChannel = 0) {
     let clipped = source.subarray(0, Math.min(source.length, this._.length - startInChannel));
 

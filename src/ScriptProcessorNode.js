@@ -2,7 +2,7 @@ import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import AudioProcessingEvent from "./AudioProcessingEvent";
 import auth from "./utils/auth";
-import * as props from "./decorators/props";
+import testapi from "./testapi";
 
 export default class ScriptProcessorNode extends AudioNode {
   static $JSONKeys = [];
@@ -29,12 +29,12 @@ export default class ScriptProcessorNode extends AudioNode {
     this._.numSamples = 0;
   }
 
-  @props.readonly()
+  @testapi.props.readonly()
   bufferSize() {
     return this._.bufferSize;
   }
 
-  @props.on("audioprocess");
+  @testapi.props.on("audioprocess");
   onaudioprocess() {}
 
   __process(inNumSamples) {

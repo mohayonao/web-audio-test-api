@@ -3,10 +3,7 @@ import AudioBuffer from "./AudioBuffer";
 import Event from "./dom/Event";
 import auth from "./utils/auth";
 import toSeconds from "./utils/toSeconds";
-import versions from "./decorators/versions";
-import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 export default class AudioBufferSourceNode extends AudioNode {
   static $JSONKeys = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
@@ -32,32 +29,32 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.firedOnEnded = false;
   }
 
-  @props.typed(validators.isNullOrInstanceOf(AudioBuffer), null)
+  @testapi.props.typed(testapi.isNullOrInstanceOf(AudioBuffer), null)
   buffer() {}
 
-  @props.audioparam(1)
+  @testapi.props.audioparam(1)
   playbackRate() {}
 
-  @props.audioparam(0)
-  @versions({ chrome: "", firefox: "", safari: "" })
+  @testapi.props.audioparam(0)
+  @testapi.versions({ chrome: "", firefox: "", safari: "" })
   detune() {}
 
-  @props.typed(validators.isBoolean, false)
+  @testapi.props.typed(testapi.isBoolean, false)
   loop() {}
 
-  @props.typed(validators.isPositiveNumber, 0)
+  @testapi.props.typed(testapi.isPositiveNumber, 0)
   loopStart() {}
 
-  @props.typed(validators.isPositiveNumber, 0)
+  @testapi.props.typed(testapi.isPositiveNumber, 0)
   loopEnd() {}
 
-  @props.on("ended")
+  @testapi.props.on("ended")
   onended() {}
 
-  @methods.param("[ when ]", validators.isPositiveNumber)
-  @methods.param("[ offset ]", validators.isPositiveNumber)
-  @methods.param("[ duration ]", validators.isPositiveNumber)
-  @methods.contract({
+  @testapi.methods.param("[ when ]", testapi.isPositiveNumber)
+  @testapi.methods.param("[ offset ]", testapi.isPositiveNumber)
+  @testapi.methods.param("[ duration ]", testapi.isPositiveNumber)
+  @testapi.methods.contract({
     precondition() {
       if (this._.startTime !== Infinity) {
         throw new TypeError("Cannot start more than once.");
@@ -70,8 +67,8 @@ export default class AudioBufferSourceNode extends AudioNode {
     this._.duration = duration;
   }
 
-  @methods.param("[ when ]", validators.isPositiveNumber)
-  @methods.contract({
+  @testapi.methods.param("[ when ]", testapi.isPositiveNumber)
+  @testapi.methods.contract({
     precondition() {
       if (this._.startTime === Infinity) {
         throw new TypeError("Cannot call stop without calling start first.");

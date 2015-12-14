@@ -1,6 +1,6 @@
 import AudioNode from "./AudioNode";
 import auth from "./utils/auth";
-import * as props from "./decorators/props";
+import testapi from "./testapi";
 
 export default class DynamicsCompressorNode extends AudioNode {
   static $JSONKeys = [ "threshold", "knee", "ratio", "reduction", "attack", "release" ];
@@ -23,21 +23,21 @@ export default class DynamicsCompressorNode extends AudioNode {
     });
   }
 
-  @props.audioparam(-24)
+  @testapi.props.audioparam(-24)
   threshold() {}
 
-  @props.audioparam(30)
+  @testapi.props.audioparam(30)
   knee() {}
 
-  @props.audioparam(12)
+  @testapi.props.audioparam(12)
   ratio() {}
 
-  @props.audioparam(0)
+  @testapi.props.audioparam(0)
   reduction() {}
 
-  @props.audioparam(0.003)
+  @testapi.props.audioparam(0.003)
   attack() {}
 
-  @props.audioparam(0.25)
+  @testapi.props.audioparam(0.25)
   release() {}
 }

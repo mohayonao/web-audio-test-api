@@ -1,7 +1,5 @@
 import auth from "./utils/auth";
-import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 export default class AudioListener {
   static $new(...args) {
@@ -19,28 +17,28 @@ export default class AudioListener {
     this._.context = context;
   }
 
-  @props.typed(validators.isNumber, 1)
+  @testapi.props.typed(testapi.isNumber, 1)
   dopplerFactor() {}
 
-  @props.typed(validators.isNumber, 343.3)
+  @testapi.props.typed(testapi.isNumber, 343.3)
   speedOfSound() {}
 
-  @methods.param("x", validators.isNumber)
-  @methods.param("y", validators.isNumber)
-  @methods.param("z", validators.isNumber)
+  @testapi.methods.param("x", testapi.isNumber)
+  @testapi.methods.param("y", testapi.isNumber)
+  @testapi.methods.param("z", testapi.isNumber)
   setPosition() {}
 
-  @methods.param("x", validators.isNumber)
-  @methods.param("y", validators.isNumber)
-  @methods.param("z", validators.isNumber)
-  @methods.param("xUp", validators.isNumber)
-  @methods.param("yUp", validators.isNumber)
-  @methods.param("zUp", validators.isNumber)
+  @testapi.methods.param("x", testapi.isNumber)
+  @testapi.methods.param("y", testapi.isNumber)
+  @testapi.methods.param("z", testapi.isNumber)
+  @testapi.methods.param("xUp", testapi.isNumber)
+  @testapi.methods.param("yUp", testapi.isNumber)
+  @testapi.methods.param("zUp", testapi.isNumber)
   setOrientation() {}
 
-  @methods.param("x", validators.isNumber)
-  @methods.param("y", validators.isNumber)
-  @methods.param("z", validators.isNumber)
+  @testapi.methods.param("x", testapi.isNumber)
+  @testapi.methods.param("y", testapi.isNumber)
+  @testapi.methods.param("z", testapi.isNumber)
   setVelocity() {}
 
   get $name() {

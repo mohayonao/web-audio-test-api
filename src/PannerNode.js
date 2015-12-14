@@ -1,8 +1,6 @@
 import AudioNode from "./AudioNode";
 import auth from "./utils/auth";
-import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 export default class PannerNode extends AudioNode {
   static $JSONKeys = [
@@ -28,42 +26,42 @@ export default class PannerNode extends AudioNode {
     });
   }
 
-  @props.enums([ "HRTF", "equalpower" ])
+  @testapi.props.enums([ "HRTF", "equalpower" ])
   panningModel() {}
 
-  @props.enums([ "inverse", "linear", "exponential" ])
+  @testapi.props.enums([ "inverse", "linear", "exponential" ])
   distanceModel() {}
 
-  @props.typed(validators.isNumber, 1)
+  @testapi.props.typed(testapi.isNumber, 1)
   refDistance() {}
 
-  @props.typed(validators.isNumber, 10000)
+  @testapi.props.typed(testapi.isNumber, 10000)
   maxDistance() {}
 
-  @props.typed(validators.isNumber, 1)
+  @testapi.props.typed(testapi.isNumber, 1)
   rolloffFactor() {}
 
-  @props.typed(validators.isNumber, 360)
+  @testapi.props.typed(testapi.isNumber, 360)
   coneInnerAngle() {}
 
-  @props.typed(validators.isNumber, 360)
+  @testapi.props.typed(testapi.isNumber, 360)
   coneOuterAngle() {}
 
-  @props.typed(validators.isNumber, 0)
+  @testapi.props.typed(testapi.isNumber, 0)
   coneOuterGain() {}
 
-  @methods.param("x", validators.isNumber)
-  @methods.param("y", validators.isNumber)
-  @methods.param("z", validators.isNumber)
+  @testapi.methods.param("x", testapi.isNumber)
+  @testapi.methods.param("y", testapi.isNumber)
+  @testapi.methods.param("z", testapi.isNumber)
   setPosition() {}
 
-  @methods.param("x", validators.isNumber)
-  @methods.param("y", validators.isNumber)
-  @methods.param("z", validators.isNumber)
+  @testapi.methods.param("x", testapi.isNumber)
+  @testapi.methods.param("y", testapi.isNumber)
+  @testapi.methods.param("z", testapi.isNumber)
   setOrientation() {}
 
-  @methods.param("x", validators.isNumber)
-  @methods.param("y", validators.isNumber)
-  @methods.param("z", validators.isNumber)
+  @testapi.methods.param("x", testapi.isNumber)
+  @testapi.methods.param("y", testapi.isNumber)
+  @testapi.methods.param("z", testapi.isNumber)
   setVelocity() {}
 }

@@ -1,6 +1,6 @@
 import AudioNode from "./AudioNode";
 import auth from "./utils/auth";
-import * as props from "./decorators/props";
+import testapi from "./testapi";
 
 export default class DelayNode extends AudioNode {
   static $JSONKeys = [ "delayTime" ]
@@ -24,7 +24,7 @@ export default class DelayNode extends AudioNode {
     this._.maxDelayTime = +maxDelayTime || 0;
   }
 
-  @props.audioparam(0)
+  @testapi.props.audioparam(0)
   delayTime() {}
 
   get $maxDelayTime() {

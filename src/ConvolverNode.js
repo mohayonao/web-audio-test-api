@@ -1,8 +1,7 @@
 import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import auth from "./utils/auth";
-import * as props from "./decorators/props";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 export default class ConvolverNode extends AudioNode {
   static $JSONKeys = [ "normalize" ];
@@ -25,9 +24,9 @@ export default class ConvolverNode extends AudioNode {
     });
   }
 
-  @props.typed(validators.isNullOrInstanceOf(AudioBuffer), null)
+  @testapi.props.typed(testapi.isNullOrInstanceOf(AudioBuffer), null)
   buffer() {}
 
-  @props.typed(validators.isBoolean, true)
+  @testapi.props.typed(testapi.isBoolean, true)
   normalize() {}
 }

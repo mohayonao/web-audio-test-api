@@ -4,9 +4,7 @@ import AudioBuffer from "./AudioBuffer";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
 import caniuse from "./utils/caniuse";
 import versions from "./decorators/versions";
-import * as props from "./decorators/props";
-import * as methods from "./decorators/methods";
-import * as validators from "./validators";
+import testapi from "./testapi";
 
 const PROMISE_BASED_START_RENDERING = { chrome: "42-", firefox: "37-", safari: "none" };
 
@@ -17,9 +15,9 @@ export default class OfflineAudioContext extends AudioContext {
     this.__OfflineAudioContext(numberOfChannels, length, sampleRate);
   }
 
-  @methods.param("numberOfChannels", validators.isPositiveInteger)
-  @methods.param("length", validators.isPositiveInteger)
-  @methods.param("sampleRate", validators.isPositiveInteger)
+  @testapi.methods.param("numberOfChannels", testapi.isPositiveInteger)
+  @testapi.methods.param("length", testapi.isPositiveInteger)
+  @testapi.methods.param("sampleRate", testapi.isPositiveInteger)
   __OfflineAudioContext(numberOfChannels, length, sampleRate) {
     this._.sampleRate = sampleRate;
     this._.numberOfChannels = numberOfChannels;
@@ -29,25 +27,25 @@ export default class OfflineAudioContext extends AudioContext {
     this._.state = "suspended";
   }
 
-  @props.on("complete")
+  @testapi.props.on("complete")
   oncomplete() {}
 
-  @versions({ chrome: "41-", firefox: "40-", safari: "9-" })
+  @testapi.versions({ chrome: "41-", firefox: "40-", safari: "9-" })
   suspend() {
     return Promise.reject(new TypeError(`Failed to execute 'suspend' on 'OfflineAudioContext'.`));
   }
 
-  @versions({ chrome: "41-", firefox: "40-", safari: "9-" })
+  @testapi.versions({ chrome: "41-", firefox: "40-", safari: "9-" })
   resume() {
     return Promise.reject(new TypeError(`Failed to execute 'resume' on 'OfflineAudioContext'.`));
   }
 
-  @versions({ chrome: "42-", firefox: "40-", safari: "9-" })
+  @testapi.versions({ chrome: "42-", firefox: "40-", safari: "9-" })
   close() {
     return Promise.reject(new TypeError(`Failed to execute 'close' on 'OfflineAudioContext'.`));
   }
 
-  @methods.contract({
+  @testapi.methods.contract({
     precondition() {
       if (this._.rendering) {
         throw new TypeError("Cannot call startRendering more than once.");

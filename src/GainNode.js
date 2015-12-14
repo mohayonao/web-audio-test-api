@@ -1,6 +1,6 @@
 import AudioNode from "./AudioNode";
 import auth from "./utils/auth";
-import * as props from "./decorators/props";
+import testapi from "./testapi";
 
 export default class GainNode extends AudioNode {
   static $JSONKeys = [ "gain" ];
@@ -23,6 +23,6 @@ export default class GainNode extends AudioNode {
     });
   }
 
-  @props.audioparam(1)
+  @testapi.props.audioparam(1)
   gain() {}
 }

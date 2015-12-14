@@ -1,11 +1,6 @@
 import AudioNode from "./AudioNode";
-<<<<<<< HEAD
-import permission from "./utils/permission";
-import * as props from "./decorators/props";
-=======
 import auth from "./utils/auth";
 import testapi from "./testapi";
->>>>>>> 14aef02... x
 
 export default class StereoPannerNode extends AudioNode {
   static $JSONKeys = [ "pan" ];
@@ -28,6 +23,6 @@ export default class StereoPannerNode extends AudioNode {
     });
   }
 
-  @props.audioparam(0)
+  @testapi.props.audioparam(0)
   pan() {}
 }
