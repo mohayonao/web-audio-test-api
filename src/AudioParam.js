@@ -1,5 +1,5 @@
-import Immigration from "./utils/Immigration";
 import Junction from "./utils/Junction";
+import auth from "./utils/auth";
 import defaults from "./utils/defaults";
 import toJSON from "./utils/toJSON";
 import toSeconds from "./utils/toSeconds";
@@ -9,13 +9,15 @@ import * as validators from "./validators";
 
 export default class AudioParam {
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new AudioParam(admission, ...args));
+    return auth.request((token) => {
+      return new AudioParam(token, ...args);
+    });
   }
 
-  constructor(admission, node, name, defaultValue) {
-    Immigration.getInstance().
-      check(admission, () => { throw new TypeError("Illegal constructor"); });
+  constructor(token, node, name, defaultValue) {
+    auth.grant(token, () => {
+      throw new TypeError("Illegal constructor");
+    });
     Object.defineProperty(this, "_", { value: {} });
 
     this._.value = defaultValue;

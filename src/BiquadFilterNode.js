@@ -1,5 +1,5 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
@@ -8,12 +8,13 @@ export default class BiquadFilterNode extends AudioNode {
   static $JSONKeys = [ "type", "frequency", "detune", "Q", "gain" ];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new BiquadFilterNode(admission, ...args));
+    return auth.request((token) => {
+      return new BiquadFilterNode(token, ...args);
+    });
   }
 
-  constructor(admission, context) {
-    super(admission, {
+  constructor(token, context) {
+    super(token, {
       name: "BiquadFilterNode",
       context: context,
       numberOfInputs: 1,

@@ -1,16 +1,17 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 
 export default class MediaElementAudioSourceNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new MediaElementAudioSourceNode(admission, ...args));
+    return auth.request((token) => {
+      return new MediaElementAudioSourceNode(token, ...args);
+    });
   }
 
-  constructor(admission, context, mediaElement) {
-    super(admission, {
+  constructor(token, context, mediaElement) {
+    super(token, {
       name: "MediaElementAudioSourceNode",
       context: context,
       numberOfInputs: 0,

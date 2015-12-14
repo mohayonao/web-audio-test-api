@@ -1,17 +1,18 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 import * as props from "./decorators/props";
 
 export default class GainNode extends AudioNode {
   static $JSONKeys = [ "gain" ];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new GainNode(admission, ...args));
+    return auth.request((token) => {
+      return new GainNode(token, ...args);
+    });
   }
 
-  constructor(admission, context) {
-    super(admission, {
+  constructor(token, context) {
+    super(token, {
       name: "GainNode",
       context: context,
       numberOfInputs: 1,

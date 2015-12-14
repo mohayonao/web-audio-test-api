@@ -1,17 +1,18 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 import * as props from "./decorators/props";
 
 export default class DynamicsCompressorNode extends AudioNode {
   static $JSONKeys = [ "threshold", "knee", "ratio", "reduction", "attack", "release" ];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new DynamicsCompressorNode(admission, ...args));
+    return auth.request((token) => {
+      return new DynamicsCompressorNode(token, ...args);
+    });
   }
 
-  constructor(admission, context) {
-    super(admission, {
+  constructor(token, context) {
+    super(token, {
       name: "DynamicsCompressorNode",
       context: context,
       numberOfInputs: 1,

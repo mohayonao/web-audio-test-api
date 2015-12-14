@@ -1,19 +1,20 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import AudioProcessingEvent from "./AudioProcessingEvent";
+import auth from "./utils/auth";
 import * as props from "./decorators/props";
 
 export default class ScriptProcessorNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new ScriptProcessorNode(admission, ...args));
+    return auth.request((token) => {
+      return new ScriptProcessorNode(token, ...args);
+    });
   }
 
-  constructor(admission, context, bufferSize = 1024, numberOfInputChannels = 2, numberOfOutputChannels = 2) {
-    super(admission, {
+  constructor(token, context, bufferSize = 1024, numberOfInputChannels = 2, numberOfOutputChannels = 2) {
+    super(token, {
       name: "ScriptProcessorNode",
       context: context,
       numberOfInputs: 1,

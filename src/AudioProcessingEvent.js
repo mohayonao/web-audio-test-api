@@ -1,17 +1,19 @@
-import Immigration from "./utils/Immigration";
 import Event from "./dom/Event";
+import auth from "./utils/auth";
 
 export default class AudioProcessingEvent extends Event {
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new AudioProcessingEvent(admission, ...args));
+    return auth.request((token) => {
+      return new AudioProcessingEvent(token, ...args);
+    });
   }
 
-  constructor(admission, node) {
+  constructor(token, node) {
     super("audioprocess", node);
 
-    Immigration.getInstance().
-      check(admission, () => { throw new TypeError("Illegal constructor"); });
+    auth.grant(token, () => {
+      throw new TypeError("Illegal constructor");
+    });
 
     this._.node = node;
   }

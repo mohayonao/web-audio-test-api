@@ -1,5 +1,5 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
 import * as validators from "./validators";
@@ -11,12 +11,13 @@ export default class PannerNode extends AudioNode {
   ];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new PannerNode(admission, ...args));
+    return auth.request((token) => {
+      return new PannerNode(token, ...args);
+    });
   }
 
-  constructor(admission, context) {
-    super(admission, {
+  constructor(token, context) {
+    super(token, {
       name: "PannerNode",
       context: context,
       numberOfInputs: 1,

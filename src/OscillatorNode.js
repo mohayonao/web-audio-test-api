@@ -1,7 +1,7 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import PeriodicWave from "./PeriodicWave";
 import Event from "./dom/Event";
+import auth from "./utils/auth";
 import toSeconds from "./utils/toSeconds";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
@@ -11,12 +11,13 @@ export default class OscillatorNode extends AudioNode {
   static $JSONKeys = [ "type", "frequency", "detune" ];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new OscillatorNode(admission, ...args));
+    return auth.request((token) => {
+      return new OscillatorNode(token, ...args);
+    });
   }
 
-  constructor(admission, context) {
-    super(admission, {
+  constructor(token, context) {
+    super(token, {
       name: "OscillatorNode",
       context: context,
       numberOfInputs: 0,

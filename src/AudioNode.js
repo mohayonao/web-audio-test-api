@@ -1,6 +1,6 @@
-import Immigration from "./utils/Immigration";
 import Junction from "./utils/Junction";
 import EventTarget from "./dom/EventTarget";
+import auth from "./utils/auth";
 import caniuse from "./utils/caniuse";
 import defaults from "./utils/defaults";
 import toJSON from "./utils/toJSON";
@@ -16,15 +16,17 @@ export default class AudioNode extends EventTarget {
   static $JSONKeys = [];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new AudioNode(admission, ...args));
+    return auth.request((token) => {
+      return new AudioNode(token, ...args);
+    });
   }
 
-  constructor(admission, spec) {
+  constructor(token, spec) {
     super();
 
-    Immigration.getInstance().
-      check(admission, () => { throw new TypeError("Illegal constructor"); });
+    auth.grant(token, () => {
+      throw new TypeError("Illegal constructor");
+    });
     Object.defineProperty(this, "_", { value: {} });
 
     this._.context = spec.context;

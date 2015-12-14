@@ -1,16 +1,17 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 
 export default class MediaStreamAudioSourceNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new MediaStreamAudioSourceNode(admission, ...args));
+    return auth.request((token) => {
+      return new MediaStreamAudioSourceNode(token, ...args);
+    });
   }
 
-  constructor(admission, context, mediaStream) {
-    super(admission, {
+  constructor(token, context, mediaStream) {
+    super(token, {
       name: "MediaStreamAudioSourceNode",
       context: context,
       numberOfInputs: 0,

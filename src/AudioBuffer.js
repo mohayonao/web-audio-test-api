@@ -1,4 +1,4 @@
-import Immigration from "./utils/Immigration";
+import auth from "./utils/auth";
 import versions from "./decorators/versions";
 import * as props from "./decorators/props";
 import * as methods from "./decorators/methods";
@@ -6,13 +6,15 @@ import * as validators from "./validators";
 
 export default class AudioBuffer {
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new AudioBuffer(admission, ...args));
+    return auth.request((token) => {
+      return new AudioBuffer(token, ...args);
+    });
   }
 
-  constructor(admission, context, numberOfChannels, length, sampleRate) {
-    Immigration.getInstance().
-      check(admission, () => { throw new TypeError("Illegal constructor"); });
+  constructor(token, context, numberOfChannels, length, sampleRate) {
+    auth.grant(token, () => {
+      throw new TypeError("Illegal constructor");
+    });
     Object.defineProperty(this, "_", { value: {} });
 
     this._.context = context;

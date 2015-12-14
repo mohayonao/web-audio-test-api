@@ -1,16 +1,17 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 
 export default class ChannelMergerNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new ChannelMergerNode(admission, ...args));
+    return auth.request((token) => {
+      return new ChannelMergerNode(token, ...args);
+    });
   }
 
-  constructor(admission, context, numberOfInputs = 6) {
-    super(admission, {
+  constructor(token, context, numberOfInputs = 6) {
+    super(token, {
       name: "ChannelMergerNode",
       context: context,
       numberOfInputs: +numberOfInputs|0,

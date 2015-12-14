@@ -1,17 +1,18 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 import * as props from "./decorators/props";
 
 export default class AudioDestinationNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new AudioDestinationNode(admission, ...args));
+    return auth.request((token) => {
+      return new AudioDestinationNode(token, ...args);
+    });
   }
 
-  constructor(admission, context) {
-    super(admission, {
+  constructor(token, context) {
+    super(token, {
       name: "AudioDestinationNode",
       context: context,
       numberOfInputs: 1,

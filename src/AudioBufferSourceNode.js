@@ -1,7 +1,7 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
 import Event from "./dom/Event";
+import auth from "./utils/auth";
 import toSeconds from "./utils/toSeconds";
 import versions from "./decorators/versions";
 import * as props from "./decorators/props";
@@ -12,12 +12,13 @@ export default class AudioBufferSourceNode extends AudioNode {
   static $JSONKeys = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new AudioBufferSourceNode(admission, ...args));
+    return auth.request((token) => {
+      return new AudioBufferSourceNode(token, ...args);
+    });
   }
 
-  constructor(admission, context) {
-    super(admission, {
+  constructor(token, context) {
+    super(token, {
       name: "AudioBufferSourceNode",
       context: context,
       numberOfInputs: 0,

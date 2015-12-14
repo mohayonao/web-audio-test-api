@@ -1,6 +1,6 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
 import AudioBuffer from "./AudioBuffer";
+import auth from "./utils/auth";
 import * as props from "./decorators/props";
 import * as validators from "./validators";
 
@@ -8,12 +8,13 @@ export default class ConvolverNode extends AudioNode {
   static $JSONKeys = [ "normalize" ];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new ConvolverNode(admission, ...args));
+    return auth.request((token) => {
+      return new ConvolverNode(token, ...args);
+    });
   }
 
-  constructor(admission, context) {
-    super(admission, {
+  constructor(token, context) {
+    super(token, {
       name: "ConvolverNode",
       context: context,
       numberOfInputs: 1,

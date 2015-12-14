@@ -1,14 +1,16 @@
-import Immigration from "./utils/Immigration";
+import auth from "./utils/auth";
 
 export default class PeriodicWave {
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new PeriodicWave(admission, ...args));
+    return auth.request((token) => {
+      return new PeriodicWave(token, ...args);
+    });
   }
 
-  constructor(admission, context, real, imag) {
-    Immigration.getInstance().
-      check(admission, () => { throw new TypeError("Illegal constructor"); });
+  constructor(token, context, real, imag) {
+    auth.grant(token, () => {
+      throw new TypeError("Illegal constructor");
+    });
     Object.defineProperty(this, "_", { value: {} });
 
     this._.context = context;

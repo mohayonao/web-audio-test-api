@@ -1,17 +1,18 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 import * as props from "./decorators/props";
 
 export default class DelayNode extends AudioNode {
   static $JSONKeys = [ "delayTime" ]
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new DelayNode(admission, ...args));
+    return auth.request((token) => {
+      return new DelayNode(token, ...args);
+    });
   }
 
-  constructor(admission, context, maxDelayTime = 1) {
-    super(admission, {
+  constructor(token, context, maxDelayTime = 1) {
+    super(token, {
       name: "DelayNode",
       context: context,
       numberOfInputs: 1,

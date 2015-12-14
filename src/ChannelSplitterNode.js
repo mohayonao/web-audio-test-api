@@ -1,16 +1,17 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 
 export default class ChannelSplitterNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new ChannelSplitterNode(admission, ...args));
+    return auth.request((token) => {
+      return new ChannelSplitterNode(token, ...args);
+    });
   }
 
-  constructor(admission, context, numberOfOutputs = 6) {
-    super(admission, {
+  constructor(token, context, numberOfOutputs = 6) {
+    super(token, {
       name: "ChannelSplitterNode",
       context: context,
       numberOfInputs: 1,

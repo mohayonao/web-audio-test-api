@@ -1,5 +1,5 @@
-import Immigration from "./utils/Immigration";
 import AudioNode from "./AudioNode";
+import auth from "./utils/auth";
 import * as props from "./decorators/props";
 import * as validators from "./validators";
 
@@ -7,12 +7,13 @@ export default class WaveShaperNode extends AudioNode {
   static $JSONKeys = [ "oversample" ];
 
   static $new(...args) {
-    return Immigration.getInstance().
-      apply(admission => new WaveShaperNode(admission, ...args));
+    return auth.request((token) => {
+      return new WaveShaperNode(token, ...args);
+    });
   }
 
-  constructor(admission, context) {
-    super(admission, {
+  constructor(token, context) {
+    super(token, {
       name: "WaveShaperNode",
       context: context,
       numberOfInputs: 1,
