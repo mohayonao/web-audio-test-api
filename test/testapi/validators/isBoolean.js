@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import isBoolean from "../../src/validators/isBoolean";
+import isBoolean from "../../../src/testapi/validators/isBoolean";
 
 describe("validators.isBoolean", () => {
   describe(".typeName: string", () => {

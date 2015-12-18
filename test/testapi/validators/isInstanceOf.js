@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import isInstanceOf from "../../src/validators/isInstanceOf";
+import isInstanceOf from "../../../src/testapi/validators/isInstanceOf";
 
 describe("validators.isInstanceOf(klass: function): object", () => {
   describe(".typeName: string", () => {

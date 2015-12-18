@@ -27,7 +27,7 @@ import caniuse from "./utils/caniuse";
 import getAPIVersion from "./utils/getAPIVersion";
 import toMicroseconds from "./utils/toMicroseconds";
 import testapi from "./testapi";
-import versions from "./decorators/versions";
+import versions from "./testapi/decorators/versions";
 
 const PROMISE_BASED_DECODE_AUDIO_DATA = { chrome: "none", firefox: "36-", safari: "none" };
 const AUDIOCONTEXT_STATE = { chrome: "41-", firefox: "40-", safari: "9-" };

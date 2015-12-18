@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import versions from "../../src/decorators/versions";
+import versions from "../../../src/testapi/decorators/versions";
 
 describe("@versions(spec: object)", () => {
   let saved;

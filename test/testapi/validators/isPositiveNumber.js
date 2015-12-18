@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import isPositiveNumber from "../../src/validators/isPositiveNumber";
+import isPositiveNumber from "../../../src/testapi/validators/isPositiveNumber";
 
 describe("validators.isPositiveNumber", () => {
   describe(".typeName: string", () => {

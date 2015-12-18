@@ -1,5 +1,5 @@
-import format from "../utils/format";
-import toS from "../utils/toS";
+import format from "../../utils/format";
+import toS from "../../utils/toS";
 
 function createSetterError(klassName, propName, message) {
   return new TypeError(format(`

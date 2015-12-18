@@ -1,7 +1,7 @@
-import * as methods from "../decorators/methods";
-import * as props from "../decorators/props";
-import versions from "../decorators/versions";
-import * as validators from "../validators";
+import * as methods from "./decorators/methods";
+import * as props from "./decorators/props";
+import versions from "./decorators/versions";
+import * as validators from "./validators";
 
 const api = { methods, props, versions };
 

@@ -1,6 +1,6 @@
-import caniuse from "../utils/caniuse";
-import format from "../utils/format";
-import toS from "../utils/toS";
+import caniuse from "../../utils/caniuse";
+import format from "../../utils/format";
+import toS from "../../utils/toS";
 
 export default function versions(specs) {
   return (target, name, descriptor) => {

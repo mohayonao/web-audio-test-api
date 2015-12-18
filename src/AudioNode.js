@@ -5,7 +5,7 @@ import caniuse from "./utils/caniuse";
 import defaults from "./utils/defaults";
 import toJSON from "./utils/toJSON";
 import toNodeName from "./utils/toNodeName";
-import versions from "./decorators/versions";
+import versions from "./testapi/decorators/versions";
 import testapi from "./testapi";
 
 const SELECTIVE_DISCONNECT = { chrome: "43-", firefox: "none", safari: "none" };

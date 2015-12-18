@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import * as props from "../../../src/decorators/props";
+import * as props from "../../../../src/testapi/decorators/props";
 
 describe("@props.on()", () => {
   it("defines a callback property", () => {

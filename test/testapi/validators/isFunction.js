@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import isFunction from "../../src/validators/isFunction";
+import isFunction from "../../../src/testapi/validators/isFunction";
 
 describe("validators.isFunction", () => {
   describe(".typeName: string", () => {

@@ -1,5 +1,5 @@
 import WebAudioAPI from "./WebAudioAPI";
-import versions from "./decorators/versions";
+import versions from "./testapi/decorators/versions";
 import * as utils from "./utils";
 import * as DOM from "./dom";
 

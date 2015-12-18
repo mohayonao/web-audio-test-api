@@ -1,6 +1,6 @@
 import assert from "power-assert";
-import AudioParam from "../../../src/AudioParam";
-import * as props from "../../../src/decorators/props";
+import AudioParam from "../../../../src/AudioParam";
+import * as props from "../../../../src/testapi/decorators/props";
 
 describe("@props.audioparam(defaultValue: number)", () => {
   it("defines an AudioParam property", () => {

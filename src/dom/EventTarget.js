@@ -1,8 +1,8 @@
 import { EventEmitter } from "events";
 import Event from "./Event";
 import inLaws from "../utils/inLaws";
-import * as methods from "../decorators/methods";
-import * as validators from "../validators";
+import * as methods from "../testapi/decorators/methods";
+import * as validators from "../testapi/validators";
 
 const EMITTER = Symbol("emitter");
 

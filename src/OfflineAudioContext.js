@@ -3,7 +3,7 @@ import AudioContext from "./AudioContext";
 import AudioBuffer from "./AudioBuffer";
 import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
 import caniuse from "./utils/caniuse";
-import versions from "./decorators/versions";
+import versions from "./testapi/decorators/versions";
 import testapi from "./testapi";
 
 const PROMISE_BASED_START_RENDERING = { chrome: "42-", firefox: "37-", safari: "none" };

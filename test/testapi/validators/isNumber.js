@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import isNumber from "../../src/validators/isNumber";
+import isNumber from "../../../src/testapi/validators/isNumber";
 
 describe("validators.isNumber", () => {
   describe(".typeName: string", () => {

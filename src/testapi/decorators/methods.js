@@ -1,5 +1,5 @@
-import format from "../utils/format";
-import toS from "../utils/toS";
+import format from "../../utils/format";
+import toS from "../../utils/toS";
 
 const repository = new WeakMap();
 
