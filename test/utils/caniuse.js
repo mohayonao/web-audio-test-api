@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import caniuse from "../../src/utils/caniuse";
+const assert = require("power-assert");
+const caniuse = require("../../src/utils/caniuse");
 
 describe("utils/caniuse(expected: object, actual: object): boolean", () => {
   it("works", () => {

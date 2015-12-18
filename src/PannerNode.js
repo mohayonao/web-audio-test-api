@@ -1,8 +1,8 @@
-import AudioNode from "./AudioNode";
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class PannerNode extends AudioNode {
+module.exports = class PannerNode extends AudioNode {
   static $JSONKeys = [
     "panningModel", "distanceModel", "refDistance", "maxDistance",
     "rolloffFactor", "coneInnerAngle", "coneOuterAngle", "coneOuterGain"
@@ -64,4 +64,4 @@ export default class PannerNode extends AudioNode {
   @testapi.methods.param("y", testapi.isNumber)
   @testapi.methods.param("z", testapi.isNumber)
   setVelocity() {}
-}
+};

@@ -1,7 +1,7 @@
-import * as methods from "./decorators/methods";
-import * as props from "./decorators/props";
-import versions from "./decorators/versions";
-import * as validators from "./validators";
+const methods = require("./decorators/methods");
+const props = require("./decorators/props");
+const versions = require("./decorators/versions");
+const validators = require("./validators");
 
 const api = { methods, props, versions };
 
@@ -9,4 +9,4 @@ Object.keys(validators).forEach((key) => {
   api[key] = validators[key];
 });
 
-export default api;
+module.exports = api;

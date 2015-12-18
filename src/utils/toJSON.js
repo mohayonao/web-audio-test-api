@@ -1,6 +1,6 @@
-import toNodeName from "./toNodeName";
+const toNodeName = require("./toNodeName");
 
-export default function toJSON(node, func, memo = []) {
+module.exports = function toJSON(node, func, memo = []) {
   let result;
 
   if (memo.indexOf(node) !== -1) {
@@ -13,4 +13,4 @@ export default function toJSON(node, func, memo = []) {
   memo.pop();
 
   return result;
-}
+};

@@ -1,4 +1,4 @@
-export default function removeIfExists(list, value) {
+module.exports = function removeIfExists(list, value) {
   let index = list.indexOf(value);
 
   if (index !== -1) {
@@ -6,4 +6,4 @@ export default function removeIfExists(list, value) {
   }
 
   return null;
-}
+};

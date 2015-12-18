@@ -1,7 +1,7 @@
-import Event from "./dom/Event";
-import auth from "./utils/auth";
+const Event = require("./dom/Event");
+const auth = require("./utils/auth");
 
-export default class OfflineAudioCompletionEvent extends Event {
+module.exports = class OfflineAudioCompletionEvent extends Event {
   static $new(...args) {
     return auth.request((token) => {
       return new OfflineAudioCompletionEvent(token, ...args);
@@ -25,4 +25,4 @@ export default class OfflineAudioCompletionEvent extends Event {
   get $node() {
     return this._.node;
   }
-}
+};

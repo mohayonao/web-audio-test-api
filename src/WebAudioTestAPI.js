@@ -1,7 +1,7 @@
-import WebAudioAPI from "./WebAudioAPI";
-import versions from "./testapi/decorators/versions";
-import * as utils from "./utils";
-import * as DOM from "./dom";
+const WebAudioAPI = require("./WebAudioAPI");
+const versions = require("./testapi/decorators/versions");
+const utils = require("./utils");
+const DOM = require("./dom");
 
 const sampleRate = 44100;
 const recentTargetVersions = { chrome: 47, firefox: 42, safari: 9 };
@@ -91,4 +91,4 @@ Object.keys(WebAudioAPI.testAPI).forEach((key) => {
 
 global.WebAudioTestAPI = WebAudioTestAPI;
 
-export default WebAudioTestAPI;
+module.exports = WebAudioTestAPI;

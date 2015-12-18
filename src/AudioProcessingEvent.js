@@ -1,7 +1,7 @@
-import Event from "./dom/Event";
-import auth from "./utils/auth";
+const Event = require("./dom/Event");
+const auth = require("./utils/auth");
 
-export default class AudioProcessingEvent extends Event {
+module.exports = class AudioProcessingEvent extends Event {
   static $new(...args) {
     return auth.request((token) => {
       return new AudioProcessingEvent(token, ...args);
@@ -25,4 +25,4 @@ export default class AudioProcessingEvent extends Event {
   get $node() {
     return this._.node;
   }
-}
+};

@@ -1,8 +1,8 @@
-import caniuse from "../../utils/caniuse";
-import format from "../../utils/format";
-import toS from "../../utils/toS";
+const caniuse = require("../../utils/caniuse");
+const format = require("../../utils/format");
+const toS = require("../../utils/toS");
 
-export default function versions(specs) {
+function versions(specs) {
   return (target, name, descriptor) => {
     function fn(func, execute) {
       return function() {
@@ -35,3 +35,5 @@ export default function versions(specs) {
 }
 
 versions.targetVersions = {};
+
+module.exports = versions;

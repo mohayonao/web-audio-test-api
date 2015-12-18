@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import toNodeName from "../../src/utils/toNodeName";
+const assert = require("power-assert");
+const toNodeName = require("../../src/utils/toNodeName");
 
 describe("utils/toNodeName(obj: object): string", () => {
   it("works", () => {

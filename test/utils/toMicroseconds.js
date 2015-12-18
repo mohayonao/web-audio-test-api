@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import toMicroseconds from "../../src/utils/toMicroseconds";
+const assert = require("power-assert");
+const toMicroseconds = require("../../src/utils/toMicroseconds");
 
 describe("utils/toMicroseconds(time: number|string): number", () => {
   it("works", () => {

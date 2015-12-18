@@ -1,8 +1,8 @@
-import AudioNode from "./AudioNode";
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class AnalyserNode extends AudioNode {
+module.exports = class AnalyserNode extends AudioNode {
   static $JSONKeys = [ "fftSize", "minDecibels", "maxDecibels", "smoothingTimeConstant" ];
 
   static $new(...args) {
@@ -53,4 +53,4 @@ export default class AnalyserNode extends AudioNode {
 
   @testapi.methods.param("array", testapi.isInstanceOf(Uint8Array))
   getByteTimeDomainData() {}
-}
+};

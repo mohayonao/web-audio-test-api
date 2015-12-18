@@ -1,32 +1,32 @@
-import AnalyserNode from "./AnalyserNode";
-import AudioBuffer from "./AudioBuffer";
-import AudioBufferSourceNode from "./AudioBufferSourceNode";
-import AudioContext from "./AudioContext";
-import AudioDestinationNode from "./AudioDestinationNode";
-import AudioListener from "./AudioListener";
-import AudioNode from "./AudioNode";
-import AudioParam from "./AudioParam";
-import AudioProcessingEvent from "./AudioProcessingEvent";
-import BiquadFilterNode from "./BiquadFilterNode";
-import ChannelMergerNode from "./ChannelMergerNode";
-import ChannelSplitterNode from "./ChannelSplitterNode";
-import ConvolverNode from "./ConvolverNode";
-import DelayNode from "./DelayNode";
-import DynamicsCompressorNode from "./DynamicsCompressorNode";
-import GainNode from "./GainNode";
-import MediaElementAudioSourceNode from "./MediaElementAudioSourceNode";
-import MediaStreamAudioDestinationNode from "./MediaStreamAudioDestinationNode";
-import MediaStreamAudioSourceNode from "./MediaStreamAudioSourceNode";
-import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
-import OfflineAudioContext from "./OfflineAudioContext";
-import OscillatorNode from "./OscillatorNode";
-import PannerNode from "./PannerNode";
-import PeriodicWave from "./PeriodicWave";
-import ScriptProcessorNode from "./ScriptProcessorNode";
-import StereoPannerNode from "./StereoPannerNode";
-import WaveShaperNode from "./WaveShaperNode";
+const AnalyserNode = require("./AnalyserNode");
+const AudioBuffer = require("./AudioBuffer");
+const AudioBufferSourceNode = require("./AudioBufferSourceNode");
+const AudioContext = require("./AudioContext");
+const AudioDestinationNode = require("./AudioDestinationNode");
+const AudioListener = require("./AudioListener");
+const AudioNode = require("./AudioNode");
+const AudioParam = require("./AudioParam");
+const AudioProcessingEvent = require("./AudioProcessingEvent");
+const BiquadFilterNode = require("./BiquadFilterNode");
+const ChannelMergerNode = require("./ChannelMergerNode");
+const ChannelSplitterNode = require("./ChannelSplitterNode");
+const ConvolverNode = require("./ConvolverNode");
+const DelayNode = require("./DelayNode");
+const DynamicsCompressorNode = require("./DynamicsCompressorNode");
+const GainNode = require("./GainNode");
+const MediaElementAudioSourceNode = require("./MediaElementAudioSourceNode");
+const MediaStreamAudioDestinationNode = require("./MediaStreamAudioDestinationNode");
+const MediaStreamAudioSourceNode = require("./MediaStreamAudioSourceNode");
+const OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
+const OfflineAudioContext = require("./OfflineAudioContext");
+const OscillatorNode = require("./OscillatorNode");
+const PannerNode = require("./PannerNode");
+const PeriodicWave = require("./PeriodicWave");
+const ScriptProcessorNode = require("./ScriptProcessorNode");
+const StereoPannerNode = require("./StereoPannerNode");
+const WaveShaperNode = require("./WaveShaperNode");
 
-export default {
+module.exports = {
   testAPI: {
     AnalyserNode,
     AudioBuffer,

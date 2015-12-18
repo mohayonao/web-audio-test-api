@@ -1,10 +1,10 @@
-import AudioNode from "./AudioNode";
-import AudioBuffer from "./AudioBuffer";
-import AudioProcessingEvent from "./AudioProcessingEvent";
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const AudioBuffer = require("./AudioBuffer");
+const AudioProcessingEvent = require("./AudioProcessingEvent");
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class ScriptProcessorNode extends AudioNode {
+module.exports = class ScriptProcessorNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
@@ -52,4 +52,4 @@ export default class ScriptProcessorNode extends AudioNode {
       this.dispatchEvent(event);
     }
   }
-}
+};

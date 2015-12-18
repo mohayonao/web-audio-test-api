@@ -1,4 +1,4 @@
-export default function inLaws(superClass) {
+module.exports = function inLaws(superClass) {
   function ctor() {
   }
 
@@ -7,4 +7,4 @@ export default function inLaws(superClass) {
   });
 
   return ctor;
-}
+};

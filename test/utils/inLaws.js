@@ -1,4 +1,4 @@
-import inLaws from "../../src/utils/inLaws";
+const inLaws = require("../../src/utils/inLaws");
 
 describe("inLaws(superClass: Class): Class", () => {
   it("works", () => {

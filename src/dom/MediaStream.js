@@ -1,5 +1,5 @@
-import inLaws from "../utils/inLaws";
-import EventTarget from "./EventTarget";
+const inLaws = require("../utils/inLaws");
+const EventTarget = require("./EventTarget");
 
 global.MediaStream = global.MediaStream || class MediaStream extends EventTarget {
   constructor() {
@@ -8,4 +8,4 @@ global.MediaStream = global.MediaStream || class MediaStream extends EventTarget
   }
 };
 
-export default class MediaStream extends inLaws(global.MediaStream) {}
+module.exports = class MediaStream extends inLaws(global.MediaStream) {};

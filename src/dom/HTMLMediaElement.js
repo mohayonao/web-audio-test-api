@@ -1,5 +1,5 @@
-import inLaws from "../utils/inLaws";
-import HTMLElement from "./HTMLElement";
+const inLaws = require("../utils/inLaws");
+const HTMLElement = require("./HTMLElement");
 
 global.HTMLMediaElement = global.HTMLMediaElement || class HTMLMediaElement extends HTMLElement {
   constructor() {
@@ -8,4 +8,4 @@ global.HTMLMediaElement = global.HTMLMediaElement || class HTMLMediaElement exte
   }
 };
 
-export default class HTMLMediaElement extends inLaws(global.HTMLMediaElement) {}
+module.exports = class HTMLMediaElement extends inLaws(global.HTMLMediaElement) {};

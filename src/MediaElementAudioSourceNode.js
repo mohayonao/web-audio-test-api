@@ -1,7 +1,7 @@
-import AudioNode from "./AudioNode";
-import auth from "./utils/auth";
+const AudioNode = require("./AudioNode");
+const auth = require("./utils/auth");
 
-export default class MediaElementAudioSourceNode extends AudioNode {
+module.exports = class MediaElementAudioSourceNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
@@ -26,4 +26,4 @@ export default class MediaElementAudioSourceNode extends AudioNode {
   get $mediaElement() {
     return this._.mediaElement;
   }
-}
+};

@@ -1,14 +1,14 @@
-import Event from "./dom/Event";
-import AudioContext from "./AudioContext";
-import AudioBuffer from "./AudioBuffer";
-import OfflineAudioCompletionEvent from "./OfflineAudioCompletionEvent";
-import caniuse from "./utils/caniuse";
-import versions from "./testapi/decorators/versions";
-import testapi from "./testapi";
+const Event = require("./dom/Event");
+const AudioContext = require("./AudioContext");
+const AudioBuffer = require("./AudioBuffer");
+const OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
+const caniuse = require("./utils/caniuse");
+const versions = require("./testapi/decorators/versions");
+const testapi = require("./testapi");
 
 const PROMISE_BASED_START_RENDERING = { chrome: "42-", firefox: "37-", safari: "none" };
 
-export default class OfflineAudioContext extends AudioContext {
+module.exports = class OfflineAudioContext extends AudioContext {
   constructor(numberOfChannels, length, sampleRate) {
     super();
 
@@ -116,4 +116,4 @@ export default class OfflineAudioContext extends AudioContext {
       this.dispatchEvent(new Event("statechange", this));
     }
   }
-}
+};

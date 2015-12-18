@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import isFunction from "../../../src/testapi/validators/isFunction";
+const assert = require("power-assert");
+const isFunction = require("../../../src/testapi/validators/isFunction");
 
 describe("validators.isFunction", () => {
   describe(".typeName: string", () => {

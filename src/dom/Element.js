@@ -1,5 +1,5 @@
-import inLaws from "../utils/inLaws";
-import EventTarget from "./EventTarget";
+const inLaws = require("../utils/inLaws");
+const EventTarget = require("./EventTarget");
 
 global.Element = global.Element || class Element extends EventTarget {
   constructor() {
@@ -8,4 +8,4 @@ global.Element = global.Element || class Element extends EventTarget {
   }
 };
 
-export default class Element extends inLaws(global.Element) {}
+module.exports = class Element extends inLaws(global.Element) {};

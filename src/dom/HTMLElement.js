@@ -1,5 +1,5 @@
-import inLaws from "../utils/inLaws";
-import Element from "./Element";
+const inLaws = require("../utils/inLaws");
+const Element = require("./Element");
 
 global.HTMLElement = global.HTMLElement || class HTMLElement extends Element {
   constructor() {
@@ -8,4 +8,4 @@ global.HTMLElement = global.HTMLElement || class HTMLElement extends Element {
   }
 };
 
-export default class HTMLElement extends inLaws(global.HTMLElement) {}
+module.exports = class HTMLElement extends inLaws(global.HTMLElement) {};

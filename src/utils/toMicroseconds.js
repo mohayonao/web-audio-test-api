@@ -1,7 +1,7 @@
 const MIN_MICRO_SECONDS = 0;
 const MAX_MICRO_SECONDS = 24 * 60 * 60 * 1000 * 1000;
 
-export default function toMicroseconds(time) {
+module.exports = function toMicroseconds(time) {
   let value = 0;
 
   if (typeof time === "number") {
@@ -26,4 +26,4 @@ export default function toMicroseconds(time) {
   }
 
   return value;
-}
+};

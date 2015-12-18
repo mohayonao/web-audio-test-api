@@ -1,8 +1,8 @@
-import AudioNode from "./AudioNode";
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class AudioDestinationNode extends AudioNode {
+module.exports = class AudioDestinationNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
@@ -25,4 +25,4 @@ export default class AudioDestinationNode extends AudioNode {
 
   @testapi.props.readonly(2)
   maxChannelCount() {}
-}
+};

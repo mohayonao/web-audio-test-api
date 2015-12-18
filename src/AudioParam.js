@@ -1,11 +1,11 @@
-import Junction from "./utils/Junction";
-import auth from "./utils/auth";
-import defaults from "./utils/defaults";
-import toJSON from "./utils/toJSON";
-import toSeconds from "./utils/toSeconds";
-import testapi from "./testapi";
+const Junction = require("./utils/Junction");
+const auth = require("./utils/auth");
+const defaults = require("./utils/defaults");
+const toJSON = require("./utils/toJSON");
+const toSeconds = require("./utils/toSeconds");
+const testapi = require("./testapi");
 
-export default class AudioParam {
+module.exports = class AudioParam {
   static $new(...args) {
     return auth.request((token) => {
       return new AudioParam(token, ...args);
@@ -253,4 +253,4 @@ export default class AudioParam {
 
     return defaults(curve[(curve.length * dt)|0], v);
   }
-}
+};

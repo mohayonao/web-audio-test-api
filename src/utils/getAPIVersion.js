@@ -1,5 +1,5 @@
-import VERSION from "../__version__";
+const VERSION = require("../__version__");
 
-export default function getAPIVersion() {
+module.exports = function getAPIVersion() {
   return VERSION;
-}
+};

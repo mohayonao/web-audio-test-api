@@ -1,6 +1,6 @@
-export default function caniuse(expected, actual) {
+module.exports = function caniuse(expected, actual) {
   return Object.keys(expected).every((key) => test(expected[key], actual[key]));
-}
+};
 
 function test(expected, actual) {
   if (actual === Infinity) {

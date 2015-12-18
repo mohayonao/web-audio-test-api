@@ -1,3 +1,3 @@
-export default function defaults(value, defaultValue) {
+module.exports = function defaults(value, defaultValue) {
   return typeof value !== "undefined" ? value : defaultValue;
-}
+};

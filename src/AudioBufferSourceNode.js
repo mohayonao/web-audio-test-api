@@ -1,11 +1,11 @@
-import AudioNode from "./AudioNode";
-import AudioBuffer from "./AudioBuffer";
-import Event from "./dom/Event";
-import auth from "./utils/auth";
-import toSeconds from "./utils/toSeconds";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const AudioBuffer = require("./AudioBuffer");
+const Event = require("./dom/Event");
+const auth = require("./utils/auth");
+const toSeconds = require("./utils/toSeconds");
+const testapi = require("./testapi");
 
-export default class AudioBufferSourceNode extends AudioNode {
+module.exports = class AudioBufferSourceNode extends AudioNode {
   static $JSONKeys = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
 
   static $new(...args) {
@@ -123,4 +123,4 @@ export default class AudioBufferSourceNode extends AudioNode {
       this._.firedOnEnded = true;
     }
   }
-}
+};

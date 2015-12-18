@@ -1,6 +1,6 @@
-import auth from "./utils/auth";
+const auth = require("./utils/auth");
 
-export default class PeriodicWave {
+module.exports = class PeriodicWave {
   static $new(...args) {
     return auth.request((token) => {
       return new PeriodicWave(token, ...args);
@@ -33,4 +33,4 @@ export default class PeriodicWave {
   get $imag() {
     return this._.imag;
   }
-}
+};

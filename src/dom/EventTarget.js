@@ -1,8 +1,8 @@
-import { EventEmitter } from "events";
-import Event from "./Event";
-import inLaws from "../utils/inLaws";
-import * as methods from "../testapi/decorators/methods";
-import * as validators from "../testapi/validators";
+const EventEmitter = require("events").EventEmitter;
+const Event = require("./Event");
+const inLaws = require("../utils/inLaws");
+const methods = require("../testapi/decorators/methods");
+const validators = require("../testapi/validators");
 
 const EMITTER = Symbol("emitter");
 
@@ -12,7 +12,7 @@ global.EventTarget = global.EventTarget || class EventTarget {
   }
 };
 
-export default class EventTarget extends inLaws(global.EventTarget) {
+module.exports = class EventTarget extends inLaws(global.EventTarget) {
   constructor() {
     super();
 
@@ -93,4 +93,4 @@ export default class EventTarget extends inLaws(global.EventTarget) {
     this[EMITTER].setMaxListeners(event, listener);
     return this;
   }
-}
+};

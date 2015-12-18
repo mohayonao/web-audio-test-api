@@ -1,8 +1,8 @@
-import AudioNode from "./AudioNode";
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class DelayNode extends AudioNode {
+module.exports = class DelayNode extends AudioNode {
   static $JSONKeys = [ "delayTime" ]
 
   static $new(...args) {
@@ -30,4 +30,4 @@ export default class DelayNode extends AudioNode {
   get $maxDelayTime() {
     return this._.maxDelayTime;
   }
-}
+};

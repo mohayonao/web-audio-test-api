@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import Junction from "../../src/utils/Junction";
+const assert = require("power-assert");
+const Junction = require("../../src/utils/Junction");
 
 describe("Junction", () => {
   describe("constructor(node: any, channel: number)", () => {

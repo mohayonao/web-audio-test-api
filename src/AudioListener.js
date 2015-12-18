@@ -1,7 +1,7 @@
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class AudioListener {
+module.exports = class AudioListener {
   static $new(...args) {
     return auth.request((token) => {
       return new AudioListener(token, ...args);
@@ -48,4 +48,4 @@ export default class AudioListener {
   get $context() {
     return this._.context;
   }
-}
+};

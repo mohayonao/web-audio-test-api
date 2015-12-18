@@ -1,7 +1,7 @@
-import appendIfNotExists from "./appendIfNotExists";
-import removeIfExists from "./removeIfExists";
+const appendIfNotExists = require("./appendIfNotExists");
+const removeIfExists = require("./removeIfExists");
 
-export default class Junction {
+module.exports = class Junction {
   constructor(node, index) {
     this.node = node;
     this.index = index;
@@ -55,4 +55,4 @@ export default class Junction {
   toJSON(memo) {
     return this.inputs.map(junction => junction.node.toJSON(memo));
   }
-}
+};

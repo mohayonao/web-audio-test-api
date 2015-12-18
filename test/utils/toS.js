@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import toS from "../../src/utils/toS";
+const assert = require("power-assert");
+const toS = require("../../src/utils/toS");
 
 describe("utils/toS(value: any): string", () => {
   it("works", () => {

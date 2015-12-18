@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import * as methods from "../../../../src/testapi/decorators/methods";
+const assert = require("power-assert");
+const methods = require("../../../../src/testapi/decorators/methods");
 
 describe("@methods.param(name: string, validator: object)", () => {
   it("defines function parameters", () => {

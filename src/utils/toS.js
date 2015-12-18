@@ -1,4 +1,4 @@
-export default function toS(value) {
+module.exports = function toS(value) {
   if (value === null || typeof value === "undefined") {
     return String(value);
   }
@@ -25,4 +25,4 @@ export default function toS(value) {
   let name = value.constructor.name || Object.prototype.toString.call(value).slice(8, -1);
 
   return `a ${name}`;
-}
+};

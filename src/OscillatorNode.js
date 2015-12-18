@@ -1,11 +1,11 @@
-import AudioNode from "./AudioNode";
-import PeriodicWave from "./PeriodicWave";
-import Event from "./dom/Event";
-import auth from "./utils/auth";
-import toSeconds from "./utils/toSeconds";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const PeriodicWave = require("./PeriodicWave");
+const Event = require("./dom/Event");
+const auth = require("./utils/auth");
+const toSeconds = require("./utils/toSeconds");
+const testapi = require("./testapi");
 
-export default class OscillatorNode extends AudioNode {
+module.exports = class OscillatorNode extends AudioNode {
   static $JSONKeys = [ "type", "frequency", "detune" ];
 
   static $new(...args) {
@@ -113,4 +113,4 @@ export default class OscillatorNode extends AudioNode {
       this._.firedOnEnded = true;
     }
   }
-}
+};

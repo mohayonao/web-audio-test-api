@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import appendIfNotExists from "../../src/utils/appendIfNotExists";
+const assert = require("power-assert");
+const appendIfNotExists = require("../../src/utils/appendIfNotExists");
 
 describe("utils/appendIfNotExists(list: any[], value: any): void", () => {
   it("works", () => {

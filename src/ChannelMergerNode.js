@@ -1,7 +1,7 @@
-import AudioNode from "./AudioNode";
-import auth from "./utils/auth";
+const AudioNode = require("./AudioNode");
+const auth = require("./utils/auth");
 
-export default class ChannelMergerNode extends AudioNode {
+module.exports = class ChannelMergerNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
@@ -21,4 +21,4 @@ export default class ChannelMergerNode extends AudioNode {
       channelInterpretation: "speakers"
     });
   }
-}
+};

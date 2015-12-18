@@ -26,4 +26,4 @@ function grant(token, errorCallback) {
   tokens.push(lastToken);
 }
 
-export default { request, grant };
+module.exports = { request, grant };

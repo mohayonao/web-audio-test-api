@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import toSeconds from "../../src/utils/toSeconds";
+const assert = require("power-assert");
+const toSeconds = require("../../src/utils/toSeconds");
 
 describe("utils/toSeconds(time: number|string): number", () => {
   it("works", () => {

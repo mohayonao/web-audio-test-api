@@ -1,33 +1,33 @@
-import Event from "./dom/Event";
-import EventTarget from "./dom/EventTarget";
-import HTMLMediaElement from "./dom/HTMLMediaElement";
-import MediaStream from "./dom/MediaStream";
-import AudioBuffer from "./AudioBuffer";
-import AnalyserNode from "./AnalyserNode";
-import AudioBufferSourceNode from "./AudioBufferSourceNode";
-import AudioDestinationNode from "./AudioDestinationNode";
-import AudioListener from "./AudioListener";
-import BiquadFilterNode from "./BiquadFilterNode";
-import ChannelMergerNode from "./ChannelMergerNode";
-import ChannelSplitterNode from "./ChannelSplitterNode";
-import ConvolverNode from "./ConvolverNode";
-import DelayNode from "./DelayNode";
-import DynamicsCompressorNode from "./DynamicsCompressorNode";
-import GainNode from "./GainNode";
-import MediaElementAudioSourceNode from "./MediaElementAudioSourceNode";
-import MediaStreamAudioDestinationNode from "./MediaStreamAudioDestinationNode";
-import MediaStreamAudioSourceNode from "./MediaStreamAudioSourceNode";
-import OscillatorNode from "./OscillatorNode";
-import PannerNode from "./PannerNode";
-import PeriodicWave from "./PeriodicWave";
-import ScriptProcessorNode from "./ScriptProcessorNode";
-import StereoPannerNode from "./StereoPannerNode";
-import WaveShaperNode from "./WaveShaperNode";
-import caniuse from "./utils/caniuse";
-import getAPIVersion from "./utils/getAPIVersion";
-import toMicroseconds from "./utils/toMicroseconds";
-import testapi from "./testapi";
-import versions from "./testapi/decorators/versions";
+const Event = require("./dom/Event");
+const EventTarget = require("./dom/EventTarget");
+const HTMLMediaElement = require("./dom/HTMLMediaElement");
+const MediaStream = require("./dom/MediaStream");
+const AudioBuffer = require("./AudioBuffer");
+const AnalyserNode = require("./AnalyserNode");
+const AudioBufferSourceNode = require("./AudioBufferSourceNode");
+const AudioDestinationNode = require("./AudioDestinationNode");
+const AudioListener = require("./AudioListener");
+const BiquadFilterNode = require("./BiquadFilterNode");
+const ChannelMergerNode = require("./ChannelMergerNode");
+const ChannelSplitterNode = require("./ChannelSplitterNode");
+const ConvolverNode = require("./ConvolverNode");
+const DelayNode = require("./DelayNode");
+const DynamicsCompressorNode = require("./DynamicsCompressorNode");
+const GainNode = require("./GainNode");
+const MediaElementAudioSourceNode = require("./MediaElementAudioSourceNode");
+const MediaStreamAudioDestinationNode = require("./MediaStreamAudioDestinationNode");
+const MediaStreamAudioSourceNode = require("./MediaStreamAudioSourceNode");
+const OscillatorNode = require("./OscillatorNode");
+const PannerNode = require("./PannerNode");
+const PeriodicWave = require("./PeriodicWave");
+const ScriptProcessorNode = require("./ScriptProcessorNode");
+const StereoPannerNode = require("./StereoPannerNode");
+const WaveShaperNode = require("./WaveShaperNode");
+const caniuse = require("./utils/caniuse");
+const getAPIVersion = require("./utils/getAPIVersion");
+const toMicroseconds = require("./utils/toMicroseconds");
+const testapi = require("./testapi");
+const versions = require("./testapi/decorators/versions");
 
 const PROMISE_BASED_DECODE_AUDIO_DATA = { chrome: "none", firefox: "36-", safari: "none" };
 const AUDIOCONTEXT_STATE = { chrome: "41-", firefox: "40-", safari: "9-" };
@@ -42,7 +42,7 @@ const createAudioNodeContract = {
   }
 };
 
-export default class AudioContext extends EventTarget {
+module.exports = class AudioContext extends EventTarget {
   static get WEB_AUDIO_TEST_API_VERSION() {
     return getAPIVersion();
   }
@@ -377,4 +377,4 @@ export default class AudioContext extends EventTarget {
       this.destination.$process(inNumSamples, ++this._.tick);
     }
   }
-}
+};

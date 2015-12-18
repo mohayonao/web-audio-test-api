@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import removeIfExists from "../../src/utils/removeIfExists";
+const assert = require("power-assert");
+const removeIfExists = require("../../src/utils/removeIfExists");
 
 describe("utils/removeIfExists(list: any[], value: any): any[]", () => {
   it("works", () => {

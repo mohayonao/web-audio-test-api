@@ -1,16 +1,16 @@
-import Junction from "./utils/Junction";
-import EventTarget from "./dom/EventTarget";
-import auth from "./utils/auth";
-import caniuse from "./utils/caniuse";
-import defaults from "./utils/defaults";
-import toJSON from "./utils/toJSON";
-import toNodeName from "./utils/toNodeName";
-import versions from "./testapi/decorators/versions";
-import testapi from "./testapi";
+const Junction = require("./utils/Junction");
+const EventTarget = require("./dom/EventTarget");
+const auth = require("./utils/auth");
+const caniuse = require("./utils/caniuse");
+const defaults = require("./utils/defaults");
+const toJSON = require("./utils/toJSON");
+const toNodeName = require("./utils/toNodeName");
+const versions = require("./testapi/decorators/versions");
+const testapi = require("./testapi");
 
 const SELECTIVE_DISCONNECT = { chrome: "43-", firefox: "none", safari: "none" };
 
-export default class AudioNode extends EventTarget {
+module.exports = class AudioNode extends EventTarget {
   static $JSONKeys = [];
 
   static $new(...args) {
@@ -270,4 +270,4 @@ export default class AudioNode extends EventTarget {
 
     return inputJunction.inputs.some(junction => junction === outputJunction);
   }
-}
+};

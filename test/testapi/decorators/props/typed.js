@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import * as props from "../../../../src/testapi/decorators/props";
+const assert = require("power-assert");
+const props = require("../../../../src/testapi/decorators/props");
 
 describe("@props.typed(validator: object, defaultValue: any)", () => {
   it("defines a callback property", () => {

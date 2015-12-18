@@ -1,8 +1,8 @@
-import AudioNode from "./AudioNode";
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class BiquadFilterNode extends AudioNode {
+module.exports = class BiquadFilterNode extends AudioNode {
   static $JSONKeys = [ "type", "frequency", "detune", "Q", "gain" ];
 
   static $new(...args) {
@@ -42,4 +42,4 @@ export default class BiquadFilterNode extends AudioNode {
   @testapi.methods.param("magResponse", testapi.isInstanceOf(Float32Array))
   @testapi.methods.param("phaseResponse", testapi.isInstanceOf(Float32Array))
   getFrequencyResponse() {}
-}
+};

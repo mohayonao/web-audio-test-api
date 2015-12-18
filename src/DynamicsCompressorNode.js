@@ -1,8 +1,8 @@
-import AudioNode from "./AudioNode";
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class DynamicsCompressorNode extends AudioNode {
+module.exports = class DynamicsCompressorNode extends AudioNode {
   static $JSONKeys = [ "threshold", "knee", "ratio", "reduction", "attack", "release" ];
 
   static $new(...args) {
@@ -40,4 +40,4 @@ export default class DynamicsCompressorNode extends AudioNode {
 
   @testapi.props.audioparam(0.25)
   release() {}
-}
+};

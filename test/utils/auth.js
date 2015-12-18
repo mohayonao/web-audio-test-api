@@ -1,6 +1,6 @@
-import assert from "power-assert";
-import sinon from "sinon";
-import auth from "../../src/utils/auth";
+const assert = require("power-assert");
+const sinon = require("sinon");
+const auth = require("../../src/utils/auth");
 
 describe("utils/auth", () => {
   describe("request -> grant", () => {

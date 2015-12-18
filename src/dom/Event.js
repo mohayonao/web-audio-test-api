@@ -1,5 +1,5 @@
-import inLaws from "../utils/inLaws";
-import defaults from "../utils/defaults";
+const inLaws = require("../utils/inLaws");
+const defaults = require("../utils/defaults");
 
 global.Event = global.Event || class Event {
   constructor() {
@@ -7,7 +7,7 @@ global.Event = global.Event || class Event {
   }
 };
 
-export default class Event extends inLaws(global.Event) {
+module.exports = class Event extends inLaws(global.Event) {
   constructor(name, target) {
     super();
 
@@ -29,4 +29,4 @@ export default class Event extends inLaws(global.Event) {
   get timestamp() {
     return this._.timestamp;
   }
-}
+};

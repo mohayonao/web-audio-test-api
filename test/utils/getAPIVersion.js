@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import getAPIVersion from "../../src/utils/getAPIVersion";
+const assert = require("power-assert");
+const getAPIVersion = require("../../src/utils/getAPIVersion");
 
 describe("utils/getAPIVersion(): string", () => {
   it("works", () => {

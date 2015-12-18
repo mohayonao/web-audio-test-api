@@ -1,9 +1,9 @@
-import AudioNode from "./AudioNode";
-import AudioBuffer from "./AudioBuffer";
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const AudioBuffer = require("./AudioBuffer");
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class ConvolverNode extends AudioNode {
+module.exports = class ConvolverNode extends AudioNode {
   static $JSONKeys = [ "normalize" ];
 
   static $new(...args) {
@@ -29,4 +29,4 @@ export default class ConvolverNode extends AudioNode {
 
   @testapi.props.typed(testapi.isBoolean, true)
   normalize() {}
-}
+};

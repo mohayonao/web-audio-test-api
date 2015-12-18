@@ -1,5 +1,5 @@
-import format from "../../utils/format";
-import toS from "../../utils/toS";
+const format = require("../../utils/format");
+const toS = require("../../utils/toS");
 
 function createSetterError(klassName, propName, message) {
   return new TypeError(format(`
@@ -8,7 +8,7 @@ function createSetterError(klassName, propName, message) {
   `) + "\n");
 }
 
-export function audioparam(defaultValue) {
+function audioparam(defaultValue) {
   return (target, propName, descriptor) => {
     descriptor.get = function get() {
       if (!this._.hasOwnProperty(propName)) {
@@ -34,7 +34,7 @@ export function audioparam(defaultValue) {
   };
 }
 
-export function enums(values) {
+function enums(values) {
   return (target, propName, descriptor) => {
     if (typeof descriptor.get !== "function") {
       descriptor.get = function get() {
@@ -63,7 +63,7 @@ export function enums(values) {
   };
 }
 
-export function on() {
+function on() {
   return (target, propName, descriptor) => {
     descriptor.get = function get() {
       if (!this._.hasOwnProperty(propName)) {
@@ -89,7 +89,7 @@ export function on() {
   };
 }
 
-export function readonly(value) {
+function readonly(value) {
   return (target, propName, descriptor) => {
     const getter = descriptor.get || descriptor.value;
 
@@ -119,7 +119,7 @@ export function readonly(value) {
   };
 }
 
-export function typed(validator, defaultValue) {
+function typed(validator, defaultValue) {
   return (target, propName, descriptor) => {
     if (typeof descriptor.get !== "function") {
       descriptor.get = function get() {
@@ -149,3 +149,5 @@ export function typed(validator, defaultValue) {
     };
   };
 }
+
+module.exports = { audioparam, enums, on, readonly, typed };

@@ -1,7 +1,7 @@
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class AudioBuffer {
+module.exports = class AudioBuffer {
   static $new(...args) {
     return auth.request((token) => {
       return new AudioBuffer(token, ...args);
@@ -133,4 +133,4 @@ export default class AudioBuffer {
   get $context() {
     return this._.context;
   }
-}
+};

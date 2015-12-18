@@ -1,5 +1,5 @@
-import format from "../../utils/format";
-import toS from "../../utils/toS";
+const format = require("../../utils/format");
+const toS = require("../../utils/toS");
 
 const repository = new WeakMap();
 
@@ -153,7 +153,7 @@ function getMethodConfig(target, methodName) {
   return classConfig[methodName];
 }
 
-export function param(paramName, validator) {
+function param(paramName, validator) {
   return (target, methodName, descriptor) => {
     const methodConfig = getMethodConfig(target, methodName);
     const optional = /^\[\s*\w+?\s*\]$/.test(paramName);
@@ -169,7 +169,7 @@ export function param(paramName, validator) {
   };
 }
 
-export function returns(validator) {
+function returns(validator) {
   return (target, methodName, descriptor) => {
     const methodConfig = getMethodConfig(target, methodName);
 
@@ -180,7 +180,7 @@ export function returns(validator) {
   };
 }
 
-export function contract({ precondition, postcondition }) {
+function contract({ precondition, postcondition }) {
   return (target, methodName, descriptor) => {
     const methodConfig = getMethodConfig(target, methodName);
 
@@ -191,3 +191,5 @@ export function contract({ precondition, postcondition }) {
     return methodConfig.descriptor;
   };
 }
+
+module.exports = { param, returns, contract };

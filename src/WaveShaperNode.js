@@ -1,8 +1,8 @@
-import AudioNode from "./AudioNode";
-import auth from "./utils/auth";
-import testapi from "./testapi";
+const AudioNode = require("./AudioNode");
+const auth = require("./utils/auth");
+const testapi = require("./testapi");
 
-export default class WaveShaperNode extends AudioNode {
+module.exports = class WaveShaperNode extends AudioNode {
   static $JSONKeys = [ "oversample" ];
 
   static $new(...args) {
@@ -28,4 +28,4 @@ export default class WaveShaperNode extends AudioNode {
 
   @testapi.props.enums([ "none", "2x", "4x" ])
   oversample() {}
-}
+};

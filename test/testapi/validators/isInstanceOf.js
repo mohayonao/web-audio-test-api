@@ -1,5 +1,5 @@
-import assert from "power-assert";
-import isInstanceOf from "../../../src/testapi/validators/isInstanceOf";
+const assert = require("power-assert");
+const isInstanceOf = require("../../../src/testapi/validators/isInstanceOf");
 
 describe("validators.isInstanceOf(klass: function): object", () => {
   describe(".typeName: string", () => {

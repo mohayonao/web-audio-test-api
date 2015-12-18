@@ -1,12 +1,14 @@
-export appendIfNotExists from "./appendIfNotExists";
-export caniuse from "./caniuse";
-export defaults from "./defaults";
-export format from "./format";
-export getAPIVersion from "./getAPIVersion";
-export inLaws from "./inLaws";
-export removeIfExists from "./removeIfExists";
-export toJSON from "./toJSON";
-export toMicroseconds from "./toMicroseconds";
-export toNodeName from "./toNodeName";
-export toS from "./toS";
-export toSeconds from "./toSeconds";
+const appendIfNotExists = require("./appendIfNotExists");
+const caniuse = require("./caniuse");
+const defaults = require("./defaults");
+const format = require("./format");
+const getAPIVersion = require("./getAPIVersion");
+const inLaws = require("./inLaws");
+const removeIfExists = require("./removeIfExists");
+const toJSON = require("./toJSON");
+const toMicroseconds = require("./toMicroseconds");
+const toNodeName = require("./toNodeName");
+const toS = require("./toS");
+const toSeconds = require("./toSeconds");
+
+module.exports = { appendIfNotExists, caniuse, defaults, format, getAPIVersion, inLaws, removeIfExists, toJSON, toMicroseconds, toNodeName, toS, toSeconds };
