@@ -83,7 +83,7 @@ module.exports = class AudioContext extends dom.EventTarget {
     }
   }
 
-  @testapi.props.on("statechange")
+  @testapi.props.typed(testapi.isNullOrInstanceOf(Function), null)
   onstatechange() {}
 
   @testapi.methods.returns(testapi.isInstanceOf(Promise))

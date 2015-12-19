@@ -38,7 +38,7 @@ module.exports = class OscillatorNode extends AudioNode {
   @testapi.props.audioparam(0)
   detune() {}
 
-  @testapi.props.on("ended")
+  @testapi.props.typed(testapi.isNullOrInstanceOf(Function), null)
   onended() {}
 
   @testapi.methods.param("[ when ]", testapi.isPositiveNumber)

@@ -34,61 +34,6 @@ function audioparam(defaultValue) {
   };
 }
 
-function enums(values) {
-  return (target, propName, descriptor) => {
-    if (typeof descriptor.get !== "function") {
-      descriptor.get = function get() {
-        if (!this._.hasOwnProperty(propName)) {
-          this._[propName] = values[0];
-        }
-        return this._[propName];
-      };
-    }
-
-    descriptor.set = function set(value) {
-      if (values.indexOf(value) === -1) {
-        throw createSetterError(this.constructor.name, propName, `
-          \tThis property should be one of [ ${values.map(toS).join(", ")} ], but got ${toS(value)}.
-        `);
-      }
-      this._[propName] = value;
-    };
-
-    return {
-      get: descriptor.get,
-      set: descriptor.set,
-      enumerable: descriptor.enumerable,
-      configurable: descriptor.configurable
-    };
-  };
-}
-
-function on() {
-  return (target, propName, descriptor) => {
-    descriptor.get = function get() {
-      if (!this._.hasOwnProperty(propName)) {
-        this._[propName] = null;
-      }
-      return this._[propName];
-    };
-    descriptor.set = function set(value) {
-      if (value !== null && typeof value !== "function") {
-        throw createSetterError(this.constructor.name, propName, `
-          \tA callback should be a function or null, but got ${toS(value)}.
-        `);
-      }
-      this._[propName] = value;
-    };
-
-    return {
-      get: descriptor.get,
-      set: descriptor.set,
-      enumerable: descriptor.enumerable,
-      configurable: descriptor.configurable
-    };
-  };
-}
-
 function readonly(value) {
   return (target, propName, descriptor) => {
     const getter = descriptor.get || descriptor.value;
@@ -150,4 +95,4 @@ function typed(validator, defaultValue) {
   };
 }
 
-module.exports = { audioparam, enums, on, readonly, typed };
+module.exports = { audioparam, readonly, typed };

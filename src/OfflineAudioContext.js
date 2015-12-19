@@ -26,7 +26,7 @@ module.exports = class OfflineAudioContext extends AudioContext {
     this._.state = "suspended";
   }
 
-  @testapi.props.on("complete")
+  @testapi.props.typed(testapi.isNullOrInstanceOf(Function), null)
   oncomplete() {}
 
   @testapi.versions({ chrome: "41-", firefox: "40-", safari: "9-" })

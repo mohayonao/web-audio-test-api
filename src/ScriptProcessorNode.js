@@ -34,7 +34,7 @@ module.exports = class ScriptProcessorNode extends AudioNode {
     return this._.bufferSize;
   }
 
-  @testapi.props.on("audioprocess");
+  @testapi.props.typed(testapi.isNullOrInstanceOf(Function), null)
   onaudioprocess() {}
 
   __process(inNumSamples) {

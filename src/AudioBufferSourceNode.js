@@ -47,7 +47,7 @@ module.exports = class AudioBufferSourceNode extends AudioNode {
   @testapi.props.typed(testapi.isPositiveNumber, 0)
   loopEnd() {}
 
-  @testapi.props.on("ended")
+  @testapi.props.typed(testapi.isNullOrInstanceOf(Function), null)
   onended() {}
 
   @testapi.methods.param("[ when ]", testapi.isPositiveNumber)
