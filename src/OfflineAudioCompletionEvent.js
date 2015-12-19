@@ -1,9 +1,9 @@
-const Event = require("./dom/Event");
-const auth = require("./utils/auth");
+const dom = require("./dom");
+const utils = require("./utils");
 
-module.exports = class OfflineAudioCompletionEvent extends Event {
+module.exports = class OfflineAudioCompletionEvent extends dom.Event {
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new OfflineAudioCompletionEvent(token, ...args);
     });
   }
@@ -11,7 +11,7 @@ module.exports = class OfflineAudioCompletionEvent extends Event {
   constructor(token, node) {
     super("complete", node);
 
-    auth.grant(token, () => {
+    utils.auth.grant(token, () => {
       throw new TypeError("Illegal constructor");
     });
 

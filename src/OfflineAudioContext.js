@@ -1,10 +1,9 @@
-const Event = require("./dom/Event");
+const dom = require("./dom");
+const testapi = require("./testapi");
+const versions = require("./testapi/decorators/versions");
 const AudioContext = require("./AudioContext");
 const AudioBuffer = require("./AudioBuffer");
 const OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
-const caniuse = require("./utils/caniuse");
-const versions = require("./testapi/decorators/versions");
-const testapi = require("./testapi");
 
 const PROMISE_BASED_START_RENDERING = { chrome: "42-", firefox: "37-", safari: "none" };
 
@@ -54,7 +53,7 @@ module.exports = class OfflineAudioContext extends AudioContext {
   })
   startRendering() {
     this._.rendering = true;
-    if (caniuse(PROMISE_BASED_START_RENDERING, versions.targetVersions)) {
+    if (testapi.caniuse(PROMISE_BASED_START_RENDERING, versions.targetVersions)) {
       return this.__startRendering$$Promise.apply(this, arguments);
     }
     return this.__startRendering$$Void.apply(this, arguments);
@@ -62,14 +61,14 @@ module.exports = class OfflineAudioContext extends AudioContext {
 
   __startRendering$$Void() {
     this._.state = "running";
-    this.dispatchEvent(new Event("statechange", this));
+    this.dispatchEvent(new dom.Event("statechange", this));
   }
 
   __startRendering$$Promise() {
     return new Promise((resolve) => {
       this._.resolve = resolve;
       this._.state = "running";
-      this.dispatchEvent(new Event("statechange", this));
+      this.dispatchEvent(new dom.Event("statechange", this));
     });
   }
 
@@ -113,7 +112,7 @@ module.exports = class OfflineAudioContext extends AudioContext {
         this._.resolve = null;
       }
 
-      this.dispatchEvent(new Event("statechange", this));
+      this.dispatchEvent(new dom.Event("statechange", this));
     }
   }
 };

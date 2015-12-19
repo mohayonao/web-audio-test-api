@@ -1,11 +1,11 @@
+const utils = require("./utils");
 const AudioNode = require("./AudioNode");
-const auth = require("./utils/auth");
 
 module.exports = class ChannelMergerNode extends AudioNode {
   static $JSONKeys = [];
 
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new ChannelMergerNode(token, ...args);
     });
   }

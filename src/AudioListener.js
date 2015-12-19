@@ -1,15 +1,15 @@
-const auth = require("./utils/auth");
 const testapi = require("./testapi");
+const utils = require("./utils");
 
 module.exports = class AudioListener {
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new AudioListener(token, ...args);
     });
   }
 
   constructor(token, context) {
-    auth.grant(token, () => {
+    utils.auth.grant(token, () => {
       throw new TypeError("Illegal constructor");
     });
     Object.defineProperty(this, "_", { value: {} });

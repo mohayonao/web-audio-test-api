@@ -1,4 +1,4 @@
-const caniuse = require("../../utils/caniuse");
+const caniuse = require("../caniuse");
 const format = require("../../utils/format");
 const toS = require("../../utils/toS");
 

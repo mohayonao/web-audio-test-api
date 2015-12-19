@@ -1,8 +1,8 @@
-const EventEmitter = require("events").EventEmitter;
-const Event = require("./Event");
-const inLaws = require("../utils/inLaws");
 const methods = require("../testapi/decorators/methods");
 const validators = require("../testapi/validators");
+const inLaws = require("./inLaws");
+const EventEmitter = require("events").EventEmitter;
+const Event = require("./Event");
 
 const EMITTER = Symbol("emitter");
 

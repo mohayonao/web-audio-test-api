@@ -1,7 +1,7 @@
 const assert = require("power-assert");
-const caniuse = require("../../src/utils/caniuse");
+const caniuse = require("../../src/testapi/caniuse");
 
-describe("utils/caniuse(expected: object, actual: object): boolean", () => {
+describe("testapi/caniuse(expected: object, actual: object): boolean", () => {
   it("works", () => {
     assert(caniuse({ a: "10-", b: "15-" }, { a: 10, b: 15 }) === true);
     assert(caniuse({ a: "10-", b: "15-" }, { a: 10, b: 14 }) === false);

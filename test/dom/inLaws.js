@@ -1,4 +1,4 @@
-const inLaws = require("../../src/utils/inLaws");
+const inLaws = require("../../src/dom/inLaws");
 
 describe("inLaws(superClass: Class): Class", () => {
   it("works", () => {

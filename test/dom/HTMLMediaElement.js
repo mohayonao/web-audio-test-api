@@ -3,7 +3,7 @@ describe("HTMLMediaElement", function() {
 
   describe("constructor()", function() {
     it("works", function() {
-      var element = new WebAudioTestAPI.DOM.HTMLMediaElement();
+      var element = new WebAudioTestAPI.dom.HTMLMediaElement();
 
       assert(element instanceof global.window.HTMLMediaElement);
       assert(element instanceof global.window.HTMLElement);

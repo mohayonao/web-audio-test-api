@@ -1,15 +1,14 @@
+const dom = require("./dom");
+const testapi = require("./testapi");
+const utils = require("./utils");
 const AudioNode = require("./AudioNode");
 const PeriodicWave = require("./PeriodicWave");
-const Event = require("./dom/Event");
-const auth = require("./utils/auth");
-const toSeconds = require("./utils/toSeconds");
-const testapi = require("./testapi");
 
 module.exports = class OscillatorNode extends AudioNode {
   static $JSONKeys = [ "type", "frequency", "detune" ];
 
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new OscillatorNode(token, ...args);
     });
   }
@@ -92,7 +91,7 @@ module.exports = class OscillatorNode extends AudioNode {
   }
 
   $stateAtTime(when) {
-    const playbackTime = toSeconds(when);
+    const playbackTime = utils.toSeconds(when);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";
@@ -109,7 +108,7 @@ module.exports = class OscillatorNode extends AudioNode {
 
   __process() {
     if (!this._.firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
-      this.dispatchEvent(new Event("ended", this));
+      this.dispatchEvent(new dom.Event("ended", this));
       this._.firedOnEnded = true;
     }
   }

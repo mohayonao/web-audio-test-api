@@ -1,13 +1,13 @@
+const testapi = require("./testapi");
+const utils = require("./utils");
 const AudioNode = require("./AudioNode");
 const AudioBuffer = require("./AudioBuffer");
-const auth = require("./utils/auth");
-const testapi = require("./testapi");
 
 module.exports = class ConvolverNode extends AudioNode {
   static $JSONKeys = [ "normalize" ];
 
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new ConvolverNode(token, ...args);
     });
   }

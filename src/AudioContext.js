@@ -1,7 +1,7 @@
-const Event = require("./dom/Event");
-const EventTarget = require("./dom/EventTarget");
-const HTMLMediaElement = require("./dom/HTMLMediaElement");
-const MediaStream = require("./dom/MediaStream");
+const dom = require("./dom");
+const testapi = require("./testapi");
+const versions = require("./testapi/decorators/versions");
+const utils = require("./utils");
 const AudioBuffer = require("./AudioBuffer");
 const AnalyserNode = require("./AnalyserNode");
 const AudioBufferSourceNode = require("./AudioBufferSourceNode");
@@ -23,18 +23,13 @@ const PeriodicWave = require("./PeriodicWave");
 const ScriptProcessorNode = require("./ScriptProcessorNode");
 const StereoPannerNode = require("./StereoPannerNode");
 const WaveShaperNode = require("./WaveShaperNode");
-const caniuse = require("./utils/caniuse");
-const getAPIVersion = require("./utils/getAPIVersion");
-const toMicroseconds = require("./utils/toMicroseconds");
-const testapi = require("./testapi");
-const versions = require("./testapi/decorators/versions");
 
 const PROMISE_BASED_DECODE_AUDIO_DATA = { chrome: "none", firefox: "36-", safari: "none" };
 const AUDIOCONTEXT_STATE = { chrome: "41-", firefox: "40-", safari: "9-" };
 const NOOP = () => {};
 const createAudioNodeContract = {
   precondition() {
-    if (caniuse(AUDIOCONTEXT_STATE, versions.targetVersions)) {
+    if (testapi.caniuse(AUDIOCONTEXT_STATE, versions.targetVersions)) {
       if (this._.state === "closed") {
         throw new TypeError(`AudioContext has been closed.`);
       }
@@ -42,9 +37,9 @@ const createAudioNodeContract = {
   }
 };
 
-module.exports = class AudioContext extends EventTarget {
+module.exports = class AudioContext extends dom.EventTarget {
   static get WEB_AUDIO_TEST_API_VERSION() {
-    return getAPIVersion();
+    return testapi.version;
   }
 
   constructor() {
@@ -52,7 +47,7 @@ module.exports = class AudioContext extends EventTarget {
 
     Object.defineProperty(this, "_", { value: {} });
 
-    this._.sampleRate = global.WebAudioTestAPI.sampleRate;
+    this._.sampleRate = testapi.sampleRate;
     this._.destination = AudioDestinationNode.$new(this);
     this._.listener = AudioListener.$new(this);
     this._.microCurrentTime = 0;
@@ -83,7 +78,7 @@ module.exports = class AudioContext extends EventTarget {
 
   @testapi.props.readonly()
   state() {
-    if (caniuse(AUDIOCONTEXT_STATE, versions.targetVersions)) {
+    if (testapi.caniuse(AUDIOCONTEXT_STATE, versions.targetVersions)) {
       return this._.state;
     }
   }
@@ -97,7 +92,7 @@ module.exports = class AudioContext extends EventTarget {
     return this.__transitionToState("suspend", (resolve) => {
       if (this._.state === "running") {
         this._.state = "suspended";
-        this.dispatchEvent(new Event("statechange", this));
+        this.dispatchEvent(new dom.Event("statechange", this));
       }
       resolve();
     });
@@ -109,7 +104,7 @@ module.exports = class AudioContext extends EventTarget {
     return this.__transitionToState("resume", (resolve) => {
       if (this._.state === "suspended") {
         this._.state = "running";
-        this.dispatchEvent(new Event("statechange", this));
+        this.dispatchEvent(new dom.Event("statechange", this));
       }
       resolve();
     });
@@ -122,7 +117,7 @@ module.exports = class AudioContext extends EventTarget {
       if (this._.state !== "closed") {
         this._.state = "closed";
         this.$reset();
-        this.dispatchEvent(new Event("statechange", this));
+        this.dispatchEvent(new dom.Event("statechange", this));
       }
       resolve();
     });
@@ -133,12 +128,11 @@ module.exports = class AudioContext extends EventTarget {
   @testapi.methods.param("sampleRate", testapi.isPositiveInteger)
   @testapi.methods.returns(testapi.isInstanceOf(AudioBuffer))
   createBuffer(numberOfChannels, length, sampleRate) {
-    return global.WebAudioTestAPI.AudioBuffer.$new(this, numberOfChannels, length, sampleRate);
+    return AudioBuffer.$new(this, numberOfChannels, length, sampleRate);
   }
 
-
   decodeAudioData() {
-    if (caniuse(PROMISE_BASED_DECODE_AUDIO_DATA, versions.targetVersions)) {
+    if (testapi.caniuse(PROMISE_BASED_DECODE_AUDIO_DATA, versions.targetVersions)) {
       return this.__decodeAudioData$$Promise.apply(this, arguments);
     }
     return this.__decodeAudioData$$Void.apply(this, arguments);
@@ -167,8 +161,7 @@ module.exports = class AudioContext extends EventTarget {
       if (this.DECODE_AUDIO_DATA_FAILED) {
         reject();
       } else {
-        resolve(this.DECODE_AUDIO_DATA_RESULT
-          || global.WebAudioTestAPI.AudioBuffer.$new(this, 2, 1024, this.sampleRate)
+        resolve(this.DECODE_AUDIO_DATA_RESULT || AudioBuffer.$new(this, 2, 1024, this.sampleRate)
         );
       }
     });
@@ -181,27 +174,27 @@ module.exports = class AudioContext extends EventTarget {
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(AudioBufferSourceNode))
   createBufferSource() {
-    return global.WebAudioTestAPI.AudioBufferSourceNode.$new(this);
+    return AudioBufferSourceNode.$new(this);
   }
 
-  @testapi.methods.param("mediaElement", testapi.isInstanceOf(HTMLMediaElement))
+  @testapi.methods.param("mediaElement", testapi.isInstanceOf(dom.HTMLMediaElement))
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(MediaElementAudioSourceNode))
   createMediaElementSource(mediaElement) {
-    return global.WebAudioTestAPI.MediaElementAudioSourceNode.$new(this, mediaElement);
+    return MediaElementAudioSourceNode.$new(this, mediaElement);
   }
 
-  @testapi.methods.param("mediaStream", testapi.isInstanceOf(MediaStream))
+  @testapi.methods.param("mediaStream", testapi.isInstanceOf(dom.MediaStream))
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(MediaStreamAudioSourceNode))
   createMediaStreamSource(mediaStream) {
-    return global.WebAudioTestAPI.MediaStreamAudioSourceNode.$new(this, mediaStream);
+    return MediaStreamAudioSourceNode.$new(this, mediaStream);
   }
 
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(MediaStreamAudioDestinationNode))
   createMediaStreamDestination() {
-    return global.WebAudioTestAPI.MediaStreamAudioDestinationNode.$new(this);
+    return MediaStreamAudioDestinationNode.$new(this);
   }
 
   @testapi.methods.contract(createAudioNodeContract)
@@ -221,26 +214,26 @@ module.exports = class AudioContext extends EventTarget {
   })
   @testapi.methods.returns(testapi.isInstanceOf(ScriptProcessorNode))
   createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
-    return global.WebAudioTestAPI.ScriptProcessorNode.$new(this, bufferSize, numberOfInputChannels, numberOfOutputChannels);
+    return ScriptProcessorNode.$new(this, bufferSize, numberOfInputChannels, numberOfOutputChannels);
   }
 
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(AnalyserNode))
   createAnalyser() {
-    return global.WebAudioTestAPI.AnalyserNode.$new(this);
+    return AnalyserNode.$new(this);
   }
 
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(GainNode))
   createGain() {
-    return global.WebAudioTestAPI.GainNode.$new(this);
+    return GainNode.$new(this);
   }
 
   @testapi.methods.param("[ maxDelayTime ]", testapi.isPositiveNumber)
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(DelayNode))
   createDelay(maxDelayTime) {
-    return global.WebAudioTestAPI.DelayNode.$new(this, maxDelayTime);
+    return DelayNode.$new(this, maxDelayTime);
   }
 
   @testapi.methods.contract(createAudioNodeContract)
@@ -252,52 +245,52 @@ module.exports = class AudioContext extends EventTarget {
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(WaveShaperNode))
   createWaveShaper() {
-    return global.WebAudioTestAPI.WaveShaperNode.$new(this);
+    return WaveShaperNode.$new(this);
   }
 
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(PannerNode))
   createPanner() {
-    return global.WebAudioTestAPI.PannerNode.$new(this);
+    return PannerNode.$new(this);
   }
 
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(StereoPannerNode))
   @testapi.versions({ chrome: "41-", firefox: "37-", safari: "none" })
   createStereoPanner() {
-    return global.WebAudioTestAPI.StereoPannerNode.$new(this);
+    return StereoPannerNode.$new(this);
   }
 
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(ConvolverNode))
   createConvolver() {
-    return global.WebAudioTestAPI.ConvolverNode.$new(this);
+    return ConvolverNode.$new(this);
   }
 
   @testapi.methods.param("[ numberOfOutputs ]", testapi.isPositiveInteger)
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(ChannelSplitterNode))
   createChannelSplitter(numberOfOutputs) {
-    return global.WebAudioTestAPI.ChannelSplitterNode.$new(this, numberOfOutputs);
+    return ChannelSplitterNode.$new(this, numberOfOutputs);
   }
 
   @testapi.methods.param("[ numberOfInputs ]", testapi.isPositiveInteger)
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(ChannelMergerNode))
   createChannelMerger(numberOfInputs) {
-    return global.WebAudioTestAPI.ChannelMergerNode.$new(this, numberOfInputs);
+    return ChannelMergerNode.$new(this, numberOfInputs);
   }
 
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(DynamicsCompressorNode))
   createDynamicsCompressor() {
-    return global.WebAudioTestAPI.DynamicsCompressorNode.$new(this);
+    return DynamicsCompressorNode.$new(this);
   }
 
   @testapi.methods.contract(createAudioNodeContract)
   @testapi.methods.returns(testapi.isInstanceOf(OscillatorNode))
   createOscillator() {
-    return global.WebAudioTestAPI.OscillatorNode.$new(this);
+    return OscillatorNode.$new(this);
   }
 
   @testapi.methods.param("real", testapi.isInstanceOf(Float32Array))
@@ -317,7 +310,7 @@ module.exports = class AudioContext extends EventTarget {
   })
   @testapi.methods.returns(testapi.isInstanceOf(PeriodicWave))
   createPeriodicWave(real, imag) {
-    return global.WebAudioTestAPI.PeriodicWave.$new(this, real, imag);
+    return PeriodicWave.$new(this, real, imag);
   }
 
   __transitionToState(methodName, callback) {
@@ -342,11 +335,11 @@ module.exports = class AudioContext extends EventTarget {
   }
 
   $process(when) {
-    this.__process(toMicroseconds(when));
+    this.__process(utils.toMicroseconds(when));
   }
 
   $processTo(when) {
-    let time = toMicroseconds(when);
+    let time = utils.toMicroseconds(when);
 
     if (this._.microCurrentTime < time) {
       this.__process(time - this._.microCurrentTime);

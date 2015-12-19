@@ -1,5 +1,5 @@
 const assert = require("power-assert");
-const Junction = require("../../src/utils/Junction");
+const Junction = require("../../src/dsp/Junction");
 
 describe("Junction", () => {
   describe("constructor(node: any, channel: number)", () => {

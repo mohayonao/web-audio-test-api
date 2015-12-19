@@ -1,4 +1,4 @@
-const inLaws = require("../utils/inLaws");
+const inLaws = require("./inLaws");
 const EventTarget = require("./EventTarget");
 
 global.Element = global.Element || class Element extends EventTarget {

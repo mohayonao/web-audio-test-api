@@ -1,5 +1,4 @@
-const appendIfNotExists = require("./appendIfNotExists");
-const removeIfExists = require("./removeIfExists");
+const utils = require("../utils");
 
 module.exports = class Junction {
   constructor(node, index) {
@@ -10,13 +9,13 @@ module.exports = class Junction {
   }
 
   connect(destination) {
-    appendIfNotExists(this.outputs, destination);
-    appendIfNotExists(destination.inputs, this);
+    utils.appendIfNotExists(this.outputs, destination);
+    utils.appendIfNotExists(destination.inputs, this);
   }
 
   disconnectAll() {
     this.outputs.splice(0).forEach((destination) => {
-      removeIfExists(destination.inputs, this);
+      utils.removeIfExists(destination.inputs, this);
     });
   }
 
@@ -26,7 +25,7 @@ module.exports = class Junction {
 
       if (destination.node === node) {
         this.outputs.splice(i, 1);
-        removeIfExists(destination.inputs, this);
+        utils.removeIfExists(destination.inputs, this);
       }
     }
   }
@@ -37,7 +36,7 @@ module.exports = class Junction {
 
       if (destination.node === node && destination.index === input) {
         this.outputs.splice(i, 1);
-        removeIfExists(destination.inputs, this);
+        utils.removeIfExists(destination.inputs, this);
       }
     }
   }

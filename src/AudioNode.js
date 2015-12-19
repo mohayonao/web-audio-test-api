@@ -1,20 +1,17 @@
-const Junction = require("./utils/Junction");
-const EventTarget = require("./dom/EventTarget");
-const auth = require("./utils/auth");
-const caniuse = require("./utils/caniuse");
-const defaults = require("./utils/defaults");
-const toJSON = require("./utils/toJSON");
-const toNodeName = require("./utils/toNodeName");
-const versions = require("./testapi/decorators/versions");
+const dom = require("./dom");
+const dsp = require("./dsp");
 const testapi = require("./testapi");
+const versions = require("./testapi/decorators/versions");
+const utils = require("./utils");
+const AudioParam = require("./AudioParam");
 
 const SELECTIVE_DISCONNECT = { chrome: "43-", firefox: "none", safari: "none" };
 
-module.exports = class AudioNode extends EventTarget {
+module.exports = class AudioNode extends dom.EventTarget {
   static $JSONKeys = [];
 
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new AudioNode(token, ...args);
     });
   }
@@ -22,20 +19,20 @@ module.exports = class AudioNode extends EventTarget {
   constructor(token, spec) {
     super();
 
-    auth.grant(token, () => {
+    utils.auth.grant(token, () => {
       throw new TypeError("Illegal constructor");
     });
     Object.defineProperty(this, "_", { value: {} });
 
     this._.context = spec.context;
-    this._.name = defaults(spec.name, "AudioNode");
-    this._.numberOfInputs = defaults(spec.numberOfInputs, 1);
-    this._.numberOfOutputs = defaults(spec.numberOfOutputs, 1);
-    this._.channelCount = defaults(spec.channelCount, 2);
-    this._.channelCountMode = defaults(spec.channelCountMode, "max");
-    this._.channelInterpretation = defaults(spec.channelInterpretation, "speakers");
-    this._.inputs = new Array(this._.numberOfInputs).fill().map(i => new Junction(this, i));
-    this._.outputs = new Array(this._.numberOfOutputs).fill().map(i => new Junction(this, i));
+    this._.name = utils.defaults(spec.name, "AudioNode");
+    this._.numberOfInputs = utils.defaults(spec.numberOfInputs, 1);
+    this._.numberOfOutputs = utils.defaults(spec.numberOfOutputs, 1);
+    this._.channelCount = utils.defaults(spec.channelCount, 2);
+    this._.channelCountMode = utils.defaults(spec.channelCountMode, "max");
+    this._.channelInterpretation = utils.defaults(spec.channelInterpretation, "speakers");
+    this._.inputs = new Array(this._.numberOfInputs).fill().map(i => new dsp.Junction(this, i));
+    this._.outputs = new Array(this._.numberOfOutputs).fill().map(i => new dsp.Junction(this, i));
     this._.tick = -1;
   }
 
@@ -84,8 +81,8 @@ module.exports = class AudioNode extends EventTarget {
   }
 
   disconnect(destination, output, input) {
-    if (!caniuse(SELECTIVE_DISCONNECT, versions.targetVersions)) {
-      return this.__disconnect$$Channel(defaults(destination, 0));
+    if (!testapi.caniuse(SELECTIVE_DISCONNECT, versions.targetVersions)) {
+      return this.__disconnect$$Channel(utils.defaults(destination, 0));
     }
 
     switch (arguments.length) {
@@ -181,10 +178,10 @@ module.exports = class AudioNode extends EventTarget {
       return obj;
     }
 
-    return toJSON(this, (node, memo) => {
+    return utils.toJSON(this, (node, memo) => {
       let json = {};
 
-      json.name = toNodeName(node);
+      json.name = utils.toNodeName(node);
 
       node.constructor.$JSONKeys.forEach((key) => {
         json[key] = __toJSON(node[key], memo);
@@ -219,7 +216,7 @@ module.exports = class AudioNode extends EventTarget {
   get $inputs() {
     // TODO: remove v0.4.0
     if (this._.inputs.length === 0) {
-      return [ new Junction(this, 0) ];
+      return [ new dsp.Junction(this, 0) ];
     }
     return this._.inputs;
   }
@@ -231,7 +228,7 @@ module.exports = class AudioNode extends EventTarget {
         junction.process(inNumSamples, tick);
       });
       Object.keys(this._).forEach((key) => {
-        if (this[key] instanceof global.AudioParam) {
+        if (this[key] instanceof AudioParam) {
           this[key].$process(inNumSamples, tick);
         }
       });
@@ -242,7 +239,7 @@ module.exports = class AudioNode extends EventTarget {
   }
 
   $isConnectedTo(destination, output = 0, input = 0) {
-    if (!(destination instanceof global.AudioNode) && !(destination instanceof global.AudioParam)) {
+    if (!(destination instanceof AudioNode) && !(destination instanceof AudioParam)) {
       return false;
     }
 
@@ -257,7 +254,7 @@ module.exports = class AudioNode extends EventTarget {
   }
 
   $isConnectedFrom(destination, output = 0, input = 0) {
-    if (!(destination instanceof global.AudioNode)) {
+    if (!(destination instanceof AudioNode)) {
       return false;
     }
 

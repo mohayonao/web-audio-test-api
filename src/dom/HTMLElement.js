@@ -1,4 +1,4 @@
-const inLaws = require("../utils/inLaws");
+const inLaws = require("./inLaws");
 const Element = require("./Element");
 
 global.HTMLElement = global.HTMLElement || class HTMLElement extends Element {

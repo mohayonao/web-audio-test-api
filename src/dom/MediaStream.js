@@ -1,4 +1,4 @@
-const inLaws = require("../utils/inLaws");
+const inLaws = require("./inLaws");
 const EventTarget = require("./EventTarget");
 
 global.MediaStream = global.MediaStream || class MediaStream extends EventTarget {

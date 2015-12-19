@@ -1,15 +1,15 @@
-const auth = require("./utils/auth");
 const testapi = require("./testapi");
+const utils = require("./utils");
 
 module.exports = class AudioBuffer {
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new AudioBuffer(token, ...args);
     });
   }
 
   constructor(token, context, numberOfChannels, length, sampleRate) {
-    auth.grant(token, () => {
+    utils.auth.grant(token, () => {
       throw new TypeError("Illegal constructor");
     });
     Object.defineProperty(this, "_", { value: {} });

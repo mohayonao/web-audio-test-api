@@ -1,5 +1,5 @@
-const inLaws = require("../utils/inLaws");
-const defaults = require("../utils/defaults");
+const utils = require("../utils");
+const inLaws = require("./inLaws");
 
 global.Event = global.Event || class Event {
   constructor() {
@@ -14,7 +14,7 @@ module.exports = class Event extends inLaws(global.Event) {
     Object.defineProperty(this, "_", { value: {} });
 
     this._.type = name;
-    this._.target = defaults(target, null);
+    this._.target = utils.defaults(target, null);
     this._.timestamp = Date.now();
   }
 

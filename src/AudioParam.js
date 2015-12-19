@@ -1,19 +1,16 @@
-const Junction = require("./utils/Junction");
-const auth = require("./utils/auth");
-const defaults = require("./utils/defaults");
-const toJSON = require("./utils/toJSON");
-const toSeconds = require("./utils/toSeconds");
+const dsp = require("./dsp");
 const testapi = require("./testapi");
+const utils = require("./utils");
 
 module.exports = class AudioParam {
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new AudioParam(token, ...args);
     });
   }
 
   constructor(token, node, name, defaultValue) {
-    auth.grant(token, () => {
+    utils.auth.grant(token, () => {
       throw new TypeError("Illegal constructor");
     });
     Object.defineProperty(this, "_", { value: {} });
@@ -23,7 +20,7 @@ module.exports = class AudioParam {
     this._.defaultValue = +defaultValue || 0;
     this._.context = node.context;
     this._.node = node;
-    this._.inputs = [ new Junction(this, 0) ];
+    this._.inputs = [ new dsp.Junction(this, 0) ];
     this._.events = [];
     this._.tick = -1;
   }
@@ -88,7 +85,7 @@ module.exports = class AudioParam {
   }
 
   toJSON(memo) {
-    return toJSON(this, (node, memo) => {
+    return utils.toJSON(this, (node, memo) => {
       let json = {};
 
       json.value = node.value;
@@ -119,7 +116,7 @@ module.exports = class AudioParam {
   }
 
   $valueAtTime(when) {
-    let time = toSeconds(when);
+    let time = utils.toSeconds(when);
     let value = this._.value;
     let events = this.$events;
     let t0;
@@ -244,13 +241,13 @@ module.exports = class AudioParam {
     let dt = (t - t0) / (t1 - t0);
 
     if (dt <= 0) {
-      return defaults(curve[0], v);
+      return utils.defaults(curve[0], v);
     }
 
     if (1 <= dt) {
-      return defaults(curve[curve.length - 1], v);
+      return utils.defaults(curve[curve.length - 1], v);
     }
 
-    return defaults(curve[(curve.length * dt)|0], v);
+    return utils.defaults(curve[(curve.length * dt)|0], v);
   }
 };

@@ -1,9 +1,9 @@
 const WebAudioAPI = require("./WebAudioAPI");
 const versions = require("./testapi/decorators/versions");
+const testapi = require("./testapi");
 const utils = require("./utils");
-const DOM = require("./dom");
+const dom = require("./dom");
 
-const sampleRate = 44100;
 const recentTargetVersions = { chrome: 47, firefox: 42, safari: 9 };
 
 versions.targetVersions = recentTargetVersions;
@@ -70,12 +70,12 @@ function setState() {
 
 const WebAudioTestAPI = {
   get VERSION() {
-    return utils.getAPIVersion();
+    return testapi.version;
   },
   get sampleRate() {
-    return sampleRate;
+    return testapi.sampleRate;
   },
-  DOM,
+  dom,
   setTargetVersions,
   getTargetVersions,
   use,

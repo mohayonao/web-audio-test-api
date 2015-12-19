@@ -1,6 +1,6 @@
-const AudioNode = require("./AudioNode");
-const auth = require("./utils/auth");
 const testapi = require("./testapi");
+const utils = require("./utils");
+const AudioNode = require("./AudioNode");
 
 module.exports = class PannerNode extends AudioNode {
   static $JSONKeys = [
@@ -9,7 +9,7 @@ module.exports = class PannerNode extends AudioNode {
   ];
 
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new PannerNode(token, ...args);
     });
   }

@@ -1,12 +1,12 @@
-const AudioNode = require("./AudioNode");
-const auth = require("./utils/auth");
 const testapi = require("./testapi");
+const utils = require("./utils");
+const AudioNode = require("./AudioNode");
 
 module.exports = class GainNode extends AudioNode {
   static $JSONKeys = [ "gain" ];
 
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new GainNode(token, ...args);
     });
   }

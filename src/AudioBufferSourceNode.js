@@ -1,15 +1,14 @@
+const dom = require("./dom");
+const testapi = require("./testapi");
+const utils = require("./utils");
 const AudioNode = require("./AudioNode");
 const AudioBuffer = require("./AudioBuffer");
-const Event = require("./dom/Event");
-const auth = require("./utils/auth");
-const toSeconds = require("./utils/toSeconds");
-const testapi = require("./testapi");
 
 module.exports = class AudioBufferSourceNode extends AudioNode {
   static $JSONKeys = [ "buffer", "playbackRate", "loop", "loopStart", "loopEnd" ];
 
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new AudioBufferSourceNode(token, ...args);
     });
   }
@@ -95,7 +94,7 @@ module.exports = class AudioBufferSourceNode extends AudioNode {
   }
 
   $stateAtTime(when) {
-    const playbackTime = toSeconds(when);
+    const playbackTime = utils.toSeconds(when);
 
     if (this._.startTime === Infinity) {
       return "UNSCHEDULED";
@@ -119,7 +118,7 @@ module.exports = class AudioBufferSourceNode extends AudioNode {
 
   __process() {
     if (!this._.firedOnEnded && this.$stateAtTime(this.context.currentTime) === "FINISHED") {
-      this.dispatchEvent(new Event("ended", this));
+      this.dispatchEvent(new dom.Event("ended", this));
       this._.firedOnEnded = true;
     }
   }

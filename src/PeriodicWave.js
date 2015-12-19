@@ -1,14 +1,14 @@
-const auth = require("./utils/auth");
+const utils = require("./utils");
 
 module.exports = class PeriodicWave {
   static $new(...args) {
-    return auth.request((token) => {
+    return utils.auth.request((token) => {
       return new PeriodicWave(token, ...args);
     });
   }
 
   constructor(token, context, real, imag) {
-    auth.grant(token, () => {
+    utils.auth.grant(token, () => {
       throw new TypeError("Illegal constructor");
     });
     Object.defineProperty(this, "_", { value: {} });

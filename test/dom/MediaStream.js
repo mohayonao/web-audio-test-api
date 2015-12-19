@@ -3,7 +3,7 @@ describe("MediaStream", function() {
 
   describe("constructor()", function() {
     it("works", function() {
-      var stream = new WebAudioTestAPI.DOM.MediaStream();
+      var stream = new WebAudioTestAPI.dom.MediaStream();
 
       assert(stream instanceof global.window.MediaStream);
       assert(stream instanceof global.window.EventTarget);
