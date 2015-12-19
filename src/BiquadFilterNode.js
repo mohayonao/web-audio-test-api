@@ -23,7 +23,7 @@ module.exports = class BiquadFilterNode extends AudioNode {
     });
   }
 
-  @testapi.props.enums([ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass" ])
+  @testapi.props.typed(testapi.isEnum([ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass" ]), "lowpass")
   type() {}
 
   @testapi.props.audioparam(350)

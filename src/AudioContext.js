@@ -201,17 +201,9 @@ module.exports = class AudioContext extends dom.EventTarget {
   @testapi.versions({ chrome: "", firefox: "", safari: "" })
   createAudioWorker() {}
 
-  @testapi.methods.param("bufferSize", testapi.isPositiveInteger)
+  @testapi.methods.param("bufferSize", testapi.isEnum([ 256, 512, 1024, 2048, 4096, 8192, 16384 ]))
   @testapi.methods.param("[ numberOfInputChannels ]", testapi.isPositiveInteger)
   @testapi.methods.param("[ numberOfOutputChannels ]", testapi.isPositiveInteger)
-  @testapi.methods.contract({
-    precondition(bufferSize) {
-      if ([ 256, 512, 1024, 2048, 4096, 8192, 16384 ].indexOf(bufferSize) === -1) {
-        throw new TypeError(`The {{bufferSize}} should be one of [ 256, 512, 1024, 2048, 4096, 8192, 16384 ], but got ${bufferSize}.`);
-      }
-      this::createAudioNodeContract.precondition();
-    }
-  })
   @testapi.methods.returns(testapi.isInstanceOf(ScriptProcessorNode))
   createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels) {
     return ScriptProcessorNode.$new(this, bufferSize, numberOfInputChannels, numberOfOutputChannels);

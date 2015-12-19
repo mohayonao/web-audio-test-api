@@ -26,6 +26,6 @@ module.exports = class WaveShaperNode extends AudioNode {
   @testapi.props.typed(testapi.isNullOrInstanceOf(Float32Array), null)
   curve() {}
 
-  @testapi.props.enums([ "none", "2x", "4x" ])
+  @testapi.props.typed(testapi.isEnum([ "none", "2x", "4x" ]), "none")
   oversample() {}
 };

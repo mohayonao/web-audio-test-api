@@ -29,7 +29,7 @@ module.exports = class OscillatorNode extends AudioNode {
     this._.firedOnEnded = false;
   }
 
-  @testapi.props.enums([ "sine", "square", "sawtooth", "triangle" ])
+  @testapi.props.typed(testapi.isEnum([ "sine", "square", "sawtooth", "triangle" ]), "sine")
   type() {}
 
   @testapi.props.audioparam(440)

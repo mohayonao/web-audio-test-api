@@ -26,10 +26,10 @@ module.exports = class PannerNode extends AudioNode {
     });
   }
 
-  @testapi.props.enums([ "HRTF", "equalpower" ])
+  @testapi.props.typed(testapi.isEnum([ "HRTF", "equalpower" ]), "HRTF")
   panningModel() {}
 
-  @testapi.props.enums([ "inverse", "linear", "exponential" ])
+  @testapi.props.typed(testapi.isEnum([ "inverse", "linear", "exponential" ]), "inverse")
   distanceModel() {}
 
   @testapi.props.typed(testapi.isNumber, 1)

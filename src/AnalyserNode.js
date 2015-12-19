@@ -21,10 +21,9 @@ module.exports = class AnalyserNode extends AudioNode {
       channelCountMode: "explicit",
       channelInterpretation: "speakers"
     });
-    this._.fftSize = 2048;
   }
 
-  @testapi.props.enums([ 32, 64, 128, 256, 512, 1024, 2048 ])
+  @testapi.props.typed(testapi.isEnum([ 32, 64, 128, 256, 512, 1024, 2048 ]), 2048)
   fftSize() {}
 
   @testapi.props.readonly()

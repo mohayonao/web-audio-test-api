@@ -54,10 +54,10 @@ module.exports = class AudioNode extends dom.EventTarget {
   @testapi.props.typed(testapi.isPositiveInteger, 2)
   channelCount() {}
 
-  @testapi.props.enums([ "max", "clamped-max", "explicit" ])
+  @testapi.props.typed(testapi.isEnum([ "max", "clamped-max", "explicit" ]), "max")
   channelCountMode() {}
 
-  @testapi.props.enums([ "speakers", "discrete" ])
+  @testapi.props.typed(testapi.isEnum([ "speakers", "discrete" ]), "speakers")
   channelInterpretation() {}
 
   @testapi.methods.param("destination", testapi.isAudioSource);
