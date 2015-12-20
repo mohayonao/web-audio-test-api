@@ -36,18 +36,16 @@ function audioparam(defaultValue) {
 
 function readonly(value) {
   return (target, propName, descriptor) => {
-    const getter = descriptor.get || descriptor.value;
+    const getter = descriptor.value;
 
-    if (typeof descriptor.get !== "function") {
-      descriptor.get = function get() {
-        if (typeof value !== "undefined") {
-          return value;
-        }
-        if (typeof getter === "function") {
-          return this::getter();
-        }
-      };
-    }
+    descriptor.get = function get() {
+      if (typeof value !== "undefined") {
+        return value;
+      }
+      if (typeof getter === "function") {
+        return this::getter();
+      }
+    };
 
     descriptor.set = function set() {
       throw createSetterError(this.constructor.name, propName, `
@@ -66,25 +64,21 @@ function readonly(value) {
 
 function typed(validator, defaultValue) {
   return (target, propName, descriptor) => {
-    if (typeof descriptor.get !== "function") {
-      descriptor.get = function get() {
-        if (!this._.hasOwnProperty(propName)) {
-          this._[propName] = defaultValue;
-        }
-        return this._[propName];
-      };
-    }
+    descriptor.get = function get() {
+      if (!this._.hasOwnProperty(propName)) {
+        this._[propName] = defaultValue;
+      }
+      return this._[propName];
+    };
 
-    if (typeof descriptor.set !== "function") {
-      descriptor.set = function set(value) {
-        if (!validator.test(value)) {
-          throw createSetterError(this.constructor.name, propName, `
-            \tThis property should be $a ${validator.description}, but got ${toS(value)}.
-          `);
-        }
-        this._[propName] = value;
-      };
-    }
+    descriptor.set = function set(value) {
+      if (!validator.test(value)) {
+        throw createSetterError(this.constructor.name, propName, `
+          \tThis property should be $a ${validator.description}, but got ${toS(value)}.
+        `);
+      }
+      this._[propName] = value;
+    };
 
     return {
       get: descriptor.get,
