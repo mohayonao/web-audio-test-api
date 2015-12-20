@@ -19,7 +19,7 @@ module.exports = function toS(value) {
   if (value.constructor === {}.constructor) {
     return "{ " + Object.keys(value).map((key) => {
       return key + ": " + toS(value[key]);
-    }).join(", ") + "}";
+    }).join(", ") + " }";
   }
 
   let name = value.constructor.name || Object.prototype.toString.call(value).slice(8, -1);

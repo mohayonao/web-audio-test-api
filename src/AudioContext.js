@@ -1,6 +1,5 @@
 const dom = require("./dom");
 const testapi = require("./testapi");
-const versions = require("./testapi/decorators/versions");
 const utils = require("./utils");
 const AudioBuffer = require("./AudioBuffer");
 const AnalyserNode = require("./AnalyserNode");
@@ -29,7 +28,7 @@ const AUDIOCONTEXT_STATE = { chrome: "41-", firefox: "40-", safari: "9-" };
 const NOOP = () => {};
 const createAudioNodeContract = {
   precondition() {
-    if (testapi.caniuse(AUDIOCONTEXT_STATE, versions.targetVersions)) {
+    if (testapi.caniuse(AUDIOCONTEXT_STATE, testapi.getBrowserVersions())) {
       if (this._.state === "closed") {
         throw new TypeError(`AudioContext has been closed.`);
       }
@@ -78,7 +77,7 @@ module.exports = class AudioContext extends dom.EventTarget {
 
   @testapi.props.readonly()
   state() {
-    if (testapi.caniuse(AUDIOCONTEXT_STATE, versions.targetVersions)) {
+    if (testapi.caniuse(AUDIOCONTEXT_STATE, testapi.getBrowserVersions())) {
       return this._.state;
     }
   }
@@ -132,7 +131,7 @@ module.exports = class AudioContext extends dom.EventTarget {
   }
 
   decodeAudioData() {
-    if (testapi.caniuse(PROMISE_BASED_DECODE_AUDIO_DATA, versions.targetVersions)) {
+    if (testapi.caniuse(PROMISE_BASED_DECODE_AUDIO_DATA, testapi.getBrowserVersions())) {
       return this.__decodeAudioData$$Promise.apply(this, arguments);
     }
     return this.__decodeAudioData$$Void.apply(this, arguments);

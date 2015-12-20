@@ -9,11 +9,11 @@ describe("AudioNodeDisconnectUtils", function() {
 
   describe("channel disconnect", function() {
     before(function() {
-      versions = WebAudioTestAPI.getTargetVersions();
-      WebAudioTestAPI.setTargetVersions(0);
+      versions = WebAudioTestAPI.getBrowserVersions();
+      WebAudioTestAPI.setBrowserVersions(0);
     });
     after(function() {
-      WebAudioTestAPI.setTargetVersions(versions);
+      WebAudioTestAPI.setBrowserVersions(versions);
     });
 
     describe("disconnect(output = 0): void", function() {
@@ -71,11 +71,11 @@ describe("AudioNodeDisconnectUtils", function() {
   });
   describe("selective disconnect", function() {
     before(function() {
-      versions = WebAudioTestAPI.getTargetVersions();
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      versions = WebAudioTestAPI.getBrowserVersions();
+      WebAudioTestAPI.setBrowserVersions(Infinity);
     });
     after(function() {
-      WebAudioTestAPI.setTargetVersions(versions);
+      WebAudioTestAPI.setBrowserVersions(versions);
     });
 
     describe("disconnect(): void", function() {

@@ -1,6 +1,5 @@
 const dom = require("./dom");
 const testapi = require("./testapi");
-const versions = require("./testapi/decorators/versions");
 const AudioContext = require("./AudioContext");
 const AudioBuffer = require("./AudioBuffer");
 const OfflineAudioCompletionEvent = require("./OfflineAudioCompletionEvent");
@@ -53,7 +52,7 @@ module.exports = class OfflineAudioContext extends AudioContext {
   })
   startRendering() {
     this._.rendering = true;
-    if (testapi.caniuse(PROMISE_BASED_START_RENDERING, versions.targetVersions)) {
+    if (testapi.caniuse(PROMISE_BASED_START_RENDERING, testapi.getBrowserVersions())) {
       return this.__startRendering$$Promise.apply(this, arguments);
     }
     return this.__startRendering$$Void.apply(this, arguments);

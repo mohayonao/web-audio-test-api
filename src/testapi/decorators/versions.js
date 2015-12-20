@@ -6,14 +6,14 @@ function versions(specs) {
   return (target, name, descriptor) => {
     function fn(func, execute) {
       return function() {
-        if (!caniuse(specs, versions.targetVersions)) {
+        if (!caniuse(specs, versions.browserVersions)) {
           throw new TypeError(format(`
             Failed to ${execute} the '${name}' on '${this.constructor.name}'
 
             \tThis feature is not supported on the specified versions.
 
             \t\texpected: ${toS(specs)}
-            \t\tactual  : ${toS(versions.targetVersions)}
+            \t\tactual  : ${toS(versions.browserVersions)}
           `) + "\n");
         }
         return func.apply(this, arguments);
@@ -34,6 +34,6 @@ function versions(specs) {
   };
 }
 
-versions.targetVersions = {};
+versions.browserVersions = {};
 
 module.exports = versions;

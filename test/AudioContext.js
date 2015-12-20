@@ -4,11 +4,11 @@ describe("AudioContext", function() {
   var versions;
 
   beforeEach(function() {
-    versions = WebAudioTestAPI.getTargetVersions();
+    versions = WebAudioTestAPI.getBrowserVersions();
     audioContext = new WebAudioTestAPI.AudioContext();
   });
   afterEach(function() {
-    WebAudioTestAPI.setTargetVersions(versions);
+    WebAudioTestAPI.setBrowserVersions(versions);
   });
 
   describe("constructor()", function() {
@@ -66,12 +66,12 @@ describe("AudioContext", function() {
 
   describe("#state: string", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       assert(audioContext.state === "running");
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       assert(typeof audioContext.state === "undefined");
     });
@@ -101,7 +101,7 @@ describe("AudioContext", function() {
 
   describe("#suspend(): Promise<void", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       audioContext.onstatechange = sinon.spy();
 
@@ -120,7 +120,7 @@ describe("AudioContext", function() {
       });
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       return Promise.resolve().then(function() {
         return audioContext.suspend();
@@ -132,7 +132,7 @@ describe("AudioContext", function() {
 
   describe("#resume(): Promise<void>", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       assert(audioContext.state === "running");
 
@@ -152,7 +152,7 @@ describe("AudioContext", function() {
       });
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       return Promise.resolve().then(function() {
         return audioContext.resume();
@@ -164,7 +164,7 @@ describe("AudioContext", function() {
 
   describe("#close(): Promise<void>", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       assert(audioContext.state === "running");
 
@@ -187,7 +187,7 @@ describe("AudioContext", function() {
       });
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       return Promise.resolve().then(function() {
         return audioContext.close();
@@ -207,7 +207,7 @@ describe("AudioContext", function() {
 
   describe("#decodeAudioData(audioData: ArrayBuffer, successCallback: function, [ errorCallback: function ]): void", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       var audioData = new Uint8Array(128).buffer;
 
@@ -220,7 +220,7 @@ describe("AudioContext", function() {
       });
     });
     it("not work without successCallback", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       var audioData = new Uint8Array(128).buffer;
 
@@ -234,7 +234,7 @@ describe("AudioContext", function() {
 
   describe("#decodeAudioData(audioData: ArrayBuffer, [ successCallback: function, errorCallback: function ]): Promise<AudioBuffer>", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       var audioData = new Uint8Array(128).buffer;
 
@@ -344,14 +344,14 @@ describe("AudioContext", function() {
 
   describe("#createStereoPanner(): StereoPannerNode", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       var node = audioContext.createStereoPanner();
 
       assert(node instanceof global.StereoPannerNode);
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       assert.throws(function() {
         audioContext.createStereoPanner();

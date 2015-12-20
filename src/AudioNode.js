@@ -1,7 +1,6 @@
 const dom = require("./dom");
 const dsp = require("./dsp");
 const testapi = require("./testapi");
-const versions = require("./testapi/decorators/versions");
 const utils = require("./utils");
 const AudioParam = require("./AudioParam");
 
@@ -81,7 +80,7 @@ module.exports = class AudioNode extends dom.EventTarget {
   }
 
   disconnect(destination, output, input) {
-    if (!testapi.caniuse(SELECTIVE_DISCONNECT, versions.targetVersions)) {
+    if (!testapi.caniuse(SELECTIVE_DISCONNECT, testapi.getBrowserVersions())) {
       return this.__disconnect$$Channel(utils.defaults(destination, 0));
     }
 

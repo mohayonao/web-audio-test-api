@@ -5,10 +5,10 @@ describe("@versions(spec: object)", () => {
   let saved;
 
   beforeEach(() => {
-    saved = versions.targetVersions;
+    saved = versions.browserVersions;
   });
   afterEach(() => {
-    versions.targetVersions = saved;
+    versions.browserVersions = saved;
   });
   it("defines version checker", () => {
     class Foo {
@@ -18,13 +18,13 @@ describe("@versions(spec: object)", () => {
 
     const foo = new Foo();
 
-    versions.targetVersions = { chrome: 40, firefox: 42, safari: Infinity };
+    versions.browserVersions = { chrome: 40, firefox: 42, safari: Infinity };
     assert.doesNotThrow(() => { foo.bar(); });
 
-    versions.targetVersions = { chrome: 35, firefox: 42, safari: Infinity };
+    versions.browserVersions = { chrome: 35, firefox: 42, safari: Infinity };
     assert.throws(() => { foo.bar(); });
 
-    versions.targetVersions = { chrome: 35, firefox: 42 };
+    versions.browserVersions = { chrome: 35, firefox: 42 };
     assert.throws(() => { foo.bar(); });
   });
 });

@@ -4,14 +4,14 @@ describe("StereoPannerNode", function() {
   var versions;
 
   before(function() {
-    versions = WebAudioTestAPI.getTargetVersions();
-    WebAudioTestAPI.setTargetVersions(Infinity);
+    versions = WebAudioTestAPI.getBrowserVersions();
+    WebAudioTestAPI.setBrowserVersions(Infinity);
   });
   beforeEach(function() {
     audioContext = new WebAudioTestAPI.AudioContext();
   });
   after(function() {
-    WebAudioTestAPI.setTargetVersions(versions);
+    WebAudioTestAPI.setBrowserVersions(versions);
   });
 
   describe("constructor()", function() {

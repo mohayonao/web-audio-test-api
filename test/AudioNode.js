@@ -4,11 +4,11 @@ describe("AudioNode", function() {
   var versions;
 
   beforeEach(function() {
-    versions = WebAudioTestAPI.getTargetVersions();
+    versions = WebAudioTestAPI.getBrowserVersions();
     audioContext = new WebAudioTestAPI.AudioContext();
   });
   afterEach(function() {
-    WebAudioTestAPI.setTargetVersions(versions);
+    WebAudioTestAPI.setBrowserVersions(versions);
   });
 
   describe("constructor()", function() {
@@ -22,7 +22,7 @@ describe("AudioNode", function() {
       assert.throws(function() { new global.AudioNode(); }, TypeError);
     });
     it("not work with closed context", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       return audioContext.close().then(function() {
         return WebAudioTestAPI.AudioNode.$new({ context: audioContext });

@@ -4,11 +4,11 @@ describe("OfflineAudioContext", function() {
   var versions;
 
   beforeEach(function() {
-    versions = WebAudioTestAPI.getTargetVersions();
+    versions = WebAudioTestAPI.getBrowserVersions();
     audioContext = new WebAudioTestAPI.OfflineAudioContext(2, 441, 44100);
   });
   afterEach(function() {
-    WebAudioTestAPI.setTargetVersions(versions);
+    WebAudioTestAPI.setBrowserVersions(versions);
   });
 
   describe("constructor(numberOfChannels: number, length: number, sampleRate: number)", function() {
@@ -72,7 +72,7 @@ describe("OfflineAudioContext", function() {
 
   describe("#suspend(): Promise<void>", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       return Promise.resolve().then(function() {
         return audioContext.suspend();
@@ -81,7 +81,7 @@ describe("OfflineAudioContext", function() {
       });
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       return Promise.resolve().then(function() {
         return audioContext.suspend();
@@ -93,7 +93,7 @@ describe("OfflineAudioContext", function() {
 
   describe("#resume(): Promise<void>", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       return Promise.resolve().then(function() {
         return audioContext.resume();
@@ -102,7 +102,7 @@ describe("OfflineAudioContext", function() {
       });
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       return Promise.resolve().then(function() {
         return audioContext.resume();
@@ -114,7 +114,7 @@ describe("OfflineAudioContext", function() {
 
   describe("#close(): Promise<void>", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       return Promise.resolve().then(function() {
         return audioContext.close();
@@ -123,7 +123,7 @@ describe("OfflineAudioContext", function() {
       });
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       return Promise.resolve().then(function() {
         return audioContext.close();
@@ -135,7 +135,7 @@ describe("OfflineAudioContext", function() {
 
   describe("#startRendering(): void", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       audioContext.startRendering();
 
@@ -147,7 +147,7 @@ describe("OfflineAudioContext", function() {
 
   describe("#startRendering(): Promise<AudioBuffer>", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       audioContext.oncomplete = sinon.spy();
 
@@ -203,7 +203,7 @@ describe("OfflineAudioContext", function() {
 
   describe("works", function() {
     it("oncomplete", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       var oncomplete = sinon.spy();
       var event;

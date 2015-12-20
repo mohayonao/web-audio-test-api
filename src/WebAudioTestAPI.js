@@ -1,44 +1,7 @@
 const WebAudioAPI = require("./WebAudioAPI");
-const versions = require("./testapi/decorators/versions");
 const testapi = require("./testapi");
 const utils = require("./utils");
 const dom = require("./dom");
-
-const recentTargetVersions = { chrome: 47, firefox: 42, safari: 9 };
-
-versions.targetVersions = recentTargetVersions;
-
-function setTargetVersions(spec) {
-  switch (spec) {
-  case Infinity:
-    versions.targetVersions = { chrome: Infinity, firefox: Infinity, safari: Infinity };
-    break;
-  case 0:
-    versions.targetVersions = { chrome: 0, firefox: 0, safari: 0 };
-    break;
-  case "recent":
-    versions.targetVersions = recentTargetVersions;
-    break;
-  default:
-    const targetVersions = {};
-
-    Object.keys(recentTargetVersions).forEach((key) => {
-      let version = spec[key];
-
-      if (version === "recent") {
-        version = recentTargetVersions[key];
-      }
-
-      targetVersions[key] = +version;
-    });
-
-    versions.targetVersions = targetVersions;
-  }
-}
-
-function getTargetVersions() {
-  return versions.targetVersions;
-}
 
 function use() {
   Object.keys(WebAudioAPI.testAPI).forEach((key) => {
@@ -56,7 +19,7 @@ function getState() {
   throw new Error(utils.format(`
     Failed to execute 'getState' on 'WebAudioTestAPI'
 
-    \tThis API is removed. Please use WebAudioTestAPI.setTargetVersions();
+    \tThis API is removed. Please use WebAudioTestAPI.setBrowserVersions();
   `) + "\n");
 }
 
@@ -64,7 +27,7 @@ function setState() {
   throw new Error(utils.format(`
     Failed to execute 'setState' on 'WebAudioTestAPI'
 
-    \tThis API is removed. Please use WebAudioTestAPI.getTargetVersions();
+    \tThis API is removed. Please use WebAudioTestAPI.getBrowserVersions();
   `) + "\n");
 }
 
@@ -76,8 +39,12 @@ const WebAudioTestAPI = {
     return testapi.sampleRate;
   },
   dom,
-  setTargetVersions,
-  getTargetVersions,
+  setBrowserVersions(spec) {
+    testapi.setBrowserVersions(spec);
+  },
+  getBrowserVersions() {
+    return testapi.getBrowserVersions();
+  },
   use,
   unuse,
   /* DEPRECATED */

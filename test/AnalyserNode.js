@@ -4,11 +4,11 @@ describe("AnalyserNode", function() {
   var versions;
 
   beforeEach(function() {
-    versions = WebAudioTestAPI.getTargetVersions();
+    versions = WebAudioTestAPI.getBrowserVersions();
     audioContext = new WebAudioTestAPI.AudioContext();
   });
   afterEach(function() {
-    WebAudioTestAPI.setTargetVersions(versions);
+    WebAudioTestAPI.setBrowserVersions(versions);
   });
 
   describe("constructor()", function() {
@@ -165,7 +165,7 @@ describe("AnalyserNode", function() {
       var f32 = new Float32Array(128);
       var i16 = new Int16Array(128);
 
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       assert.doesNotThrow(function() {
         node.getFloatTimeDomainData(f32);
@@ -176,7 +176,7 @@ describe("AnalyserNode", function() {
       }, TypeError);
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       var node = audioContext.createAnalyser();
       var f32 = new Float32Array(128);

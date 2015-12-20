@@ -4,11 +4,11 @@ describe("AudioBuffer", function() {
   var versions;
 
   beforeEach(function() {
-    versions = WebAudioTestAPI.getTargetVersions();
+    versions = WebAudioTestAPI.getBrowserVersions();
     audioContext = new WebAudioTestAPI.AudioContext();
   });
   afterEach(function() {
-    WebAudioTestAPI.setTargetVersions(versions);
+    WebAudioTestAPI.setBrowserVersions(versions);
   });
 
   describe("constructor()", function() {
@@ -129,7 +129,7 @@ describe("AudioBuffer", function() {
 
   describe("#copyFromChannel(destination: Float32Array, channelNumber: number, startInChannel= 0): void", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       var buf1 = audioContext.createBuffer(2, 10, 44100);
       var dest = new Float32Array(4);
@@ -174,7 +174,7 @@ describe("AudioBuffer", function() {
       }, TypeError);
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       var buf1 = audioContext.createBuffer(2, 10, 44100);
       var dest = new Float32Array(4);
@@ -187,7 +187,7 @@ describe("AudioBuffer", function() {
 
   describe("#copyToChannel(source: Float32Array, channelNumber: number, startInChannel= 0): void", function() {
     it("works", function() {
-      WebAudioTestAPI.setTargetVersions(Infinity);
+      WebAudioTestAPI.setBrowserVersions(Infinity);
 
       var buf1 = audioContext.createBuffer(2, 10, 44100);
       var source = new Float32Array([ 10, 11, 12, 13 ]);
@@ -229,7 +229,7 @@ describe("AudioBuffer", function() {
       }, TypeError);
     });
     it("not work in unsupported version", function() {
-      WebAudioTestAPI.setTargetVersions(0);
+      WebAudioTestAPI.setBrowserVersions(0);
 
       var buf1 = audioContext.createBuffer(2, 10, 44100);
       var source = new Float32Array([ 10, 11, 12, 13 ]);
