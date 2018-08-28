@@ -70,9 +70,9 @@ export default class AudioNode extends EventTarget {
   @props.enums([ "speakers", "discrete" ])
   channelInterpretation() {}
 
-  @methods.param("destination", validators.isAudioSource);
-  @methods.param("[ output ]", validators.isPositiveInteger);
-  @methods.param("[ input ]", validators.isPositiveInteger);
+  @methods.param("destination", validators.isAudioSource)
+  @methods.param("[ output ]", validators.isPositiveInteger)
+  @methods.param("[ input ]", validators.isPositiveInteger)
   @methods.contract({
     precondition(destination, output = 0, input = 0) {
       if (this.$context !== destination.$context) {
