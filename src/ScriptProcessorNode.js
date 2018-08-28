@@ -46,7 +46,7 @@ export default class ScriptProcessorNode extends AudioNode {
     return this._.bufferSize;
   }
 
-  @props.on("audioprocess");
+  @props.on("audioprocess")
   onaudioprocess() {}
 
   __process(inNumSamples) {
